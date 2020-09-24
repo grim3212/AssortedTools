@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "XY",
+    "XX"
+  ],
+  "key": {
+    "X": {
+      "tag": "forge:gems/diamond"
+    },
+    "Y": {
+      "item": "assortedtools:wood_boomerang"
+    }
+  },
+  "result": {
+    "item": "assortedtools:diamond_boomerang"
+  }
+}

@@ -1,0 +1,53 @@
+package com.grim3212.assorted.tools.common.item;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.IItemTier;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.TieredItem;
+import net.minecraft.stats.Stats;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+
+public class HammerItem extends TieredItem {
+
+	public HammerItem(IItemTier tier, Properties properties) {
+		super(tier, properties);
+	}
+
+	@Override
+	public float getDestroySpeed(ItemStack stack, BlockState state) {
+		return 80f;
+	}
+
+	@Override
+	public boolean canHarvestBlock(ItemStack stack, BlockState state) {
+		return true;
+	}
+
+	@Override
+	public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, PlayerEntity player) {
+		World worldIn = player.world;
+
+		if (!player.isCreative() && player.canPlayerEdit(pos, player.getHorizontalFacing(), itemstack)) {
+			if (!worldIn.isRemote) {
+				player.addStat(Stats.BLOCK_MINED.get(worldIn.getBlockState(pos).getBlock()));
+				player.addExhaustion(0.005F);
+
+				worldIn.playEvent(2001, pos, Block.getStateId(worldIn.getBlockState(pos)));
+				worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
+
+				itemstack.damageItem(1, player, (pEnt) -> {
+					pEnt.sendBreakAnimation(EquipmentSlotType.MAINHAND);
+				});
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+}
