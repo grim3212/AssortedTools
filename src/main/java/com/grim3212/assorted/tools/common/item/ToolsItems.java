@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import com.grim3212.assorted.tools.AssortedTools;
 
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemTier;
 import net.minecraftforge.fml.RegistryObject;
@@ -30,6 +31,13 @@ public class ToolsItems {
 	public static final RegistryObject<WandBreakingItem> REINFORCED_BREAKING_WAND = register("reinforced_breaking_wand", () -> new WandBreakingItem(true, new Item.Properties().maxDamage(120)));
 	public static final RegistryObject<WandMiningItem> MINING_WAND = register("mining_wand", () -> new WandMiningItem(false, new Item.Properties().maxDamage(15)));
 	public static final RegistryObject<WandMiningItem> REINFORCED_MINING_WAND = register("reinforced_mining_wand", () -> new WandMiningItem(true, new Item.Properties().maxDamage(120)));
+
+	public static final RegistryObject<ChickenSuitArmor> CHICKEN_SUIT_HELMET = register("chicken_suit_helmet", () -> new ChickenSuitArmor(EquipmentSlotType.HEAD, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+	public static final RegistryObject<ChickenSuitArmor> CHICKEN_SUIT_CHESTPLATE = register("chicken_suit_chestplate", () -> new ChickenSuitArmor(EquipmentSlotType.CHEST, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+	public static final RegistryObject<ChickenSuitArmor> CHICKEN_SUIT_LEGGINGS = register("chicken_suit_leggings", () -> new ChickenSuitArmor(EquipmentSlotType.LEGS, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+	public static final RegistryObject<ChickenSuitArmor> CHICKEN_SUIT_BOOTS = register("chicken_suit_boots", () -> new ChickenSuitArmor(EquipmentSlotType.FEET, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+
+	public static final RegistryObject<PokeballItem> POKEBALL = register("pokeball", () -> new PokeballItem(new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
 
 	private static <T extends Item> RegistryObject<T> register(final String name, final Supplier<T> sup) {
 		return ITEMS.register(name, sup);

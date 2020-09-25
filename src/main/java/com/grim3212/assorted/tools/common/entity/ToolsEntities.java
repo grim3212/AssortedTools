@@ -16,6 +16,7 @@ public class ToolsEntities {
 
 	public static final RegistryObject<EntityType<BoomerangEntity>> WOOD_BOOMERANG = register("wood_boomerang", EntityType.Builder.<BoomerangEntity>create(WoodBoomerangEntity::new, EntityClassification.MISC).size(0.5f, 0.5f).setTrackingRange(32).setUpdateInterval(1).setShouldReceiveVelocityUpdates(true));
 	public static final RegistryObject<EntityType<BoomerangEntity>> DIAMOND_BOOMERANG = register("diamond_boomerang", EntityType.Builder.<BoomerangEntity>create(DiamondBoomerangEntity::new, EntityClassification.MISC).size(0.5f, 0.5f).setTrackingRange(32).setUpdateInterval(1).setShouldReceiveVelocityUpdates(true));
+	public static final RegistryObject<EntityType<PokeballEntity>> POKEBALL = register("pokeball", EntityType.Builder.<PokeballEntity>create(PokeballEntity::new, EntityClassification.MISC).size(0.5f, 0.5f).setTrackingRange(32).setUpdateInterval(1).setShouldReceiveVelocityUpdates(true));
 
 	private static <T extends Entity> RegistryObject<EntityType<T>> register(final String name, final EntityType.Builder<T> builder) {
 		return ENTITIES.register(name, () -> builder.build(new ResourceLocation(AssortedTools.MODID, name).toString()));

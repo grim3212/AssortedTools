@@ -21,6 +21,7 @@ public final class PacketHandler {
 	public static void init() {
 		int id = 0;
 		HANDLER.registerMessage(id++, ToolCycleModesPacket.class, ToolCycleModesPacket::encode, ToolCycleModesPacket::decode, ToolCycleModesPacket::handle);
+		HANDLER.registerMessage(id++, ChickenSuitUpdatePacket.class, ChickenSuitUpdatePacket::encode, ChickenSuitUpdatePacket::decode, ChickenSuitUpdatePacket::handle);
 	}
 
 	/**

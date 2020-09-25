@@ -9,6 +9,7 @@ import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.data.RecipeProvider;
 import net.minecraft.data.ShapedRecipeBuilder;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.IItemProvider;
@@ -31,6 +32,7 @@ public class ToolsRecipes extends RecipeProvider {
 
 		ShapedRecipeBuilder.shapedRecipe(ToolsItems.WOOD_BOOMERANG.get()).key('X', ItemTags.PLANKS).patternLine("XX").patternLine("X ").patternLine("XX").addCriterion("has_planks", hasItem(ItemTags.PLANKS)).build(consumer);
 		ShapedRecipeBuilder.shapedRecipe(ToolsItems.DIAMOND_BOOMERANG.get()).key('X', Tags.Items.GEMS_DIAMOND).key('Y', ToolsItems.WOOD_BOOMERANG.get()).patternLine("XX").patternLine("XY").patternLine("XX").addCriterion("has_diamonds", hasItem(Tags.Items.GEMS_DIAMOND)).build(consumer);
+		ShapedRecipeBuilder.shapedRecipe(ToolsItems.POKEBALL.get()).key('R', Tags.Items.DUSTS_REDSTONE).key('C', ItemTags.COALS).key('I', Tags.Items.INGOTS_IRON).key('B', Items.STONE_BUTTON).patternLine("RRR").patternLine("CBC").patternLine("III").addCriterion("has_iron", hasItem(Tags.Items.INGOTS_IRON)).addCriterion("has_redstone", hasItem(Tags.Items.DUSTS_REDSTONE)).build(consumer);
 
 		ShapedRecipeBuilder.shapedRecipe(ToolsItems.BUILDING_WAND.get()).key('X', ItemTags.PLANKS).key('G', Tags.Items.INGOTS_GOLD).patternLine("XGX").patternLine("XGX").patternLine("XGX").addCriterion("has_gold", hasItem(Tags.Items.INGOTS_GOLD)).build(consumer);
 		ShapedRecipeBuilder.shapedRecipe(ToolsItems.BREAKING_WAND.get()).key('X', ItemTags.PLANKS).key('G', Tags.Items.INGOTS_IRON).patternLine("XGX").patternLine("XGX").patternLine("XGX").addCriterion("has_iron", hasItem(Tags.Items.INGOTS_IRON)).build(consumer);
@@ -38,6 +40,8 @@ public class ToolsRecipes extends RecipeProvider {
 		ShapedRecipeBuilder.shapedRecipe(ToolsItems.REINFORCED_BUILDING_WAND.get()).key('X', Tags.Items.OBSIDIAN).key('G', Tags.Items.STORAGE_BLOCKS_GOLD).patternLine("XGX").patternLine("XGX").patternLine("XGX").addCriterion("has_obsidian", hasItem(Tags.Items.OBSIDIAN)).build(consumer);
 		ShapedRecipeBuilder.shapedRecipe(ToolsItems.REINFORCED_BREAKING_WAND.get()).key('X', Tags.Items.OBSIDIAN).key('G', Tags.Items.STORAGE_BLOCKS_IRON).patternLine("XGX").patternLine("XGX").patternLine("XGX").addCriterion("has_obsidian", hasItem(Tags.Items.OBSIDIAN)).build(consumer);
 		ShapedRecipeBuilder.shapedRecipe(ToolsItems.REINFORCED_MINING_WAND.get()).key('X', Tags.Items.OBSIDIAN).key('G', Tags.Items.STORAGE_BLOCKS_DIAMOND).patternLine("XGX").patternLine("XGX").patternLine("XGX").addCriterion("has_obsidian", hasItem(Tags.Items.OBSIDIAN)).build(consumer);
+
+		armorSet(ToolsItems.CHICKEN_SUIT_HELMET.get(), ToolsItems.CHICKEN_SUIT_CHESTPLATE.get(), ToolsItems.CHICKEN_SUIT_LEGGINGS.get(), ToolsItems.CHICKEN_SUIT_BOOTS.get(), Tags.Items.FEATHERS, consumer);
 	}
 
 	@Override
@@ -47,5 +51,12 @@ public class ToolsRecipes extends RecipeProvider {
 
 	private ShapedRecipeBuilder hammerPattern(IItemProvider output, ITag<Item> input) {
 		return ShapedRecipeBuilder.shapedRecipe(output).key('S', Tags.Items.RODS_WOODEN).key('I', input).patternLine("III").patternLine("III").patternLine(" S ").addCriterion("has_item", hasItem(input));
+	}
+
+	private void armorSet(IItemProvider helmet, IItemProvider chestplate, IItemProvider leggings, IItemProvider boots, ITag<Item> input, Consumer<IFinishedRecipe> consumer) {
+		ShapedRecipeBuilder.shapedRecipe(helmet).key('X', input).patternLine("XXX").patternLine("X X").addCriterion("has_item", hasItem(input)).build(consumer);
+		ShapedRecipeBuilder.shapedRecipe(chestplate).key('X', input).patternLine("X X").patternLine("XXX").patternLine("XXX").addCriterion("has_item", hasItem(input)).build(consumer);
+		ShapedRecipeBuilder.shapedRecipe(leggings).key('X', input).patternLine("XXX").patternLine("X X").patternLine("X X").addCriterion("has_item", hasItem(input)).build(consumer);
+		ShapedRecipeBuilder.shapedRecipe(boots).key('X', input).patternLine("X X").patternLine("X X").addCriterion("has_item", hasItem(input)).build(consumer);
 	}
 }

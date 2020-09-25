@@ -32,6 +32,7 @@ public class ToolsItemModelProvider extends ItemModelProvider {
 		generatedItem(ToolsItems.NETHERITE_HAMMER.get());
 		generatedItem(ToolsItems.WOOD_BOOMERANG.get());
 		generatedItem(ToolsItems.DIAMOND_BOOMERANG.get());
+		generatedItem(ToolsItems.POKEBALL.get());
 
 		generatedItem(ToolsItems.BUILDING_WAND.get());
 		generatedItem(ToolsItems.REINFORCED_BUILDING_WAND.get());
@@ -39,6 +40,11 @@ public class ToolsItemModelProvider extends ItemModelProvider {
 		generatedItem(ToolsItems.REINFORCED_BREAKING_WAND.get());
 		generatedItem(ToolsItems.MINING_WAND.get());
 		generatedItem(ToolsItems.REINFORCED_MINING_WAND.get());
+
+		generatedItem(ToolsItems.CHICKEN_SUIT_HELMET.get());
+		generatedItem(ToolsItems.CHICKEN_SUIT_CHESTPLATE.get());
+		generatedItem(ToolsItems.CHICKEN_SUIT_LEGGINGS.get());
+		generatedItem(ToolsItems.CHICKEN_SUIT_BOOTS.get());
 	}
 
 	private ItemModelBuilder generatedItem(String name) {
