@@ -50,7 +50,7 @@ public class ToolsRecipes extends RecipeProvider {
 	}
 
 	private ShapedRecipeBuilder hammerPattern(IItemProvider output, ITag<Item> input) {
-		return ShapedRecipeBuilder.shapedRecipe(output).key('S', Tags.Items.RODS_WOODEN).key('I', input).patternLine("III").patternLine("III").patternLine(" S ").addCriterion("has_item", hasItem(input));
+		return ShapedRecipeBuilder.shapedRecipe(output).key('S', Tags.Items.RODS_WOODEN).key('I', input).patternLine("III").patternLine("ISI").patternLine(" S ").addCriterion("has_item", hasItem(input));
 	}
 
 	private void armorSet(IItemProvider helmet, IItemProvider chestplate, IItemProvider leggings, IItemProvider boots, ITag<Item> input, Consumer<IFinishedRecipe> consumer) {
