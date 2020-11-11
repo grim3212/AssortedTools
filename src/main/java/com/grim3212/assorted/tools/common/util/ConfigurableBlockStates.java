@@ -78,7 +78,7 @@ public class ConfigurableBlockStates {
 			}
 
 			for (ResourceLocation t : this.tags) {
-				ITag<Block> foundTag = BlockTags.getCollection().func_241834_b(t);
+				ITag<Block> foundTag = BlockTags.getCollection().get(t);
 				if (foundTag != null) {
 					states.addAll(foundTag.getAllElements().stream().map(Block::getDefaultState).collect(Collectors.toList()));
 				} else {
