@@ -45,6 +45,13 @@ public class ToolsItemModelProvider extends ItemModelProvider {
 		generatedItem(ToolsItems.CHICKEN_SUIT_CHESTPLATE.get());
 		generatedItem(ToolsItems.CHICKEN_SUIT_LEGGINGS.get());
 		generatedItem(ToolsItems.CHICKEN_SUIT_BOOTS.get());
+
+		generatedItem(ToolsItems.WOODEN_MULTITOOL.get());
+		generatedItem(ToolsItems.STONE_MULTITOOL.get());
+		generatedItem(ToolsItems.GOLDEN_MULTITOOL.get());
+		generatedItem(ToolsItems.IRON_MULTITOOL.get());
+		generatedItem(ToolsItems.DIAMOND_MULTITOOL.get());
+		generatedItem(ToolsItems.NETHERITE_MULTITOOL.get());
 	}
 
 	private ItemModelBuilder generatedItem(String name) {

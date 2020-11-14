@@ -6,7 +6,9 @@ import org.apache.logging.log4j.Logger;
 import com.grim3212.assorted.tools.client.data.ToolsItemModelProvider;
 import com.grim3212.assorted.tools.client.proxy.ClientProxy;
 import com.grim3212.assorted.tools.common.data.ToolsRecipes;
+import com.grim3212.assorted.tools.common.enchantment.ToolsEnchantments;
 import com.grim3212.assorted.tools.common.entity.ToolsEntities;
+import com.grim3212.assorted.tools.common.handler.ChickenSuitConversionHandler;
 import com.grim3212.assorted.tools.common.handler.TagLoadListener;
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
@@ -19,6 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -56,9 +59,11 @@ public class AssortedTools {
 		modBus.addListener(this::gatherData);
 
 		MinecraftForge.EVENT_BUS.register(new TagLoadListener());
+		MinecraftForge.EVENT_BUS.register(new ChickenSuitConversionHandler());
 
 		ToolsItems.ITEMS.register(modBus);
 		ToolsEntities.ENTITIES.register(modBus);
+		ToolsEnchantments.ENCHANTMENTS.register(modBus);
 
 		ModLoadingContext.get().registerConfig(Type.COMMON, ToolsConfig.COMMON_SPEC);
 	}
@@ -69,13 +74,14 @@ public class AssortedTools {
 
 	private void gatherData(GatherDataEvent event) {
 		DataGenerator datagenerator = event.getGenerator();
+		ExistingFileHelper fileHelper = event.getExistingFileHelper();
 
 		if (event.includeServer()) {
 			datagenerator.addProvider(new ToolsRecipes(datagenerator));
 		}
 
 		if (event.includeClient()) {
-			datagenerator.addProvider(new ToolsItemModelProvider(datagenerator, event.getExistingFileHelper()));
+			datagenerator.addProvider(new ToolsItemModelProvider(datagenerator, fileHelper));
 		}
 	}
 }

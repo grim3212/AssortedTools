@@ -39,6 +39,13 @@ public class ToolsItems {
 
 	public static final RegistryObject<PokeballItem> POKEBALL = register("pokeball", () -> new PokeballItem(new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
 
+	public static final RegistryObject<MultitoolItem> WOODEN_MULTITOOL = register("wooden_multitool", () -> new MultitoolItem(ItemTier.WOOD, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+	public static final RegistryObject<MultitoolItem> STONE_MULTITOOL = register("stone_multitool", () -> new MultitoolItem(ItemTier.STONE, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+	public static final RegistryObject<MultitoolItem> GOLDEN_MULTITOOL = register("golden_multitool", () -> new MultitoolItem(ItemTier.GOLD, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+	public static final RegistryObject<MultitoolItem> IRON_MULTITOOL = register("iron_multitool", () -> new MultitoolItem(ItemTier.IRON, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+	public static final RegistryObject<MultitoolItem> DIAMOND_MULTITOOL = register("diamond_multitool", () -> new MultitoolItem(ItemTier.DIAMOND, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+	public static final RegistryObject<MultitoolItem> NETHERITE_MULTITOOL = register("netherite_multitool", () -> new MultitoolItem(ItemTier.NETHERITE, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+
 	private static <T extends Item> RegistryObject<T> register(final String name, final Supplier<T> sup) {
 		return ITEMS.register(name, sup);
 	}

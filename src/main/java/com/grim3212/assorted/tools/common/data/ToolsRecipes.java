@@ -8,6 +8,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.data.RecipeProvider;
 import net.minecraft.data.ShapedRecipeBuilder;
+import net.minecraft.data.ShapelessRecipeBuilder;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.tags.ITag;
@@ -42,6 +43,13 @@ public class ToolsRecipes extends RecipeProvider {
 		ShapedRecipeBuilder.shapedRecipe(ToolsItems.REINFORCED_MINING_WAND.get()).key('X', Tags.Items.OBSIDIAN).key('G', Tags.Items.STORAGE_BLOCKS_DIAMOND).patternLine("XGX").patternLine("XGX").patternLine("XGX").addCriterion("has_obsidian", hasItem(Tags.Items.OBSIDIAN)).build(consumer);
 
 		armorSet(ToolsItems.CHICKEN_SUIT_HELMET.get(), ToolsItems.CHICKEN_SUIT_CHESTPLATE.get(), ToolsItems.CHICKEN_SUIT_LEGGINGS.get(), ToolsItems.CHICKEN_SUIT_BOOTS.get(), Tags.Items.FEATHERS, consumer);
+
+		multiTool(ToolsItems.WOODEN_MULTITOOL.get(), Items.WOODEN_SWORD, Items.WOODEN_PICKAXE, Items.WOODEN_SHOVEL, Items.WOODEN_HOE, Items.WOODEN_AXE, ItemTags.PLANKS, consumer);
+		multiTool(ToolsItems.STONE_MULTITOOL.get(), Items.STONE_SWORD, Items.STONE_PICKAXE, Items.STONE_SHOVEL, Items.STONE_HOE, Items.STONE_AXE, Tags.Items.COBBLESTONE, consumer);
+		multiTool(ToolsItems.GOLDEN_MULTITOOL.get(), Items.GOLDEN_SWORD, Items.GOLDEN_PICKAXE, Items.GOLDEN_SHOVEL, Items.GOLDEN_HOE, Items.GOLDEN_AXE, Tags.Items.INGOTS_GOLD, consumer);
+		multiTool(ToolsItems.IRON_MULTITOOL.get(), Items.IRON_SWORD, Items.IRON_PICKAXE, Items.IRON_SHOVEL, Items.IRON_HOE, Items.IRON_AXE, Tags.Items.INGOTS_IRON, consumer);
+		multiTool(ToolsItems.DIAMOND_MULTITOOL.get(), Items.DIAMOND_SWORD, Items.DIAMOND_PICKAXE, Items.DIAMOND_SHOVEL, Items.DIAMOND_HOE, Items.DIAMOND_AXE, Tags.Items.GEMS_DIAMOND, consumer);
+		multiTool(ToolsItems.NETHERITE_MULTITOOL.get(), Items.NETHERITE_SWORD, Items.NETHERITE_PICKAXE, Items.NETHERITE_SHOVEL, Items.NETHERITE_HOE, Items.NETHERITE_AXE, Tags.Items.INGOTS_NETHERITE, consumer);
 	}
 
 	@Override
@@ -58,5 +66,9 @@ public class ToolsRecipes extends RecipeProvider {
 		ShapedRecipeBuilder.shapedRecipe(chestplate).key('X', input).patternLine("X X").patternLine("XXX").patternLine("XXX").addCriterion("has_item", hasItem(input)).build(consumer);
 		ShapedRecipeBuilder.shapedRecipe(leggings).key('X', input).patternLine("XXX").patternLine("X X").patternLine("X X").addCriterion("has_item", hasItem(input)).build(consumer);
 		ShapedRecipeBuilder.shapedRecipe(boots).key('X', input).patternLine("X X").patternLine("X X").addCriterion("has_item", hasItem(input)).build(consumer);
+	}
+
+	private void multiTool(IItemProvider output, IItemProvider sword, IItemProvider pick, IItemProvider shovel, IItemProvider hoe, IItemProvider axe, ITag<Item> input, Consumer<IFinishedRecipe> consumer) {
+		ShapelessRecipeBuilder.shapelessRecipe(output).addIngredient(sword).addIngredient(pick).addIngredient(shovel).addIngredient(hoe).addIngredient(axe).addIngredient(input).addIngredient(input).addIngredient(input).addIngredient(input).addCriterion("has_item", hasItem(input)).build(consumer);
 	}
 }

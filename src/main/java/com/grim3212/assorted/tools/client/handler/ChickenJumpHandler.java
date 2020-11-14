@@ -1,11 +1,13 @@
 package com.grim3212.assorted.tools.client.handler;
 
+import com.grim3212.assorted.tools.common.enchantment.ToolsEnchantments;
 import com.grim3212.assorted.tools.common.item.ChickenSuitArmor;
 import com.grim3212.assorted.tools.common.network.ChickenSuitUpdatePacket;
 import com.grim3212.assorted.tools.common.network.PacketHandler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundCategory;
@@ -100,6 +102,8 @@ public class ChickenJumpHandler {
 				continue;
 
 			if (stack.getItem() instanceof ChickenSuitArmor) {
+				maxJumps++;
+			} else if (EnchantmentHelper.getEnchantments(stack).containsKey(ToolsEnchantments.CHICKEN_JUMP.get())) {
 				maxJumps++;
 			}
 		}
