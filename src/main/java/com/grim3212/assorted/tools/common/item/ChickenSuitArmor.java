@@ -5,10 +5,9 @@ import com.grim3212.assorted.tools.common.util.ToolsArmorMaterials;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 
-public class ChickenSuitArmor extends ArmorItem {
+public class ChickenSuitArmor extends ConfigurableArmorItem {
 
 	public ChickenSuitArmor(EquipmentSlotType slot, Properties builderIn) {
 		super(ToolsArmorMaterials.CHICKEN_SUIT, slot, builderIn);

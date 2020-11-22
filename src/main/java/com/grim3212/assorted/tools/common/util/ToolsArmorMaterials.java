@@ -2,6 +2,9 @@ package com.grim3212.assorted.tools.common.util;
 
 import java.util.function.Supplier;
 
+import com.grim3212.assorted.tools.common.handler.ArmorMaterialHolder;
+import com.grim3212.assorted.tools.common.handler.ToolsConfig;
+
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.Items;
@@ -11,42 +14,36 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 
 public enum ToolsArmorMaterials implements IArmorMaterial {
-	CHICKEN_SUIT("chicken_suit", 5, new int[] { 1, 2, 3, 1 }, 15, () -> SoundEvents.BLOCK_WOOL_PLACE, () -> Ingredient.fromItems(Items.FEATHER), 0.0f, 0.0f);
+	CHICKEN_SUIT(() -> ToolsConfig.COMMON.chickenSuitArmorMaterial, () -> SoundEvents.BLOCK_WOOL_PLACE, () -> Ingredient.fromItems(Items.FEATHER));
 
-	private final String name;
-	private final int durabilityMultiplier;
-	private final int[] damageReduction;
-	private final int enchantability;
+	private final Supplier<ArmorMaterialHolder> material;
 	private final Supplier<SoundEvent> equipSound;
 	private final LazyValue<Ingredient> repairItem;
-	private final float toughness;
-	private final float knockbackResistance;
 	private static final int[] MAX_DAMAGE_ARRAY = new int[] { 13, 15, 16, 11 };
 
-	ToolsArmorMaterials(String name, int durabilityMultiplier, int[] damageReduction, int enchantability, Supplier<SoundEvent> equipSound, Supplier<Ingredient> repairItem, float toughness, float knockbackResistance) {
-		this.name = name;
-		this.durabilityMultiplier = durabilityMultiplier;
-		this.damageReduction = damageReduction;
-		this.enchantability = enchantability;
+	ToolsArmorMaterials(Supplier<ArmorMaterialHolder> material, Supplier<SoundEvent> equipSound, Supplier<Ingredient> repairItem) {
+		this.material = material;
 		this.equipSound = equipSound;
 		this.repairItem = new LazyValue<>(repairItem);
-		this.toughness = toughness;
-		this.knockbackResistance = knockbackResistance;
+	}
+
+	private ArmorMaterialHolder getMaterial() {
+		return this.material.get();
 	}
 
 	@Override
 	public int getDurability(EquipmentSlotType slot) {
-		return durabilityMultiplier * MAX_DAMAGE_ARRAY[slot.getIndex()];
+		return this.getMaterial().getDurability() * MAX_DAMAGE_ARRAY[slot.getIndex()];
 	}
 
 	@Override
 	public int getDamageReductionAmount(EquipmentSlotType slot) {
-		return damageReduction[slot.getIndex()];
+		return this.getMaterial().getReductionAmounts()[slot.getIndex()];
 	}
 
 	@Override
 	public int getEnchantability() {
-		return enchantability;
+		return this.getMaterial().getEnchantability();
 	}
 
 	@Override
@@ -61,17 +58,17 @@ public enum ToolsArmorMaterials implements IArmorMaterial {
 
 	@Override
 	public String getName() {
-		return name;
+		return this.getMaterial().getName();
 	}
 
 	@Override
 	public float getToughness() {
-		return toughness;
+		return this.getMaterial().getToughness();
 	}
 
 	@Override
 	public float getKnockbackResistance() {
-		return knockbackResistance;
+		return this.getMaterial().getKnockbackResistance();
 	}
 
 }

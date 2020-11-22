@@ -38,6 +38,8 @@ public final class ToolsConfig {
 		public final ForgeConfigSpec.ConfigValue<List<String>> destructiveWandSparedBlocks;
 		public final ForgeConfigSpec.ConfigValue<List<String>> miningWandBlocksForSurfaceMining;
 
+		public final ArmorMaterialHolder chickenSuitArmorMaterial;
+
 		public ConfigurableBlockStates destructiveSparedBlocks;
 		public ConfigurableBlockStates miningSurfaceBlocks;
 
@@ -64,6 +66,10 @@ public final class ToolsConfig {
 
 			destructiveWandSparedBlocks = builder.comment("A list of blocks that the wand breaking wand will not break. Usually used for ores.").define("destructiveWandSparedBlocks", Lists.newArrayList("tag|forge:ores", "tag|forge:chests", "block|minecraft:spawner"));
 			miningWandBlocksForSurfaceMining = builder.comment("A list of blocks that the mining wand can break from the surface.").define("miningWandBlocksForSurfaceMining", Lists.newArrayList("tag|forge:ores"));
+			builder.pop();
+
+			builder.push("Armors");
+			chickenSuitArmorMaterial = new ArmorMaterialHolder(builder, "chicken_suit", 5, 15, 0.0F, 0.0F, new int[] { 1, 2, 3, 1 });
 			builder.pop();
 		}
 
