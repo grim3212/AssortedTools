@@ -3,6 +3,7 @@ package com.grim3212.assorted.tools.common.item;
 import java.util.function.Supplier;
 
 import com.grim3212.assorted.tools.AssortedTools;
+import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
@@ -39,12 +40,12 @@ public class ToolsItems {
 
 	public static final RegistryObject<PokeballItem> POKEBALL = register("pokeball", () -> new PokeballItem(new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
 
-	public static final RegistryObject<MultitoolItem> WOODEN_MULTITOOL = register("wooden_multitool", () -> new MultitoolItem(ItemTier.WOOD, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
-	public static final RegistryObject<MultitoolItem> STONE_MULTITOOL = register("stone_multitool", () -> new MultitoolItem(ItemTier.STONE, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
-	public static final RegistryObject<MultitoolItem> GOLDEN_MULTITOOL = register("golden_multitool", () -> new MultitoolItem(ItemTier.GOLD, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
-	public static final RegistryObject<MultitoolItem> IRON_MULTITOOL = register("iron_multitool", () -> new MultitoolItem(ItemTier.IRON, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
-	public static final RegistryObject<MultitoolItem> DIAMOND_MULTITOOL = register("diamond_multitool", () -> new MultitoolItem(ItemTier.DIAMOND, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
-	public static final RegistryObject<MultitoolItem> NETHERITE_MULTITOOL = register("netherite_multitool", () -> new MultitoolItem(ItemTier.NETHERITE, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+	public static final RegistryObject<MultiToolItem> WOODEN_MULTITOOL = register("wooden_multitool", () -> new MultiToolItem(ToolsConfig.COMMON.woodItemTier, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+	public static final RegistryObject<MultiToolItem> STONE_MULTITOOL = register("stone_multitool", () -> new MultiToolItem(ToolsConfig.COMMON.stoneItemTier, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+	public static final RegistryObject<MultiToolItem> GOLDEN_MULTITOOL = register("golden_multitool", () -> new MultiToolItem(ToolsConfig.COMMON.goldItemTier, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+	public static final RegistryObject<MultiToolItem> IRON_MULTITOOL = register("iron_multitool", () -> new MultiToolItem(ToolsConfig.COMMON.ironItemTier, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+	public static final RegistryObject<MultiToolItem> DIAMOND_MULTITOOL = register("diamond_multitool", () -> new MultiToolItem(ToolsConfig.COMMON.diamondItemTier, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+	public static final RegistryObject<MultiToolItem> NETHERITE_MULTITOOL = register("netherite_multitool", () -> new MultiToolItem(ToolsConfig.COMMON.netheriteItemTier, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
 
 	private static <T extends Item> RegistryObject<T> register(final String name, final Supplier<T> sup) {
 		return ITEMS.register(name, sup);

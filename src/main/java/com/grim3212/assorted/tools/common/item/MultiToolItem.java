@@ -1,8 +1,10 @@
 package com.grim3212.assorted.tools.common.item;
 
+import java.util.Map;
 import java.util.Set;
 
 import com.google.common.collect.Sets;
+import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -14,9 +16,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemTier;
 import net.minecraft.item.ItemUseContext;
-import net.minecraft.item.ToolItem;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -27,7 +27,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.ForgeEventFactory;
 
-public class MultitoolItem extends ToolItem {
+public class MultiToolItem extends ConfigurableToolItem {
 
 	private static final Set<Material> EFFECTIVE_ON_MATERIALS = Sets.newHashSet(Material.WOOD, Material.NETHER_WOOD, Material.PLANTS, Material.TALL_PLANTS, Material.BAMBOO, Material.GOURD, Material.IRON, Material.ANVIL, Material.ROCK);
 	private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.CLAY, Blocks.DIRT, Blocks.COARSE_DIRT, Blocks.PODZOL, Blocks.FARMLAND, Blocks.GRASS_BLOCK, Blocks.GRAVEL, Blocks.MYCELIUM, Blocks.SAND, Blocks.RED_SAND, Blocks.SNOW_BLOCK, Blocks.SNOW, Blocks.SOUL_SAND, Blocks.GRASS_PATH, Blocks.WHITE_CONCRETE_POWDER, Blocks.ORANGE_CONCRETE_POWDER, Blocks.MAGENTA_CONCRETE_POWDER, Blocks.LIGHT_BLUE_CONCRETE_POWDER, Blocks.YELLOW_CONCRETE_POWDER, Blocks.LIME_CONCRETE_POWDER,
@@ -38,8 +38,16 @@ public class MultitoolItem extends ToolItem {
 			Blocks.GREEN_SHULKER_BOX, Blocks.LIGHT_BLUE_SHULKER_BOX, Blocks.LIGHT_GRAY_SHULKER_BOX, Blocks.LIME_SHULKER_BOX, Blocks.MAGENTA_SHULKER_BOX, Blocks.ORANGE_SHULKER_BOX, Blocks.PINK_SHULKER_BOX, Blocks.PURPLE_SHULKER_BOX, Blocks.RED_SHULKER_BOX, Blocks.WHITE_SHULKER_BOX, Blocks.YELLOW_SHULKER_BOX, Blocks.PISTON, Blocks.STICKY_PISTON, Blocks.PISTON_HEAD, Blocks.LADDER, Blocks.SCAFFOLDING, Blocks.OAK_BUTTON, Blocks.SPRUCE_BUTTON, Blocks.BIRCH_BUTTON, Blocks.JUNGLE_BUTTON,
 			Blocks.DARK_OAK_BUTTON, Blocks.ACACIA_BUTTON, Blocks.CRIMSON_BUTTON, Blocks.WARPED_BUTTON, Blocks.NETHER_WART_BLOCK, Blocks.WARPED_WART_BLOCK, Blocks.HAY_BLOCK, Blocks.DRIED_KELP_BLOCK, Blocks.TARGET, Blocks.SHROOMLIGHT, Blocks.SPONGE, Blocks.WET_SPONGE, Blocks.JUNGLE_LEAVES, Blocks.OAK_LEAVES, Blocks.SPRUCE_LEAVES, Blocks.DARK_OAK_LEAVES, Blocks.ACACIA_LEAVES, Blocks.BIRCH_LEAVES);
 
-	public MultitoolItem(ItemTier tier, Item.Properties builderIn) {
-		super(tier.getAttackDamage(), -2.8f, tier, EFFECTIVE_ON, builderIn.addToolType(ToolType.AXE, tier.getHarvestLevel()).addToolType(ToolType.SHOVEL, tier.getHarvestLevel()).addToolType(ToolType.PICKAXE, tier.getHarvestLevel()).addToolType(ToolType.HOE, tier.getHarvestLevel()));
+	public MultiToolItem(ItemTierHolder tier, Item.Properties builderIn) {
+		super(tier, -2.8f, EFFECTIVE_ON, builderIn.addToolType(ToolType.AXE, tier.getHarvestLevel()).addToolType(ToolType.SHOVEL, tier.getHarvestLevel()).addToolType(ToolType.PICKAXE, tier.getHarvestLevel()).addToolType(ToolType.HOE, tier.getHarvestLevel()));
+	}
+
+	@Override
+	public void addToolTypes(Map<ToolType, Integer> toolClasses, ItemStack stack) {
+		toolClasses.put(ToolType.AXE, this.getTierHarvestLevel());
+		toolClasses.put(ToolType.PICKAXE, this.getTierHarvestLevel());
+		toolClasses.put(ToolType.SHOVEL, this.getTierHarvestLevel());
+		toolClasses.put(ToolType.HOE, this.getTierHarvestLevel());
 	}
 
 	@Override
@@ -57,7 +65,7 @@ public class MultitoolItem extends ToolItem {
 
 	@Override
 	public boolean canHarvestBlock(BlockState blockIn) {
-		int i = this.getTier().getHarvestLevel();
+		int i = this.getTierHarvestLevel();
 		if (blockIn.getHarvestTool() == ToolType.PICKAXE) {
 			return i >= blockIn.getHarvestLevel();
 		}
@@ -71,7 +79,7 @@ public class MultitoolItem extends ToolItem {
 			return 15.0F;
 		}
 		Material material = state.getMaterial();
-		return EFFECTIVE_ON_MATERIALS.contains(material) ? this.efficiency : material == Material.CORAL || state.isIn(BlockTags.LEAVES) ? 1.5F : super.getDestroySpeed(stack, state);
+		return EFFECTIVE_ON_MATERIALS.contains(material) ? this.getTierHolder().getEfficiency() : material == Material.CORAL || state.isIn(BlockTags.LEAVES) ? 1.5F : super.getDestroySpeed(stack, state);
 	}
 
 	@Override

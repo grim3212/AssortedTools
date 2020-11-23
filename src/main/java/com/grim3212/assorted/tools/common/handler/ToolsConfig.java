@@ -7,6 +7,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import com.google.common.collect.Lists;
 import com.grim3212.assorted.tools.common.util.ConfigurableBlockStates;
 
+import net.minecraft.item.ItemTier;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public final class ToolsConfig {
@@ -40,6 +41,13 @@ public final class ToolsConfig {
 
 		public final ArmorMaterialHolder chickenSuitArmorMaterial;
 
+		public final ItemTierHolder woodItemTier;
+		public final ItemTierHolder stoneItemTier;
+		public final ItemTierHolder goldItemTier;
+		public final ItemTierHolder ironItemTier;
+		public final ItemTierHolder diamondItemTier;
+		public final ItemTierHolder netheriteItemTier;
+
 		public ConfigurableBlockStates destructiveSparedBlocks;
 		public ConfigurableBlockStates miningSurfaceBlocks;
 
@@ -70,6 +78,19 @@ public final class ToolsConfig {
 
 			builder.push("Armors");
 			chickenSuitArmorMaterial = new ArmorMaterialHolder(builder, "chicken_suit", 5, 15, 0.0F, 0.0F, new int[] { 1, 2, 3, 1 });
+			builder.pop();
+
+			builder.push("Item Tiers");
+
+			builder.push("Vanilla Overrides");
+			woodItemTier = new ItemTierHolder(builder, "wood", 0, 59, 2.0F, 0.0F, 15, () -> ItemTier.WOOD);
+			stoneItemTier = new ItemTierHolder(builder, "stone", 1, 131, 4.0F, 1.0F, 5, () -> ItemTier.STONE);
+			goldItemTier = new ItemTierHolder(builder, "gold", 0, 32, 12.0F, 0.0F, 22, () -> ItemTier.GOLD);
+			ironItemTier = new ItemTierHolder(builder, "iron", 2, 250, 6.0F, 2.0F, 14, () -> ItemTier.IRON);
+			diamondItemTier = new ItemTierHolder(builder, "diamond", 3, 1561, 8.0F, 3.0F, 10, () -> ItemTier.DIAMOND);
+			netheriteItemTier = new ItemTierHolder(builder, "netherite", 4, 2031, 9.0F, 4.0F, 15, () -> ItemTier.NETHERITE);
+			builder.pop();
+
 			builder.pop();
 		}
 
