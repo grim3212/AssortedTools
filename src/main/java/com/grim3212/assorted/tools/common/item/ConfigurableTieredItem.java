@@ -30,6 +30,6 @@ public class ConfigurableTieredItem extends Item {
 
 	@Override
 	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-		return this.tierHolder.getDefaultTier().get().getRepairMaterial().test(repair) || super.getIsRepairable(toRepair, repair);
+		return this.tierHolder.getDefaultTier().getRepairMaterial().test(repair) || super.getIsRepairable(toRepair, repair);
 	}
 }

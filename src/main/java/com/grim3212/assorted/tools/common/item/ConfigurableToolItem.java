@@ -28,7 +28,7 @@ public abstract class ConfigurableToolItem extends ToolItem {
 	private final Map<ToolType, Integer> toolClasses = Maps.newHashMap();
 
 	public ConfigurableToolItem(ItemTierHolder tierHolder, float attackSpeedIn, Set<Block> effectiveBlocksIn, Properties builderIn) {
-		super(tierHolder.getDefaultTier().get().getAttackDamage(), attackSpeedIn, tierHolder.getDefaultTier().get(), effectiveBlocksIn, builderIn);
+		super(tierHolder.getDefaultTier().getAttackDamage(), attackSpeedIn, tierHolder.getDefaultTier(), effectiveBlocksIn, builderIn);
 		this.tierHolder = tierHolder;
 		this.attackSpeed = attackSpeedIn;
 	}

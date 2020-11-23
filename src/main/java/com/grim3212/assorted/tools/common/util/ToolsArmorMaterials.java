@@ -6,6 +6,7 @@ import com.grim3212.assorted.tools.common.handler.ArmorMaterialHolder;
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
@@ -19,7 +20,6 @@ public enum ToolsArmorMaterials implements IArmorMaterial {
 	private final Supplier<ArmorMaterialHolder> material;
 	private final Supplier<SoundEvent> equipSound;
 	private final LazyValue<Ingredient> repairItem;
-	private static final int[] MAX_DAMAGE_ARRAY = new int[] { 13, 15, 16, 11 };
 
 	ToolsArmorMaterials(Supplier<ArmorMaterialHolder> material, Supplier<SoundEvent> equipSound, Supplier<Ingredient> repairItem) {
 		this.material = material;
@@ -33,7 +33,7 @@ public enum ToolsArmorMaterials implements IArmorMaterial {
 
 	@Override
 	public int getDurability(EquipmentSlotType slot) {
-		return this.getMaterial().getDurability() * MAX_DAMAGE_ARRAY[slot.getIndex()];
+		return this.getMaterial().getDurability() * ArmorMaterial.MAX_DAMAGE_ARRAY[slot.getIndex()];
 	}
 
 	@Override

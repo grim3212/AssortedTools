@@ -84,12 +84,12 @@ public final class ToolsConfig {
 
 			builder.comment("These are used by Hammers and MultiTools to allow you to override the default vanilla values that they use.", "These will not change the values that vanilla tools use.");
 			builder.push("Vanilla Overrides");
-			woodItemTier = new ItemTierHolder(builder, "wood", 0, 59, 2.0F, 0.0F, 15, () -> ItemTier.WOOD);
-			stoneItemTier = new ItemTierHolder(builder, "stone", 1, 131, 4.0F, 1.0F, 5, () -> ItemTier.STONE);
-			goldItemTier = new ItemTierHolder(builder, "gold", 0, 32, 12.0F, 0.0F, 22, () -> ItemTier.GOLD);
-			ironItemTier = new ItemTierHolder(builder, "iron", 2, 250, 6.0F, 2.0F, 14, () -> ItemTier.IRON);
-			diamondItemTier = new ItemTierHolder(builder, "diamond", 3, 1561, 8.0F, 3.0F, 10, () -> ItemTier.DIAMOND);
-			netheriteItemTier = new ItemTierHolder(builder, "netherite", 4, 2031, 9.0F, 4.0F, 15, () -> ItemTier.NETHERITE);
+			woodItemTier = new ItemTierHolder(builder, "wood", ItemTier.WOOD);
+			stoneItemTier = new ItemTierHolder(builder, "stone", ItemTier.STONE);
+			goldItemTier = new ItemTierHolder(builder, "gold", ItemTier.GOLD);
+			ironItemTier = new ItemTierHolder(builder, "iron", ItemTier.IRON);
+			diamondItemTier = new ItemTierHolder(builder, "diamond", ItemTier.DIAMOND);
+			netheriteItemTier = new ItemTierHolder(builder, "netherite", ItemTier.NETHERITE);
 			builder.pop();
 
 			builder.pop();
