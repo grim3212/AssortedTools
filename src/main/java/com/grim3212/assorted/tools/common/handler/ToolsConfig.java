@@ -82,6 +82,7 @@ public final class ToolsConfig {
 
 			builder.push("Item Tiers");
 
+			builder.comment("These are used by Hammers and MultiTools to allow you to override the default vanilla values that they use.", "These will not change the values that vanilla tools use.");
 			builder.push("Vanilla Overrides");
 			woodItemTier = new ItemTierHolder(builder, "wood", 0, 59, 2.0F, 0.0F, 15, () -> ItemTier.WOOD);
 			stoneItemTier = new ItemTierHolder(builder, "stone", 1, 131, 4.0F, 1.0F, 5, () -> ItemTier.STONE);

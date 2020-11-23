@@ -1,21 +1,21 @@
 package com.grim3212.assorted.tools.common.item;
 
+import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.IItemTier;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.TieredItem;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class HammerItem extends TieredItem {
+public class HammerItem extends ConfigurableTieredItem {
 
-	public HammerItem(IItemTier tier, Properties properties) {
-		super(tier, properties);
+	public HammerItem(ItemTierHolder tierHolder, Properties properties) {
+		super(tierHolder, properties);
 	}
 
 	@Override
