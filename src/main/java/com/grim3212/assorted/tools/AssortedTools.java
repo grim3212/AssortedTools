@@ -9,6 +9,7 @@ import com.grim3212.assorted.tools.common.data.ToolsRecipes;
 import com.grim3212.assorted.tools.common.enchantment.ToolsEnchantments;
 import com.grim3212.assorted.tools.common.entity.ToolsEntities;
 import com.grim3212.assorted.tools.common.handler.ChickenSuitConversionHandler;
+import com.grim3212.assorted.tools.common.handler.EnabledCondition;
 import com.grim3212.assorted.tools.common.handler.TagLoadListener;
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
@@ -21,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
@@ -66,6 +68,8 @@ public class AssortedTools {
 		ToolsEnchantments.ENCHANTMENTS.register(modBus);
 
 		ModLoadingContext.get().registerConfig(Type.COMMON, ToolsConfig.COMMON_SPEC);
+
+		CraftingHelper.register(EnabledCondition.Serializer.INSTANCE);
 	}
 
 	private void setup(final FMLCommonSetupEvent event) {

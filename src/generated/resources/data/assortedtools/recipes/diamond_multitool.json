@@ -1,35 +1,48 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
+  "type": "forge:conditional",
+  "recipes": [
     {
-      "item": "minecraft:diamond_sword"
-    },
-    {
-      "item": "minecraft:diamond_pickaxe"
-    },
-    {
-      "item": "minecraft:diamond_shovel"
-    },
-    {
-      "item": "minecraft:diamond_hoe"
-    },
-    {
-      "item": "minecraft:diamond_axe"
-    },
-    {
-      "tag": "forge:gems/diamond"
-    },
-    {
-      "tag": "forge:gems/diamond"
-    },
-    {
-      "tag": "forge:gems/diamond"
-    },
-    {
-      "tag": "forge:gems/diamond"
+      "conditions": [
+        {
+          "part": "multitools",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shapeless",
+        "ingredients": [
+          {
+            "item": "minecraft:diamond_sword"
+          },
+          {
+            "item": "minecraft:diamond_pickaxe"
+          },
+          {
+            "item": "minecraft:diamond_shovel"
+          },
+          {
+            "item": "minecraft:diamond_hoe"
+          },
+          {
+            "item": "minecraft:diamond_axe"
+          },
+          {
+            "tag": "forge:gems/diamond"
+          },
+          {
+            "tag": "forge:gems/diamond"
+          },
+          {
+            "tag": "forge:gems/diamond"
+          },
+          {
+            "tag": "forge:gems/diamond"
+          }
+        ],
+        "result": {
+          "item": "assortedtools:diamond_multitool"
+        }
+      }
     }
-  ],
-  "result": {
-    "item": "assortedtools:diamond_multitool"
-  }
+  ]
 }

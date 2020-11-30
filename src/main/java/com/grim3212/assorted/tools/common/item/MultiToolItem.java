@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.google.common.collect.Sets;
 import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
+import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -15,6 +16,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.tags.BlockTags;
@@ -40,6 +42,11 @@ public class MultiToolItem extends ConfigurableToolItem {
 
 	public MultiToolItem(ItemTierHolder tier, Item.Properties builderIn) {
 		super(tier, -2.8f, EFFECTIVE_ON, builderIn.addToolType(ToolType.AXE, tier.getHarvestLevel()).addToolType(ToolType.SHOVEL, tier.getHarvestLevel()).addToolType(ToolType.PICKAXE, tier.getHarvestLevel()).addToolType(ToolType.HOE, tier.getHarvestLevel()));
+	}
+
+	@Override
+	protected boolean isInGroup(ItemGroup group) {
+		return ToolsConfig.COMMON.multiToolsEnabled.get() ? super.isInGroup(group) : false;
 	}
 
 	@Override

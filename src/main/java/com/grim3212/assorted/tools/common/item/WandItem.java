@@ -12,6 +12,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.particles.ParticleTypes;
@@ -37,6 +38,11 @@ public abstract class WandItem extends Item implements ISwitchModes {
 		super(properties.group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP));
 		this.reinforced = reinforced;
 		this.rand = new Random();
+	}
+
+	@Override
+	protected boolean isInGroup(ItemGroup group) {
+		return ToolsConfig.COMMON.wandsEnabled.get() ? super.isInGroup(group) : false;
 	}
 
 	@Override
@@ -165,7 +171,7 @@ public abstract class WandItem extends Item implements ISwitchModes {
 
 		ItemStack stack = playerIn.getHeldItem(hand);
 		WandCoord3D start = WandCoord3D.getFromNBT(stack.getTag(), "Start");
-		
+
 		if (start == null) {
 			worldIn.playSound((PlayerEntity) null, pos, state.getBlock().getSoundType(state, worldIn, pos, null).getBreakSound(), SoundCategory.BLOCKS, (state.getBlock().getSoundType(state, worldIn, pos, null).getVolume() + 1.0F) / 2.0F, state.getBlock().getSoundType(state, worldIn, pos, null).getPitch() * 0.8F);
 

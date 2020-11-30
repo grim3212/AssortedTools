@@ -1,12 +1,14 @@
 package com.grim3212.assorted.tools.common.item;
 
 import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
+import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.math.BlockPos;
@@ -16,6 +18,11 @@ public class HammerItem extends ConfigurableTieredItem {
 
 	public HammerItem(ItemTierHolder tierHolder, Properties properties) {
 		super(tierHolder, properties);
+	}
+
+	@Override
+	protected boolean isInGroup(ItemGroup group) {
+		return ToolsConfig.COMMON.hammersEnabled.get() ? super.isInGroup(group) : false;
 	}
 
 	@Override

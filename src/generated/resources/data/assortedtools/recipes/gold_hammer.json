@@ -1,19 +1,32 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "III",
-    "ISI",
-    " S "
-  ],
-  "key": {
-    "S": {
-      "tag": "forge:rods/wooden"
-    },
-    "I": {
-      "tag": "forge:ingots/gold"
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "part": "hammers",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          "III",
+          "ISI",
+          " S "
+        ],
+        "key": {
+          "S": {
+            "tag": "forge:rods/wooden"
+          },
+          "I": {
+            "tag": "forge:ingots/gold"
+          }
+        },
+        "result": {
+          "item": "assortedtools:gold_hammer"
+        }
+      }
     }
-  },
-  "result": {
-    "item": "assortedtools:gold_hammer"
-  }
+  ]
 }

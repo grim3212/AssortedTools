@@ -51,7 +51,23 @@ public final class ToolsConfig {
 		public ConfigurableBlockStates destructiveSparedBlocks;
 		public ConfigurableBlockStates miningSurfaceBlocks;
 
+		public final ForgeConfigSpec.BooleanValue wandsEnabled;
+		public final ForgeConfigSpec.BooleanValue boomerangsEnabled;
+		public final ForgeConfigSpec.BooleanValue hammersEnabled;
+		public final ForgeConfigSpec.BooleanValue multiToolsEnabled;
+		public final ForgeConfigSpec.BooleanValue pokeballEnabled;
+		public final ForgeConfigSpec.BooleanValue chickenSuitEnabled;
+
 		public Common(ForgeConfigSpec.Builder builder) {
+			builder.push("Parts");
+			wandsEnabled = builder.comment("Set this to true if you would like wands to be craftable and found in the creative tab.").define("wandsEnabled", true);
+			boomerangsEnabled = builder.comment("Set this to true if you would like boomerangs to be craftable and found in the creative tab.").define("boomerangsEnabled", true);
+			hammersEnabled = builder.comment("Set this to true if you would like hammers to be craftable and found in the creative tab.").define("hammersEnabled", true);
+			multiToolsEnabled = builder.comment("Set this to true if you would like multitools to be craftable and found in the creative tab.").define("multiToolsEnabled", true);
+			pokeballEnabled = builder.comment("Set this to true if you would like the pokeball to be craftable and found in the creative tab.").define("pokeballEnabled", true);
+			chickenSuitEnabled = builder.comment("Set this to true if you would like the chicken suit to be craftable and found in the creative tab as well as if you want the Chicken Jump enchantment to be able to be applied.").define("chickenSuitEnabled", true);
+			builder.pop();
+
 			builder.push("Boomerangs");
 			turnAroundItem = builder.comment("Set this to true if you would like boomerangs to turn around after they have picked up items.").define("turnAroundItem", false);
 			turnAroundMob = builder.comment("Set this to true if you would like boomerangs to turn around after they have hit a mob.").define("turnAroundMob", false);

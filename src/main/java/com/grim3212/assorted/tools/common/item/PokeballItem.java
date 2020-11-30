@@ -3,11 +3,13 @@ package com.grim3212.assorted.tools.common.item;
 import java.util.List;
 
 import com.grim3212.assorted.tools.common.entity.PokeballEntity;
+import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import com.grim3212.assorted.tools.common.util.NBTHelper;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
@@ -25,6 +27,11 @@ public class PokeballItem extends Item {
 	}
 
 	@Override
+	protected boolean isInGroup(ItemGroup group) {
+		return ToolsConfig.COMMON.pokeballEnabled.get() ? super.isInGroup(group) : false;
+	}
+
+	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand hand) {
 		ItemStack itemStackIn = playerIn.getHeldItem(hand);
 
@@ -35,7 +42,7 @@ public class PokeballItem extends Item {
 		}
 
 		worldIn.playSound(playerIn, playerIn.getPosition(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 0.5F, 0.4F / (Item.random.nextFloat() * 0.4F + 0.8F));
-		
+
 		if (!playerIn.isCreative() || NBTHelper.hasTag(itemStackIn, "StoredEntity")) {
 			return ActionResult.resultSuccess(ItemStack.EMPTY);
 		}

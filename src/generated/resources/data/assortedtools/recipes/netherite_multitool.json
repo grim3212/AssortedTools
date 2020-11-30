@@ -1,35 +1,48 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
+  "type": "forge:conditional",
+  "recipes": [
     {
-      "item": "minecraft:netherite_sword"
-    },
-    {
-      "item": "minecraft:netherite_pickaxe"
-    },
-    {
-      "item": "minecraft:netherite_shovel"
-    },
-    {
-      "item": "minecraft:netherite_hoe"
-    },
-    {
-      "item": "minecraft:netherite_axe"
-    },
-    {
-      "tag": "forge:ingots/netherite"
-    },
-    {
-      "tag": "forge:ingots/netherite"
-    },
-    {
-      "tag": "forge:ingots/netherite"
-    },
-    {
-      "tag": "forge:ingots/netherite"
+      "conditions": [
+        {
+          "part": "multitools",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shapeless",
+        "ingredients": [
+          {
+            "item": "minecraft:netherite_sword"
+          },
+          {
+            "item": "minecraft:netherite_pickaxe"
+          },
+          {
+            "item": "minecraft:netherite_shovel"
+          },
+          {
+            "item": "minecraft:netherite_hoe"
+          },
+          {
+            "item": "minecraft:netherite_axe"
+          },
+          {
+            "tag": "forge:ingots/netherite"
+          },
+          {
+            "tag": "forge:ingots/netherite"
+          },
+          {
+            "tag": "forge:ingots/netherite"
+          },
+          {
+            "tag": "forge:ingots/netherite"
+          }
+        ],
+        "result": {
+          "item": "assortedtools:netherite_multitool"
+        }
+      }
     }
-  ],
-  "result": {
-    "item": "assortedtools:netherite_multitool"
-  }
+  ]
 }

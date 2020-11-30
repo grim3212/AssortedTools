@@ -1,16 +1,29 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "XXX",
-    "X X",
-    "X X"
-  ],
-  "key": {
-    "X": {
-      "tag": "forge:feathers"
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "part": "chickensuit",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          "XXX",
+          "X X",
+          "X X"
+        ],
+        "key": {
+          "X": {
+            "tag": "forge:feathers"
+          }
+        },
+        "result": {
+          "item": "assortedtools:chicken_suit_leggings"
+        }
+      }
     }
-  },
-  "result": {
-    "item": "assortedtools:chicken_suit_leggings"
-  }
+  ]
 }

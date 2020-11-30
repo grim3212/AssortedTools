@@ -1,19 +1,32 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "XGX",
-    "XGX",
-    "XGX"
-  ],
-  "key": {
-    "X": {
-      "tag": "minecraft:planks"
-    },
-    "G": {
-      "tag": "forge:gems/diamond"
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "part": "wands",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          "XGX",
+          "XGX",
+          "XGX"
+        ],
+        "key": {
+          "X": {
+            "tag": "minecraft:planks"
+          },
+          "G": {
+            "tag": "forge:gems/diamond"
+          }
+        },
+        "result": {
+          "item": "assortedtools:mining_wand"
+        }
+      }
     }
-  },
-  "result": {
-    "item": "assortedtools:mining_wand"
-  }
+  ]
 }

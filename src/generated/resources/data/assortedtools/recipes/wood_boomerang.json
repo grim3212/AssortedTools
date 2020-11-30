@@ -1,16 +1,29 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "XX",
-    "X ",
-    "XX"
-  ],
-  "key": {
-    "X": {
-      "tag": "minecraft:planks"
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "part": "boomerangs",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          "XX",
+          "X ",
+          "XX"
+        ],
+        "key": {
+          "X": {
+            "tag": "minecraft:planks"
+          }
+        },
+        "result": {
+          "item": "assortedtools:wood_boomerang"
+        }
+      }
     }
-  },
-  "result": {
-    "item": "assortedtools:wood_boomerang"
-  }
+  ]
 }

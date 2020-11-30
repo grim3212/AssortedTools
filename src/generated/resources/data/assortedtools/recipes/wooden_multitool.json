@@ -1,35 +1,48 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
+  "type": "forge:conditional",
+  "recipes": [
     {
-      "item": "minecraft:wooden_sword"
-    },
-    {
-      "item": "minecraft:wooden_pickaxe"
-    },
-    {
-      "item": "minecraft:wooden_shovel"
-    },
-    {
-      "item": "minecraft:wooden_hoe"
-    },
-    {
-      "item": "minecraft:wooden_axe"
-    },
-    {
-      "tag": "minecraft:planks"
-    },
-    {
-      "tag": "minecraft:planks"
-    },
-    {
-      "tag": "minecraft:planks"
-    },
-    {
-      "tag": "minecraft:planks"
+      "conditions": [
+        {
+          "part": "multitools",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shapeless",
+        "ingredients": [
+          {
+            "item": "minecraft:wooden_sword"
+          },
+          {
+            "item": "minecraft:wooden_pickaxe"
+          },
+          {
+            "item": "minecraft:wooden_shovel"
+          },
+          {
+            "item": "minecraft:wooden_hoe"
+          },
+          {
+            "item": "minecraft:wooden_axe"
+          },
+          {
+            "tag": "minecraft:planks"
+          },
+          {
+            "tag": "minecraft:planks"
+          },
+          {
+            "tag": "minecraft:planks"
+          },
+          {
+            "tag": "minecraft:planks"
+          }
+        ],
+        "result": {
+          "item": "assortedtools:wooden_multitool"
+        }
+      }
     }
-  ],
-  "result": {
-    "item": "assortedtools:wooden_multitool"
-  }
+  ]
 }

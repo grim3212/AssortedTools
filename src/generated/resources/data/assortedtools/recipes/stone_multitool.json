@@ -1,35 +1,48 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
+  "type": "forge:conditional",
+  "recipes": [
     {
-      "item": "minecraft:stone_sword"
-    },
-    {
-      "item": "minecraft:stone_pickaxe"
-    },
-    {
-      "item": "minecraft:stone_shovel"
-    },
-    {
-      "item": "minecraft:stone_hoe"
-    },
-    {
-      "item": "minecraft:stone_axe"
-    },
-    {
-      "tag": "forge:cobblestone"
-    },
-    {
-      "tag": "forge:cobblestone"
-    },
-    {
-      "tag": "forge:cobblestone"
-    },
-    {
-      "tag": "forge:cobblestone"
+      "conditions": [
+        {
+          "part": "multitools",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shapeless",
+        "ingredients": [
+          {
+            "item": "minecraft:stone_sword"
+          },
+          {
+            "item": "minecraft:stone_pickaxe"
+          },
+          {
+            "item": "minecraft:stone_shovel"
+          },
+          {
+            "item": "minecraft:stone_hoe"
+          },
+          {
+            "item": "minecraft:stone_axe"
+          },
+          {
+            "tag": "forge:cobblestone"
+          },
+          {
+            "tag": "forge:cobblestone"
+          },
+          {
+            "tag": "forge:cobblestone"
+          },
+          {
+            "tag": "forge:cobblestone"
+          }
+        ],
+        "result": {
+          "item": "assortedtools:stone_multitool"
+        }
+      }
     }
-  ],
-  "result": {
-    "item": "assortedtools:stone_multitool"
-  }
+  ]
 }

@@ -1,6 +1,7 @@
 package com.grim3212.assorted.tools.client.handler;
 
 import com.grim3212.assorted.tools.common.enchantment.ToolsEnchantments;
+import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import com.grim3212.assorted.tools.common.item.ChickenSuitArmor;
 import com.grim3212.assorted.tools.common.network.ChickenSuitUpdatePacket;
 import com.grim3212.assorted.tools.common.network.PacketHandler;
@@ -23,12 +24,14 @@ public class ChickenJumpHandler {
 
 	@SubscribeEvent
 	public void tick(ClientTickEvent event) {
-		Screen screen = Minecraft.getInstance().currentScreen;
-		if (screen != null) {
-			return;
-		} else {
-			if (event.phase == Phase.END)
-				onTickInGame();
+		if (ToolsConfig.COMMON.chickenSuitEnabled.get()) {
+			Screen screen = Minecraft.getInstance().currentScreen;
+			if (screen != null) {
+				return;
+			} else {
+				if (event.phase == Phase.END)
+					onTickInGame();
+			}
 		}
 	}
 

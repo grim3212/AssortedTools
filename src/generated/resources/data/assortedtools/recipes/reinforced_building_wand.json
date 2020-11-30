@@ -1,19 +1,32 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "XGX",
-    "XGX",
-    "XGX"
-  ],
-  "key": {
-    "X": {
-      "tag": "forge:obsidian"
-    },
-    "G": {
-      "tag": "forge:storage_blocks/gold"
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "part": "wands",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          "XGX",
+          "XGX",
+          "XGX"
+        ],
+        "key": {
+          "X": {
+            "tag": "forge:obsidian"
+          },
+          "G": {
+            "tag": "forge:storage_blocks/gold"
+          }
+        },
+        "result": {
+          "item": "assortedtools:reinforced_building_wand"
+        }
+      }
     }
-  },
-  "result": {
-    "item": "assortedtools:reinforced_building_wand"
-  }
+  ]
 }

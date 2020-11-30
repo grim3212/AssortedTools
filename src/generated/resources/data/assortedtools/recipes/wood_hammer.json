@@ -1,19 +1,32 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "III",
-    "ISI",
-    " S "
-  ],
-  "key": {
-    "S": {
-      "tag": "forge:rods/wooden"
-    },
-    "I": {
-      "tag": "minecraft:planks"
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "part": "hammers",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          "III",
+          "ISI",
+          " S "
+        ],
+        "key": {
+          "S": {
+            "tag": "forge:rods/wooden"
+          },
+          "I": {
+            "tag": "minecraft:planks"
+          }
+        },
+        "result": {
+          "item": "assortedtools:wood_hammer"
+        }
+      }
     }
-  },
-  "result": {
-    "item": "assortedtools:wood_hammer"
-  }
+  ]
 }
