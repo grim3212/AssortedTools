@@ -1,0 +1,48 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "part": "extramaterials",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shapeless",
+        "ingredients": [
+          {
+            "tag": "forge:swords/ruby"
+          },
+          {
+            "tag": "forge:pickaxes/ruby"
+          },
+          {
+            "tag": "forge:shovels/ruby"
+          },
+          {
+            "tag": "forge:hoes/ruby"
+          },
+          {
+            "tag": "forge:axes/ruby"
+          },
+          {
+            "tag": "forge:gems/ruby"
+          },
+          {
+            "tag": "forge:gems/ruby"
+          },
+          {
+            "tag": "forge:gems/ruby"
+          },
+          {
+            "tag": "forge:gems/ruby"
+          }
+        ],
+        "result": {
+          "item": "assortedtools:ruby_multitool"
+        }
+      }
+    }
+  ]
+}

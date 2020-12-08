@@ -3,6 +3,7 @@ package com.grim3212.assorted.tools.common.item;
 import java.util.Random;
 
 import com.grim3212.assorted.tools.AssortedTools;
+import com.grim3212.assorted.tools.api.item.ISwitchModes;
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import com.grim3212.assorted.tools.common.util.NBTHelper;
 import com.grim3212.assorted.tools.common.util.WandCoord3D;

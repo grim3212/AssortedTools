@@ -1,0 +1,48 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "part": "extramaterials",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shapeless",
+        "ingredients": [
+          {
+            "tag": "forge:swords/emerald"
+          },
+          {
+            "tag": "forge:pickaxes/emerald"
+          },
+          {
+            "tag": "forge:shovels/emerald"
+          },
+          {
+            "tag": "forge:hoes/emerald"
+          },
+          {
+            "tag": "forge:axes/emerald"
+          },
+          {
+            "tag": "forge:gems/emerald"
+          },
+          {
+            "tag": "forge:gems/emerald"
+          },
+          {
+            "tag": "forge:gems/emerald"
+          },
+          {
+            "tag": "forge:gems/emerald"
+          }
+        ],
+        "result": {
+          "item": "assortedtools:emerald_multitool"
+        }
+      }
+    }
+  ]
+}

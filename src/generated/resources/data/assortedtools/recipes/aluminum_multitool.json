@@ -1,0 +1,48 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "part": "extramaterials",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shapeless",
+        "ingredients": [
+          {
+            "tag": "forge:swords/aluminum"
+          },
+          {
+            "tag": "forge:pickaxes/aluminum"
+          },
+          {
+            "tag": "forge:shovels/aluminum"
+          },
+          {
+            "tag": "forge:hoes/aluminum"
+          },
+          {
+            "tag": "forge:axes/aluminum"
+          },
+          {
+            "tag": "forge:ingots/aluminum"
+          },
+          {
+            "tag": "forge:ingots/aluminum"
+          },
+          {
+            "tag": "forge:ingots/aluminum"
+          },
+          {
+            "tag": "forge:ingots/aluminum"
+          }
+        ],
+        "result": {
+          "item": "assortedtools:aluminum_multitool"
+        }
+      }
+    }
+  ]
+}

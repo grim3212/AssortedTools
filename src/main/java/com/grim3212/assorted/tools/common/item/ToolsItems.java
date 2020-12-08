@@ -1,12 +1,18 @@
 package com.grim3212.assorted.tools.common.item;
 
+import java.util.Map;
 import java.util.function.Supplier;
 
+import com.google.common.collect.Maps;
 import com.grim3212.assorted.tools.AssortedTools;
+import com.grim3212.assorted.tools.common.handler.ArmorMaterialHolder;
+import com.grim3212.assorted.tools.common.handler.ModdedItemTierHolder;
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
+import com.grim3212.assorted.tools.common.item.configurable.ConfigurableArmorItem;
 
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
+import net.minecraft.tags.ITag;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -46,7 +52,53 @@ public class ToolsItems {
 	public static final RegistryObject<MultiToolItem> DIAMOND_MULTITOOL = register("diamond_multitool", () -> new MultiToolItem(ToolsConfig.COMMON.diamondItemTier, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
 	public static final RegistryObject<MultiToolItem> NETHERITE_MULTITOOL = register("netherite_multitool", () -> new MultiToolItem(ToolsConfig.COMMON.netheriteItemTier, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
 
+	public static final Map<String, MaterialGroup> MATERIAL_GROUPS = Maps.newHashMap();
+
+	static {
+
+		ToolsConfig.COMMON.moddedTiers.forEach((s, tier) -> MATERIAL_GROUPS.put(s, new MaterialGroup(tier, ToolsConfig.COMMON.moddedArmors.get(s))));
+
+	}
+
 	private static <T extends Item> RegistryObject<T> register(final String name, final Supplier<T> sup) {
 		return ITEMS.register(name, sup);
+	}
+
+	public static final class MaterialGroup {
+		public final RegistryObject<MaterialPickaxeItem> PICKAXE;
+		public final RegistryObject<MaterialShovelItem> SHOVEL;
+		public final RegistryObject<MaterialAxeItem> AXE;
+		public final RegistryObject<MaterialHoeItem> HOE;
+		public final RegistryObject<MaterialSwordItem> SWORD;
+		public final RegistryObject<HammerItem> HAMMER;
+		public final RegistryObject<MultiToolItem> MULTITOOL;
+		public final RegistryObject<ConfigurableArmorItem> HELMET;
+		public final RegistryObject<ConfigurableArmorItem> CHESTPLATE;
+		public final RegistryObject<ConfigurableArmorItem> LEGGINGS;
+		public final RegistryObject<ConfigurableArmorItem> BOOTS;
+
+		public final ITag<Item> material;
+
+		public MaterialGroup(ModdedItemTierHolder tier, ArmorMaterialHolder armor) {
+			this.PICKAXE = register(tier.getName() + "_pickaxe", () -> new MaterialPickaxeItem(tier, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+			this.SHOVEL = register(tier.getName() + "_shovel", () -> new MaterialShovelItem(tier, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+			this.AXE = register(tier.getName() + "_axe", () -> new MaterialAxeItem(tier, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+			this.HOE = register(tier.getName() + "_hoe", () -> new MaterialHoeItem(tier, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+			this.SWORD = register(tier.getName() + "_sword", () -> new MaterialSwordItem(tier, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+
+			this.HAMMER = register(tier.getName() + "_hammer", () -> new HammerItem(tier, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), true));
+			this.MULTITOOL = register(tier.getName() + "_multitool", () -> new MultiToolItem(tier, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), true));
+
+			if (armor != null) {
+				this.HELMET = register(tier.getName() + "_helmet", () -> new MaterialArmorItem(armor.getMaterial(), EquipmentSlotType.HEAD, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+				this.CHESTPLATE = register(tier.getName() + "_chestplate", () -> new MaterialArmorItem(armor.getMaterial(), EquipmentSlotType.CHEST, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+				this.LEGGINGS = register(tier.getName() + "_leggings", () -> new MaterialArmorItem(armor.getMaterial(), EquipmentSlotType.LEGS, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+				this.BOOTS = register(tier.getName() + "_boots", () -> new MaterialArmorItem(armor.getMaterial(), EquipmentSlotType.FEET, new Item.Properties().group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+			} else {
+				throw new NullPointerException("Got null ArmorMaterialHolder when registering Extra Materials");
+			}
+
+			this.material = tier.getMaterial();
+		}
 	}
 }

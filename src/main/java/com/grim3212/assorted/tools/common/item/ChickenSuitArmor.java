@@ -2,6 +2,7 @@ package com.grim3212.assorted.tools.common.item;
 
 import com.grim3212.assorted.tools.AssortedTools;
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
+import com.grim3212.assorted.tools.common.item.configurable.ConfigurableArmorItem;
 import com.grim3212.assorted.tools.common.util.ToolsArmorMaterials;
 
 import net.minecraft.entity.Entity;

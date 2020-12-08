@@ -12,19 +12,19 @@
         "type": "minecraft:crafting_shapeless",
         "ingredients": [
           {
-            "item": "minecraft:stone_sword"
+            "tag": "forge:swords/stone"
           },
           {
-            "item": "minecraft:stone_pickaxe"
+            "tag": "forge:pickaxes/stone"
           },
           {
-            "item": "minecraft:stone_shovel"
+            "tag": "forge:shovels/stone"
           },
           {
-            "item": "minecraft:stone_hoe"
+            "tag": "forge:hoes/stone"
           },
           {
-            "item": "minecraft:stone_axe"
+            "tag": "forge:axes/stone"
           },
           {
             "tag": "forge:cobblestone"

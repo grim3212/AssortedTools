@@ -5,6 +5,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.grim3212.assorted.tools.client.data.ToolsItemModelProvider;
 import com.grim3212.assorted.tools.client.proxy.ClientProxy;
+import com.grim3212.assorted.tools.common.data.ToolsBlockTagProvider;
+import com.grim3212.assorted.tools.common.data.ToolsItemTagProvider;
 import com.grim3212.assorted.tools.common.data.ToolsRecipes;
 import com.grim3212.assorted.tools.common.enchantment.ToolsEnchantments;
 import com.grim3212.assorted.tools.common.entity.ToolsEntities;
@@ -81,6 +83,9 @@ public class AssortedTools {
 		ExistingFileHelper fileHelper = event.getExistingFileHelper();
 
 		if (event.includeServer()) {
+			ToolsBlockTagProvider blockTagProvider = new ToolsBlockTagProvider(datagenerator, fileHelper);
+			datagenerator.addProvider(blockTagProvider);
+			datagenerator.addProvider(new ToolsItemTagProvider(datagenerator, blockTagProvider, fileHelper));
 			datagenerator.addProvider(new ToolsRecipes(datagenerator));
 		}
 

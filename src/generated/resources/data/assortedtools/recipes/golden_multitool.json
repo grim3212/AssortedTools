@@ -12,19 +12,19 @@
         "type": "minecraft:crafting_shapeless",
         "ingredients": [
           {
-            "item": "minecraft:golden_sword"
+            "tag": "forge:swords/golden"
           },
           {
-            "item": "minecraft:golden_pickaxe"
+            "tag": "forge:pickaxes/golden"
           },
           {
-            "item": "minecraft:golden_shovel"
+            "tag": "forge:shovels/golden"
           },
           {
-            "item": "minecraft:golden_hoe"
+            "tag": "forge:hoes/golden"
           },
           {
-            "item": "minecraft:golden_axe"
+            "tag": "forge:axes/golden"
           },
           {
             "tag": "forge:ingots/gold"

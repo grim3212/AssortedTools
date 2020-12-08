@@ -12,19 +12,19 @@
         "type": "minecraft:crafting_shapeless",
         "ingredients": [
           {
-            "item": "minecraft:diamond_sword"
+            "tag": "forge:swords/diamond"
           },
           {
-            "item": "minecraft:diamond_pickaxe"
+            "tag": "forge:pickaxes/diamond"
           },
           {
-            "item": "minecraft:diamond_shovel"
+            "tag": "forge:shovels/diamond"
           },
           {
-            "item": "minecraft:diamond_hoe"
+            "tag": "forge:hoes/diamond"
           },
           {
-            "item": "minecraft:diamond_axe"
+            "tag": "forge:axes/diamond"
           },
           {
             "tag": "forge:gems/diamond"

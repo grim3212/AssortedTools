@@ -1,0 +1,48 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "part": "extramaterials",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shapeless",
+        "ingredients": [
+          {
+            "tag": "forge:swords/nickel"
+          },
+          {
+            "tag": "forge:pickaxes/nickel"
+          },
+          {
+            "tag": "forge:shovels/nickel"
+          },
+          {
+            "tag": "forge:hoes/nickel"
+          },
+          {
+            "tag": "forge:axes/nickel"
+          },
+          {
+            "tag": "forge:ingots/nickel"
+          },
+          {
+            "tag": "forge:ingots/nickel"
+          },
+          {
+            "tag": "forge:ingots/nickel"
+          },
+          {
+            "tag": "forge:ingots/nickel"
+          }
+        ],
+        "result": {
+          "item": "assortedtools:nickel_multitool"
+        }
+      }
+    }
+  ]
+}

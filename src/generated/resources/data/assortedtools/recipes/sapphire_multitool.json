@@ -1,0 +1,48 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "part": "extramaterials",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shapeless",
+        "ingredients": [
+          {
+            "tag": "forge:swords/sapphire"
+          },
+          {
+            "tag": "forge:pickaxes/sapphire"
+          },
+          {
+            "tag": "forge:shovels/sapphire"
+          },
+          {
+            "tag": "forge:hoes/sapphire"
+          },
+          {
+            "tag": "forge:axes/sapphire"
+          },
+          {
+            "tag": "forge:gems/sapphire"
+          },
+          {
+            "tag": "forge:gems/sapphire"
+          },
+          {
+            "tag": "forge:gems/sapphire"
+          },
+          {
+            "tag": "forge:gems/sapphire"
+          }
+        ],
+        "result": {
+          "item": "assortedtools:sapphire_multitool"
+        }
+      }
+    }
+  ]
+}

@@ -12,19 +12,19 @@
         "type": "minecraft:crafting_shapeless",
         "ingredients": [
           {
-            "item": "minecraft:netherite_sword"
+            "tag": "forge:swords/netherite"
           },
           {
-            "item": "minecraft:netherite_pickaxe"
+            "tag": "forge:pickaxes/netherite"
           },
           {
-            "item": "minecraft:netherite_shovel"
+            "tag": "forge:shovels/netherite"
           },
           {
-            "item": "minecraft:netherite_hoe"
+            "tag": "forge:hoes/netherite"
           },
           {
-            "item": "minecraft:netherite_axe"
+            "tag": "forge:axes/netherite"
           },
           {
             "tag": "forge:ingots/netherite"

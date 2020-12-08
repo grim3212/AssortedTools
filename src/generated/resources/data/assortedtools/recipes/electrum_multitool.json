@@ -1,0 +1,48 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "part": "extramaterials",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shapeless",
+        "ingredients": [
+          {
+            "tag": "forge:swords/electrum"
+          },
+          {
+            "tag": "forge:pickaxes/electrum"
+          },
+          {
+            "tag": "forge:shovels/electrum"
+          },
+          {
+            "tag": "forge:hoes/electrum"
+          },
+          {
+            "tag": "forge:axes/electrum"
+          },
+          {
+            "tag": "forge:ingots/electrum"
+          },
+          {
+            "tag": "forge:ingots/electrum"
+          },
+          {
+            "tag": "forge:ingots/electrum"
+          },
+          {
+            "tag": "forge:ingots/electrum"
+          }
+        ],
+        "result": {
+          "item": "assortedtools:electrum_multitool"
+        }
+      }
+    }
+  ]
+}

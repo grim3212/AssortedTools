@@ -1,0 +1,27 @@
+{
+  "replace": false,
+  "values": [
+    "assortedtools:nickel_chestplate",
+    "assortedtools:electrum_chestplate",
+    "assortedtools:steel_chestplate",
+    "assortedtools:aluminum_chestplate",
+    "assortedtools:amethyst_chestplate",
+    "assortedtools:lead_chestplate",
+    "assortedtools:bronze_chestplate",
+    "assortedtools:ruby_chestplate",
+    "assortedtools:platinum_chestplate",
+    "assortedtools:tin_chestplate",
+    "assortedtools:topaz_chestplate",
+    "assortedtools:copper_chestplate",
+    "assortedtools:invar_chestplate",
+    "assortedtools:silver_chestplate",
+    "assortedtools:emerald_chestplate",
+    "assortedtools:sapphire_chestplate",
+    "minecraft:leather_chestplate",
+    "minecraft:chainmail_chestplate",
+    "minecraft:golden_chestplate",
+    "minecraft:iron_chestplate",
+    "minecraft:diamond_chestplate",
+    "minecraft:netherite_chestplate"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "part": "extramaterials",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          "XXX",
+          "X X"
+        ],
+        "key": {
+          "X": {
+            "tag": "forge:ingots/lead"
+          }
+        },
+        "result": {
+          "item": "assortedtools:lead_helmet"
+        }
+      }
+    }
+  ]
+}

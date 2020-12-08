@@ -1,0 +1,27 @@
+{
+  "replace": false,
+  "values": [
+    "assortedtools:nickel_axe",
+    "assortedtools:electrum_axe",
+    "assortedtools:steel_axe",
+    "assortedtools:aluminum_axe",
+    "assortedtools:amethyst_axe",
+    "assortedtools:lead_axe",
+    "assortedtools:bronze_axe",
+    "assortedtools:ruby_axe",
+    "assortedtools:platinum_axe",
+    "assortedtools:tin_axe",
+    "assortedtools:topaz_axe",
+    "assortedtools:copper_axe",
+    "assortedtools:invar_axe",
+    "assortedtools:silver_axe",
+    "assortedtools:emerald_axe",
+    "assortedtools:sapphire_axe",
+    "minecraft:wooden_axe",
+    "minecraft:stone_axe",
+    "minecraft:golden_axe",
+    "minecraft:iron_axe",
+    "minecraft:diamond_axe",
+    "minecraft:netherite_axe"
+  ]
+}

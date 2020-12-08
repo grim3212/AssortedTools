@@ -1,11 +1,15 @@
 package com.grim3212.assorted.tools.common.handler;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.grim3212.assorted.tools.common.util.ConfigurableBlockStates;
+import com.grim3212.assorted.tools.common.util.ToolsArmorMaterials;
+import com.grim3212.assorted.tools.common.util.ToolsItemTier;
 
 import net.minecraft.item.ItemTier;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -48,6 +52,9 @@ public final class ToolsConfig {
 		public final ItemTierHolder diamondItemTier;
 		public final ItemTierHolder netheriteItemTier;
 
+		public final Map<String, ModdedItemTierHolder> moddedTiers = Maps.newHashMap();
+		public final Map<String, ArmorMaterialHolder> moddedArmors = Maps.newHashMap();
+
 		public ConfigurableBlockStates destructiveSparedBlocks;
 		public ConfigurableBlockStates miningSurfaceBlocks;
 
@@ -57,6 +64,7 @@ public final class ToolsConfig {
 		public final ForgeConfigSpec.BooleanValue multiToolsEnabled;
 		public final ForgeConfigSpec.BooleanValue pokeballEnabled;
 		public final ForgeConfigSpec.BooleanValue chickenSuitEnabled;
+		public final ForgeConfigSpec.BooleanValue extraMaterialsEnabled;
 
 		public Common(ForgeConfigSpec.Builder builder) {
 			builder.push("Parts");
@@ -66,6 +74,7 @@ public final class ToolsConfig {
 			multiToolsEnabled = builder.comment("Set this to true if you would like multitools to be craftable and found in the creative tab.").define("multiToolsEnabled", true);
 			pokeballEnabled = builder.comment("Set this to true if you would like the pokeball to be craftable and found in the creative tab.").define("pokeballEnabled", true);
 			chickenSuitEnabled = builder.comment("Set this to true if you would like the chicken suit to be craftable and found in the creative tab as well as if you want the Chicken Jump enchantment to be able to be applied.").define("chickenSuitEnabled", true);
+			extraMaterialsEnabled = builder.comment("Set this to true if you would like to enable support for crafting the extra tools and armor that this supports. For example, Steel, Copper, or Ruby tools and armor.").define("extraMaterialsEnabled", true);
 			builder.pop();
 
 			builder.push("Boomerangs");
@@ -93,7 +102,24 @@ public final class ToolsConfig {
 			builder.pop();
 
 			builder.push("Armors");
-			chickenSuitArmorMaterial = new ArmorMaterialHolder(builder, "chicken_suit", 5, 15, 0.0F, 0.0F, new int[] { 1, 2, 3, 1 });
+			chickenSuitArmorMaterial = new ArmorMaterialHolder(builder, "chicken_suit", 5, 15, 0.0F, 0.0F, new int[] { 1, 2, 3, 1 }, () -> ToolsArmorMaterials.CHICKEN_SUIT);
+			moddedArmors.clear();
+			moddedArmors.put("tin", new ArmorMaterialHolder(builder, "tin", 8, 14, 0.0F, 0.0F, new int[] { 1, 3, 5, 2 }, () -> ToolsArmorMaterials.TIN));
+			moddedArmors.put("copper", new ArmorMaterialHolder(builder, "copper", 11, 14, 0.0F, 0.0F, new int[] { 2, 5, 6, 2 }, () -> ToolsArmorMaterials.COPPER));
+			moddedArmors.put("silver", new ArmorMaterialHolder(builder, "silver", 27, 14, 0.0F, 0.0F, new int[] { 3, 6, 8, 3 }, () -> ToolsArmorMaterials.SILVER));
+			moddedArmors.put("aluminum", new ArmorMaterialHolder(builder, "aluminum", 13, 10, 0.0F, 0.0F, new int[] { 2, 5, 6, 2 }, () -> ToolsArmorMaterials.ALUMINUM));
+			moddedArmors.put("nickel", new ArmorMaterialHolder(builder, "nickel", 13, 10, 0.0F, 0.0F, new int[] { 2, 3, 4, 2 }, () -> ToolsArmorMaterials.NICKEL));
+			moddedArmors.put("platinum", new ArmorMaterialHolder(builder, "platinum", 36, 18, 3.0F, 0.2F, new int[] { 3, 6, 8, 3 }, () -> ToolsArmorMaterials.PLATINUM));
+			moddedArmors.put("lead", new ArmorMaterialHolder(builder, "lead", 13, 4, 0.0F, 0.0F, new int[] { 2, 3, 4, 2 }, () -> ToolsArmorMaterials.LEAD));
+			moddedArmors.put("bronze", new ArmorMaterialHolder(builder, "bronze", 14, 13, 0.0F, 0.1F, new int[] { 2, 5, 6, 2 }, () -> ToolsArmorMaterials.BRONZE));
+			moddedArmors.put("electrum", new ArmorMaterialHolder(builder, "electrum", 13, 13, 0.0F, 0.0F, new int[] { 2, 5, 6, 2 }, () -> ToolsArmorMaterials.ELECTRUM));
+			moddedArmors.put("invar", new ArmorMaterialHolder(builder, "invar", 15, 11, 0.2F, 0.1F, new int[] { 2, 5, 6, 2 }, () -> ToolsArmorMaterials.INVAR));
+			moddedArmors.put("steel", new ArmorMaterialHolder(builder, "steel", 26, 10, 0.5F, 0.3F, new int[] { 2, 6, 7, 2 }, () -> ToolsArmorMaterials.STEEL));
+			moddedArmors.put("ruby", new ArmorMaterialHolder(builder, "ruby", 34, 10, 2.0F, 0.0F, new int[] { 3, 6, 8, 3 }, () -> ToolsArmorMaterials.RUBY));
+			moddedArmors.put("amethyst", new ArmorMaterialHolder(builder, "amethyst", 31, 14, 1.0F, 0.0F, new int[] { 3, 6, 8, 3 }, () -> ToolsArmorMaterials.AMETHYST));
+			moddedArmors.put("sapphire", new ArmorMaterialHolder(builder, "sapphire", 31, 14, 1.0F, 0.0F, new int[] { 3, 6, 8, 3 }, () -> ToolsArmorMaterials.SAPPHIRE));
+			moddedArmors.put("topaz", new ArmorMaterialHolder(builder, "topaz", 30, 8, 1.0F, 0.0F, new int[] { 3, 6, 8, 3 }, () -> ToolsArmorMaterials.TOPAZ));
+			moddedArmors.put("emerald", new ArmorMaterialHolder(builder, "emerald", 32, 14, 2.0F, 0.0F, new int[] { 3, 6, 8, 3 }, () -> ToolsArmorMaterials.EMERALD));
 			builder.pop();
 
 			builder.push("Item Tiers");
@@ -106,6 +132,27 @@ public final class ToolsConfig {
 			ironItemTier = new ItemTierHolder(builder, "iron", ItemTier.IRON);
 			diamondItemTier = new ItemTierHolder(builder, "diamond", ItemTier.DIAMOND);
 			netheriteItemTier = new ItemTierHolder(builder, "netherite", ItemTier.NETHERITE);
+			builder.pop();
+
+			builder.comment("These are used by Hammers, MultiTools, and the normal tool sets to allow you to override the default values that are used.");
+			builder.push("Modded Overrides");
+			moddedTiers.clear();
+			moddedTiers.put("tin", new ModdedItemTierHolder(builder, "tin", ToolsItemTier.TIN));
+			moddedTiers.put("copper", new ModdedItemTierHolder(builder, "copper", ToolsItemTier.COPPER));
+			moddedTiers.put("silver", new ModdedItemTierHolder(builder, "silver", ToolsItemTier.SILVER));
+			moddedTiers.put("aluminum", new ModdedItemTierHolder(builder, "aluminum", ToolsItemTier.ALUMINUM));
+			moddedTiers.put("nickel", new ModdedItemTierHolder(builder, "nickel", ToolsItemTier.NICKEL));
+			moddedTiers.put("platinum", new ModdedItemTierHolder(builder, "platinum", ToolsItemTier.PLATINUM));
+			moddedTiers.put("lead", new ModdedItemTierHolder(builder, "lead", ToolsItemTier.LEAD));
+			moddedTiers.put("bronze", new ModdedItemTierHolder(builder, "bronze", ToolsItemTier.BRONZE));
+			moddedTiers.put("electrum", new ModdedItemTierHolder(builder, "electrum", ToolsItemTier.ELECTRUM));
+			moddedTiers.put("invar", new ModdedItemTierHolder(builder, "invar", ToolsItemTier.INVAR));
+			moddedTiers.put("steel", new ModdedItemTierHolder(builder, "steel", ToolsItemTier.STEEL));
+			moddedTiers.put("ruby", new ModdedItemTierHolder(builder, "ruby", ToolsItemTier.RUBY));
+			moddedTiers.put("amethyst", new ModdedItemTierHolder(builder, "amethyst", ToolsItemTier.AMETHYST));
+			moddedTiers.put("sapphire", new ModdedItemTierHolder(builder, "sapphire", ToolsItemTier.SAPPHIRE));
+			moddedTiers.put("topaz", new ModdedItemTierHolder(builder, "topaz", ToolsItemTier.TOPAZ));
+			moddedTiers.put("emerald", new ModdedItemTierHolder(builder, "emerald", ToolsItemTier.EMERALD));
 			builder.pop();
 
 			builder.pop();

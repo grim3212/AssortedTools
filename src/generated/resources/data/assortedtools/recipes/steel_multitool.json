@@ -1,0 +1,48 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "part": "extramaterials",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shapeless",
+        "ingredients": [
+          {
+            "tag": "forge:swords/steel"
+          },
+          {
+            "tag": "forge:pickaxes/steel"
+          },
+          {
+            "tag": "forge:shovels/steel"
+          },
+          {
+            "tag": "forge:hoes/steel"
+          },
+          {
+            "tag": "forge:axes/steel"
+          },
+          {
+            "tag": "forge:ingots/steel"
+          },
+          {
+            "tag": "forge:ingots/steel"
+          },
+          {
+            "tag": "forge:ingots/steel"
+          },
+          {
+            "tag": "forge:ingots/steel"
+          }
+        ],
+        "result": {
+          "item": "assortedtools:steel_multitool"
+        }
+      }
+    }
+  ]
+}

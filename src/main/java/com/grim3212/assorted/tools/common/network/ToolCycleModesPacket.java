@@ -2,7 +2,7 @@ package com.grim3212.assorted.tools.common.network;
 
 import java.util.function.Supplier;
 
-import com.grim3212.assorted.tools.common.item.ISwitchModes;
+import com.grim3212.assorted.tools.api.item.ISwitchModes;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;

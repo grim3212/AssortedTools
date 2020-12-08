@@ -1,0 +1,48 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "part": "extramaterials",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shapeless",
+        "ingredients": [
+          {
+            "tag": "forge:swords/lead"
+          },
+          {
+            "tag": "forge:pickaxes/lead"
+          },
+          {
+            "tag": "forge:shovels/lead"
+          },
+          {
+            "tag": "forge:hoes/lead"
+          },
+          {
+            "tag": "forge:axes/lead"
+          },
+          {
+            "tag": "forge:ingots/lead"
+          },
+          {
+            "tag": "forge:ingots/lead"
+          },
+          {
+            "tag": "forge:ingots/lead"
+          },
+          {
+            "tag": "forge:ingots/lead"
+          }
+        ],
+        "result": {
+          "item": "assortedtools:lead_multitool"
+        }
+      }
+    }
+  ]
+}

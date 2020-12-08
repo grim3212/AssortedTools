@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "assortedtools:item/wooden_multitool"
+    "layer0": "assortedtools:item/tools/wooden_multitool"
   }
 }

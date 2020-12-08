@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "assortedtools:item/stone_multitool"
+    "layer0": "assortedtools:item/tools/stone_multitool"
   }
 }

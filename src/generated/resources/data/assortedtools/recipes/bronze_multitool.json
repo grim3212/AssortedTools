@@ -1,0 +1,48 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "part": "extramaterials",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shapeless",
+        "ingredients": [
+          {
+            "tag": "forge:swords/bronze"
+          },
+          {
+            "tag": "forge:pickaxes/bronze"
+          },
+          {
+            "tag": "forge:shovels/bronze"
+          },
+          {
+            "tag": "forge:hoes/bronze"
+          },
+          {
+            "tag": "forge:axes/bronze"
+          },
+          {
+            "tag": "forge:ingots/bronze"
+          },
+          {
+            "tag": "forge:ingots/bronze"
+          },
+          {
+            "tag": "forge:ingots/bronze"
+          },
+          {
+            "tag": "forge:ingots/bronze"
+          }
+        ],
+        "result": {
+          "item": "assortedtools:bronze_multitool"
+        }
+      }
+    }
+  ]
+}

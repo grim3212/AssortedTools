@@ -12,19 +12,19 @@
         "type": "minecraft:crafting_shapeless",
         "ingredients": [
           {
-            "item": "minecraft:iron_sword"
+            "tag": "forge:swords/iron"
           },
           {
-            "item": "minecraft:iron_pickaxe"
+            "tag": "forge:pickaxes/iron"
           },
           {
-            "item": "minecraft:iron_shovel"
+            "tag": "forge:shovels/iron"
           },
           {
-            "item": "minecraft:iron_hoe"
+            "tag": "forge:hoes/iron"
           },
           {
-            "item": "minecraft:iron_axe"
+            "tag": "forge:axes/iron"
           },
           {
             "tag": "forge:ingots/iron"

@@ -1,0 +1,48 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "part": "extramaterials",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shapeless",
+        "ingredients": [
+          {
+            "tag": "forge:swords/copper"
+          },
+          {
+            "tag": "forge:pickaxes/copper"
+          },
+          {
+            "tag": "forge:shovels/copper"
+          },
+          {
+            "tag": "forge:hoes/copper"
+          },
+          {
+            "tag": "forge:axes/copper"
+          },
+          {
+            "tag": "forge:ingots/copper"
+          },
+          {
+            "tag": "forge:ingots/copper"
+          },
+          {
+            "tag": "forge:ingots/copper"
+          },
+          {
+            "tag": "forge:ingots/copper"
+          }
+        ],
+        "result": {
+          "item": "assortedtools:copper_multitool"
+        }
+      }
+    }
+  ]
+}

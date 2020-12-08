@@ -1,0 +1,29 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "part": "extramaterials",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          "XXX",
+          "X X",
+          "X X"
+        ],
+        "key": {
+          "X": {
+            "tag": "forge:gems/topaz"
+          }
+        },
+        "result": {
+          "item": "assortedtools:topaz_leggings"
+        }
+      }
+    }
+  ]
+}

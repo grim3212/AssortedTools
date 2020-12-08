@@ -1,0 +1,48 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "part": "extramaterials",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shapeless",
+        "ingredients": [
+          {
+            "tag": "forge:swords/platinum"
+          },
+          {
+            "tag": "forge:pickaxes/platinum"
+          },
+          {
+            "tag": "forge:shovels/platinum"
+          },
+          {
+            "tag": "forge:hoes/platinum"
+          },
+          {
+            "tag": "forge:axes/platinum"
+          },
+          {
+            "tag": "forge:ingots/platinum"
+          },
+          {
+            "tag": "forge:ingots/platinum"
+          },
+          {
+            "tag": "forge:ingots/platinum"
+          },
+          {
+            "tag": "forge:ingots/platinum"
+          }
+        ],
+        "result": {
+          "item": "assortedtools:platinum_multitool"
+        }
+      }
+    }
+  ]
+}

@@ -2,6 +2,7 @@ package com.grim3212.assorted.tools.common.item;
 
 import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
+import com.grim3212.assorted.tools.common.item.configurable.ConfigurableTieredItem;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -16,12 +17,23 @@ import net.minecraft.world.World;
 
 public class HammerItem extends ConfigurableTieredItem {
 
-	public HammerItem(ItemTierHolder tierHolder, Properties properties) {
+	private final boolean isExtraMaterial;
+
+	public HammerItem(ItemTierHolder tierHolder, Properties properties, boolean isExtraMaterial) {
 		super(tierHolder, properties);
+		this.isExtraMaterial = isExtraMaterial;
+	}
+
+	public HammerItem(ItemTierHolder tierHolder, Properties properties) {
+		this(tierHolder, properties, false);
 	}
 
 	@Override
 	protected boolean isInGroup(ItemGroup group) {
+		if (this.isExtraMaterial) {
+			return ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.isInGroup(group) : false;
+		}
+
 		return ToolsConfig.COMMON.hammersEnabled.get() ? super.isInGroup(group) : false;
 	}
 

@@ -1,0 +1,27 @@
+{
+  "replace": false,
+  "values": [
+    "assortedtools:nickel_shovel",
+    "assortedtools:electrum_shovel",
+    "assortedtools:steel_shovel",
+    "assortedtools:aluminum_shovel",
+    "assortedtools:amethyst_shovel",
+    "assortedtools:lead_shovel",
+    "assortedtools:bronze_shovel",
+    "assortedtools:ruby_shovel",
+    "assortedtools:platinum_shovel",
+    "assortedtools:tin_shovel",
+    "assortedtools:topaz_shovel",
+    "assortedtools:copper_shovel",
+    "assortedtools:invar_shovel",
+    "assortedtools:silver_shovel",
+    "assortedtools:emerald_shovel",
+    "assortedtools:sapphire_shovel",
+    "minecraft:wooden_shovel",
+    "minecraft:stone_shovel",
+    "minecraft:golden_shovel",
+    "minecraft:iron_shovel",
+    "minecraft:diamond_shovel",
+    "minecraft:netherite_shovel"
+  ]
+}

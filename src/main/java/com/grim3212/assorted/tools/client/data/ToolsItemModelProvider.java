@@ -24,12 +24,12 @@ public class ToolsItemModelProvider extends ItemModelProvider {
 
 	@Override
 	protected void registerModels() {
-		generatedItem(ToolsItems.WOOD_HAMMER.get());
-		generatedItem(ToolsItems.STONE_HAMMER.get());
-		generatedItem(ToolsItems.GOLD_HAMMER.get());
-		generatedItem(ToolsItems.IRON_HAMMER.get());
-		generatedItem(ToolsItems.DIAMOND_HAMMER.get());
-		generatedItem(ToolsItems.NETHERITE_HAMMER.get());
+		tool(ToolsItems.WOOD_HAMMER.get());
+		tool(ToolsItems.STONE_HAMMER.get());
+		tool(ToolsItems.GOLD_HAMMER.get());
+		tool(ToolsItems.IRON_HAMMER.get());
+		tool(ToolsItems.DIAMOND_HAMMER.get());
+		tool(ToolsItems.NETHERITE_HAMMER.get());
 		generatedItem(ToolsItems.WOOD_BOOMERANG.get());
 		generatedItem(ToolsItems.DIAMOND_BOOMERANG.get());
 		generatedItem(ToolsItems.POKEBALL.get());
@@ -41,17 +41,42 @@ public class ToolsItemModelProvider extends ItemModelProvider {
 		generatedItem(ToolsItems.MINING_WAND.get());
 		generatedItem(ToolsItems.REINFORCED_MINING_WAND.get());
 
-		generatedItem(ToolsItems.CHICKEN_SUIT_HELMET.get());
-		generatedItem(ToolsItems.CHICKEN_SUIT_CHESTPLATE.get());
-		generatedItem(ToolsItems.CHICKEN_SUIT_LEGGINGS.get());
-		generatedItem(ToolsItems.CHICKEN_SUIT_BOOTS.get());
+		armor(ToolsItems.CHICKEN_SUIT_HELMET.get());
+		armor(ToolsItems.CHICKEN_SUIT_CHESTPLATE.get());
+		armor(ToolsItems.CHICKEN_SUIT_LEGGINGS.get());
+		armor(ToolsItems.CHICKEN_SUIT_BOOTS.get());
 
-		generatedItem(ToolsItems.WOODEN_MULTITOOL.get());
-		generatedItem(ToolsItems.STONE_MULTITOOL.get());
-		generatedItem(ToolsItems.GOLDEN_MULTITOOL.get());
-		generatedItem(ToolsItems.IRON_MULTITOOL.get());
-		generatedItem(ToolsItems.DIAMOND_MULTITOOL.get());
-		generatedItem(ToolsItems.NETHERITE_MULTITOOL.get());
+		tool(ToolsItems.WOODEN_MULTITOOL.get());
+		tool(ToolsItems.STONE_MULTITOOL.get());
+		tool(ToolsItems.GOLDEN_MULTITOOL.get());
+		tool(ToolsItems.IRON_MULTITOOL.get());
+		tool(ToolsItems.DIAMOND_MULTITOOL.get());
+		tool(ToolsItems.NETHERITE_MULTITOOL.get());
+
+		ToolsItems.MATERIAL_GROUPS.forEach((s, group) -> {
+			tool(group.PICKAXE.get());
+			tool(group.SHOVEL.get());
+			tool(group.AXE.get());
+			tool(group.HOE.get());
+			tool(group.SWORD.get());
+			tool(group.HAMMER.get());
+			tool(group.MULTITOOL.get());
+
+			armor(group.HELMET.get());
+			armor(group.CHESTPLATE.get());
+			armor(group.LEGGINGS.get());
+			armor(group.BOOTS.get());
+		});
+	}
+
+	private ItemModelBuilder tool(Item i) {
+		String name = name(i);
+		return withExistingParent(name, "item/generated").texture("layer0", prefix("item/tools/" + name));
+	}
+
+	private ItemModelBuilder armor(Item i) {
+		String name = name(i);
+		return withExistingParent(name, "item/generated").texture("layer0", prefix("item/armors/" + name));
 	}
 
 	private ItemModelBuilder generatedItem(String name) {

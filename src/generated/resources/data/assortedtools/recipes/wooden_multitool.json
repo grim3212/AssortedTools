@@ -12,19 +12,19 @@
         "type": "minecraft:crafting_shapeless",
         "ingredients": [
           {
-            "item": "minecraft:wooden_sword"
+            "tag": "forge:swords/wooden"
           },
           {
-            "item": "minecraft:wooden_pickaxe"
+            "tag": "forge:pickaxes/wooden"
           },
           {
-            "item": "minecraft:wooden_shovel"
+            "tag": "forge:shovels/wooden"
           },
           {
-            "item": "minecraft:wooden_hoe"
+            "tag": "forge:hoes/wooden"
           },
           {
-            "item": "minecraft:wooden_axe"
+            "tag": "forge:axes/wooden"
           },
           {
             "tag": "minecraft:planks"

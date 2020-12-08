@@ -1,0 +1,48 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "part": "extramaterials",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shapeless",
+        "ingredients": [
+          {
+            "tag": "forge:swords/topaz"
+          },
+          {
+            "tag": "forge:pickaxes/topaz"
+          },
+          {
+            "tag": "forge:shovels/topaz"
+          },
+          {
+            "tag": "forge:hoes/topaz"
+          },
+          {
+            "tag": "forge:axes/topaz"
+          },
+          {
+            "tag": "forge:gems/topaz"
+          },
+          {
+            "tag": "forge:gems/topaz"
+          },
+          {
+            "tag": "forge:gems/topaz"
+          },
+          {
+            "tag": "forge:gems/topaz"
+          }
+        ],
+        "result": {
+          "item": "assortedtools:topaz_multitool"
+        }
+      }
+    }
+  ]
+}

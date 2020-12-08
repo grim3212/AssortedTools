@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "assortedtools:item/netherite_multitool"
+    "layer0": "assortedtools:item/tools/netherite_multitool"
   }
 }

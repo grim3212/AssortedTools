@@ -37,6 +37,8 @@ public class EnabledCondition implements ICondition {
 			return ToolsConfig.COMMON.pokeballEnabled.get();
 		case "chickensuit":
 			return ToolsConfig.COMMON.chickenSuitEnabled.get();
+		case "extramaterials":
+			return ToolsConfig.COMMON.extraMaterialsEnabled.get();
 		default:
 			return false;
 		}
