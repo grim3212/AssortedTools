@@ -26,10 +26,10 @@ public class ArmorMaterialHolder {
 		this.materialRef = new LazyValue<>(materialRef);
 
 		builder.push(name);
-		this.durability = builder.comment("The durability multiplier for this armor material").defineInRange("durability", durability, 1, 10000);
-		this.enchantability = builder.comment("The enchantability for this armor material").defineInRange("enchantability", enchantability, 0, 10000);
-		this.toughness = builder.comment("The toughness for this armor material").defineInRange("toughness", toughness, 0, 10000);
-		this.knockbackResistance = builder.comment("The knockback resistance for this armor material").defineInRange("knockbackResistance", knockbackResistance, 0, 10000);
+		this.durability = builder.comment("The durability multiplier for this armor material").defineInRange("durability", durability, 1, 100000);
+		this.enchantability = builder.comment("The enchantability for this armor material").defineInRange("enchantability", enchantability, 0, 100000);
+		this.toughness = builder.comment("The toughness for this armor material").defineInRange("toughness", toughness, 0, 100000);
+		this.knockbackResistance = builder.comment("The knockback resistance for this armor material").defineInRange("knockbackResistance", knockbackResistance, 0, 100000);
 		this.reductionAmounts = builder.comment("The reduction amounts for each piece of armor for this armor material").define("reductionAmounts", Arrays.stream(reductionAmounts).boxed().collect(Collectors.toList()));
 		builder.pop();
 	}

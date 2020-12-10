@@ -8,6 +8,7 @@ import net.minecraft.item.IItemTier;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public class ItemTierHolder {
+	
 	private final String name;
 	private final IItemTier defaultTier;
 
@@ -26,16 +27,16 @@ public class ItemTierHolder {
 		this.defaultTier = defaultTier;
 
 		builder.push(name);
-		this.maxUses = builder.comment("The maximum uses for this item tier").defineInRange("maxUses", this.defaultTier.getMaxUses(), 1, 10000);
-		this.enchantability = builder.comment("The enchantability for this item tier").defineInRange("enchantability", this.defaultTier.getEnchantability(), 0, 10000);
+		this.maxUses = builder.comment("The maximum uses for this item tier").defineInRange("maxUses", this.defaultTier.getMaxUses(), 1, 100000);
+		this.enchantability = builder.comment("The enchantability for this item tier").defineInRange("enchantability", this.defaultTier.getEnchantability(), 0, 100000);
 		this.harvestLevel = builder.comment("The harvest level for this item tier").defineInRange("harvestLevel", this.defaultTier.getHarvestLevel(), 0, 100);
-		this.efficiency = builder.comment("The efficiency for this item tier").defineInRange("efficiency", this.defaultTier.getEfficiency(), 0, 10000);
-		this.damage = builder.comment("The amount of damage this item tier does").defineInRange("damage", this.defaultTier.getAttackDamage(), 0, 10000);
+		this.efficiency = builder.comment("The efficiency for this item tier").defineInRange("efficiency", this.defaultTier.getEfficiency(), 0, 100000);
+		this.damage = builder.comment("The amount of damage this item tier does").defineInRange("damage", this.defaultTier.getAttackDamage(), 0, 100000);
 
 		if (defaultTier instanceof ToolsItemTier) {
 			ToolsItemTier moddedTier = (ToolsItemTier) defaultTier;
-			this.axeDamage = builder.comment("The damage modifier for axes as they are different per material. Only used for modded item tier materials.").defineInRange("axeDamage", moddedTier.getAxeDamage(), 0, 10000);
-			this.axeSpeed = builder.comment("The speed modifier for axes as they are different per material. Only used for modded item tier materials.").defineInRange("axeSpeed", moddedTier.getAxeSpeedIn(), 0, 10000);
+			this.axeDamage = builder.comment("The damage modifier for axes as they are different per material. Only used for modded item tier materials.").defineInRange("axeDamage", moddedTier.getAxeDamage(), 0, 100000);
+			this.axeSpeed = builder.comment("The speed modifier for axes as they are different per material. Only used for modded item tier materials.").defineInRange("axeSpeed", moddedTier.getAxeSpeedIn(), 0, 100000);
 		}
 		builder.pop();
 	}
