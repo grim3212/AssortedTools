@@ -48,7 +48,7 @@ public class MultiToolItem extends ConfigurableToolItem {
 	}
 
 	public MultiToolItem(ItemTierHolder tier, Item.Properties builderIn, boolean isExtraMaterial) {
-		super(tier, 4.0F, -2.8f, EFFECTIVE_ON, builderIn.addToolType(ToolType.AXE, tier.getHarvestLevel()).addToolType(ToolType.SHOVEL, tier.getHarvestLevel()).addToolType(ToolType.PICKAXE, tier.getHarvestLevel()).addToolType(ToolType.HOE, tier.getHarvestLevel()));
+		super(tier, tier.getAxeDamage() > tier.getDamage() ? tier.getAxeDamage() : tier.getDamage(), -2.8f, EFFECTIVE_ON, builderIn.addToolType(ToolType.AXE, tier.getHarvestLevel()).addToolType(ToolType.SHOVEL, tier.getHarvestLevel()).addToolType(ToolType.PICKAXE, tier.getHarvestLevel()).addToolType(ToolType.HOE, tier.getHarvestLevel()));
 		this.isExtraMaterial = isExtraMaterial;
 	}
 
