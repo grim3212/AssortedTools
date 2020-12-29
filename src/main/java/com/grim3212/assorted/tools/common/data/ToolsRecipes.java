@@ -7,13 +7,16 @@ import com.grim3212.assorted.tools.common.handler.EnabledCondition;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
 import com.grim3212.assorted.tools.common.util.ToolsTags;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.data.RecipeProvider;
 import net.minecraft.data.ShapedRecipeBuilder;
 import net.minecraft.data.ShapelessRecipeBuilder;
+import net.minecraft.data.SmithingRecipeBuilder;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.IItemProvider;
@@ -63,6 +66,8 @@ public class ToolsRecipes extends RecipeProvider {
 			multiTool(group.MULTITOOL.get(), s, group.material, consumer, "extramaterials");
 			armorSet(group.HELMET.get(), group.CHESTPLATE.get(), group.LEGGINGS.get(), group.BOOTS.get(), group.material, consumer, "extramaterials");
 		});
+
+		SmithingRecipeBuilder.smithingRecipe(Ingredient.fromItems(ToolsItems.DIAMOND_MULTITOOL.get()), Ingredient.fromItems(Blocks.NETHERITE_BLOCK), ToolsItems.NETHERITE_MULTITOOL.get()).addCriterion("has_netherite_block", hasItem(Blocks.NETHERITE_BLOCK)).build(consumer, ToolsItems.NETHERITE_MULTITOOL.get().getRegistryName() + "_smithing");
 	}
 
 	@Override
