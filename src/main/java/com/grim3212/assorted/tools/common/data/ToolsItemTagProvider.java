@@ -8,6 +8,7 @@ import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.ItemTagsProvider;
 import net.minecraft.item.Items;
+import net.minecraft.tags.ItemTags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class ToolsItemTagProvider extends ItemTagsProvider {
@@ -118,6 +119,7 @@ public class ToolsItemTagProvider extends ItemTagsProvider {
 		this.getOrCreateBuilder(ToolsTags.Items.BOOTS_DIAMOND).add(Items.DIAMOND_BOOTS);
 		this.getOrCreateBuilder(ToolsTags.Items.BOOTS_NETHERITE).add(Items.NETHERITE_BOOTS);
 
+		this.getOrCreateBuilder(ItemTags.PIGLIN_LOVED).add(ToolsItems.GOLD_HAMMER.get(), ToolsItems.GOLDEN_MULTITOOL.get());
 	}
 
 	@Override
