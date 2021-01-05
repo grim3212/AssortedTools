@@ -30,16 +30,16 @@ public class ToolsItemModelProvider extends ItemModelProvider {
 		tool(ToolsItems.IRON_HAMMER.get());
 		tool(ToolsItems.DIAMOND_HAMMER.get());
 		tool(ToolsItems.NETHERITE_HAMMER.get());
-		generatedItem(ToolsItems.WOOD_BOOMERANG.get());
-		generatedItem(ToolsItems.DIAMOND_BOOMERANG.get());
+		handheldItem(ToolsItems.WOOD_BOOMERANG.get());
+		handheldItem(ToolsItems.DIAMOND_BOOMERANG.get());
 		generatedItem(ToolsItems.POKEBALL.get());
 
-		generatedItem(ToolsItems.BUILDING_WAND.get());
-		generatedItem(ToolsItems.REINFORCED_BUILDING_WAND.get());
-		generatedItem(ToolsItems.BREAKING_WAND.get());
-		generatedItem(ToolsItems.REINFORCED_BREAKING_WAND.get());
-		generatedItem(ToolsItems.MINING_WAND.get());
-		generatedItem(ToolsItems.REINFORCED_MINING_WAND.get());
+		handheldItem(ToolsItems.BUILDING_WAND.get());
+		handheldItem(ToolsItems.REINFORCED_BUILDING_WAND.get());
+		handheldItem(ToolsItems.BREAKING_WAND.get());
+		handheldItem(ToolsItems.REINFORCED_BREAKING_WAND.get());
+		handheldItem(ToolsItems.MINING_WAND.get());
+		handheldItem(ToolsItems.REINFORCED_MINING_WAND.get());
 
 		armor(ToolsItems.CHICKEN_SUIT_HELMET.get());
 		armor(ToolsItems.CHICKEN_SUIT_CHESTPLATE.get());
@@ -71,7 +71,7 @@ public class ToolsItemModelProvider extends ItemModelProvider {
 
 	private ItemModelBuilder tool(Item i) {
 		String name = name(i);
-		return withExistingParent(name, "item/generated").texture("layer0", prefix("item/tools/" + name));
+		return withExistingParent(name, "item/handheld").texture("layer0", prefix("item/tools/" + name));
 	}
 
 	private ItemModelBuilder armor(Item i) {
@@ -85,6 +85,14 @@ public class ToolsItemModelProvider extends ItemModelProvider {
 
 	private ItemModelBuilder generatedItem(Item i) {
 		return generatedItem(name(i));
+	}
+	
+	private ItemModelBuilder handheldItem(String name) {
+		return withExistingParent(name, "item/handheld").texture("layer0", prefix("item/" + name));
+	}
+
+	private ItemModelBuilder handheldItem(Item i) {
+		return handheldItem(name(i));
 	}
 
 	private static String name(Item i) {
