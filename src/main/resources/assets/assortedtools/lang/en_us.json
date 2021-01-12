@@ -32,6 +32,7 @@
 	"item.assortedtools.netherite_multitool": "Netherite MultiTool",
 	
 	"tooltip.pokeball.stored": "Stored: %s",
+	"tooltip.pokeball.stored_custom_name": "Stored: %s (%s)",
 	"tooltip.pokeball.empty": "Empty",
 	"assortedtools.wand.mode.buildbox": "§7Build box",
 	"assortedtools.wand.mode.buildroom": "§7Build room",
