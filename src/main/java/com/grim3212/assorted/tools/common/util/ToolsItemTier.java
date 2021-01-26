@@ -70,7 +70,7 @@ public enum ToolsItemTier implements IItemTier {
 		return ToolsTags.Items.GEMS_TOPAZ;
 	}, 5.0F, -3.0F),
 
-	EMERALD(2, 1547, 8.2F, 3.0F, 14, () -> {
+	EMERALD(3, 1547, 8.2F, 3.0F, 14, () -> {
 		return Tags.Items.GEMS_EMERALD;
 	}, 5.2F, -3.2F);
 
