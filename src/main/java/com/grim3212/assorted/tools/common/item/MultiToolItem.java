@@ -89,12 +89,12 @@ public class MultiToolItem extends ConfigurableToolItem {
 			return i >= blockIn.getHarvestLevel();
 		}
 		Material material = blockIn.getMaterial();
-		return material == Material.ROCK || material == Material.IRON || material == Material.ANVIL || blockIn.isIn(Blocks.SNOW) || blockIn.isIn(Blocks.SNOW_BLOCK) || blockIn.isIn(Blocks.COBWEB);
+		return material == Material.ROCK || material == Material.IRON || material == Material.ANVIL || blockIn.matchesBlock(Blocks.SNOW) || blockIn.matchesBlock(Blocks.SNOW_BLOCK) || blockIn.matchesBlock(Blocks.COBWEB);
 	}
 
 	@Override
 	public float getDestroySpeed(ItemStack stack, BlockState state) {
-		if (state.isIn(Blocks.COBWEB)) {
+		if (state.matchesBlock(Blocks.COBWEB)) {
 			return 15.0F;
 		}
 		Material material = state.getMaterial();
