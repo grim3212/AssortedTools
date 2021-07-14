@@ -25,7 +25,7 @@ public class ChickenJumpHandler {
 	@SubscribeEvent
 	public void tick(ClientTickEvent event) {
 		if (ToolsConfig.COMMON.chickenSuitEnabled.get()) {
-			Screen screen = Minecraft.getInstance().currentScreen;
+			Screen screen = Minecraft.getInstance().screen;
 			if (screen != null) {
 				return;
 			} else {
@@ -42,20 +42,20 @@ public class ChickenJumpHandler {
 			numJumps = 0;
 		}
 
-		if (!mc.player.isInWater() && !mc.player.isInLava() && mc.player.isAirBorne) {
+		if (!mc.player.isInWater() && !mc.player.isInLava() && mc.player.hasImpulse) {
 			int jumpsAllowed = getMaxJumps(mc.player);
 
 			// Must at least have 1 piece of the suit
 			if (jumpsAllowed > 1) {
-				if (mc.gameSettings.keyBindJump.isPressed() && numJumps < jumpsAllowed) {
+				if (mc.options.keyJump.consumeClick() && numJumps < jumpsAllowed) {
 					// Do not perform any calculation on the initial jump
 					// This is handled by vanilla already
 					if (numJumps > 0) {
-						mc.player.jump();
+						mc.player.jumpFromGround();
 						mc.player.fallDistance = 0.0f;
 
 						// Only play sound to client player
-						mc.world.playSound(mc.player, mc.player.getPosition(), SoundEvents.ENTITY_CHICKEN_AMBIENT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+						mc.level.playSound(mc.player, mc.player.blockPosition(), SoundEvents.CHICKEN_AMBIENT, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
 						// Double jump on server
 						PacketHandler.sendToServer(new ChickenSuitUpdatePacket());
@@ -63,11 +63,11 @@ public class ChickenJumpHandler {
 						// Allow for resetting fall damage when falling
 						// 'Flap those wings' :)
 						if (mc.player.fallDistance > 0.4f) {
-							mc.player.jump();
+							mc.player.jumpFromGround();
 							mc.player.fallDistance = -this.numJumps;
 
 							// Only play sound to client player
-							mc.world.playSound(mc.player, mc.player.getPosition(), SoundEvents.ENTITY_CHICKEN_AMBIENT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+							mc.level.playSound(mc.player, mc.player.blockPosition(), SoundEvents.CHICKEN_AMBIENT, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
 							// Double jump on server
 							PacketHandler.sendToServer(new ChickenSuitUpdatePacket());
@@ -77,11 +77,11 @@ public class ChickenJumpHandler {
 					numJumps++;
 				}
 
-				Vector3d mot = mc.player.getMotion();
-				if (!mc.gameSettings.keyBindSneak.isKeyDown() && mot.y < 0.0D) {
+				Vector3d mot = mc.player.getDeltaMovement();
+				if (!mc.options.keyShift.isDown() && mot.y < 0.0D) {
 					double d = -0.14999999999999999D - 0.14999999999999999D * (1.0D - (double) numJumps / 5D);
 					if (mot.y < d) {
-						mc.player.setMotion(mot.x, d, mot.z);
+						mc.player.setDeltaMovement(mot.x, d, mot.z);
 					}
 					mc.player.fallDistance = 0.0F;
 
@@ -100,7 +100,7 @@ public class ChickenJumpHandler {
 	private int getMaxJumps(PlayerEntity player) {
 		// Start at one for original jump
 		int maxJumps = 1;
-		for (ItemStack stack : player.getArmorInventoryList()) {
+		for (ItemStack stack : player.getArmorSlots()) {
 			if (stack.isEmpty())
 				continue;
 

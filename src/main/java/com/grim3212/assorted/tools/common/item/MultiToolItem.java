@@ -32,7 +32,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 
 public class MultiToolItem extends ConfigurableToolItem {
 
-	private static final Set<Material> EFFECTIVE_ON_MATERIALS = Sets.newHashSet(Material.WOOD, Material.NETHER_WOOD, Material.PLANTS, Material.TALL_PLANTS, Material.BAMBOO, Material.GOURD, Material.IRON, Material.ANVIL, Material.ROCK);
+	private static final Set<Material> EFFECTIVE_ON_MATERIALS = Sets.newHashSet(Material.WOOD, Material.NETHER_WOOD, Material.PLANT, Material.REPLACEABLE_PLANT, Material.BAMBOO, Material.VEGETABLE, Material.METAL, Material.HEAVY_METAL, Material.STONE);
 	private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.CLAY, Blocks.DIRT, Blocks.COARSE_DIRT, Blocks.PODZOL, Blocks.FARMLAND, Blocks.GRASS_BLOCK, Blocks.GRAVEL, Blocks.MYCELIUM, Blocks.SAND, Blocks.RED_SAND, Blocks.SNOW_BLOCK, Blocks.SNOW, Blocks.SOUL_SAND, Blocks.GRASS_PATH, Blocks.WHITE_CONCRETE_POWDER, Blocks.ORANGE_CONCRETE_POWDER, Blocks.MAGENTA_CONCRETE_POWDER, Blocks.LIGHT_BLUE_CONCRETE_POWDER, Blocks.YELLOW_CONCRETE_POWDER, Blocks.LIME_CONCRETE_POWDER,
 			Blocks.PINK_CONCRETE_POWDER, Blocks.GRAY_CONCRETE_POWDER, Blocks.LIGHT_GRAY_CONCRETE_POWDER, Blocks.CYAN_CONCRETE_POWDER, Blocks.PURPLE_CONCRETE_POWDER, Blocks.BLUE_CONCRETE_POWDER, Blocks.BROWN_CONCRETE_POWDER, Blocks.GREEN_CONCRETE_POWDER, Blocks.RED_CONCRETE_POWDER, Blocks.BLACK_CONCRETE_POWDER, Blocks.SOUL_SOIL, Blocks.ACTIVATOR_RAIL, Blocks.COAL_ORE, Blocks.COBBLESTONE, Blocks.DETECTOR_RAIL, Blocks.DIAMOND_BLOCK, Blocks.DIAMOND_ORE, Blocks.POWERED_RAIL, Blocks.GOLD_BLOCK,
 			Blocks.GOLD_ORE, Blocks.NETHER_GOLD_ORE, Blocks.ICE, Blocks.IRON_BLOCK, Blocks.IRON_ORE, Blocks.LAPIS_BLOCK, Blocks.LAPIS_ORE, Blocks.MOSSY_COBBLESTONE, Blocks.NETHERRACK, Blocks.PACKED_ICE, Blocks.BLUE_ICE, Blocks.RAIL, Blocks.REDSTONE_ORE, Blocks.SANDSTONE, Blocks.CHISELED_SANDSTONE, Blocks.CUT_SANDSTONE, Blocks.CHISELED_RED_SANDSTONE, Blocks.CUT_RED_SANDSTONE, Blocks.RED_SANDSTONE, Blocks.STONE, Blocks.GRANITE, Blocks.POLISHED_GRANITE, Blocks.DIORITE, Blocks.POLISHED_DIORITE,
@@ -53,12 +53,12 @@ public class MultiToolItem extends ConfigurableToolItem {
 	}
 
 	@Override
-	protected boolean isInGroup(ItemGroup group) {
+	protected boolean allowdedIn(ItemGroup group) {
 		if (this.isExtraMaterial) {
-			return ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.isInGroup(group) : false;
+			return ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.allowdedIn(group) : false;
 		}
 
-		return ToolsConfig.COMMON.multiToolsEnabled.get() ? super.isInGroup(group) : false;
+		return ToolsConfig.COMMON.multiToolsEnabled.get() ? super.allowdedIn(group) : false;
 	}
 
 	@Override
@@ -70,85 +70,85 @@ public class MultiToolItem extends ConfigurableToolItem {
 	}
 
 	@Override
-	public boolean canPlayerBreakBlockWhileHolding(BlockState state, World worldIn, BlockPos pos, PlayerEntity player) {
+	public boolean canAttackBlock(BlockState state, World worldIn, BlockPos pos, PlayerEntity player) {
 		return !player.isCreative();
 	}
 
 	@Override
-	public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		stack.damageItem(1, attacker, (entity) -> {
-			entity.sendBreakAnimation(EquipmentSlotType.MAINHAND);
+	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+		stack.hurtAndBreak(1, attacker, (entity) -> {
+			entity.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
 		});
 		return true;
 	}
 
 	@Override
-	public boolean canHarvestBlock(BlockState blockIn) {
+	public boolean isCorrectToolForDrops(BlockState blockIn) {
 		int i = this.getTierHarvestLevel();
 		if (blockIn.getHarvestTool() == ToolType.PICKAXE) {
 			return i >= blockIn.getHarvestLevel();
 		}
 		Material material = blockIn.getMaterial();
-		return material == Material.ROCK || material == Material.IRON || material == Material.ANVIL || blockIn.matchesBlock(Blocks.SNOW) || blockIn.matchesBlock(Blocks.SNOW_BLOCK) || blockIn.matchesBlock(Blocks.COBWEB);
+		return material == Material.STONE || material == Material.METAL || material == Material.HEAVY_METAL || blockIn.is(Blocks.SNOW) || blockIn.is(Blocks.SNOW_BLOCK) || blockIn.is(Blocks.COBWEB);
 	}
 
 	@Override
 	public float getDestroySpeed(ItemStack stack, BlockState state) {
-		if (state.matchesBlock(Blocks.COBWEB)) {
+		if (state.is(Blocks.COBWEB)) {
 			return 15.0F;
 		}
 		Material material = state.getMaterial();
-		return EFFECTIVE_ON_MATERIALS.contains(material) ? this.getTierHolder().getEfficiency() : material == Material.CORAL || state.isIn(BlockTags.LEAVES) ? 1.5F : super.getDestroySpeed(stack, state);
+		return EFFECTIVE_ON_MATERIALS.contains(material) ? this.getTierHolder().getEfficiency() : material == Material.CORAL || state.is(BlockTags.LEAVES) ? 1.5F : super.getDestroySpeed(stack, state);
 	}
 
 	@Override
-	public ActionResultType onItemUse(ItemUseContext context) {
-		World world = context.getWorld();
-		BlockPos blockpos = context.getPos();
+	public ActionResultType useOn(ItemUseContext context) {
+		World world = context.getLevel();
+		BlockPos blockpos = context.getClickedPos();
 		BlockState blockstate = world.getBlockState(blockpos);
 		PlayerEntity playerentity = context.getPlayer();
-		ItemStack itemstack = context.getItem();
+		ItemStack itemstack = context.getItemInHand();
 		BlockState axeBlock = blockstate.getToolModifiedState(world, blockpos, playerentity, itemstack, ToolType.AXE);
 		if (axeBlock != null) {
-			world.playSound(playerentity, blockpos, SoundEvents.ITEM_AXE_STRIP, SoundCategory.BLOCKS, 1.0F, 1.0F);
-			if (!world.isRemote) {
-				world.setBlockState(blockpos, axeBlock, 11);
+			world.playSound(playerentity, blockpos, SoundEvents.AXE_STRIP, SoundCategory.BLOCKS, 1.0F, 1.0F);
+			if (!world.isClientSide) {
+				world.setBlock(blockpos, axeBlock, 11);
 				if (playerentity != null) {
-					itemstack.damageItem(1, playerentity, (p_220040_1_) -> {
-						p_220040_1_.sendBreakAnimation(context.getHand());
+					itemstack.hurtAndBreak(1, playerentity, (p_220040_1_) -> {
+						p_220040_1_.broadcastBreakEvent(context.getHand());
 					});
 				}
 			}
 
-			return ActionResultType.func_233537_a_(world.isRemote);
+			return ActionResultType.sidedSuccess(world.isClientSide);
 		} else {
 			BlockState shovelBlock = blockstate.getToolModifiedState(world, blockpos, playerentity, itemstack, ToolType.SHOVEL);
 			if (shovelBlock != null) {
-				if (context.getFace() == Direction.DOWN) {
+				if (context.getClickedFace() == Direction.DOWN) {
 					return ActionResultType.PASS;
 				} else {
-					if (world.isAirBlock(blockpos.up())) {
-						world.playSound(playerentity, blockpos, SoundEvents.ITEM_SHOVEL_FLATTEN, SoundCategory.BLOCKS, 1.0F, 1.0F);
-					} else if (blockstate.getBlock() instanceof CampfireBlock && blockstate.get(CampfireBlock.LIT)) {
-						if (!world.isRemote()) {
-							world.playEvent((PlayerEntity) null, 1009, blockpos, 0);
+					if (world.isEmptyBlock(blockpos.above())) {
+						world.playSound(playerentity, blockpos, SoundEvents.SHOVEL_FLATTEN, SoundCategory.BLOCKS, 1.0F, 1.0F);
+					} else if (blockstate.getBlock() instanceof CampfireBlock && blockstate.getValue(CampfireBlock.LIT)) {
+						if (!world.isClientSide()) {
+							world.levelEvent((PlayerEntity) null, 1009, blockpos, 0);
 						}
 
-						CampfireBlock.extinguish(world, blockpos, blockstate);
-						shovelBlock = blockstate.with(CampfireBlock.LIT, false);
+						CampfireBlock.dowse(world, blockpos, blockstate);
+						shovelBlock = blockstate.setValue(CampfireBlock.LIT, false);
 					}
 
 					if (shovelBlock != null) {
-						if (!world.isRemote) {
-							world.setBlockState(blockpos, shovelBlock, 11);
+						if (!world.isClientSide) {
+							world.setBlock(blockpos, shovelBlock, 11);
 							if (playerentity != null) {
-								itemstack.damageItem(1, playerentity, (player) -> {
-									player.sendBreakAnimation(context.getHand());
+								itemstack.hurtAndBreak(1, playerentity, (player) -> {
+									player.broadcastBreakEvent(context.getHand());
 								});
 							}
 						}
 
-						return ActionResultType.func_233537_a_(world.isRemote);
+						return ActionResultType.sidedSuccess(world.isClientSide);
 					} else {
 						return onHoeUse(context);
 					}
@@ -159,26 +159,26 @@ public class MultiToolItem extends ConfigurableToolItem {
 	}
 
 	public ActionResultType onHoeUse(ItemUseContext context) {
-		World world = context.getWorld();
-		BlockPos blockpos = context.getPos();
+		World world = context.getLevel();
+		BlockPos blockpos = context.getClickedPos();
 		int hook = ForgeEventFactory.onHoeUse(context);
 		if (hook != 0)
 			return hook > 0 ? ActionResultType.SUCCESS : ActionResultType.FAIL;
-		if (context.getFace() != Direction.DOWN && world.isAirBlock(blockpos.up())) {
-			BlockState blockstate = world.getBlockState(blockpos).getToolModifiedState(world, blockpos, context.getPlayer(), context.getItem(), ToolType.HOE);
+		if (context.getClickedFace() != Direction.DOWN && world.isEmptyBlock(blockpos.above())) {
+			BlockState blockstate = world.getBlockState(blockpos).getToolModifiedState(world, blockpos, context.getPlayer(), context.getItemInHand(), ToolType.HOE);
 			if (blockstate != null) {
 				PlayerEntity playerentity = context.getPlayer();
-				world.playSound(playerentity, blockpos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
-				if (!world.isRemote) {
-					world.setBlockState(blockpos, blockstate, 11);
+				world.playSound(playerentity, blockpos, SoundEvents.HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				if (!world.isClientSide) {
+					world.setBlock(blockpos, blockstate, 11);
 					if (playerentity != null) {
-						context.getItem().damageItem(1, playerentity, (player) -> {
-							player.sendBreakAnimation(context.getHand());
+						context.getItemInHand().hurtAndBreak(1, playerentity, (player) -> {
+							player.broadcastBreakEvent(context.getHand());
 						});
 					}
 				}
 
-				return ActionResultType.func_233537_a_(world.isRemote);
+				return ActionResultType.sidedSuccess(world.isClientSide);
 			}
 		}
 

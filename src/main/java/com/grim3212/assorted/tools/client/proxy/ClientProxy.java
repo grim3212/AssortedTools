@@ -50,7 +50,7 @@ public class ClientProxy implements IProxy {
 		});
 
 		event.enqueueWork(() -> {
-			TOOL_SWITCH_MODES = new KeyBinding("key.assortedtools.tool_switch_modes", KeyConflictContext.IN_GAME, InputMappings.getInputByCode(GLFW.GLFW_KEY_Z, 0), AssortedTools.MODNAME);
+			TOOL_SWITCH_MODES = new KeyBinding("key.assortedtools.tool_switch_modes", KeyConflictContext.IN_GAME, InputMappings.getKey(GLFW.GLFW_KEY_Z, 0), AssortedTools.MODNAME);
 			ClientRegistry.registerKeyBinding(TOOL_SWITCH_MODES);
 		});
 	}

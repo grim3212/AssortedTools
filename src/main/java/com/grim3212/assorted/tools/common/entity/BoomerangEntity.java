@@ -53,8 +53,8 @@ public abstract class BoomerangEntity extends Entity {
 	List<ItemEntity> itemsPickedUp;
 	private ItemStack selfStack;
 	private Hand hand;
-	private static final DataParameter<Float> ROTATION = EntityDataManager.createKey(BoomerangEntity.class, DataSerializers.FLOAT);
-	private static final DataParameter<Optional<UUID>> RETURN_UNIQUE_ID = EntityDataManager.createKey(BoomerangEntity.class, DataSerializers.OPTIONAL_UNIQUE_ID);
+	private static final DataParameter<Float> ROTATION = EntityDataManager.defineId(BoomerangEntity.class, DataSerializers.FLOAT);
+	private static final DataParameter<Optional<UUID>> RETURN_UNIQUE_ID = EntityDataManager.defineId(BoomerangEntity.class, DataSerializers.OPTIONAL_UUID);
 
 	public BoomerangEntity(EntityType<BoomerangEntity> type, World world) {
 		super(type, world);
@@ -68,43 +68,43 @@ public abstract class BoomerangEntity extends Entity {
 	public BoomerangEntity(EntityType<BoomerangEntity> type, World worldIn, PlayerEntity entity, ItemStack itemstack, Hand hand) {
 		this(type, worldIn);
 		this.selfStack = itemstack;
-		this.setRotation(entity.rotationYaw, entity.rotationPitch);
-		double x = -MathHelper.sin((entity.rotationYaw * 3.141593F) / 180F);
-		double z = MathHelper.cos((entity.rotationYaw * 3.141593F) / 180F);
+		this.setRot(entity.yRot, entity.xRot);
+		double x = -MathHelper.sin((entity.yRot * 3.141593F) / 180F);
+		double z = MathHelper.cos((entity.yRot * 3.141593F) / 180F);
 
-		double motionX = 0.5D * x * (double) MathHelper.cos((entity.rotationPitch / 180F) * 3.141593F);
-		double motionY = -0.5D * (double) MathHelper.sin((entity.rotationPitch / 180F) * 3.141593F);
-		double motionZ = 0.5D * z * (double) MathHelper.cos((entity.rotationPitch / 180F) * 3.141593F);
-		this.setMotion(new Vector3d(motionX, motionY, motionZ));
-		setPosition(entity.getPosX(), this.getReturnEntityY(entity), entity.getPosZ());
-		prevPosX = getPosX();
-		prevPosY = getPosY();
-		prevPosZ = getPosZ();
+		double motionX = 0.5D * x * (double) MathHelper.cos((entity.xRot / 180F) * 3.141593F);
+		double motionY = -0.5D * (double) MathHelper.sin((entity.xRot / 180F) * 3.141593F);
+		double motionZ = 0.5D * z * (double) MathHelper.cos((entity.xRot / 180F) * 3.141593F);
+		this.setDeltaMovement(new Vector3d(motionX, motionY, motionZ));
+		setPos(entity.getX(), this.getReturnEntityY(entity), entity.getZ());
+		xo = getX();
+		yo = getY();
+		zo = getZ();
 		this.isBouncing = false;
 		this.turningAround = false;
 		this.hand = hand;
-		this.setReturnToId(entity.getUniqueID());
+		this.setReturnToId(entity.getUUID());
 	}
 
 	public double getReturnEntityY(PlayerEntity entity) {
-		return entity.getPosY() + entity.getEyeHeight() - 0.10000000149011612D;
+		return entity.getY() + entity.getEyeHeight() - 0.10000000149011612D;
 	}
 
 	@Override
 	public void tick() {
 		PlayerEntity player = this.getReturnTo();
 
-		Vector3d vec3d1 = this.getPositionVec();
-		Vector3d vec3d = this.getPositionVec().add(this.getMotion());
-		RayTraceResult raytraceresult = this.world.rayTraceBlocks(new RayTraceContext(vec3d1, vec3d, BlockMode.OUTLINE, FluidMode.ANY, null));
+		Vector3d vec3d1 = this.position();
+		Vector3d vec3d = this.position().add(this.getDeltaMovement());
+		RayTraceResult raytraceresult = this.level.clip(new RayTraceContext(vec3d1, vec3d, BlockMode.OUTLINE, FluidMode.ANY, null));
 
 		if (raytraceresult != null) {
 			if (raytraceresult.getType() == RayTraceResult.Type.BLOCK) {
-				BlockPos pos = new BlockPos(raytraceresult.getHitVec());
-				BlockState state = world.getBlockState(pos);
+				BlockPos pos = new BlockPos(raytraceresult.getLocation());
+				BlockState state = level.getBlockState(pos);
 
-				if (state.getMaterial() == Material.PLANTS && ToolsConfig.COMMON.breaksPlants.get() || state.getBlock() == Blocks.TORCH && ToolsConfig.COMMON.breaksTorches.get()) {
-					world.destroyBlock(pos, true);
+				if (state.getMaterial() == Material.PLANT && ToolsConfig.COMMON.breaksPlants.get() || state.getBlock() == Blocks.TORCH && ToolsConfig.COMMON.breaksTorches.get()) {
+					level.destroyBlock(pos, true);
 				}
 
 				if ((state.getBlock() instanceof LeverBlock || state.getBlock() instanceof AbstractButtonBlock) && ToolsConfig.COMMON.hitsButtons.get()) {
@@ -113,17 +113,17 @@ public abstract class BoomerangEntity extends Entity {
 					}
 					if (activatedPos == null || !activatedPos.equals(pos)) {
 						activatedPos = pos;
-						state.getBlock().onBlockActivated(state, world, pos, player, Hand.MAIN_HAND, (BlockRayTraceResult) raytraceresult.hitInfo);
+						state.getBlock().use(state, level, pos, player, Hand.MAIN_HAND, (BlockRayTraceResult) raytraceresult.hitInfo);
 					}
 				}
 			}
 		}
 
 		if (!turningAround) {
-			Vector3d motionBefore = this.getMotion();
+			Vector3d motionBefore = this.getDeltaMovement();
 			this.move(MoverType.SELF, motionBefore);
 
-			Vector3d motionAfter = this.getMotion();
+			Vector3d motionAfter = this.getDeltaMovement();
 			double newX = motionAfter.x;
 			double newY = motionAfter.y;
 			double newZ = motionAfter.z;
@@ -143,7 +143,7 @@ public abstract class BoomerangEntity extends Entity {
 			}
 			if (flag) {
 				isBouncing = true;
-				this.setMotion(new Vector3d(newX, newY, newZ).mul(bounceFactor, bounceFactor, bounceFactor));
+				this.setDeltaMovement(new Vector3d(newX, newY, newZ).multiply(bounceFactor, bounceFactor, bounceFactor));
 			}
 
 			this.beforeTurnAround(player);
@@ -152,22 +152,22 @@ public abstract class BoomerangEntity extends Entity {
 				turningAround = true;
 			}
 		} else if (player != null) {
-			double x = player.getPosX() - this.getPosX();
-			double y = this.getReturnEntityY(player) - this.getPosY();
-			double z = player.getPosZ() - this.getPosZ();
+			double x = player.getX() - this.getX();
+			double y = this.getReturnEntityY(player) - this.getY();
+			double z = player.getZ() - this.getZ();
 			double d = Math.sqrt(x * x + y * y + z * z);
 			if (d < 1.5D) {
 				setEntityDead();
 			}
-			this.setMotion((0.5D * x) / d, (0.5D * y) / d, (0.5D * z) / d);
-			this.setPosition(this.getPosX() + this.getMotion().x, this.getPosY() + this.getMotion().y, this.getPosZ() + this.getMotion().z);
+			this.setDeltaMovement((0.5D * x) / d, (0.5D * y) / d, (0.5D * z) / d);
+			this.setPos(this.getX() + this.getDeltaMovement().x, this.getY() + this.getDeltaMovement().y, this.getZ() + this.getDeltaMovement().z);
 		}
 
 		determineRotation();
 		prevBoomerangRotation = getBoomerangRotation();
 		for (this.setBoomerangRotation(this.getBoomerangRotation() + 36F); this.getBoomerangRotation() > 360F; this.setBoomerangRotation(this.getBoomerangRotation() - 360F)) {
 		}
-		List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox().expand(0.5D, 0.5D, 0.5D));
+		List<Entity> list = level.getEntities(this, this.getBoundingBox().expandTowards(0.5D, 0.5D, 0.5D));
 		for (int i = 0; i < list.size(); i++) {
 			Entity entity = list.get(i);
 			if (entity instanceof ItemEntity) {
@@ -191,10 +191,10 @@ public abstract class BoomerangEntity extends Entity {
 		Iterator<ItemEntity> iterator = itemsPickedUp.iterator();
 		while (iterator.hasNext()) {
 			ItemEntity item = iterator.next();
-			item.setMotion(0, 0, 0);
+			item.setDeltaMovement(0, 0, 0);
 			if (item.isAlive()) {
-				Vector3d pos = this.getPositionVec();
-				item.setPosition(pos.x, pos.y, pos.z);
+				Vector3d pos = this.position();
+				item.setPos(pos.x, pos.y, pos.z);
 			}
 		}
 
@@ -206,7 +206,7 @@ public abstract class BoomerangEntity extends Entity {
 	}
 
 	public void onEntityHit(Entity hitEntity, PlayerEntity player) {
-		hitEntity.attackEntityFrom(causeNewDamage(this, player), getDamage(hitEntity, player));
+		hitEntity.hurt(causeNewDamage(this, player), getDamage(hitEntity, player));
 	}
 
 	protected abstract int getDamage(Entity hitEntity, PlayerEntity player);
@@ -217,47 +217,47 @@ public abstract class BoomerangEntity extends Entity {
 		if (this.getReturnTo() != null) {
 			if (selfStack != null) {
 				if (this.hand == Hand.OFF_HAND) {
-					if (this.getReturnTo().getHeldItemOffhand().isEmpty()) {
-						this.getReturnTo().setHeldItem(Hand.OFF_HAND, selfStack);
+					if (this.getReturnTo().getOffhandItem().isEmpty()) {
+						this.getReturnTo().setItemInHand(Hand.OFF_HAND, selfStack);
 					} else {
-						this.getReturnTo().inventory.addItemStackToInventory(selfStack);
+						this.getReturnTo().inventory.add(selfStack);
 					}
 				} else {
-					this.getReturnTo().inventory.addItemStackToInventory(selfStack);
+					this.getReturnTo().inventory.add(selfStack);
 				}
 			}
 		}
-		super.setDead();
+		super.removeAfterChangingDimensions();
 	}
 
 	@Override
-	protected void registerData() {
-		this.getDataManager().register(ROTATION, 0.0F);
-		this.getDataManager().register(RETURN_UNIQUE_ID, Optional.empty());
+	protected void defineSynchedData() {
+		this.getEntityData().define(ROTATION, 0.0F);
+		this.getEntityData().define(RETURN_UNIQUE_ID, Optional.empty());
 	}
 
 	public float getBoomerangRotation() {
-		return this.getDataManager().get(ROTATION);
+		return this.getEntityData().get(ROTATION);
 	}
 
 	public void setBoomerangRotation(float rotationIn) {
-		this.getDataManager().set(ROTATION, rotationIn);
+		this.getEntityData().set(ROTATION, rotationIn);
 	}
 
 	@Nullable
 	public UUID getReturnToId() {
-		return this.dataManager.get(RETURN_UNIQUE_ID).orElse(null);
+		return this.entityData.get(RETURN_UNIQUE_ID).orElse(null);
 	}
 
 	public void setReturnToId(@Nullable UUID uuid) {
-		this.dataManager.set(RETURN_UNIQUE_ID, Optional.ofNullable(uuid));
+		this.entityData.set(RETURN_UNIQUE_ID, Optional.ofNullable(uuid));
 	}
 
 	@Nullable
 	public PlayerEntity getReturnTo() {
 		try {
 			UUID uuid = this.getReturnToId();
-			return uuid == null ? null : this.world.getPlayerByUuid(uuid);
+			return uuid == null ? null : this.level.getPlayerByUUID(uuid);
 		} catch (IllegalArgumentException e) {
 			return null;
 		}
@@ -268,20 +268,20 @@ public abstract class BoomerangEntity extends Entity {
 	}
 
 	public void determineRotation() {
-		Vector3d motion = this.getMotion();
+		Vector3d motion = this.getDeltaMovement();
 
-		rotationYaw = -57.29578F * (float) Math.atan2(motion.x, motion.z);
+		yRot = -57.29578F * (float) Math.atan2(motion.x, motion.z);
 		double d1 = Math.sqrt(motion.z * motion.z + motion.x * motion.x);
-		rotationPitch = -57.29578F * (float) Math.atan2(motion.y, d1);
+		xRot = -57.29578F * (float) Math.atan2(motion.y, d1);
 	}
 
 	@Override
-	public void read(CompoundNBT compound) {
-		super.read(compound);
+	public void load(CompoundNBT compound) {
+		super.load(compound);
 	}
 
 	@Override
-	protected void readAdditional(CompoundNBT compound) {
+	protected void readAdditionalSaveData(CompoundNBT compound) {
 		this.isBouncing = compound.getBoolean("IsBouncing");
 		this.bounceFactor = compound.getDouble("BounceFactor");
 		this.prevBoomerangRotation = compound.getFloat("PrevBoomerangRotation");
@@ -299,13 +299,13 @@ public abstract class BoomerangEntity extends Entity {
 			}
 		}
 
-		this.selfStack = ItemStack.read(compound.getCompound("SelfStack"));
+		this.selfStack = ItemStack.of(compound.getCompound("SelfStack"));
 
 		ListNBT itemsGathered = compound.getList("ItemsPickedUp", Constants.NBT.TAG_COMPOUND);
 		for (int i = 0; i < itemsGathered.size(); i++) {
 			CompoundNBT tag = itemsGathered.getCompound(i);
-			ItemEntity item = new ItemEntity(world, 0, 0, 0);
-			item.readAdditional(tag);
+			ItemEntity item = new ItemEntity(level, 0, 0, 0);
+			item.readAdditionalSaveData(tag);
 			this.itemsPickedUp.add(item);
 		}
 
@@ -313,7 +313,7 @@ public abstract class BoomerangEntity extends Entity {
 	}
 
 	@Override
-	protected void writeAdditional(CompoundNBT compound) {
+	protected void addAdditionalSaveData(CompoundNBT compound) {
 		compound.putBoolean("IsBouncing", isBouncing);
 		compound.putDouble("BounceFactor", bounceFactor);
 		compound.putFloat("PrevBoomerangRotation", prevBoomerangRotation);
@@ -333,14 +333,14 @@ public abstract class BoomerangEntity extends Entity {
 		}
 
 		CompoundNBT selfStackTag = new CompoundNBT();
-		selfStack.write(selfStackTag);
+		selfStack.save(selfStackTag);
 		compound.put("SelfStack", selfStackTag);
 
 		ListNBT itemsGathered = new ListNBT();
 		for (int i = 0; i < itemsPickedUp.size(); i++) {
 			if (itemsPickedUp.get(i) != null) {
 				CompoundNBT tag = new CompoundNBT();
-				itemsPickedUp.get(i).writeAdditional(compound);
+				itemsPickedUp.get(i).addAdditionalSaveData(compound);
 				itemsGathered.add(tag);
 			}
 		}
@@ -350,7 +350,7 @@ public abstract class BoomerangEntity extends Entity {
 	}
 
 	@Override
-	public IPacket<?> createSpawnPacket() {
+	public IPacket<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

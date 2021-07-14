@@ -31,27 +31,27 @@ public class ConfigurableHoeItem extends ConfigurableToolItem {
 	}
 
 	@Override
-	public ActionResultType onItemUse(ItemUseContext context) {
-		World world = context.getWorld();
-		BlockPos blockpos = context.getPos();
+	public ActionResultType useOn(ItemUseContext context) {
+		World world = context.getLevel();
+		BlockPos blockpos = context.getClickedPos();
 		int hook = ForgeEventFactory.onHoeUse(context);
 		if (hook != 0)
 			return hook > 0 ? ActionResultType.SUCCESS : ActionResultType.FAIL;
-		if (context.getFace() != Direction.DOWN && world.isAirBlock(blockpos.up())) {
-			BlockState blockstate = world.getBlockState(blockpos).getToolModifiedState(world, blockpos, context.getPlayer(), context.getItem(), ToolType.HOE);
+		if (context.getClickedFace() != Direction.DOWN && world.isEmptyBlock(blockpos.above())) {
+			BlockState blockstate = world.getBlockState(blockpos).getToolModifiedState(world, blockpos, context.getPlayer(), context.getItemInHand(), ToolType.HOE);
 			if (blockstate != null) {
 				PlayerEntity playerentity = context.getPlayer();
-				world.playSound(playerentity, blockpos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
-				if (!world.isRemote) {
-					world.setBlockState(blockpos, blockstate, 11);
+				world.playSound(playerentity, blockpos, SoundEvents.HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				if (!world.isClientSide) {
+					world.setBlock(blockpos, blockstate, 11);
 					if (playerentity != null) {
-						context.getItem().damageItem(1, playerentity, (player) -> {
-							player.sendBreakAnimation(context.getHand());
+						context.getItemInHand().hurtAndBreak(1, playerentity, (player) -> {
+							player.broadcastBreakEvent(context.getHand());
 						});
 					}
 				}
 
-				return ActionResultType.func_233537_a_(world.isRemote);
+				return ActionResultType.sidedSuccess(world.isClientSide);
 			}
 		}
 

@@ -20,11 +20,11 @@ public class ToolCycleModesPacket {
 	}
 
 	public static ToolCycleModesPacket decode(PacketBuffer buf) {
-		return new ToolCycleModesPacket(buf.readEnumValue(Hand.class));
+		return new ToolCycleModesPacket(buf.readEnum(Hand.class));
 	}
 
 	public void encode(PacketBuffer buf) {
-		buf.writeEnumValue(this.hand);
+		buf.writeEnum(this.hand);
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
@@ -32,10 +32,10 @@ public class ToolCycleModesPacket {
 			ctx.get().enqueueWork(() -> {
 				PlayerEntity player = ctx.get().getSender();
 
-				if (player.getHeldItem(this.hand).getItem() instanceof ISwitchModes) {
-					ItemStack stack = player.getHeldItem(this.hand);
+				if (player.getItemInHand(this.hand).getItem() instanceof ISwitchModes) {
+					ItemStack stack = player.getItemInHand(this.hand);
 					ISwitchModes item = (ISwitchModes) stack.getItem();
-					player.setHeldItem(this.hand, item.cycleMode(player, stack));
+					player.setItemInHand(this.hand, item.cycleMode(player, stack));
 				}
 
 			});

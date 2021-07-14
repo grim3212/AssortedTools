@@ -14,8 +14,8 @@ public class ChickenJumpEnchantment extends Enchantment {
 	}
 
 	@Override
-	public boolean canApply(ItemStack stack) {
-		return ToolsConfig.COMMON.chickenSuitEnabled.get() ? super.canApply(stack) : false;
+	public boolean canEnchant(ItemStack stack) {
+		return ToolsConfig.COMMON.chickenSuitEnabled.get() ? super.canEnchant(stack) : false;
 	}
 
 	@Override
@@ -24,13 +24,13 @@ public class ChickenJumpEnchantment extends Enchantment {
 	}
 
 	@Override
-	public int getMinEnchantability(int enchantmentLevel) {
+	public int getMinCost(int enchantmentLevel) {
 		return 10;
 	}
 
 	@Override
-	public int getMaxEnchantability(int enchantmentLevel) {
-		return super.getMaxEnchantability(enchantmentLevel) + 20;
+	public int getMaxCost(int enchantmentLevel) {
+		return super.getMaxCost(enchantmentLevel) + 20;
 	}
 
 	@Override

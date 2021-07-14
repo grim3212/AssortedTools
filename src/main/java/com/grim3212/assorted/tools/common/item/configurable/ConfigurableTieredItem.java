@@ -10,7 +10,7 @@ public class ConfigurableTieredItem extends Item {
 	private final ItemTierHolder tierHolder;
 
 	public ConfigurableTieredItem(ItemTierHolder tierHolder, Properties builder) {
-		super(builder.defaultMaxDamage(tierHolder.getMaxUses()));
+		super(builder.defaultDurability(tierHolder.getMaxUses()));
 		this.tierHolder = tierHolder;
 	}
 
@@ -24,12 +24,12 @@ public class ConfigurableTieredItem extends Item {
 	}
 
 	@Override
-	public int getItemEnchantability() {
+	public int getEnchantmentValue() {
 		return this.tierHolder.getEnchantability();
 	}
 
 	@Override
-	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-		return this.tierHolder.getDefaultTier().getRepairMaterial().test(repair) || super.getIsRepairable(toRepair, repair);
+	public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair) {
+		return this.tierHolder.getDefaultTier().getRepairIngredient().test(repair) || super.isValidRepairItem(toRepair, repair);
 	}
 }

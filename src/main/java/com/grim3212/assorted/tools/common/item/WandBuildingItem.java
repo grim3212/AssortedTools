@@ -90,9 +90,9 @@ public class WandBuildingItem extends WandItem {
 	}
 
 	private boolean canPlace(World world, BlockPos pos, BlockState state, PlayerEntity player, Hand hand) {
-		if (canBreak(world, pos, player.getHeldItem(hand))) {
+		if (canBreak(world, pos, player.getItemInHand(hand))) {
 			// Probably will need to be changed
-			if (player.abilities.allowEdit)
+			if (player.abilities.mayBuild)
 				return true;
 			if (state.getBlock() == Blocks.CACTUS || state.getBlock() == Blocks.SUGAR_CANE || state.getBlock() == Blocks.REDSTONE_WIRE || state.getBlock() instanceof PressurePlateBlock || state.getBlock() == Blocks.SNOW) {
 				return false;
@@ -111,9 +111,9 @@ public class WandBuildingItem extends WandItem {
 		}
 		int invItems = 0;
 		// count items in inv.
-		for (int t = 0; t < entityplayer.inventory.getSizeInventory(); t++) {
-			ItemStack currentItem = entityplayer.inventory.getStackInSlot(t);
-			if (!currentItem.isEmpty() && currentItem.isItemEqual(neededStack)) {
+		for (int t = 0; t < entityplayer.inventory.getContainerSize(); t++) {
+			ItemStack currentItem = entityplayer.inventory.getItem(t);
+			if (!currentItem.isEmpty() && currentItem.sameItem(neededStack)) {
 				invItems += currentItem.getCount();
 				if (invItems == neededItems)
 					break; // enough, no need to continue counting.
@@ -124,15 +124,15 @@ public class WandBuildingItem extends WandItem {
 			return false; // abort
 		}
 		// remove blocks from inventory, highest positions first (quickbar last)
-		for (int t = entityplayer.inventory.getSizeInventory() - 1; t >= 0; t--) {
-			ItemStack currentItem = entityplayer.inventory.getStackInSlot(t);
-			if (!currentItem.isEmpty() && currentItem.isItemEqual(neededStack)) {
+		for (int t = entityplayer.inventory.getContainerSize() - 1; t >= 0; t--) {
+			ItemStack currentItem = entityplayer.inventory.getItem(t);
+			if (!currentItem.isEmpty() && currentItem.sameItem(neededStack)) {
 				int stackSize = currentItem.getCount();
 				if (stackSize < neededItems) {
-					entityplayer.inventory.setInventorySlotContents(t, ItemStack.EMPTY);
+					entityplayer.inventory.setItem(t, ItemStack.EMPTY);
 					neededItems -= stackSize;
 				} else if (stackSize >= neededItems) {
-					entityplayer.inventory.decrStackSize(t, neededItems);
+					entityplayer.inventory.removeItem(t, neededItems);
 					neededItems = 0;
 					break;
 				}
@@ -148,8 +148,8 @@ public class WandBuildingItem extends WandItem {
 			return true;
 		}
 		int itemsInInventory = 0;
-		for (int t = 0; t < entityplayer.inventory.getSizeInventory(); t++) {
-			ItemStack currentItem = entityplayer.inventory.getStackInSlot(t);
+		for (int t = 0; t < entityplayer.inventory.getContainerSize(); t++) {
+			ItemStack currentItem = entityplayer.inventory.getItem(t);
 			if (!currentItem.isEmpty()) {
 				if (currentItem.getItem() == vanillaBucket) {
 					itemsInInventory++;
@@ -162,12 +162,12 @@ public class WandBuildingItem extends WandItem {
 		}
 		// remove buckets from inventory, highest positions first (quickbar
 		// last)
-		for (int t = entityplayer.inventory.getSizeInventory() - 1; t >= 0; t--) {
-			ItemStack currentItem = entityplayer.inventory.getStackInSlot(t);
+		for (int t = entityplayer.inventory.getContainerSize() - 1; t >= 0; t--) {
+			ItemStack currentItem = entityplayer.inventory.getItem(t);
 			if (!currentItem.isEmpty()) {
 				if (currentItem.getItem() == vanillaBucket) {
-					entityplayer.inventory.setInventorySlotContents(t, ItemStack.EMPTY);
-					entityplayer.inventory.addItemStackToInventory(new ItemStack(Items.BUCKET));
+					entityplayer.inventory.setItem(t, ItemStack.EMPTY);
+					entityplayer.inventory.add(new ItemStack(Items.BUCKET));
 					if (--neededItems == 0)
 						return true;
 				}
@@ -178,7 +178,7 @@ public class WandBuildingItem extends WandItem {
 
 	@Override
 	protected boolean doEffect(World world, PlayerEntity entityplayer, Hand hand, WandCoord3D start, WandCoord3D end, BlockState state) {
-		BuildingMode mode = BuildingMode.fromString(NBTHelper.getString(entityplayer.getHeldItem(hand), "Mode"));
+		BuildingMode mode = BuildingMode.fromString(NBTHelper.getString(entityplayer.getItemInHand(hand), "Mode"));
 
 		if (state != this.stateClicked && (mode == BuildingMode.BUILD_BOX || mode == BuildingMode.BUILD_ROOM || mode == BuildingMode.BUILD_FRAME || mode == BuildingMode.BUILD_TORCHES)) {
 			error(entityplayer, end, "notsamecorner");
@@ -186,11 +186,11 @@ public class WandBuildingItem extends WandItem {
 		}
 		boolean flag = doBuilding(world, start, end, mode, entityplayer, hand, state);
 		if (flag && mode != BuildingMode.BUILD_WATER && mode != BuildingMode.BUILD_LAVA)
-			world.playSound((PlayerEntity) null, end.pos, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.BLOCKS, (world.rand.nextFloat() + 0.7F) / 2.0F, 1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.4F);
+			world.playSound((PlayerEntity) null, end.pos, SoundEvents.ARROW_SHOOT, SoundCategory.BLOCKS, (world.random.nextFloat() + 0.7F) / 2.0F, 1.0F + (world.random.nextFloat() - world.random.nextFloat()) * 0.4F);
 		if (flag && mode == BuildingMode.BUILD_WATER)
-			world.playSound((PlayerEntity) null, end.pos, SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.BLOCKS, (world.rand.nextFloat() + 0.7F) / 2.0F, 1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.4F);
+			world.playSound((PlayerEntity) null, end.pos, SoundEvents.PLAYER_SPLASH, SoundCategory.BLOCKS, (world.random.nextFloat() + 0.7F) / 2.0F, 1.0F + (world.random.nextFloat() - world.random.nextFloat()) * 0.4F);
 		if (flag && mode == BuildingMode.BUILD_WATER)
-			world.playSound((PlayerEntity) null, end.pos, SoundEvents.BLOCK_LAVA_POP, SoundCategory.BLOCKS, (world.rand.nextFloat() + 0.7F) / 2.0F, 1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.4F);
+			world.playSound((PlayerEntity) null, end.pos, SoundEvents.LAVA_POP, SoundCategory.BLOCKS, (world.random.nextFloat() + 0.7F) / 2.0F, 1.0F + (world.random.nextFloat() - world.random.nextFloat()) * 0.4F);
 
 		return flag;
 	}
@@ -199,7 +199,7 @@ public class WandBuildingItem extends WandItem {
 		int X = 0;
 		int Y = 0;
 		int Z = 0;
-		BlockState stateAt = Blocks.AIR.getDefaultState();
+		BlockState stateAt = Blocks.AIR.defaultBlockState();
 		ItemStack neededStack = getNeededItem(world, state, entityplayer);
 		int multiplier = getNeededCount(state);
 		int neededItems = 0;
@@ -220,7 +220,7 @@ public class WandBuildingItem extends WandItem {
 			}
 
 			if (neededItems == 0) {
-				if (!world.isRemote)
+				if (!world.isClientSide)
 					error(entityplayer, end, "nowork");
 				return false;
 			}
@@ -232,7 +232,7 @@ public class WandBuildingItem extends WandItem {
 							BlockPos newPos = new BlockPos(X, Y, Z);
 
 							if (canPlace(world, newPos, state, entityplayer, hand)) {
-								world.setBlockState(newPos, state, 3);
+								world.setBlock(newPos, state, 3);
 								if (this.rand.nextInt(neededItems / 50 + 1) == 0)
 									particles(world, newPos, 0);
 								affected++;
@@ -252,8 +252,8 @@ public class WandBuildingItem extends WandItem {
 							for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
 								BlockPos newPos = new BlockPos(X, Y, Z);
 
-								if ((world.getBlockState(newPos).getBlock() == Blocks.DIRT) && ((world.getBlockState(newPos.up()).getBlock() == null) || (!world.getBlockState(newPos.up()).isOpaqueCube(world, newPos.up())))) {
-									world.setBlockState(newPos, Blocks.GRASS.getDefaultState());
+								if ((world.getBlockState(newPos).getBlock() == Blocks.DIRT) && ((world.getBlockState(newPos.above()).getBlock() == null) || (!world.getBlockState(newPos.above()).isSolidRender(world, newPos.above())))) {
+									world.setBlockAndUpdate(newPos, Blocks.GRASS.defaultBlockState());
 								}
 							}
 						}
@@ -278,7 +278,7 @@ public class WandBuildingItem extends WandItem {
 			}
 
 			if (neededItems == 0) {
-				if (!world.isRemote)
+				if (!world.isClientSide)
 					error(entityplayer, end, "nowork");
 				return false;
 			}
@@ -289,7 +289,7 @@ public class WandBuildingItem extends WandItem {
 						for (Y = start.pos.getY(); Y <= end.pos.getY(); Y++) {
 							BlockPos newPos = new BlockPos(X, Y, Z);
 							if (((X == start.pos.getX()) || (Y == start.pos.getY()) || (Z == start.pos.getZ()) || (X == end.pos.getX()) || (Y == end.pos.getY()) || (Z == end.pos.getZ())) && (canPlace(world, newPos, state, entityplayer, hand))) {
-								world.setBlockState(newPos, state, 3);
+								world.setBlock(newPos, state, 3);
 								if (this.rand.nextInt(neededItems / 50 + 1) == 0)
 									particles(world, newPos, 0);
 								affected++;
@@ -309,8 +309,8 @@ public class WandBuildingItem extends WandItem {
 							for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
 								BlockPos newPos = new BlockPos(X, Y, Z);
 
-								if ((world.getBlockState(newPos).getBlock() == Blocks.DIRT) && ((world.getBlockState(newPos.up()).getBlock() == null) || (!world.getBlockState(newPos.up()).isOpaqueCube(world, newPos.up())))) {
-									world.setBlockState(newPos, Blocks.GRASS.getDefaultState());
+								if ((world.getBlockState(newPos).getBlock() == Blocks.DIRT) && ((world.getBlockState(newPos.above()).getBlock() == null) || (!world.getBlockState(newPos.above()).isSolidRender(world, newPos.above())))) {
+									world.setBlockAndUpdate(newPos, Blocks.GRASS.defaultBlockState());
 								}
 							}
 						}
@@ -335,7 +335,7 @@ public class WandBuildingItem extends WandItem {
 			}
 
 			if (neededItems == 0) {
-				if (!world.isRemote)
+				if (!world.isClientSide)
 					error(entityplayer, end, "nowork");
 				return false;
 			}
@@ -350,7 +350,7 @@ public class WandBuildingItem extends WandItem {
 								stateAt = world.getBlockState(newPos);
 
 								if (canPlace(world, newPos, state, entityplayer, hand)) {
-									world.setBlockState(newPos, state, 3);
+									world.setBlock(newPos, state, 3);
 									if (this.rand.nextInt(neededItems / 50 + 1) == 0)
 										particles(world, newPos, 0);
 									affected++;
@@ -371,8 +371,8 @@ public class WandBuildingItem extends WandItem {
 							for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
 								BlockPos newPos = new BlockPos(X, Y, Z);
 								if (((X == start.pos.getX()) && (Y == start.pos.getY())) || ((Y == start.pos.getY()) && (Z == start.pos.getZ())) || ((Z == start.pos.getZ()) && (X == start.pos.getX())) || ((X == start.pos.getX()) && (Y == end.pos.getY())) || ((X == end.pos.getX()) && (Y == start.pos.getY())) || ((Y == start.pos.getY()) && (Z == end.pos.getZ())) || ((Y == end.pos.getY()) && (Z == start.pos.getZ())) || ((Z == start.pos.getZ()) && (X == end.pos.getX()))
-										|| ((Z == end.pos.getZ()) && (X == start.pos.getX())) || ((X == end.pos.getX()) && (Y == end.pos.getY())) || ((Y == end.pos.getY()) && (Z == end.pos.getZ())) || ((Z == end.pos.getZ()) && (X == end.pos.getX()) && (world.getBlockState(newPos).getBlock() == Blocks.DIRT) && ((world.getBlockState(newPos.up()).getBlock() == null) || (!world.getBlockState(newPos.up()).isOpaqueCube(world, newPos.up()))))) {
-									world.setBlockState(newPos, Blocks.GRASS.getDefaultState());
+										|| ((Z == end.pos.getZ()) && (X == start.pos.getX())) || ((X == end.pos.getX()) && (Y == end.pos.getY())) || ((Y == end.pos.getY()) && (Z == end.pos.getZ())) || ((Z == end.pos.getZ()) && (X == end.pos.getX()) && (world.getBlockState(newPos).getBlock() == Blocks.DIRT) && ((world.getBlockState(newPos.above()).getBlock() == null) || (!world.getBlockState(newPos.above()).isSolidRender(world, newPos.above()))))) {
+									world.setBlockAndUpdate(newPos, Blocks.GRASS.defaultBlockState());
 								}
 							}
 						}
@@ -400,7 +400,7 @@ public class WandBuildingItem extends WandItem {
 			}
 
 			if (neededItems == 0) {
-				if (!world.isRemote)
+				if (!world.isClientSide)
 					error(entityplayer, end, "nowork");
 				return false;
 			}
@@ -413,7 +413,7 @@ public class WandBuildingItem extends WandItem {
 							stateAt = world.getBlockState(newPos);
 
 							if (canPlace(world, newPos, state, entityplayer, hand)) {
-								world.setBlockState(newPos, state, 3);
+								world.setBlock(newPos, state, 3);
 								particles(world, newPos, 0);
 								affected++;
 							}
@@ -438,7 +438,7 @@ public class WandBuildingItem extends WandItem {
 							BlockPos newPos = new BlockPos(X, Y, Z);
 							stateAt = world.getBlockState(newPos);
 
-							if (canBreak(world, newPos, entityplayer.getHeldItem(hand))) {
+							if (canBreak(world, newPos, entityplayer.getItemInHand(hand))) {
 								neededItems++;
 							}
 						}
@@ -446,7 +446,7 @@ public class WandBuildingItem extends WandItem {
 				}
 
 				if (neededItems == 0) {
-					if (!world.isRemote)
+					if (!world.isClientSide)
 						error(entityplayer, end, "nowork");
 					return false;
 				}
@@ -459,8 +459,8 @@ public class WandBuildingItem extends WandItem {
 							BlockPos newPos = new BlockPos(X, Y, Z);
 							stateAt = world.getBlockState(newPos);
 
-							if (canBreak(world, newPos, entityplayer.getHeldItem(hand))) {
-								world.setBlockState(newPos, Blocks.WATER.getDefaultState());
+							if (canBreak(world, newPos, entityplayer.getItemInHand(hand))) {
+								world.setBlockAndUpdate(newPos, Blocks.WATER.defaultBlockState());
 								affected++;
 							}
 						}
@@ -477,8 +477,8 @@ public class WandBuildingItem extends WandItem {
 							stateAt = world.getBlockState(newPos);
 
 							if (stateAt.getBlock() == Blocks.WATER) {
-								world.notifyNeighborsOfStateChange(newPos, Blocks.WATER);
-								if (world.getBlockState(newPos.up()).getBlock() == Blocks.AIR)
+								world.updateNeighborsAt(newPos, Blocks.WATER);
+								if (world.getBlockState(newPos.above()).getBlock() == Blocks.AIR)
 									particles(world, newPos, 2);
 							}
 						}
@@ -504,14 +504,14 @@ public class WandBuildingItem extends WandItem {
 							BlockPos newPos = new BlockPos(X, Y, Z);
 							stateAt = world.getBlockState(newPos);
 
-							if (canBreak(world, newPos, entityplayer.getHeldItem(hand))) {
+							if (canBreak(world, newPos, entityplayer.getItemInHand(hand))) {
 								neededItems++;
 							}
 						}
 					}
 				}
 				if (neededItems == 0) {
-					if (!world.isRemote)
+					if (!world.isClientSide)
 						error(entityplayer, end, "nowork");
 					return false;
 				}
@@ -523,8 +523,8 @@ public class WandBuildingItem extends WandItem {
 						for (Y = start.pos.getY(); Y <= end.pos.getY(); Y++) {
 							BlockPos newPos = new BlockPos(X, Y, Z);
 							stateAt = world.getBlockState(newPos);
-							if (canBreak(world, newPos, entityplayer.getHeldItem(hand))) {
-								world.setBlockState(newPos, Blocks.LAVA.getDefaultState());
+							if (canBreak(world, newPos, entityplayer.getItemInHand(hand))) {
+								world.setBlockAndUpdate(newPos, Blocks.LAVA.defaultBlockState());
 								affected++;
 							}
 						}
@@ -540,7 +540,7 @@ public class WandBuildingItem extends WandItem {
 							BlockPos newPos = new BlockPos(X, Y, Z);
 							stateAt = world.getBlockState(newPos);
 							if (stateAt.getBlock() == Blocks.LAVA) {
-								world.notifyNeighborsOfStateChange(newPos, Blocks.LAVA);
+								world.updateNeighborsAt(newPos, Blocks.LAVA);
 							}
 						}
 					}
@@ -570,8 +570,8 @@ public class WandBuildingItem extends WandItem {
 						if ((!underground) && (surfaceBlock)) {
 							underground = true;
 						} else if (underground) {
-							if (canBreak(world, newPos, entityplayer.getHeldItem(hand))) {
-								world.setBlockState(newPos, Blocks.STONE.getDefaultState());
+							if (canBreak(world, newPos, entityplayer.getItemInHand(hand))) {
+								world.setBlockAndUpdate(newPos, Blocks.STONE.defaultBlockState());
 								cnt += 1L;
 							}
 						}
@@ -579,11 +579,11 @@ public class WandBuildingItem extends WandItem {
 				}
 			}
 			if (cnt > 0L) {
-				if (!world.isRemote)
+				if (!world.isClientSide)
 					sendMessage(entityplayer, new TranslationTextComponent("result.wand.fill", cnt));
 				return true;
 			} else {
-				if (!world.isRemote)
+				if (!world.isClientSide)
 					error(entityplayer, end, "nocave");
 				return false;
 			}
@@ -596,13 +596,13 @@ public class WandBuildingItem extends WandItem {
 	public ItemStack cycleMode(PlayerEntity player, ItemStack stack) {
 		BuildingMode mode = BuildingMode.fromString(NBTHelper.getString(stack, "Mode"));
 		BuildingMode next = BuildingMode.getNext(mode, stack, reinforced);
-		NBTHelper.putString(stack, "Mode", next.getString());
+		NBTHelper.putString(stack, "Mode", next.getSerializedName());
 		this.sendMessage(player, new TranslationTextComponent(AssortedTools.MODID + ".wand.switched", next.getTranslatedString()));
 		return stack;
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		BuildingMode mode = BuildingMode.fromString(NBTHelper.getString(stack, "Mode"));
 		if (mode != null)
 			tooltip.add(new TranslationTextComponent(AssortedTools.MODID + ".wand.current", mode.getTranslatedString()));
@@ -611,17 +611,17 @@ public class WandBuildingItem extends WandItem {
 	}
 
 	@Override
-	public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
-		if (this.isInGroup(group)) {
+	public void fillItemCategory(ItemGroup group, NonNullList<ItemStack> items) {
+		if (this.allowdedIn(group)) {
 			ItemStack stack = new ItemStack(this);
-			NBTHelper.putString(stack, "Mode", BuildingMode.BUILD_BOX.getString());
+			NBTHelper.putString(stack, "Mode", BuildingMode.BUILD_BOX.getSerializedName());
 			items.add(stack);
 		}
 	}
 
 	@Override
-	public void onCreated(ItemStack stack, World worldIn, PlayerEntity playerIn) {
-		NBTHelper.putString(stack, "Mode", BuildingMode.BUILD_BOX.getString());
+	public void onCraftedBy(ItemStack stack, World worldIn, PlayerEntity playerIn) {
+		NBTHelper.putString(stack, "Mode", BuildingMode.BUILD_BOX.getSerializedName());
 	}
 
 	private static enum BuildingMode implements IStringSerializable {
@@ -662,7 +662,7 @@ public class WandBuildingItem extends WandItem {
 
 		private static BuildingMode fromString(String type) {
 			for (BuildingMode mode : BuildingMode.values) {
-				if (mode.getString().equalsIgnoreCase(type)) {
+				if (mode.getSerializedName().equalsIgnoreCase(type)) {
 					return mode;
 				}
 			}
@@ -674,7 +674,7 @@ public class WandBuildingItem extends WandItem {
 		}
 
 		@Override
-		public String getString() {
+		public String getSerializedName() {
 			return this.name;
 		}
 

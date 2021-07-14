@@ -22,19 +22,19 @@ public class KeyBindHandler {
 
 		Minecraft mc = Minecraft.getInstance();
 		PlayerEntity player = mc.player;
-		if (mc.isGameFocused()) {
+		if (mc.isWindowActive()) {
 			if (player != null) {
-				if (ClientProxy.TOOL_SWITCH_MODES.isPressed()) {
+				if (ClientProxy.TOOL_SWITCH_MODES.consumeClick()) {
 					if (switchCooldown == 0) {
-						if (player.getHeldItemMainhand() != null) {
-							if (player.getHeldItemMainhand().getItem() instanceof WandItem) {
+						if (player.getMainHandItem() != null) {
+							if (player.getMainHandItem().getItem() instanceof WandItem) {
 								switchCooldown = 20;
 								PacketHandler.sendToServer(new ToolCycleModesPacket(Hand.MAIN_HAND));
 							}
 						}
 
-						if (player.getHeldItemOffhand() != null) {
-							if (player.getHeldItemOffhand().getItem() instanceof WandItem) {
+						if (player.getOffhandItem() != null) {
+							if (player.getOffhandItem().getItem() instanceof WandItem) {
 								switchCooldown = 20;
 								PacketHandler.sendToServer(new ToolCycleModesPacket(Hand.OFF_HAND));
 							}

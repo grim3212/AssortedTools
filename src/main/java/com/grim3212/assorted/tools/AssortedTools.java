@@ -48,7 +48,7 @@ public class AssortedTools {
 	public static final ItemGroup ASSORTED_TOOLS_ITEM_GROUP = (new ItemGroup("assortedtools") {
 		@Override
 		@OnlyIn(Dist.CLIENT)
-		public ItemStack createIcon() {
+		public ItemStack makeIcon() {
 			return new ItemStack(ToolsItems.IRON_HAMMER.get());
 		}
 	});

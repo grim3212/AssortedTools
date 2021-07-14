@@ -13,7 +13,7 @@ public class ToolsBlockTagProvider extends BlockTagsProvider {
 	}
 
 	@Override
-	protected void registerTags() {
+	protected void addTags() {
 
 	}
 

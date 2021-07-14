@@ -32,22 +32,22 @@ public abstract class WandItem extends Item implements ISwitchModes {
 	protected final boolean reinforced;
 	protected Random rand;
 
-	protected BlockState stateOrig = Blocks.AIR.getDefaultState();
-	protected BlockState stateClicked = Blocks.AIR.getDefaultState();
+	protected BlockState stateOrig = Blocks.AIR.defaultBlockState();
+	protected BlockState stateClicked = Blocks.AIR.defaultBlockState();
 
 	public WandItem(boolean reinforced, Properties properties) {
-		super(properties.group(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP));
+		super(properties.tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP));
 		this.reinforced = reinforced;
 		this.rand = new Random();
 	}
 
 	@Override
-	protected boolean isInGroup(ItemGroup group) {
-		return ToolsConfig.COMMON.wandsEnabled.get() ? super.isInGroup(group) : false;
+	protected boolean allowdedIn(ItemGroup group) {
+		return ToolsConfig.COMMON.wandsEnabled.get() ? super.allowdedIn(group) : false;
 	}
 
 	@Override
-	public abstract void onCreated(ItemStack stack, World worldIn, PlayerEntity playerIn);
+	public abstract void onCraftedBy(ItemStack stack, World worldIn, PlayerEntity playerIn);
 
 	protected abstract boolean canBreak(World worldIn, BlockPos pos, ItemStack stack);
 
@@ -78,15 +78,15 @@ public abstract class WandItem extends Item implements ISwitchModes {
 	protected abstract boolean doEffect(World world, PlayerEntity entityplayer, Hand hand, WandCoord3D start, WandCoord3D end, BlockState state);
 
 	protected void sendMessage(PlayerEntity player, ITextComponent message) {
-		if (!player.world.isRemote) {
-			player.sendMessage(message, player.getUniqueID());
+		if (!player.level.isClientSide) {
+			player.sendMessage(message, player.getUUID());
 		}
 	}
 
 	protected void error(PlayerEntity entityplayer, WandCoord3D p, String reason) {
-		entityplayer.world.playSound(entityplayer, p.pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, (entityplayer.world.rand.nextFloat() + 0.7F) / 2.0F, 0.5F + entityplayer.world.rand.nextFloat() * 0.3F);
+		entityplayer.level.playSound(entityplayer, p.pos, SoundEvents.LAVA_EXTINGUISH, SoundCategory.BLOCKS, (entityplayer.level.random.nextFloat() + 0.7F) / 2.0F, 0.5F + entityplayer.level.random.nextFloat() * 0.3F);
 		sendMessage(entityplayer, new TranslationTextComponent("error.wand." + reason));
-		particles(entityplayer.world, p.pos, 3);
+		particles(entityplayer.level, p.pos, 3);
 	}
 
 	protected abstract double[] getParticleColor();
@@ -125,33 +125,33 @@ public abstract class WandItem extends Item implements ISwitchModes {
 			double d2 = pos.getY() + this.rand.nextFloat();
 			double d3 = pos.getZ() + this.rand.nextFloat();
 
-			if ((l == 0) && (!world.getBlockState(pos.up()).isOpaqueCube(world, pos))) {
+			if ((l == 0) && (!world.getBlockState(pos.above()).isSolidRender(world, pos))) {
 				d2 = pos.getY() + 1 + d;
 			}
-			if ((l == 1) && (!world.getBlockState(pos.down()).isOpaqueCube(world, pos))) {
+			if ((l == 1) && (!world.getBlockState(pos.below()).isSolidRender(world, pos))) {
 				d2 = pos.getY() + 0 - d;
 			}
-			if ((l == 2) && (!world.getBlockState(pos.south()).isOpaqueCube(world, pos))) {
+			if ((l == 2) && (!world.getBlockState(pos.south()).isSolidRender(world, pos))) {
 				d3 = pos.getZ() + 1 + d;
 			}
-			if ((l == 3) && (!world.getBlockState(pos.north()).isOpaqueCube(world, pos))) {
+			if ((l == 3) && (!world.getBlockState(pos.north()).isSolidRender(world, pos))) {
 				d3 = pos.getZ() + 0 - d;
 			}
-			if ((l == 4) && (!world.getBlockState(pos.east()).isOpaqueCube(world, pos))) {
+			if ((l == 4) && (!world.getBlockState(pos.east()).isSolidRender(world, pos))) {
 				d1 = pos.getX() + 1 + d;
 			}
-			if ((l == 5) && (!world.getBlockState(pos.west()).isOpaqueCube(world, pos))) {
+			if ((l == 5) && (!world.getBlockState(pos.west()).isSolidRender(world, pos))) {
 				d1 = pos.getX() + 0 - d;
 			}
 			if ((d1 < pos.getX()) || (d1 > pos.getX() + 1) || (d2 < 0.0D) || (d2 > pos.getY() + 1) || (d3 < pos.getZ()) || (d3 > pos.getZ() + 1))
-				world.addParticle(RedstoneParticleData.REDSTONE_DUST, d1, d2, d3, R, G, B);
+				world.addParticle(RedstoneParticleData.REDSTONE, d1, d2, d3, R, G, B);
 		}
 	}
 
 	@Override
-	public ActionResultType onItemUse(ItemUseContext context) {
-		BlockPos pos = context.getPos();
-		World worldIn = context.getWorld();
+	public ActionResultType useOn(ItemUseContext context) {
+		BlockPos pos = context.getClickedPos();
+		World worldIn = context.getLevel();
 		PlayerEntity playerIn = context.getPlayer();
 		Hand hand = context.getHand();
 		boolean isFree = ToolsConfig.COMMON.freeBuildMode.get() || playerIn.isCreative();
@@ -160,7 +160,7 @@ public abstract class WandItem extends Item implements ISwitchModes {
 		BlockState state = this.stateOrig;
 
 		if (state.getBlock() == Blocks.GRASS) {
-			state = Blocks.DIRT.getDefaultState();
+			state = Blocks.DIRT.defaultBlockState();
 		}
 
 		WandCoord3D clicked_current = new WandCoord3D(pos, state);
@@ -170,7 +170,7 @@ public abstract class WandItem extends Item implements ISwitchModes {
 			return ActionResultType.SUCCESS;
 		}
 
-		ItemStack stack = playerIn.getHeldItem(hand);
+		ItemStack stack = playerIn.getItemInHand(hand);
 		WandCoord3D start = WandCoord3D.getFromNBT(stack.getTag(), "Start");
 
 		if (start == null) {
@@ -205,8 +205,8 @@ public abstract class WandItem extends Item implements ISwitchModes {
 				NBTHelper.putBoolean(stack, "firstUse", true);
 				if (!isFree) {
 					NBTHelper.removeTag(stack, "Start");
-					stack.damageItem(1, playerIn, (s) -> {
-						s.sendBreakAnimation(hand);
+					stack.hurtAndBreak(1, playerIn, (s) -> {
+						s.broadcastBreakEvent(hand);
 					});
 					return ActionResultType.SUCCESS;
 				}

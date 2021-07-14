@@ -32,44 +32,44 @@ public class ConfigurableShovelItem extends ConfigurableToolItem {
 	}
 
 	@Override
-	public boolean canHarvestBlock(BlockState blockIn) {
-		return blockIn.matchesBlock(Blocks.SNOW) || blockIn.matchesBlock(Blocks.SNOW_BLOCK);
+	public boolean isCorrectToolForDrops(BlockState blockIn) {
+		return blockIn.is(Blocks.SNOW) || blockIn.is(Blocks.SNOW_BLOCK);
 	}
 
 	@Override
-	public ActionResultType onItemUse(ItemUseContext context) {
-		World world = context.getWorld();
-		BlockPos blockpos = context.getPos();
+	public ActionResultType useOn(ItemUseContext context) {
+		World world = context.getLevel();
+		BlockPos blockpos = context.getClickedPos();
 		BlockState blockstate = world.getBlockState(blockpos);
-		if (context.getFace() == Direction.DOWN) {
+		if (context.getClickedFace() == Direction.DOWN) {
 			return ActionResultType.PASS;
 		} else {
 			PlayerEntity playerentity = context.getPlayer();
-			BlockState blockstate1 = blockstate.getToolModifiedState(world, blockpos, playerentity, context.getItem(), ToolType.SHOVEL);
+			BlockState blockstate1 = blockstate.getToolModifiedState(world, blockpos, playerentity, context.getItemInHand(), ToolType.SHOVEL);
 			BlockState blockstate2 = null;
-			if (blockstate1 != null && world.isAirBlock(blockpos.up())) {
-				world.playSound(playerentity, blockpos, SoundEvents.ITEM_SHOVEL_FLATTEN, SoundCategory.BLOCKS, 1.0F, 1.0F);
+			if (blockstate1 != null && world.isEmptyBlock(blockpos.above())) {
+				world.playSound(playerentity, blockpos, SoundEvents.SHOVEL_FLATTEN, SoundCategory.BLOCKS, 1.0F, 1.0F);
 				blockstate2 = blockstate1;
-			} else if (blockstate.getBlock() instanceof CampfireBlock && blockstate.get(CampfireBlock.LIT)) {
-				if (!world.isRemote()) {
-					world.playEvent((PlayerEntity) null, 1009, blockpos, 0);
+			} else if (blockstate.getBlock() instanceof CampfireBlock && blockstate.getValue(CampfireBlock.LIT)) {
+				if (!world.isClientSide()) {
+					world.levelEvent((PlayerEntity) null, 1009, blockpos, 0);
 				}
 
-				CampfireBlock.extinguish(world, blockpos, blockstate);
-				blockstate2 = blockstate.with(CampfireBlock.LIT, Boolean.valueOf(false));
+				CampfireBlock.dowse(world, blockpos, blockstate);
+				blockstate2 = blockstate.setValue(CampfireBlock.LIT, Boolean.valueOf(false));
 			}
 
 			if (blockstate2 != null) {
-				if (!world.isRemote) {
-					world.setBlockState(blockpos, blockstate2, 11);
+				if (!world.isClientSide) {
+					world.setBlock(blockpos, blockstate2, 11);
 					if (playerentity != null) {
-						context.getItem().damageItem(1, playerentity, (player) -> {
-							player.sendBreakAnimation(context.getHand());
+						context.getItemInHand().hurtAndBreak(1, playerentity, (player) -> {
+							player.broadcastBreakEvent(context.getHand());
 						});
 					}
 				}
 
-				return ActionResultType.func_233537_a_(world.isRemote);
+				return ActionResultType.sidedSuccess(world.isClientSide);
 			} else {
 				return ActionResultType.PASS;
 			}

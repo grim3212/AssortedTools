@@ -23,24 +23,24 @@ public class BoomerangItem extends Item {
 	}
 
 	@Override
-	protected boolean isInGroup(ItemGroup group) {
-		return ToolsConfig.COMMON.boomerangsEnabled.get() ? super.isInGroup(group) : false;
+	protected boolean allowdedIn(ItemGroup group) {
+		return ToolsConfig.COMMON.boomerangsEnabled.get() ? super.allowdedIn(group) : false;
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-		if (playerIn.getHeldItem(handIn).getDamage() == 0) {
+	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+		if (playerIn.getItemInHand(handIn).getDamageValue() == 0) {
 			BoomerangEntity boom;
 			if (this.isWood) {
-				boom = new WoodBoomerangEntity(worldIn, playerIn, playerIn.getHeldItem(handIn), handIn);
+				boom = new WoodBoomerangEntity(worldIn, playerIn, playerIn.getItemInHand(handIn), handIn);
 			} else {
-				boom = new DiamondBoomerangEntity(worldIn, playerIn, playerIn.getHeldItem(handIn), handIn);
+				boom = new DiamondBoomerangEntity(worldIn, playerIn, playerIn.getItemInHand(handIn), handIn);
 			}
 
-			worldIn.addEntity(boom);
-			playerIn.setHeldItem(handIn, ItemStack.EMPTY);
+			worldIn.addFreshEntity(boom);
+			playerIn.setItemInHand(handIn, ItemStack.EMPTY);
 		}
-		return ActionResult.resultSuccess(playerIn.getHeldItem(handIn));
+		return ActionResult.success(playerIn.getItemInHand(handIn));
 	}
 
 }

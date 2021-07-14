@@ -23,11 +23,11 @@ public class ItemTierHolder {
 		this.defaultTier = defaultTier;
 
 		builder.push(name);
-		this.maxUses = builder.comment("The maximum uses for this item tier").defineInRange("maxUses", this.defaultTier.getMaxUses(), 1, 100000);
-		this.enchantability = builder.comment("The enchantability for this item tier").defineInRange("enchantability", this.defaultTier.getEnchantability(), 0, 100000);
-		this.harvestLevel = builder.comment("The harvest level for this item tier").defineInRange("harvestLevel", this.defaultTier.getHarvestLevel(), 0, 100);
-		this.efficiency = builder.comment("The efficiency for this item tier").defineInRange("efficiency", this.defaultTier.getEfficiency(), 0, 100000);
-		this.damage = builder.comment("The amount of damage this item tier does").defineInRange("damage", this.defaultTier.getAttackDamage(), 0, 100000);
+		this.maxUses = builder.comment("The maximum uses for this item tier").defineInRange("maxUses", this.defaultTier.getUses(), 1, 100000);
+		this.enchantability = builder.comment("The enchantability for this item tier").defineInRange("enchantability", this.defaultTier.getEnchantmentValue(), 0, 100000);
+		this.harvestLevel = builder.comment("The harvest level for this item tier").defineInRange("harvestLevel", this.defaultTier.getLevel(), 0, 100);
+		this.efficiency = builder.comment("The efficiency for this item tier").defineInRange("efficiency", this.defaultTier.getSpeed(), 0, 100000);
+		this.damage = builder.comment("The amount of damage this item tier does").defineInRange("damage", this.defaultTier.getAttackDamageBonus(), 0, 100000);
 
 		this.axeDamage = builder.comment("The damage modifier for axes as they are different per material. Will not affect vanilla tools.").defineInRange("axeDamage", defaultAxeDamage, 0, 100000);
 		this.axeSpeed = builder.comment("The speed modifier for axes as they are different per material. Will not affect vanilla tools.").defineInRange("axeSpeed", defaultAxeSpeed, 0, 100000);
@@ -39,11 +39,11 @@ public class ItemTierHolder {
 		this.defaultTier = defaultTier;
 
 		builder.push(name);
-		this.maxUses = builder.comment("The maximum uses for this item tier").defineInRange("maxUses", this.defaultTier.getMaxUses(), 1, 100000);
-		this.enchantability = builder.comment("The enchantability for this item tier").defineInRange("enchantability", this.defaultTier.getEnchantability(), 0, 100000);
-		this.harvestLevel = builder.comment("The harvest level for this item tier").defineInRange("harvestLevel", this.defaultTier.getHarvestLevel(), 0, 100);
-		this.efficiency = builder.comment("The efficiency for this item tier").defineInRange("efficiency", this.defaultTier.getEfficiency(), 0, 100000);
-		this.damage = builder.comment("The amount of damage this item tier does").defineInRange("damage", this.defaultTier.getAttackDamage(), 0, 100000);
+		this.maxUses = builder.comment("The maximum uses for this item tier").defineInRange("maxUses", this.defaultTier.getUses(), 1, 100000);
+		this.enchantability = builder.comment("The enchantability for this item tier").defineInRange("enchantability", this.defaultTier.getEnchantmentValue(), 0, 100000);
+		this.harvestLevel = builder.comment("The harvest level for this item tier").defineInRange("harvestLevel", this.defaultTier.getLevel(), 0, 100);
+		this.efficiency = builder.comment("The efficiency for this item tier").defineInRange("efficiency", this.defaultTier.getSpeed(), 0, 100000);
+		this.damage = builder.comment("The amount of damage this item tier does").defineInRange("damage", this.defaultTier.getAttackDamageBonus(), 0, 100000);
 
 		this.axeDamage = builder.comment("The damage modifier for axes as they are different per material. Will not affect vanilla tools.").defineInRange("axeDamage", defaultTier.getAxeDamage(), 0, 100000);
 		this.axeSpeed = builder.comment("The speed modifier for axes as they are different per material. Will not affect vanilla tools.").defineInRange("axeSpeed", defaultTier.getAxeSpeedIn(), 0, 100000);

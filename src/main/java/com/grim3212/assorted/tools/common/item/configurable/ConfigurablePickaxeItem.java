@@ -26,19 +26,19 @@ public class ConfigurablePickaxeItem extends ConfigurableToolItem {
 	}
 
 	@Override
-	public boolean canHarvestBlock(BlockState blockIn) {
-		int i = this.getTier().getHarvestLevel();
+	public boolean isCorrectToolForDrops(BlockState blockIn) {
+		int i = this.getTier().getLevel();
 		if (blockIn.getHarvestTool() == ToolType.PICKAXE) {
 			return i >= blockIn.getHarvestLevel();
 		}
 		Material material = blockIn.getMaterial();
-		return material == Material.ROCK || material == Material.IRON || material == Material.ANVIL;
+		return material == Material.STONE || material == Material.METAL || material == Material.HEAVY_METAL;
 	}
 
 	@Override
 	public float getDestroySpeed(ItemStack stack, BlockState state) {
 		Material material = state.getMaterial();
-		return material != Material.IRON && material != Material.ANVIL && material != Material.ROCK ? super.getDestroySpeed(stack, state) : this.efficiency;
+		return material != Material.METAL && material != Material.HEAVY_METAL && material != Material.STONE ? super.getDestroySpeed(stack, state) : this.speed;
 	}
 
 	@Override

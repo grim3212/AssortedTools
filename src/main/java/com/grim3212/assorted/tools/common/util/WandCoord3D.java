@@ -13,7 +13,7 @@ public class WandCoord3D {
 	public BlockState state;
 
 	private WandCoord3D() {
-		this(BlockPos.ZERO, Blocks.AIR.getDefaultState());
+		this(BlockPos.ZERO, Blocks.AIR.defaultBlockState());
 	}
 
 	public WandCoord3D(BlockPos pos, BlockState state) {

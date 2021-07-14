@@ -59,7 +59,7 @@ public class ArmorMaterialHolder {
 	}
 
 	public ToolsArmorMaterials getMaterial() {
-		return this.materialRef.getValue();
+		return this.materialRef.get();
 	}
 
 	@Override

@@ -35,14 +35,14 @@ public class ChickenSuitUpdatePacket {
 
 				if (this.glideJumps != -1) {
 					double d = -0.14999999999999999D - 0.14999999999999999D * (1.0D - (double) glideJumps / 5D);
-					Vector3d mot = player.getMotion();
+					Vector3d mot = player.getDeltaMovement();
 
 					if (mot.y < d) {
-						player.setMotion(mot.x, d, mot.z);
+						player.setDeltaMovement(mot.x, d, mot.z);
 					}
 					player.fallDistance = 0.0F;
 				} else {
-					player.jump();
+					player.jumpFromGround();
 
 					// Calculate fall distance so the double jumps do not hurt the
 					// player

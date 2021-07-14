@@ -20,13 +20,13 @@ public class ConfigurableSwordItem extends SwordItem {
 		this.tierHolder = tierHolder;
 		this.attackDamage = swordDamage + tierHolder.getDamage();
 		Builder<Attribute, AttributeModifier> attributeBuilder = ImmutableMultimap.builder();
-		attributeBuilder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double) this.attackDamage, AttributeModifier.Operation.ADDITION));
-		attributeBuilder.put(Attributes.ATTACK_SPEED, new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", (double) swordSpeed, AttributeModifier.Operation.ADDITION));
-		this.attributeModifiers = attributeBuilder.build();
+		attributeBuilder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", (double) this.attackDamage, AttributeModifier.Operation.ADDITION));
+		attributeBuilder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", (double) swordSpeed, AttributeModifier.Operation.ADDITION));
+		this.defaultModifiers = attributeBuilder.build();
 	}
 
 	@Override
-	public float getAttackDamage() {
+	public float getDamage() {
 		return swordDamage + this.tierHolder.getDamage();
 	}
 }

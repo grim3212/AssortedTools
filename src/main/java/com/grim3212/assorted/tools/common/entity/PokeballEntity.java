@@ -47,15 +47,15 @@ public class PokeballEntity extends ProjectileItemEntity {
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult result) {
-		if (!world.isRemote) {
+	protected void onHit(RayTraceResult result) {
+		if (!level.isClientSide) {
 			if (result.getType() == RayTraceResult.Type.BLOCK) {
 				if (this.hasEntity) {
-					Optional<Entity> loadEntity = EntityType.loadEntityUnchecked(NBTHelper.getTag(currentPokeball, "StoredEntity"), this.world);
+					Optional<Entity> loadEntity = EntityType.create(NBTHelper.getTag(currentPokeball, "StoredEntity"), this.level);
 					if (loadEntity.isPresent()) {
 						Entity spawnEntity = loadEntity.get();
-						spawnEntity.setLocationAndAngles(this.getPosX(), this.getPosY() + 1.0D, this.getPosZ(), this.rotationYaw, 0.0F);
-						this.world.addEntity(spawnEntity);
+						spawnEntity.moveTo(this.getX(), this.getY() + 1.0D, this.getZ(), this.yRot, 0.0F);
+						this.level.addFreshEntity(spawnEntity);
 					}
 
 					// Always reset pokeball
@@ -71,10 +71,10 @@ public class PokeballEntity extends ProjectileItemEntity {
 
 							LivingEntity livingEntity = (LivingEntity) hitEntity;
 							CompoundNBT entity = livingEntity.serializeNBT();
-							entity.putString("pokeball_name", livingEntity.getType().getTranslationKey());
+							entity.putString("pokeball_name", livingEntity.getType().getDescriptionId());
 
 							NBTHelper.putTag(currentPokeball, "StoredEntity", entity);
-							this.currentPokeball.damageItem(1, livingEntity, (ent) -> {
+							this.currentPokeball.hurtAndBreak(1, livingEntity, (ent) -> {
 							});
 							this.currentPokeball.setCount(1);
 
@@ -84,18 +84,18 @@ public class PokeballEntity extends ProjectileItemEntity {
 				}
 			}
 
-			this.entityDropItem(this.currentPokeball, 0.2F);
-			this.world.setEntityState(this, (byte) 3);
-			this.setDead();
+			this.spawnAtLocation(this.currentPokeball, 0.2F);
+			this.level.broadcastEntityEvent(this, (byte) 3);
+			this.removeAfterChangingDimensions();
 		}
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void handleStatusUpdate(byte id) {
+	public void handleEntityEvent(byte id) {
 		if (id == 3) {
 			for (int i = 0; i < 8; ++i) {
-				this.world.addParticle(ParticleTypes.ITEM_SNOWBALL, this.getPosX(), this.getPosY(), this.getPosZ(), 0.0D, 0.0D, 0.0D);
+				this.level.addParticle(ParticleTypes.ITEM_SNOWBALL, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
 			}
 		}
 	}
@@ -106,7 +106,7 @@ public class PokeballEntity extends ProjectileItemEntity {
 	}
 
 	@Override
-	public IPacket<?> createSpawnPacket() {
+	public IPacket<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

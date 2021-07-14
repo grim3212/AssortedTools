@@ -20,8 +20,8 @@ public class MaterialArmorItem extends ConfigurableArmorItem {
 	}
 
 	@Override
-	protected boolean isInGroup(ItemGroup group) {
-		return ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.isInGroup(group) : false;
+	protected boolean allowdedIn(ItemGroup group) {
+		return ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.allowdedIn(group) : false;
 	}
 
 	@Override

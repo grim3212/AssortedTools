@@ -80,12 +80,12 @@ public class WandMiningItem extends WandItem {
 	protected boolean doEffect(World world, PlayerEntity entityplayer, Hand hand, WandCoord3D start, WandCoord3D end, BlockState state) {
 		boolean damage = doMining(world, start, end, entityplayer, hand);
 		if (damage)
-			world.playSound((PlayerEntity) null, end.pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 2.5F, 0.5F + world.rand.nextFloat() * 0.3F);
+			world.playSound((PlayerEntity) null, end.pos, SoundEvents.GENERIC_EXPLODE, SoundCategory.BLOCKS, 2.5F, 0.5F + world.random.nextFloat() * 0.3F);
 		return damage;
 	}
 
 	private boolean doMining(World world, WandCoord3D start, WandCoord3D end, PlayerEntity entityplayer, Hand hand) {
-		ItemStack stack = entityplayer.getHeldItem(hand);
+		ItemStack stack = entityplayer.getItemInHand(hand);
 		MiningMode mode = MiningMode.fromString(NBTHelper.getString(stack, "Mode"));
 
 		// MINING OBSIDIAN 1x1x1
@@ -94,8 +94,8 @@ public class WandMiningItem extends WandItem {
 		if (mode == MiningMode.MINE_ALL && startPos.equals(endPos) && !ToolsConfig.COMMON.easyMiningObsidian.get()) {
 			BlockState state = world.getBlockState(startPos);
 			if (state.getBlock() == Blocks.OBSIDIAN) {
-				state.getBlock().onBlockHarvested(world, startPos, state, entityplayer);
-				state.getBlock().harvestBlock(world, entityplayer, startPos, state, world.getTileEntity(startPos), entityplayer.getActiveItemStack());
+				state.getBlock().playerWillDestroy(world, startPos, state, entityplayer);
+				state.getBlock().playerDestroy(world, entityplayer, startPos, state, world.getBlockEntity(startPos), entityplayer.getUseItem());
 				particles(world, startPos, 1);
 				return true;
 			}
@@ -113,7 +113,7 @@ public class WandMiningItem extends WandItem {
 			}
 
 			// counting ores to mine
-			List<BlockPos> iterable = BlockPos.getAllInBox(new BlockPos(start.pos.getX(), 1, start.pos.getZ()), new BlockPos(end.pos.getX(), end.pos.getY() + 1, end.pos.getZ())).map(BlockPos::toImmutable).collect(Collectors.toList());
+			List<BlockPos> iterable = BlockPos.betweenClosedStream(new BlockPos(start.pos.getX(), 1, start.pos.getZ()), new BlockPos(end.pos.getX(), end.pos.getY() + 1, end.pos.getZ())).map(BlockPos::immutable).collect(Collectors.toList());
 			for (BlockPos pos : iterable) {
 				stateAt = world.getBlockState(pos);
 				if (isMiningOre(stateAt)) {
@@ -141,18 +141,18 @@ public class WandMiningItem extends WandItem {
 					for (Y = 127; Y > 1; Y--) {
 						pos = new BlockPos(X, Y, Z);
 						stateAt = world.getBlockState(pos);
-						if (!underground && world.isAirBlock(pos)) {
+						if (!underground && world.isEmptyBlock(pos)) {
 							surface = Y;
 						}
 						surfaceBlock = isSurface(stateAt);
 						if (!underground && surfaceBlock)
 							underground = true;
 						if (isMiningOre(stateAt)) {
-							TileEntity tile = world.getTileEntity(pos);
-							if (world.setBlockState(pos, Blocks.STONE.getDefaultState())) {
+							TileEntity tile = world.getBlockEntity(pos);
+							if (world.setBlockAndUpdate(pos, Blocks.STONE.defaultBlockState())) {
 								pos = new BlockPos(X, surface, Z);
-								stateAt.getBlock().onBlockHarvested(world, pos, stateAt, entityplayer);
-								stateAt.getBlock().harvestBlock(world, entityplayer, pos, stateAt, tile, entityplayer.getActiveItemStack());
+								stateAt.getBlock().playerWillDestroy(world, pos, stateAt, entityplayer);
+								stateAt.getBlock().playerDestroy(world, entityplayer, pos, stateAt, tile, entityplayer.getUseItem());
 								cnt++;
 							}
 						}
@@ -160,14 +160,14 @@ public class WandMiningItem extends WandItem {
 				}
 			}
 			if (cnt == 0) {
-				if (!world.isRemote)
+				if (!world.isClientSide)
 					sendMessage(entityplayer, new TranslationTextComponent("result.wand.mine"));
 				return false;
 			}
 			return true;
 		}
 		// NORMAL MINING
-		List<BlockPos> iterable = BlockPos.getAllInBox(startPos, endPos).map(BlockPos::toImmutable).collect(Collectors.toList());
+		List<BlockPos> iterable = BlockPos.betweenClosedStream(startPos, endPos).map(BlockPos::immutable).collect(Collectors.toList());
 		for (BlockPos pos : iterable) {
 			stateAt = world.getBlockState(pos);
 			if (canBreak(world, pos, stack)) {
@@ -185,19 +185,19 @@ public class WandMiningItem extends WandItem {
 		}
 		// now the mining itself.
 		if (blocks2Dig == 0) {
-			if (!world.isRemote)
+			if (!world.isClientSide)
 				error(entityplayer, end, "nowork");
 			return false;
 		}
-		iterable = BlockPos.getAllInBox(startPos, endPos).map(BlockPos::toImmutable).collect(Collectors.toList());
+		iterable = BlockPos.betweenClosedStream(startPos, endPos).map(BlockPos::immutable).collect(Collectors.toList());
 		for (Object object : iterable) {
 			BlockPos newPos = (BlockPos) object;
 			stateAt = world.getBlockState(newPos);
 			if (canBreak(world, newPos, stack)) {
-				TileEntity tile = world.getTileEntity(newPos);
+				TileEntity tile = world.getBlockEntity(newPos);
 				if (stateAt.getBlock().removedByPlayer(stateAt, world, newPos, entityplayer, true, world.getFluidState(newPos))) {
-					stateAt.getBlock().onBlockHarvested(world, newPos, stateAt, entityplayer);
-					stateAt.getBlock().harvestBlock(world, entityplayer, newPos, stateAt, tile, entityplayer.getActiveItemStack());
+					stateAt.getBlock().playerWillDestroy(world, newPos, stateAt, entityplayer);
+					stateAt.getBlock().playerDestroy(world, entityplayer, newPos, stateAt, tile, entityplayer.getUseItem());
 					if (rand.nextInt(blocks2Dig / 50 + 1) == 0)
 						particles(world, newPos, 1);
 				}
@@ -210,22 +210,22 @@ public class WandMiningItem extends WandItem {
 	public ItemStack cycleMode(PlayerEntity player, ItemStack stack) {
 		MiningMode mode = MiningMode.fromString(NBTHelper.getString(stack, "Mode"));
 		MiningMode next = MiningMode.getNext(mode, stack, reinforced);
-		NBTHelper.putString(stack, "Mode", next.getString());
+		NBTHelper.putString(stack, "Mode", next.getSerializedName());
 		this.sendMessage(player, new TranslationTextComponent(AssortedTools.MODID + ".wand.switched", next.getTranslatedString()));
 		return stack;
 	}
 
 	@Override
-	public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
-		if (this.isInGroup(group)) {
+	public void fillItemCategory(ItemGroup group, NonNullList<ItemStack> items) {
+		if (this.allowdedIn(group)) {
 			ItemStack stack = new ItemStack(this);
-			NBTHelper.putString(stack, "Mode", MiningMode.MINE_ALL.getString());
+			NBTHelper.putString(stack, "Mode", MiningMode.MINE_ALL.getSerializedName());
 			items.add(stack);
 		}
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		MiningMode mode = MiningMode.fromString(NBTHelper.getString(stack, "Mode"));
 		if (mode != null)
 			tooltip.add(new TranslationTextComponent(AssortedTools.MODID + ".wand.current", mode.getTranslatedString()));
@@ -234,8 +234,8 @@ public class WandMiningItem extends WandItem {
 	}
 
 	@Override
-	public void onCreated(ItemStack stack, World worldIn, PlayerEntity playerIn) {
-		NBTHelper.putString(stack, "Mode", MiningMode.MINE_ALL.getString());
+	public void onCraftedBy(ItemStack stack, World worldIn, PlayerEntity playerIn) {
+		NBTHelper.putString(stack, "Mode", MiningMode.MINE_ALL.getSerializedName());
 	}
 
 	private static enum MiningMode implements IStringSerializable {
@@ -276,7 +276,7 @@ public class WandMiningItem extends WandItem {
 
 		private static MiningMode fromString(String type) {
 			for (MiningMode mode : MiningMode.values) {
-				if (mode.getString().equalsIgnoreCase(type)) {
+				if (mode.getSerializedName().equalsIgnoreCase(type)) {
 					return mode;
 				}
 			}
@@ -288,7 +288,7 @@ public class WandMiningItem extends WandItem {
 		}
 
 		@Override
-		public String getString() {
+		public String getSerializedName() {
 			return this.name;
 		}
 

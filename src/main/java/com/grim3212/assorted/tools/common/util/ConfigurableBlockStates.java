@@ -68,19 +68,19 @@ public class ConfigurableBlockStates {
 			NonNullList<BlockState> states = NonNullList.create();
 
 			for (ResourceLocation b : this.blocks) {
-				Block block = Registry.BLOCK.getOrDefault(b);
+				Block block = Registry.BLOCK.get(b);
 
 				if (block != Blocks.AIR) {
-					states.add(block.getDefaultState());
+					states.add(block.defaultBlockState());
 				} else {
 					AssortedTools.LOGGER.warn(b.toString() + " is not a valid block.");
 				}
 			}
 
 			for (ResourceLocation t : this.tags) {
-				ITag<Block> foundTag = BlockTags.getCollection().get(t);
+				ITag<Block> foundTag = BlockTags.getAllTags().getTag(t);
 				if (foundTag != null) {
-					states.addAll(foundTag.getAllElements().stream().map(Block::getDefaultState).collect(Collectors.toList()));
+					states.addAll(foundTag.getValues().stream().map(Block::defaultBlockState).collect(Collectors.toList()));
 				} else {
 					AssortedTools.LOGGER.warn(t.toString() + " is not a valid block tag.");
 				}

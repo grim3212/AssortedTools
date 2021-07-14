@@ -27,7 +27,7 @@ public class ChickenSuitConversionHandler {
 			ArmorItem convertArmor = (ArmorItem) left.getItem();
 			ChickenSuitArmor chickenArmor = (ChickenSuitArmor) right.getItem();
 
-			if (chickenArmor.getEquipmentSlot() == convertArmor.getEquipmentSlot()) {
+			if (chickenArmor.getSlot() == convertArmor.getSlot()) {
 				if (convertArmor.canApplyAtEnchantingTable(left, ToolsEnchantments.CHICKEN_JUMP.get())) {
 
 					ItemStack output = left.copy();
@@ -36,22 +36,22 @@ public class ChickenSuitConversionHandler {
 					EnchantmentHelper.setEnchantments(enchantments, output);
 
 					int cost = 0;
-					if (!StringUtils.isBlank(event.getName()) && !event.getName().equals(output.getDisplayName().toString())) {
+					if (!StringUtils.isBlank(event.getName()) && !event.getName().equals(output.getHoverName().toString())) {
 						cost++;
 
-						output.setDisplayName(new StringTextComponent(event.getName()));
+						output.setHoverName(new StringTextComponent(event.getName()));
 					}
 
 					event.setOutput(output);
 					event.setMaterialCost(1);
 
-					if (convertArmor.getEquipmentSlot() == EquipmentSlotType.HEAD) {
+					if (convertArmor.getSlot() == EquipmentSlotType.HEAD) {
 						event.setCost(cost + 2);
-					} else if (convertArmor.getEquipmentSlot() == EquipmentSlotType.CHEST) {
+					} else if (convertArmor.getSlot() == EquipmentSlotType.CHEST) {
 						event.setCost(cost + 5);
-					} else if (convertArmor.getEquipmentSlot() == EquipmentSlotType.LEGS) {
+					} else if (convertArmor.getSlot() == EquipmentSlotType.LEGS) {
 						event.setCost(cost + 4);
-					} else if (convertArmor.getEquipmentSlot() == EquipmentSlotType.FEET) {
+					} else if (convertArmor.getSlot() == EquipmentSlotType.FEET) {
 						event.setCost(cost + 2);
 					}
 				}

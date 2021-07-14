@@ -29,12 +29,12 @@ public class HammerItem extends ConfigurableTieredItem {
 	}
 
 	@Override
-	protected boolean isInGroup(ItemGroup group) {
+	protected boolean allowdedIn(ItemGroup group) {
 		if (this.isExtraMaterial) {
-			return ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.isInGroup(group) : false;
+			return ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.allowdedIn(group) : false;
 		}
 
-		return ToolsConfig.COMMON.hammersEnabled.get() ? super.isInGroup(group) : false;
+		return ToolsConfig.COMMON.hammersEnabled.get() ? super.allowdedIn(group) : false;
 	}
 
 	@Override
@@ -49,18 +49,18 @@ public class HammerItem extends ConfigurableTieredItem {
 
 	@Override
 	public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, PlayerEntity player) {
-		World worldIn = player.world;
+		World worldIn = player.level;
 
-		if (!player.isCreative() && player.canPlayerEdit(pos, player.getHorizontalFacing(), itemstack)) {
-			if (!worldIn.isRemote) {
-				player.addStat(Stats.BLOCK_MINED.get(worldIn.getBlockState(pos).getBlock()));
-				player.addExhaustion(0.005F);
+		if (!player.isCreative() && player.mayUseItemAt(pos, player.getDirection(), itemstack)) {
+			if (!worldIn.isClientSide) {
+				player.awardStat(Stats.BLOCK_MINED.get(worldIn.getBlockState(pos).getBlock()));
+				player.causeFoodExhaustion(0.005F);
 
-				worldIn.playEvent(2001, pos, Block.getStateId(worldIn.getBlockState(pos)));
-				worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
+				worldIn.levelEvent(2001, pos, Block.getId(worldIn.getBlockState(pos)));
+				worldIn.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 
-				itemstack.damageItem(1, player, (pEnt) -> {
-					pEnt.sendBreakAnimation(EquipmentSlotType.MAINHAND);
+				itemstack.hurtAndBreak(1, player, (pEnt) -> {
+					pEnt.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
 				});
 			}
 			return true;

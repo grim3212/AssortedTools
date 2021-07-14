@@ -29,11 +29,11 @@ public abstract class ConfigurableToolItem extends ToolItem {
 		this.tierHolder = tierHolder;
 		this.toolDamage = attackDamageIn;
 		// Set these values again so that our configurable values are the ones used
-		this.attackDamage = attackDamageIn + tierHolder.getDamage();
+		this.attackDamageBaseline = attackDamageIn + tierHolder.getDamage();
 		Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", (double) this.attackDamage, AttributeModifier.Operation.ADDITION));
-		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", (double) attackSpeedIn, AttributeModifier.Operation.ADDITION));
-		this.toolAttributes = builder.build();
+		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", (double) this.attackDamageBaseline, AttributeModifier.Operation.ADDITION));
+		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", (double) attackSpeedIn, AttributeModifier.Operation.ADDITION));
+		this.defaultModifiers = builder.build();
 	}
 
 	public ItemTierHolder getTierHolder() {
@@ -59,7 +59,7 @@ public abstract class ConfigurableToolItem extends ToolItem {
 	public float getDestroySpeed(ItemStack stack, BlockState state) {
 		if (getToolTypes(stack).stream().anyMatch(e -> state.isToolEffective(e)))
 			return this.tierHolder.getEfficiency();
-		return this.effectiveBlocks.contains(state.getBlock()) ? this.tierHolder.getEfficiency() : 1.0F;
+		return this.blocks.contains(state.getBlock()) ? this.tierHolder.getEfficiency() : 1.0F;
 	}
 
 	public int getTierHarvestLevel() {
