@@ -17,10 +17,20 @@ public class ChickenJumpEnchantment extends Enchantment {
 	public boolean canEnchant(ItemStack stack) {
 		return ToolsConfig.COMMON.chickenSuitEnabled.get() ? super.canEnchant(stack) : false;
 	}
+	
+	@Override
+	public boolean canApplyAtEnchantingTable(ItemStack stack) {
+		return ToolsConfig.COMMON.chickenSuitEnabled.get() ? super.canApplyAtEnchantingTable(stack) : false;
+	}
 
 	@Override
 	public boolean isAllowedOnBooks() {
 		return ToolsConfig.COMMON.chickenSuitEnabled.get() ? super.isAllowedOnBooks() : false;
+	}
+	
+	@Override
+	public boolean isDiscoverable() {
+		return ToolsConfig.COMMON.chickenSuitEnabled.get() ? super.isDiscoverable() : false;
 	}
 
 	@Override
