@@ -39,6 +39,8 @@ public class EnabledCondition implements ICondition {
 			return ToolsConfig.COMMON.chickenSuitEnabled.get();
 		case "extramaterials":
 			return ToolsConfig.COMMON.extraMaterialsEnabled.get();
+		case "spears":
+			return ToolsConfig.COMMON.spearsEnabled.get();
 		default:
 			return false;
 		}

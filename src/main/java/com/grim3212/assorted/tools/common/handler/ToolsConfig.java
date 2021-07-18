@@ -65,6 +65,7 @@ public final class ToolsConfig {
 		public final ForgeConfigSpec.BooleanValue pokeballEnabled;
 		public final ForgeConfigSpec.BooleanValue chickenSuitEnabled;
 		public final ForgeConfigSpec.BooleanValue extraMaterialsEnabled;
+		public final ForgeConfigSpec.BooleanValue spearsEnabled;
 
 		public Common(ForgeConfigSpec.Builder builder) {
 			builder.push("Parts");
@@ -75,6 +76,7 @@ public final class ToolsConfig {
 			pokeballEnabled = builder.comment("Set this to true if you would like the pokeball to be craftable and found in the creative tab.").define("pokeballEnabled", true);
 			chickenSuitEnabled = builder.comment("Set this to true if you would like the chicken suit to be craftable and found in the creative tab as well as if you want the Chicken Jump enchantment to be able to be applied.").define("chickenSuitEnabled", true);
 			extraMaterialsEnabled = builder.comment("Set this to true if you would like to enable support for crafting the extra tools and armor that this supports. For example, Steel, Copper, or Ruby tools and armor.").define("extraMaterialsEnabled", true);
+			spearsEnabled = builder.comment("Set this to true if you would like the spears to be craftable and found in the creative tab.").define("spearsEnabled", true);
 			builder.pop();
 
 			builder.push("Boomerangs");

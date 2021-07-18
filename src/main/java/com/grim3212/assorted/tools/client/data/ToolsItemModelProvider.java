@@ -41,6 +41,15 @@ public class ToolsItemModelProvider extends ItemModelProvider {
 		handheldItem(ToolsItems.MINING_WAND.get());
 		handheldItem(ToolsItems.REINFORCED_MINING_WAND.get());
 
+		handheldItem(ToolsItems.FLINT_SPEAR.get());
+		handheldItem(ToolsItems.IRON_SPEAR.get());
+		handheldItem(ToolsItems.DIAMOND_SPEAR.get());
+		handheldItem(ToolsItems.EXPLOSIVE_SPEAR.get());
+		handheldItem(ToolsItems.FIRE_SPEAR.get());
+		handheldItem(ToolsItems.LIGHT_SPEAR.get());
+		handheldItem(ToolsItems.LIGHTNING_SPEAR.get());
+		handheldItem(ToolsItems.SLIME_SPEAR.get());
+		
 		armor(ToolsItems.CHICKEN_SUIT_HELMET.get());
 		armor(ToolsItems.CHICKEN_SUIT_CHESTPLATE.get());
 		armor(ToolsItems.CHICKEN_SUIT_LEGGINGS.get());

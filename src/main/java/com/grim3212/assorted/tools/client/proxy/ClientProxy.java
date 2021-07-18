@@ -6,6 +6,7 @@ import com.grim3212.assorted.tools.AssortedTools;
 import com.grim3212.assorted.tools.client.handler.ChickenJumpHandler;
 import com.grim3212.assorted.tools.client.handler.KeyBindHandler;
 import com.grim3212.assorted.tools.client.render.entity.BoomerangRenderer;
+import com.grim3212.assorted.tools.client.render.entity.SpearRenderer;
 import com.grim3212.assorted.tools.common.entity.PokeballEntity;
 import com.grim3212.assorted.tools.common.entity.ToolsEntities;
 import com.grim3212.assorted.tools.common.proxy.IProxy;
@@ -42,6 +43,7 @@ public class ClientProxy implements IProxy {
 
 		RenderingRegistry.registerEntityRenderingHandler(ToolsEntities.WOOD_BOOMERANG.get(), new BoomerangRenderer.Factory());
 		RenderingRegistry.registerEntityRenderingHandler(ToolsEntities.DIAMOND_BOOMERANG.get(), new BoomerangRenderer.Factory());
+		RenderingRegistry.registerEntityRenderingHandler(ToolsEntities.SPEAR.get(), new SpearRenderer.Factory());
 		RenderingRegistry.registerEntityRenderingHandler(ToolsEntities.POKEBALL.get(), new IRenderFactory<PokeballEntity>() {
 			@Override
 			public EntityRenderer<PokeballEntity> createRenderFor(EntityRendererManager manager) {

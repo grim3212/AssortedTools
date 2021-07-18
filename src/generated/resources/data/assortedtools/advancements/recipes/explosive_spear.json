@@ -1,0 +1,44 @@
+{
+  "advancements": [
+    {
+      "conditions": [
+        {
+          "part": "spears",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "advancement": {
+        "parent": "minecraft:recipes/root",
+        "rewards": {
+          "recipes": [
+            "assortedtools:explosive_spear"
+          ]
+        },
+        "criteria": {
+          "has_base_spear": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+              "items": [
+                {
+                  "item": "assortedtools:flint_spear"
+                }
+              ]
+            }
+          },
+          "has_the_recipe": {
+            "trigger": "minecraft:recipe_unlocked",
+            "conditions": {
+              "recipe": "assortedtools:explosive_spear"
+            }
+          }
+        },
+        "requirements": [
+          [
+            "has_base_spear",
+            "has_the_recipe"
+          ]
+        ]
+      }
+    }
+  ]
+}

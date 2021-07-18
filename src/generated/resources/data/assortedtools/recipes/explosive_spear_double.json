@@ -1,0 +1,33 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "part": "spears",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          " X ",
+          "XMX",
+          " M "
+        ],
+        "key": {
+          "X": {
+            "tag": "forge:gunpowder"
+          },
+          "M": {
+            "item": "assortedtools:flint_spear"
+          }
+        },
+        "result": {
+          "item": "assortedtools:explosive_spear",
+          "count": 2
+        }
+      }
+    }
+  ]
+}

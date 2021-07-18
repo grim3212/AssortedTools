@@ -1,0 +1,27 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "part": "spears",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shapeless",
+        "ingredients": [
+          {
+            "tag": "minecraft:coals"
+          },
+          {
+            "item": "assortedtools:flint_spear"
+          }
+        ],
+        "result": {
+          "item": "assortedtools:fire_spear"
+        }
+      }
+    }
+  ]
+}

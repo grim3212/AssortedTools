@@ -1,0 +1,30 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "part": "spears",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shapeless",
+        "ingredients": [
+          {
+            "tag": "forge:dusts/redstone"
+          },
+          {
+            "item": "minecraft:water_bucket"
+          },
+          {
+            "item": "assortedtools:diamond_spear"
+          }
+        ],
+        "result": {
+          "item": "assortedtools:lightning_spear"
+        }
+      }
+    }
+  ]
+}

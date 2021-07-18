@@ -1,0 +1,31 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "part": "spears",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          "XXM"
+        ],
+        "key": {
+          "X": {
+            "tag": "forge:rods/wooden"
+          },
+          "M": {
+            "item": "minecraft:flint"
+          }
+        },
+        "result": {
+          "item": "assortedtools:flint_spear",
+          "count": 4
+        }
+      }
+    }
+  ]
+}
