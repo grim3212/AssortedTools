@@ -119,7 +119,7 @@ public class ToolsItemTagProvider extends ItemTagsProvider {
 		this.tag(ToolsTags.Items.BOOTS_DIAMOND).add(Items.DIAMOND_BOOTS);
 		this.tag(ToolsTags.Items.BOOTS_NETHERITE).add(Items.NETHERITE_BOOTS);
 
-		this.tag(ItemTags.PIGLIN_LOVED).add(ToolsItems.GOLD_HAMMER.get(), ToolsItems.GOLDEN_MULTITOOL.get(), ToolsItems.BUILDING_WAND.get(), ToolsItems.REINFORCED_BUILDING_WAND.get());
+		this.tag(ItemTags.PIGLIN_LOVED).add(ToolsItems.GOLD_HAMMER.get(), ToolsItems.GOLDEN_MULTITOOL.get(), ToolsItems.GOLD_SPEAR.get(), ToolsItems.BUILDING_WAND.get(), ToolsItems.REINFORCED_BUILDING_WAND.get());
 	}
 
 	@Override

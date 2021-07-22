@@ -53,15 +53,22 @@ public class ToolsItems {
 	public static final RegistryObject<MultiToolItem> DIAMOND_MULTITOOL = register("diamond_multitool", () -> new MultiToolItem(ToolsConfig.COMMON.diamondItemTier, new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
 	public static final RegistryObject<MultiToolItem> NETHERITE_MULTITOOL = register("netherite_multitool", () -> new MultiToolItem(ToolsConfig.COMMON.netheriteItemTier, new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
 
-	public static final RegistryObject<SpearItem> FLINT_SPEAR = register("flint_spear", () -> new SpearItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), SpearType.FLINT));
-	public static final RegistryObject<SpearItem> IRON_SPEAR = register("iron_spear", () -> new SpearItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), SpearType.IRON));
-	public static final RegistryObject<SpearItem> DIAMOND_SPEAR = register("diamond_spear", () -> new SpearItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), SpearType.DIAMOND));
-	public static final RegistryObject<SpearItem> EXPLOSIVE_SPEAR = register("explosive_spear", () -> new SpearItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), SpearType.EXPLOSIVE));
-	public static final RegistryObject<SpearItem> FIRE_SPEAR = register("fire_spear", () -> new SpearItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), SpearType.FIRE));
-	public static final RegistryObject<SpearItem> LIGHT_SPEAR = register("light_spear", () -> new SpearItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), SpearType.LIGHT));
-	public static final RegistryObject<SpearItem> LIGHTNING_SPEAR = register("lightning_spear", () -> new SpearItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), SpearType.LIGHTNING));
-	public static final RegistryObject<SpearItem> SLIME_SPEAR = register("slime_spear", () -> new SpearItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), SpearType.SLIME));
-	
+	public static final RegistryObject<SpearItem> FLINT_SPEAR = register("flint_spear", () -> new SpearItem(new Item.Properties(), SpearType.FLINT));
+	public static final RegistryObject<SpearItem> IRON_SPEAR_BASIC = register("iron_spear_basic", () -> new SpearItem(new Item.Properties(), SpearType.IRON));
+	public static final RegistryObject<SpearItem> DIAMOND_SPEAR_BASIC = register("diamond_spear_basic", () -> new SpearItem(new Item.Properties(), SpearType.DIAMOND));
+	public static final RegistryObject<SpearItem> EXPLOSIVE_SPEAR = register("explosive_spear", () -> new SpearItem(new Item.Properties(), SpearType.EXPLOSIVE));
+	public static final RegistryObject<SpearItem> FIRE_SPEAR = register("fire_spear", () -> new SpearItem(new Item.Properties(), SpearType.FIRE));
+	public static final RegistryObject<SpearItem> LIGHT_SPEAR = register("light_spear", () -> new SpearItem(new Item.Properties(), SpearType.LIGHT));
+	public static final RegistryObject<SpearItem> LIGHTNING_SPEAR = register("lightning_spear", () -> new SpearItem(new Item.Properties(), SpearType.LIGHTNING));
+	public static final RegistryObject<SpearItem> SLIME_SPEAR = register("slime_spear", () -> new SpearItem(new Item.Properties(), SpearType.SLIME));
+
+	public static final RegistryObject<BetterSpearItem> WOOD_SPEAR = register("wood_spear", () -> new BetterSpearItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), ToolsConfig.COMMON.woodItemTier));
+	public static final RegistryObject<BetterSpearItem> STONE_SPEAR = register("stone_spear", () -> new BetterSpearItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), ToolsConfig.COMMON.stoneItemTier));
+	public static final RegistryObject<BetterSpearItem> IRON_SPEAR = register("iron_spear", () -> new BetterSpearItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), ToolsConfig.COMMON.ironItemTier));
+	public static final RegistryObject<BetterSpearItem> GOLD_SPEAR = register("gold_spear", () -> new BetterSpearItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), ToolsConfig.COMMON.goldItemTier));
+	public static final RegistryObject<BetterSpearItem> DIAMOND_SPEAR = register("diamond_spear", () -> new BetterSpearItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), ToolsConfig.COMMON.diamondItemTier));
+	public static final RegistryObject<BetterSpearItem> NETHERITE_SPEAR = register("netherite_spear", () -> new BetterSpearItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), ToolsConfig.COMMON.netheriteItemTier));
+
 	public static final Map<String, MaterialGroup> MATERIAL_GROUPS = Maps.newHashMap();
 
 	static {
@@ -82,6 +89,7 @@ public class ToolsItems {
 		public final RegistryObject<MaterialSwordItem> SWORD;
 		public final RegistryObject<HammerItem> HAMMER;
 		public final RegistryObject<MultiToolItem> MULTITOOL;
+		public final RegistryObject<BetterSpearItem> SPEAR;
 		public final RegistryObject<ConfigurableArmorItem> HELMET;
 		public final RegistryObject<ConfigurableArmorItem> CHESTPLATE;
 		public final RegistryObject<ConfigurableArmorItem> LEGGINGS;
@@ -98,6 +106,7 @@ public class ToolsItems {
 
 			this.HAMMER = register(tier.getName() + "_hammer", () -> new HammerItem(tier, new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), true));
 			this.MULTITOOL = register(tier.getName() + "_multitool", () -> new MultiToolItem(tier, new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), true));
+			this.SPEAR = register(tier.getName() + "_spear", () -> new BetterSpearItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), tier, true));
 
 			if (armor != null) {
 				this.HELMET = register(tier.getName() + "_helmet", () -> new MaterialArmorItem(armor.getMaterial(), EquipmentSlotType.HEAD, new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));

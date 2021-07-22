@@ -3,12 +3,16 @@ package com.grim3212.assorted.tools.client.data;
 import com.grim3212.assorted.tools.AssortedTools;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
 
+import net.minecraft.client.renderer.model.BlockModel.GuiLight;
+import net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
+import net.minecraftforge.client.model.generators.ModelBuilder.Perspective;
+import net.minecraftforge.client.model.generators.loaders.SeparatePerspectiveModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class ToolsItemModelProvider extends ItemModelProvider {
@@ -42,14 +46,14 @@ public class ToolsItemModelProvider extends ItemModelProvider {
 		handheldItem(ToolsItems.REINFORCED_MINING_WAND.get());
 
 		handheldItem(ToolsItems.FLINT_SPEAR.get());
-		handheldItem(ToolsItems.IRON_SPEAR.get());
-		handheldItem(ToolsItems.DIAMOND_SPEAR.get());
+		handheldItem(ToolsItems.IRON_SPEAR_BASIC.get());
+		handheldItem(ToolsItems.DIAMOND_SPEAR_BASIC.get());
 		handheldItem(ToolsItems.EXPLOSIVE_SPEAR.get());
 		handheldItem(ToolsItems.FIRE_SPEAR.get());
 		handheldItem(ToolsItems.LIGHT_SPEAR.get());
 		handheldItem(ToolsItems.LIGHTNING_SPEAR.get());
 		handheldItem(ToolsItems.SLIME_SPEAR.get());
-		
+
 		armor(ToolsItems.CHICKEN_SUIT_HELMET.get());
 		armor(ToolsItems.CHICKEN_SUIT_CHESTPLATE.get());
 		armor(ToolsItems.CHICKEN_SUIT_LEGGINGS.get());
@@ -62,6 +66,13 @@ public class ToolsItemModelProvider extends ItemModelProvider {
 		tool(ToolsItems.DIAMOND_MULTITOOL.get());
 		tool(ToolsItems.NETHERITE_MULTITOOL.get());
 
+		generateSpear(ToolsItems.WOOD_SPEAR.get());
+		generateSpear(ToolsItems.STONE_SPEAR.get());
+		generateSpear(ToolsItems.IRON_SPEAR.get());
+		generateSpear(ToolsItems.GOLD_SPEAR.get());
+		generateSpear(ToolsItems.DIAMOND_SPEAR.get());
+		generateSpear(ToolsItems.NETHERITE_SPEAR.get());
+
 		ToolsItems.MATERIAL_GROUPS.forEach((s, group) -> {
 			tool(group.PICKAXE.get());
 			tool(group.SHOVEL.get());
@@ -70,6 +81,7 @@ public class ToolsItemModelProvider extends ItemModelProvider {
 			tool(group.SWORD.get());
 			tool(group.HAMMER.get());
 			tool(group.MULTITOOL.get());
+			generateSpear(group.SPEAR.get());
 
 			armor(group.HELMET.get());
 			armor(group.CHESTPLATE.get());
@@ -95,7 +107,7 @@ public class ToolsItemModelProvider extends ItemModelProvider {
 	private ItemModelBuilder generatedItem(Item i) {
 		return generatedItem(name(i));
 	}
-	
+
 	private ItemModelBuilder handheldItem(String name) {
 		return withExistingParent(name, "item/handheld").texture("layer0", prefix("item/" + name));
 	}
@@ -110,5 +122,26 @@ public class ToolsItemModelProvider extends ItemModelProvider {
 
 	private ResourceLocation prefix(String name) {
 		return new ResourceLocation(AssortedTools.MODID, name);
+	}
+
+	private void generateSpear(Item item) {
+		String name = name(item);
+		ItemModelBuilder guiModel = nested().parent(withExistingParent(name + "_gui", "item/generated").texture("layer0", prefix("item/tools/" + name)));
+		ItemModelBuilder throwingModel = getBuilder(name + "_throwing").guiLight(GuiLight.FRONT).texture("particle", prefix("item/tools/" + name)).customLoader(SeparatePerspectiveModelBuilder::begin)
+				// Throwing model is "base" so that we can have our transforms
+				.base(nested().parent(getExistingFile(mcLoc("trident_throwing"))).texture("particle", prefix("item/tools/" + name)))
+				// Gui, ground, and fixed all use the normal "item model"
+				.perspective(TransformType.GUI, guiModel).perspective(TransformType.GROUND, guiModel).perspective(TransformType.FIXED, guiModel).end();
+
+		getBuilder(name).guiLight(GuiLight.FRONT).texture("particle", prefix("item/tools/" + name))
+				// Override when throwing to the throwing model to ensure we have the correct
+				// transforms
+				.override().predicate(prefix("throwing"), 1).model(throwingModel).end().customLoader(SeparatePerspectiveModelBuilder::begin)
+				// In hand model is base
+				.base(nested().parent(getExistingFile(mcLoc("trident_in_hand"))).texture("particle", prefix("item/tools/" + name))
+						// Add head transformation
+						.transforms().transform(Perspective.HEAD).rotation(0, 180, 120).translation(8, 10, -11).scale(1.5F).end().end())
+				// Gui, ground, and fixed all use the normal "item model"
+				.perspective(TransformType.GUI, guiModel).perspective(TransformType.GROUND, guiModel).perspective(TransformType.FIXED, guiModel);
 	}
 }

@@ -4,6 +4,10 @@
     {
       "conditions": [
         {
+          "part": "hammers",
+          "type": "assortedtools:part_enabled"
+        },
+        {
           "part": "extramaterials",
           "type": "assortedtools:part_enabled"
         }

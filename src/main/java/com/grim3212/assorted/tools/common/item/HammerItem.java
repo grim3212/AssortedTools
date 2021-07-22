@@ -31,7 +31,7 @@ public class HammerItem extends ConfigurableTieredItem {
 	@Override
 	protected boolean allowdedIn(ItemGroup group) {
 		if (this.isExtraMaterial) {
-			return ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.allowdedIn(group) : false;
+			return ToolsConfig.COMMON.hammersEnabled.get() && ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.allowdedIn(group) : false;
 		}
 
 		return ToolsConfig.COMMON.hammersEnabled.get() ? super.allowdedIn(group) : false;

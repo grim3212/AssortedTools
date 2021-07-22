@@ -1,0 +1,34 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "part": "betterspears",
+          "type": "assortedtools:part_enabled"
+        },
+        {
+          "part": "extramaterials",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          "SSI"
+        ],
+        "key": {
+          "S": {
+            "tag": "forge:rods/wooden"
+          },
+          "I": {
+            "tag": "forge:ingots/silver"
+          }
+        },
+        "result": {
+          "item": "assortedtools:silver_spear"
+        }
+      }
+    }
+  ]
+}

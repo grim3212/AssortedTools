@@ -4,20 +4,25 @@
     {
       "conditions": [
         {
-          "part": "spears",
+          "part": "betterspears",
           "type": "assortedtools:part_enabled"
         }
       ],
       "recipe": {
-        "type": "minecraft:crafting_shapeless",
-        "ingredients": [
-          {
-            "tag": "forge:ingots/iron"
-          },
-          {
-            "item": "assortedtools:flint_spear"
-          }
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          "I  ",
+          " S ",
+          "  S"
         ],
+        "key": {
+          "S": {
+            "tag": "forge:rods/wooden"
+          },
+          "I": {
+            "tag": "forge:ingots/iron"
+          }
+        },
         "result": {
           "item": "assortedtools:iron_spear"
         }

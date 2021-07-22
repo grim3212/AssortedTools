@@ -39,28 +39,24 @@ public class ToolsRecipes extends RecipeProvider {
 		hammerPattern(ToolsItems.STONE_HAMMER.get(), Tags.Items.COBBLESTONE, consumer);
 		hammerPattern(ToolsItems.WOOD_HAMMER.get(), ItemTags.PLANKS, consumer);
 
-		ConditionalRecipe.builder().addCondition(new EnabledCondition("boomerangs")).addRecipe(ShapedRecipeBuilder.shaped(ToolsItems.WOOD_BOOMERANG.get()).define('X', ItemTags.PLANKS).pattern("XX").pattern("X ").pattern("XX").unlockedBy("has_planks", has(ItemTags.PLANKS))::save).generateAdvancement().build(consumer, ToolsItems.WOOD_BOOMERANG.get().getRegistryName());
-		ConditionalRecipe.builder().addCondition(new EnabledCondition("boomerangs")).addRecipe(ShapedRecipeBuilder.shaped(ToolsItems.DIAMOND_BOOMERANG.get()).define('X', Tags.Items.GEMS_DIAMOND).define('Y', ToolsItems.WOOD_BOOMERANG.get()).pattern("XX").pattern("XY").pattern("XX").unlockedBy("has_diamonds", has(Tags.Items.GEMS_DIAMOND))::save).generateAdvancement().build(consumer, ToolsItems.DIAMOND_BOOMERANG.get().getRegistryName());
-		ConditionalRecipe.builder().addCondition(new EnabledCondition("pokeball")).addRecipe(ShapedRecipeBuilder.shaped(ToolsItems.POKEBALL.get()).define('R', Tags.Items.DUSTS_REDSTONE).define('C', ItemTags.COALS).define('I', Tags.Items.INGOTS_IRON).define('B', Items.STONE_BUTTON).pattern("RRR").pattern("CBC").pattern("III").unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON)).unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))::save).generateAdvancement()
-				.build(consumer, ToolsItems.POKEBALL.get().getRegistryName());
+		spearPattern(ToolsItems.WOOD_SPEAR.get(), ItemTags.PLANKS, consumer);
+		spearPattern(ToolsItems.STONE_SPEAR.get(), Tags.Items.COBBLESTONE, consumer);
+		spearPattern(ToolsItems.GOLD_SPEAR.get(), Tags.Items.INGOTS_GOLD, consumer);
+		spearPattern(ToolsItems.IRON_SPEAR.get(), Tags.Items.INGOTS_IRON, consumer);
+		spearPattern(ToolsItems.DIAMOND_SPEAR.get(), Tags.Items.GEMS_DIAMOND, consumer);
+		spearPattern(ToolsItems.NETHERITE_SPEAR.get(), Tags.Items.INGOTS_NETHERITE, consumer);
 
-		ConditionalRecipe.builder().addCondition(new EnabledCondition("spears")).addRecipe(ShapedRecipeBuilder.shaped(ToolsItems.FLINT_SPEAR.get(), 4).define('X', Tags.Items.RODS_WOODEN).define('M', Items.FLINT).pattern("XXM").unlockedBy("has_flint", has(Items.FLINT))::save).generateAdvancement().build(consumer, ToolsItems.FLINT_SPEAR.get().getRegistryName());
-		ConditionalRecipe.builder().addCondition(new EnabledCondition("spears")).addRecipe(ShapedRecipeBuilder.shaped(ToolsItems.FLINT_SPEAR.get(), 4).define('X', Tags.Items.RODS_WOODEN).define('M', Items.FLINT).pattern("M  ").pattern(" X ").pattern("  X").unlockedBy("has_flint", has(Items.FLINT))::save).generateAdvancement().build(consumer, new ResourceLocation(ToolsItems.FLINT_SPEAR.get().getRegistryName() + "_alt"));
-		ConditionalRecipe.builder().addCondition(new EnabledCondition("spears")).addRecipe(ShapelessRecipeBuilder.shapeless(ToolsItems.IRON_SPEAR.get()).requires(Tags.Items.INGOTS_IRON).requires(ToolsItems.FLINT_SPEAR.get()).unlockedBy("has_base_spear", has(ToolsItems.FLINT_SPEAR.get()))::save).generateAdvancement().build(consumer, ToolsItems.IRON_SPEAR.get().getRegistryName());
-		ConditionalRecipe.builder().addCondition(new EnabledCondition("spears")).addRecipe(ShapelessRecipeBuilder.shapeless(ToolsItems.DIAMOND_SPEAR.get()).requires(Tags.Items.GEMS_DIAMOND).requires(ToolsItems.FLINT_SPEAR.get()).unlockedBy("has_base_spear", has(ToolsItems.FLINT_SPEAR.get()))::save).generateAdvancement().build(consumer, ToolsItems.DIAMOND_SPEAR.get().getRegistryName());
-		ConditionalRecipe.builder().addCondition(new EnabledCondition("spears")).addRecipe(ShapedRecipeBuilder.shaped(ToolsItems.EXPLOSIVE_SPEAR.get()).define('X', Tags.Items.GUNPOWDER).define('M', ToolsItems.FLINT_SPEAR.get()).pattern(" X ").pattern("X X").pattern(" M ").unlockedBy("has_base_spear", has(ToolsItems.FLINT_SPEAR.get()))::save).generateAdvancement().build(consumer, ToolsItems.EXPLOSIVE_SPEAR.get().getRegistryName());
-		ConditionalRecipe.builder().addCondition(new EnabledCondition("spears")).addRecipe(ShapedRecipeBuilder.shaped(ToolsItems.EXPLOSIVE_SPEAR.get(), 2).define('X', Tags.Items.GUNPOWDER).define('M', ToolsItems.FLINT_SPEAR.get()).pattern(" X ").pattern("XMX").pattern(" M ").unlockedBy("has_base_spear", has(ToolsItems.FLINT_SPEAR.get()))::save).generateAdvancement().build(consumer, new ResourceLocation(ToolsItems.EXPLOSIVE_SPEAR.get().getRegistryName() + "_double"));
-		ConditionalRecipe.builder().addCondition(new EnabledCondition("spears")).addRecipe(ShapelessRecipeBuilder.shapeless(ToolsItems.FIRE_SPEAR.get()).requires(ItemTags.COALS).requires(ToolsItems.FLINT_SPEAR.get()).unlockedBy("has_base_spear", has(ToolsItems.FLINT_SPEAR.get()))::save).generateAdvancement().build(consumer, ToolsItems.FIRE_SPEAR.get().getRegistryName());
-		ConditionalRecipe.builder().addCondition(new EnabledCondition("spears")).addRecipe(ShapelessRecipeBuilder.shapeless(ToolsItems.LIGHT_SPEAR.get()).requires(Items.TORCH).requires(ToolsItems.FLINT_SPEAR.get()).unlockedBy("has_base_spear", has(ToolsItems.FLINT_SPEAR.get()))::save).generateAdvancement().build(consumer, ToolsItems.LIGHT_SPEAR.get().getRegistryName());
-		ConditionalRecipe.builder().addCondition(new EnabledCondition("spears")).addRecipe(ShapelessRecipeBuilder.shapeless(ToolsItems.SLIME_SPEAR.get()).requires(Tags.Items.SLIMEBALLS).requires(ToolsItems.FLINT_SPEAR.get()).unlockedBy("has_base_spear", has(ToolsItems.FLINT_SPEAR.get()))::save).generateAdvancement().build(consumer, ToolsItems.SLIME_SPEAR.get().getRegistryName());
-		ConditionalRecipe.builder().addCondition(new EnabledCondition("spears")).addRecipe(ShapelessRecipeBuilder.shapeless(ToolsItems.LIGHTNING_SPEAR.get()).requires(Tags.Items.DUSTS_REDSTONE).requires(Items.WATER_BUCKET).requires(ToolsItems.DIAMOND_SPEAR.get()).unlockedBy("has_diamond_spear", has(ToolsItems.DIAMOND_SPEAR.get()))::save).generateAdvancement().build(consumer, ToolsItems.LIGHTNING_SPEAR.get().getRegistryName());
+		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.BOOMERANGS_CONDITION)).addRecipe(ShapedRecipeBuilder.shaped(ToolsItems.WOOD_BOOMERANG.get()).define('X', ItemTags.PLANKS).pattern("XX").pattern("X ").pattern("XX").unlockedBy("has_planks", has(ItemTags.PLANKS))::save).generateAdvancement().build(consumer, ToolsItems.WOOD_BOOMERANG.get().getRegistryName());
+		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.BOOMERANGS_CONDITION)).addRecipe(ShapedRecipeBuilder.shaped(ToolsItems.DIAMOND_BOOMERANG.get()).define('X', Tags.Items.GEMS_DIAMOND).define('Y', ToolsItems.WOOD_BOOMERANG.get()).pattern("XX").pattern("XY").pattern("XX").unlockedBy("has_diamonds", has(Tags.Items.GEMS_DIAMOND))::save).generateAdvancement().build(consumer, ToolsItems.DIAMOND_BOOMERANG.get().getRegistryName());
+		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.POKEBALL_CONDITION)).addRecipe(ShapedRecipeBuilder.shaped(ToolsItems.POKEBALL.get()).define('R', Tags.Items.DUSTS_REDSTONE).define('C', ItemTags.COALS).define('I', Tags.Items.INGOTS_IRON).define('B', Items.STONE_BUTTON).pattern("RRR").pattern("CBC").pattern("III").unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON)).unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))::save).generateAdvancement()
+				.build(consumer, ToolsItems.POKEBALL.get().getRegistryName());
 		
-		ConditionalRecipe.builder().addCondition(new EnabledCondition("wands")).addRecipe(ShapedRecipeBuilder.shaped(ToolsItems.BUILDING_WAND.get()).define('X', ItemTags.PLANKS).define('G', Tags.Items.INGOTS_GOLD).pattern("XGX").pattern("XGX").pattern("XGX").unlockedBy("has_gold", has(Tags.Items.INGOTS_GOLD))::save).generateAdvancement().build(consumer, ToolsItems.BUILDING_WAND.get().getRegistryName());
-		ConditionalRecipe.builder().addCondition(new EnabledCondition("wands")).addRecipe(ShapedRecipeBuilder.shaped(ToolsItems.BREAKING_WAND.get()).define('X', ItemTags.PLANKS).define('G', Tags.Items.INGOTS_IRON).pattern("XGX").pattern("XGX").pattern("XGX").unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))::save).generateAdvancement().build(consumer, ToolsItems.BREAKING_WAND.get().getRegistryName());
-		ConditionalRecipe.builder().addCondition(new EnabledCondition("wands")).addRecipe(ShapedRecipeBuilder.shaped(ToolsItems.MINING_WAND.get()).define('X', ItemTags.PLANKS).define('G', Tags.Items.GEMS_DIAMOND).pattern("XGX").pattern("XGX").pattern("XGX").unlockedBy("has_diamond", has(Tags.Items.GEMS_DIAMOND))::save).generateAdvancement().build(consumer, ToolsItems.MINING_WAND.get().getRegistryName());
-		ConditionalRecipe.builder().addCondition(new EnabledCondition("wands")).addRecipe(ShapedRecipeBuilder.shaped(ToolsItems.REINFORCED_BUILDING_WAND.get()).define('X', Tags.Items.OBSIDIAN).define('G', Tags.Items.STORAGE_BLOCKS_GOLD).pattern("XGX").pattern("XGX").pattern("XGX").unlockedBy("has_obsidian", has(Tags.Items.OBSIDIAN))::save).generateAdvancement().build(consumer, ToolsItems.REINFORCED_BUILDING_WAND.get().getRegistryName());
-		ConditionalRecipe.builder().addCondition(new EnabledCondition("wands")).addRecipe(ShapedRecipeBuilder.shaped(ToolsItems.REINFORCED_BREAKING_WAND.get()).define('X', Tags.Items.OBSIDIAN).define('G', Tags.Items.STORAGE_BLOCKS_IRON).pattern("XGX").pattern("XGX").pattern("XGX").unlockedBy("has_obsidian", has(Tags.Items.OBSIDIAN))::save).generateAdvancement().build(consumer, ToolsItems.REINFORCED_BREAKING_WAND.get().getRegistryName());
-		ConditionalRecipe.builder().addCondition(new EnabledCondition("wands")).addRecipe(ShapedRecipeBuilder.shaped(ToolsItems.REINFORCED_MINING_WAND.get()).define('X', Tags.Items.OBSIDIAN).define('G', Tags.Items.STORAGE_BLOCKS_DIAMOND).pattern("XGX").pattern("XGX").pattern("XGX").unlockedBy("has_obsidian", has(Tags.Items.OBSIDIAN))::save).generateAdvancement().build(consumer, ToolsItems.REINFORCED_MINING_WAND.get().getRegistryName());
+		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.WANDS_CONDITION)).addRecipe(ShapedRecipeBuilder.shaped(ToolsItems.BUILDING_WAND.get()).define('X', ItemTags.PLANKS).define('G', Tags.Items.INGOTS_GOLD).pattern("XGX").pattern("XGX").pattern("XGX").unlockedBy("has_gold", has(Tags.Items.INGOTS_GOLD))::save).generateAdvancement().build(consumer, ToolsItems.BUILDING_WAND.get().getRegistryName());
+		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.WANDS_CONDITION)).addRecipe(ShapedRecipeBuilder.shaped(ToolsItems.BREAKING_WAND.get()).define('X', ItemTags.PLANKS).define('G', Tags.Items.INGOTS_IRON).pattern("XGX").pattern("XGX").pattern("XGX").unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))::save).generateAdvancement().build(consumer, ToolsItems.BREAKING_WAND.get().getRegistryName());
+		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.WANDS_CONDITION)).addRecipe(ShapedRecipeBuilder.shaped(ToolsItems.MINING_WAND.get()).define('X', ItemTags.PLANKS).define('G', Tags.Items.GEMS_DIAMOND).pattern("XGX").pattern("XGX").pattern("XGX").unlockedBy("has_diamond", has(Tags.Items.GEMS_DIAMOND))::save).generateAdvancement().build(consumer, ToolsItems.MINING_WAND.get().getRegistryName());
+		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.WANDS_CONDITION)).addRecipe(ShapedRecipeBuilder.shaped(ToolsItems.REINFORCED_BUILDING_WAND.get()).define('X', Tags.Items.OBSIDIAN).define('G', Tags.Items.STORAGE_BLOCKS_GOLD).pattern("XGX").pattern("XGX").pattern("XGX").unlockedBy("has_obsidian", has(Tags.Items.OBSIDIAN))::save).generateAdvancement().build(consumer, ToolsItems.REINFORCED_BUILDING_WAND.get().getRegistryName());
+		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.WANDS_CONDITION)).addRecipe(ShapedRecipeBuilder.shaped(ToolsItems.REINFORCED_BREAKING_WAND.get()).define('X', Tags.Items.OBSIDIAN).define('G', Tags.Items.STORAGE_BLOCKS_IRON).pattern("XGX").pattern("XGX").pattern("XGX").unlockedBy("has_obsidian", has(Tags.Items.OBSIDIAN))::save).generateAdvancement().build(consumer, ToolsItems.REINFORCED_BREAKING_WAND.get().getRegistryName());
+		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.WANDS_CONDITION)).addRecipe(ShapedRecipeBuilder.shaped(ToolsItems.REINFORCED_MINING_WAND.get()).define('X', Tags.Items.OBSIDIAN).define('G', Tags.Items.STORAGE_BLOCKS_DIAMOND).pattern("XGX").pattern("XGX").pattern("XGX").unlockedBy("has_obsidian", has(Tags.Items.OBSIDIAN))::save).generateAdvancement().build(consumer, ToolsItems.REINFORCED_MINING_WAND.get().getRegistryName());
 
 		armorSet(ToolsItems.CHICKEN_SUIT_HELMET.get(), ToolsItems.CHICKEN_SUIT_CHESTPLATE.get(), ToolsItems.CHICKEN_SUIT_LEGGINGS.get(), ToolsItems.CHICKEN_SUIT_BOOTS.get(), Tags.Items.FEATHERS, consumer, "chickensuit");
 
@@ -72,15 +68,16 @@ public class ToolsRecipes extends RecipeProvider {
 		multiTool(ToolsItems.NETHERITE_MULTITOOL.get(), "netherite", Tags.Items.INGOTS_NETHERITE, consumer);
 
 		ToolsItems.MATERIAL_GROUPS.forEach((s, group) -> {
-			toolSet(group.PICKAXE.get(), group.SHOVEL.get(), group.AXE.get(), group.HOE.get(), group.SWORD.get(), group.material, consumer, "extramaterials");
-			hammerPattern(group.HAMMER.get(), group.material, consumer, "extramaterials");
-			multiTool(group.MULTITOOL.get(), s, group.material, consumer, "extramaterials");
-			armorSet(group.HELMET.get(), group.CHESTPLATE.get(), group.LEGGINGS.get(), group.BOOTS.get(), group.material, consumer, "extramaterials");
+			toolSet(group.PICKAXE.get(), group.SHOVEL.get(), group.AXE.get(), group.HOE.get(), group.SWORD.get(), group.material, consumer, EnabledCondition.EXTRA_MATERIAL_CONDITION);
+			hammerPattern(group.HAMMER.get(), group.material, consumer, EnabledCondition.EXTRA_MATERIAL_CONDITION);
+			multiTool(group.MULTITOOL.get(), s, group.material, consumer, EnabledCondition.EXTRA_MATERIAL_CONDITION);
+			armorSet(group.HELMET.get(), group.CHESTPLATE.get(), group.LEGGINGS.get(), group.BOOTS.get(), group.material, consumer, EnabledCondition.EXTRA_MATERIAL_CONDITION);
+			spearPattern(group.SPEAR.get(), group.material, consumer, EnabledCondition.EXTRA_MATERIAL_CONDITION);
 		});
 
 		SmithingRecipeBuilder.smithing(Ingredient.of(ToolsItems.DIAMOND_MULTITOOL.get()), Ingredient.of(Blocks.NETHERITE_BLOCK), ToolsItems.NETHERITE_MULTITOOL.get()).unlocks("has_netherite_block", has(Blocks.NETHERITE_BLOCK)).save(consumer, ToolsItems.NETHERITE_MULTITOOL.get().getRegistryName() + "_smithing");
-	
-		
+		SmithingRecipeBuilder.smithing(Ingredient.of(ToolsItems.DIAMOND_HAMMER.get()), Ingredient.of(Tags.Items.INGOTS_NETHERITE), ToolsItems.NETHERITE_HAMMER.get()).unlocks("has_netherite_ingot", has(Tags.Items.INGOTS_NETHERITE)).save(consumer, ToolsItems.NETHERITE_HAMMER.get().getRegistryName() + "_smithing");
+		SmithingRecipeBuilder.smithing(Ingredient.of(ToolsItems.DIAMOND_SPEAR.get()), Ingredient.of(Tags.Items.INGOTS_NETHERITE), ToolsItems.NETHERITE_SPEAR.get()).unlocks("has_netherite_ingot", has(Tags.Items.INGOTS_NETHERITE)).save(consumer, ToolsItems.NETHERITE_SPEAR.get().getRegistryName() + "_smithing");
 	}
 
 	@Override
@@ -88,12 +85,22 @@ public class ToolsRecipes extends RecipeProvider {
 		return "Assorted Tools recipes";
 	}
 
+	private void spearPattern(IItemProvider output, ITag<Item> input, Consumer<IFinishedRecipe> consumer) {
+		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.BETTER_SPEARS_CONDITION)).addRecipe(ShapedRecipeBuilder.shaped(output).define('S', Tags.Items.RODS_WOODEN).define('I', input).pattern("I  ").pattern(" S ").pattern("  S").unlockedBy("has_item", has(input))::save).generateAdvancement().build(consumer, output.asItem().getRegistryName());
+		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.BETTER_SPEARS_CONDITION)).addRecipe(ShapedRecipeBuilder.shaped(output).define('S', Tags.Items.RODS_WOODEN).define('I', input).pattern("SSI").unlockedBy("has_item", has(input))::save).generateAdvancement().build(consumer, new ResourceLocation(output.asItem().getRegistryName() + "_alt"));
+	}
+
+	private void spearPattern(IItemProvider output, ITag<Item> input, Consumer<IFinishedRecipe> consumer, String condition) {
+		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.BETTER_SPEARS_CONDITION)).addCondition(new EnabledCondition(condition)).addRecipe(ShapedRecipeBuilder.shaped(output).define('S', Tags.Items.RODS_WOODEN).define('I', input).pattern("I  ").pattern(" S ").pattern("  S").unlockedBy("has_item", has(input))::save).generateAdvancement().build(consumer, output.asItem().getRegistryName());
+		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.BETTER_SPEARS_CONDITION)).addCondition(new EnabledCondition(condition)).addRecipe(ShapedRecipeBuilder.shaped(output).define('S', Tags.Items.RODS_WOODEN).define('I', input).pattern("SSI").unlockedBy("has_item", has(input))::save).generateAdvancement().build(consumer, new ResourceLocation(output.asItem().getRegistryName() + "_alt"));
+	}
+
 	private void hammerPattern(IItemProvider output, ITag<Item> input, Consumer<IFinishedRecipe> consumer) {
-		hammerPattern(output, input, consumer, "hammers");
+		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.HAMMERS_CONDITION)).addRecipe(ShapedRecipeBuilder.shaped(output).define('S', Tags.Items.RODS_WOODEN).define('I', input).pattern("III").pattern("ISI").pattern(" S ").unlockedBy("has_item", has(input))::save).generateAdvancement().build(consumer, output.asItem().getRegistryName());
 	}
 
 	private void hammerPattern(IItemProvider output, ITag<Item> input, Consumer<IFinishedRecipe> consumer, String condition) {
-		ConditionalRecipe.builder().addCondition(new EnabledCondition(condition)).addRecipe(ShapedRecipeBuilder.shaped(output).define('S', Tags.Items.RODS_WOODEN).define('I', input).pattern("III").pattern("ISI").pattern(" S ").unlockedBy("has_item", has(input))::save).generateAdvancement().build(consumer, output.asItem().getRegistryName());
+		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.HAMMERS_CONDITION)).addCondition(new EnabledCondition(condition)).addRecipe(ShapedRecipeBuilder.shaped(output).define('S', Tags.Items.RODS_WOODEN).define('I', input).pattern("III").pattern("ISI").pattern(" S ").unlockedBy("has_item", has(input))::save).generateAdvancement().build(consumer, output.asItem().getRegistryName());
 	}
 
 	private void toolSet(IItemProvider pickaxe, IItemProvider shovel, IItemProvider axe, IItemProvider hoe, IItemProvider sword, ITag<Item> input, Consumer<IFinishedRecipe> consumer, String condition) {
@@ -114,11 +121,14 @@ public class ToolsRecipes extends RecipeProvider {
 	}
 
 	private void multiTool(IItemProvider output, String materialName, ITag<Item> input, Consumer<IFinishedRecipe> consumer) {
-		multiTool(output, materialName, input, consumer, "multitools");
+		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.MULTITOOL_CONDITION))
+				.addRecipe(ShapelessRecipeBuilder.shapeless(output).requires(ToolsTags.Items.forgeTag("swords/" + materialName)).requires(ToolsTags.Items.forgeTag("pickaxes/" + materialName)).requires(ToolsTags.Items.forgeTag("shovels/" + materialName)).requires(ToolsTags.Items.forgeTag("hoes/" + materialName)).requires(ToolsTags.Items.forgeTag("axes/" + materialName)).requires(input).requires(input).requires(input).requires(input).unlockedBy("has_item", has(input))::save).generateAdvancement()
+				.build(consumer, output.asItem().getRegistryName());
 	}
 
 	private void multiTool(IItemProvider output, String materialName, ITag<Item> input, Consumer<IFinishedRecipe> consumer, String condition) {
-		ConditionalRecipe.builder().addCondition(new EnabledCondition(condition)).addRecipe(ShapelessRecipeBuilder.shapeless(output).requires(ToolsTags.Items.forgeTag("swords/" + materialName)).requires(ToolsTags.Items.forgeTag("pickaxes/" + materialName)).requires(ToolsTags.Items.forgeTag("shovels/" + materialName)).requires(ToolsTags.Items.forgeTag("hoes/" + materialName)).requires(ToolsTags.Items.forgeTag("axes/" + materialName)).requires(input)
-				.requires(input).requires(input).requires(input).unlockedBy("has_item", has(input))::save).generateAdvancement().build(consumer, output.asItem().getRegistryName());
+		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.MULTITOOL_CONDITION)).addCondition(new EnabledCondition(condition))
+				.addRecipe(ShapelessRecipeBuilder.shapeless(output).requires(ToolsTags.Items.forgeTag("swords/" + materialName)).requires(ToolsTags.Items.forgeTag("pickaxes/" + materialName)).requires(ToolsTags.Items.forgeTag("shovels/" + materialName)).requires(ToolsTags.Items.forgeTag("hoes/" + materialName)).requires(ToolsTags.Items.forgeTag("axes/" + materialName)).requires(input).requires(input).requires(input).requires(input).unlockedBy("has_item", has(input))::save).generateAdvancement()
+				.build(consumer, output.asItem().getRegistryName());
 	}
 }

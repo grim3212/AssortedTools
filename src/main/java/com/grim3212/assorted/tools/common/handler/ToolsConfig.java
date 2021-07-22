@@ -7,6 +7,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.grim3212.assorted.tools.AssortedTools;
 import com.grim3212.assorted.tools.common.util.ConfigurableBlockStates;
 import com.grim3212.assorted.tools.common.util.ToolsArmorMaterials;
 import com.grim3212.assorted.tools.common.util.ToolsItemTier;
@@ -42,6 +43,7 @@ public final class ToolsConfig {
 		public final ForgeConfigSpec.BooleanValue easyMiningObsidian;
 		public final ForgeConfigSpec.ConfigValue<List<String>> destructiveWandSparedBlocks;
 		public final ForgeConfigSpec.ConfigValue<List<String>> miningWandBlocksForSurfaceMining;
+		public final ForgeConfigSpec.ConfigValue<List<Double>> conductivityLightningChances;
 
 		public final ArmorMaterialHolder chickenSuitArmorMaterial;
 
@@ -66,6 +68,7 @@ public final class ToolsConfig {
 		public final ForgeConfigSpec.BooleanValue chickenSuitEnabled;
 		public final ForgeConfigSpec.BooleanValue extraMaterialsEnabled;
 		public final ForgeConfigSpec.BooleanValue spearsEnabled;
+		public final ForgeConfigSpec.BooleanValue betterSpearsEnabled;
 
 		public Common(ForgeConfigSpec.Builder builder) {
 			builder.push("Parts");
@@ -77,6 +80,7 @@ public final class ToolsConfig {
 			chickenSuitEnabled = builder.comment("Set this to true if you would like the chicken suit to be craftable and found in the creative tab as well as if you want the Chicken Jump enchantment to be able to be applied.").define("chickenSuitEnabled", true);
 			extraMaterialsEnabled = builder.comment("Set this to true if you would like to enable support for crafting the extra tools and armor that this supports. For example, Steel, Copper, or Ruby tools and armor.").define("extraMaterialsEnabled", true);
 			spearsEnabled = builder.comment("Set this to true if you would like the spears to be craftable and found in the creative tab.").define("spearsEnabled", true);
+			betterSpearsEnabled = builder.comment("Set this to true if you would like the better spears (the ones that can be enchanted) to be craftable and found in the creative tab as well as the Enchantments for it to be enchanted on books.").define("betterSpearsEnabled", true);
 			builder.pop();
 
 			builder.push("Boomerangs");
@@ -101,6 +105,25 @@ public final class ToolsConfig {
 
 			destructiveWandSparedBlocks = builder.comment("A list of blocks that the wand breaking wand will not break. Usually used for ores.").define("destructiveWandSparedBlocks", Lists.newArrayList("tag|forge:ores", "tag|forge:chests", "block|minecraft:spawner"));
 			miningWandBlocksForSurfaceMining = builder.comment("A list of blocks that the mining wand can break from the surface.").define("miningWandBlocksForSurfaceMining", Lists.newArrayList("tag|forge:ores"));
+			builder.pop();
+
+			builder.push("Better Spear");
+			conductivityLightningChances = builder.comment("An array of the chances for lightning to spawn at each level of conductivity. The smaller the number the higher chance. The array for conductivity lightning chances must be exactly 3 elements at all times and all items must be in the range from [0.0D - 1.0D).").define("conductivityLightningChances", Lists.newArrayList(0.6D, 0.3D, 0.1D), (chances) -> {
+				if (chances != null && chances instanceof List<?>) {
+					List<?> l = (List<?>) chances;
+					if (l.size() == 3) {
+						return l.stream().allMatch((c) -> {
+							if (c instanceof Double) {
+								Double chance = (Double) c;
+								return chance < 1.0D && chance >= 0.0D;
+							}
+							return false;
+						});
+					}
+				}
+				AssortedTools.LOGGER.error("The array for conductivity lightning chances must be exactly 3 elements at all times and all items must be in the range from [0.0D - 1.0D). No exceptions!");
+				return false;
+			});
 			builder.pop();
 
 			builder.push("Armors");

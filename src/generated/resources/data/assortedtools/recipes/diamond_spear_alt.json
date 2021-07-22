@@ -1,0 +1,30 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "part": "betterspears",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          "SSI"
+        ],
+        "key": {
+          "S": {
+            "tag": "forge:rods/wooden"
+          },
+          "I": {
+            "tag": "forge:gems/diamond"
+          }
+        },
+        "result": {
+          "item": "assortedtools:diamond_spear"
+        }
+      }
+    }
+  ]
+}

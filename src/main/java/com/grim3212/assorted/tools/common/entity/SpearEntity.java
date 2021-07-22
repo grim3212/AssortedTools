@@ -57,9 +57,9 @@ public class SpearEntity extends AbstractArrowEntity implements IEntityAdditiona
 			case FLINT:
 				return new ItemStack(ToolsItems.FLINT_SPEAR.get());
 			case IRON:
-				return new ItemStack(ToolsItems.IRON_SPEAR.get());
+				return new ItemStack(ToolsItems.IRON_SPEAR_BASIC.get());
 			case DIAMOND:
-				return new ItemStack(ToolsItems.DIAMOND_SPEAR.get());
+				return new ItemStack(ToolsItems.DIAMOND_SPEAR_BASIC.get());
 			case EXPLOSIVE:
 				return new ItemStack(ToolsItems.EXPLOSIVE_SPEAR.get());
 			case FIRE:

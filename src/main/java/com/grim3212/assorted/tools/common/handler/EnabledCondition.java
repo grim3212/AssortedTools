@@ -13,6 +13,16 @@ public class EnabledCondition implements ICondition {
 	private static final ResourceLocation NAME = new ResourceLocation(AssortedTools.MODID, "part_enabled");
 	private final String part;
 
+	public static final String WANDS_CONDITION = "wands";
+	public static final String HAMMERS_CONDITION = "hammers";
+	public static final String MULTITOOL_CONDITION = "multitools";
+	public static final String BOOMERANGS_CONDITION = "boomerangs";
+	public static final String POKEBALL_CONDITION = "pokeball";
+	public static final String CHICKEN_SUIT_CONDITION = "chickensuit";
+	public static final String SPEARS_CONDITION = "spears";
+	public static final String BETTER_SPEARS_CONDITION = "betterspears";
+	public static final String EXTRA_MATERIAL_CONDITION = "extramaterials";
+
 	public EnabledCondition(String part) {
 		this.part = part;
 	}
@@ -25,24 +35,26 @@ public class EnabledCondition implements ICondition {
 	@Override
 	public boolean test() {
 		switch (part) {
-		case "wands":
-			return ToolsConfig.COMMON.wandsEnabled.get();
-		case "hammers":
-			return ToolsConfig.COMMON.hammersEnabled.get();
-		case "multitools":
-			return ToolsConfig.COMMON.multiToolsEnabled.get();
-		case "boomerangs":
-			return ToolsConfig.COMMON.boomerangsEnabled.get();
-		case "pokeball":
-			return ToolsConfig.COMMON.pokeballEnabled.get();
-		case "chickensuit":
-			return ToolsConfig.COMMON.chickenSuitEnabled.get();
-		case "extramaterials":
-			return ToolsConfig.COMMON.extraMaterialsEnabled.get();
-		case "spears":
-			return ToolsConfig.COMMON.spearsEnabled.get();
-		default:
-			return false;
+			case WANDS_CONDITION:
+				return ToolsConfig.COMMON.wandsEnabled.get();
+			case HAMMERS_CONDITION:
+				return ToolsConfig.COMMON.hammersEnabled.get();
+			case MULTITOOL_CONDITION:
+				return ToolsConfig.COMMON.multiToolsEnabled.get();
+			case BOOMERANGS_CONDITION:
+				return ToolsConfig.COMMON.boomerangsEnabled.get();
+			case POKEBALL_CONDITION:
+				return ToolsConfig.COMMON.pokeballEnabled.get();
+			case CHICKEN_SUIT_CONDITION:
+				return ToolsConfig.COMMON.chickenSuitEnabled.get();
+			case EXTRA_MATERIAL_CONDITION:
+				return ToolsConfig.COMMON.extraMaterialsEnabled.get();
+			case SPEARS_CONDITION:
+				return ToolsConfig.COMMON.spearsEnabled.get();
+			case BETTER_SPEARS_CONDITION:
+				return ToolsConfig.COMMON.betterSpearsEnabled.get();
+			default:
+				return false;
 		}
 	}
 

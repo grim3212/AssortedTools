@@ -1,6 +1,51 @@
 {
-  "parent": "minecraft:item/handheld",
+  "gui_light": "front",
   "textures": {
-    "layer0": "assortedtools:item/iron_spear"
-  }
+    "particle": "assortedtools:item/tools/iron_spear"
+  },
+  "loader": "forge:separate-perspective",
+  "base": {
+    "parent": "minecraft:item/trident_in_hand",
+    "display": {
+      "head": {
+        "rotation": [
+          0,
+          180,
+          120
+        ],
+        "translation": [
+          8,
+          10,
+          -11
+        ],
+        "scale": [
+          1.5,
+          1.5,
+          1.5
+        ]
+      }
+    },
+    "textures": {
+      "particle": "assortedtools:item/tools/iron_spear"
+    }
+  },
+  "perspectives": {
+    "gui": {
+      "parent": "assortedtools:item/iron_spear_gui"
+    },
+    "ground": {
+      "parent": "assortedtools:item/iron_spear_gui"
+    },
+    "fixed": {
+      "parent": "assortedtools:item/iron_spear_gui"
+    }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "assortedtools:throwing": 1.0
+      },
+      "model": "assortedtools:item/iron_spear_throwing"
+    }
+  ]
 }

@@ -55,7 +55,7 @@ public class MultiToolItem extends ConfigurableToolItem {
 	@Override
 	protected boolean allowdedIn(ItemGroup group) {
 		if (this.isExtraMaterial) {
-			return ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.allowdedIn(group) : false;
+			return ToolsConfig.COMMON.multiToolsEnabled.get() && ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.allowdedIn(group) : false;
 		}
 
 		return ToolsConfig.COMMON.multiToolsEnabled.get() ? super.allowdedIn(group) : false;

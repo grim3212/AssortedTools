@@ -1,0 +1,24 @@
+{
+  "gui_light": "front",
+  "textures": {
+    "particle": "assortedtools:item/tools/ruby_spear"
+  },
+  "loader": "forge:separate-perspective",
+  "base": {
+    "parent": "minecraft:item/trident_throwing",
+    "textures": {
+      "particle": "assortedtools:item/tools/ruby_spear"
+    }
+  },
+  "perspectives": {
+    "gui": {
+      "parent": "assortedtools:item/ruby_spear_gui"
+    },
+    "ground": {
+      "parent": "assortedtools:item/ruby_spear_gui"
+    },
+    "fixed": {
+      "parent": "assortedtools:item/ruby_spear_gui"
+    }
+  }
+}
