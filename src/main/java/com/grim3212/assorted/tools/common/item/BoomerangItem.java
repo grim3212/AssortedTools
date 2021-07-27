@@ -5,13 +5,13 @@ import com.grim3212.assorted.tools.common.entity.DiamondBoomerangEntity;
 import com.grim3212.assorted.tools.common.entity.WoodBoomerangEntity;
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.Level;
 
 public class BoomerangItem extends Item {
 
@@ -23,12 +23,12 @@ public class BoomerangItem extends Item {
 	}
 
 	@Override
-	protected boolean allowdedIn(ItemGroup group) {
+	protected boolean allowdedIn(CreativeModeTab group) {
 		return ToolsConfig.COMMON.boomerangsEnabled.get() ? super.allowdedIn(group) : false;
 	}
 
 	@Override
-	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
 		if (playerIn.getItemInHand(handIn).getDamageValue() == 0) {
 			BoomerangEntity boom;
 			if (this.isWood) {
@@ -40,7 +40,7 @@ public class BoomerangItem extends Item {
 			worldIn.addFreshEntity(boom);
 			playerIn.setItemInHand(handIn, ItemStack.EMPTY);
 		}
-		return ActionResult.success(playerIn.getItemInHand(handIn));
+		return InteractionResultHolder.success(playerIn.getItemInHand(handIn));
 	}
 
 }

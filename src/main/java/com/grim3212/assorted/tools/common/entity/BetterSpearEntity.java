@@ -9,62 +9,62 @@ import com.grim3212.assorted.tools.common.item.BetterSpearItem;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
 import com.grim3212.assorted.tools.common.util.ToolsDamageSources;
 
-import net.minecraft.block.AbstractFireBlock;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.LightningBoltEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseFireBlock;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fmllegacy.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
-public class BetterSpearEntity extends AbstractArrowEntity implements IEntityAdditionalSpawnData {
-	private static final DataParameter<Byte> ID_LOYALTY = EntityDataManager.defineId(BetterSpearEntity.class, DataSerializers.BYTE);
-	private static final DataParameter<Boolean> ID_FOIL = EntityDataManager.defineId(BetterSpearEntity.class, DataSerializers.BOOLEAN);
+public class BetterSpearEntity extends AbstractArrow implements IEntityAdditionalSpawnData {
+	private static final EntityDataAccessor<Byte> ID_LOYALTY = SynchedEntityData.defineId(BetterSpearEntity.class, EntityDataSerializers.BYTE);
+	private static final EntityDataAccessor<Boolean> ID_FOIL = SynchedEntityData.defineId(BetterSpearEntity.class, EntityDataSerializers.BOOLEAN);
 	private ItemStack spearItem = new ItemStack(ToolsItems.WOOD_SPEAR.get());
 	public int clientSideReturnSpearTickCount;
 	private int bounceCount;
 	private boolean effectTriggered;
 	private boolean dealtDamage;
 
-	public BetterSpearEntity(EntityType<? extends AbstractArrowEntity> type, World level) {
+	public BetterSpearEntity(EntityType<? extends AbstractArrow> type, Level level) {
 		super(type, level);
 	}
 
-	public BetterSpearEntity(World level, LivingEntity entity, ItemStack stack) {
+	public BetterSpearEntity(Level level, LivingEntity entity, ItemStack stack) {
 		super(ToolsEntities.BETTER_SPEAR.get(), entity, level);
 		this.spearItem = stack.copy();
 		this.entityData.set(ID_LOYALTY, (byte) EnchantmentHelper.getLoyalty(stack));
 		this.entityData.set(ID_FOIL, stack.hasFoil());
 	}
 
-	public BetterSpearEntity(World level, double x, double y, double z, ItemStack stack) {
+	public BetterSpearEntity(Level level, double x, double y, double z, ItemStack stack) {
 		super(ToolsEntities.BETTER_SPEAR.get(), x, y, z, level);
 		this.spearItem = stack.copy();
 	}
@@ -109,14 +109,14 @@ public class BetterSpearEntity extends AbstractArrowEntity implements IEntityAdd
 		if ((this.dealtDamage || this.isNoPhysics()) && entity != null) {
 			int i = this.entityData.get(ID_LOYALTY);
 			if (i > 0 && !this.isAcceptibleReturnOwner()) {
-				if (!this.level.isClientSide && this.pickup == AbstractArrowEntity.PickupStatus.ALLOWED) {
+				if (!this.level.isClientSide && this.pickup == AbstractArrow.Pickup.ALLOWED) {
 					this.spawnAtLocation(this.getPickupItem(), 0.1F);
 				}
 
-				this.remove();
+				this.discard();
 			} else if (i > 0) {
 				this.setNoPhysics(true);
-				Vector3d vector3d = new Vector3d(entity.getX() - this.getX(), entity.getEyeY() - this.getY(), entity.getZ() - this.getZ());
+				Vec3 vector3d = new Vec3(entity.getX() - this.getX(), entity.getEyeY() - this.getY(), entity.getZ() - this.getZ());
 				this.setPosRaw(this.getX(), this.getY() + vector3d.y * 0.015D * (double) i, this.getZ());
 				if (this.level.isClientSide) {
 					this.yOld = this.getY();
@@ -138,7 +138,7 @@ public class BetterSpearEntity extends AbstractArrowEntity implements IEntityAdd
 	private boolean isAcceptibleReturnOwner() {
 		Entity entity = this.getOwner();
 		if (entity != null && entity.isAlive()) {
-			return !(entity instanceof ServerPlayerEntity) || !entity.isSpectator();
+			return !(entity instanceof ServerPlayer) || !entity.isSpectator();
 		} else {
 			return false;
 		}
@@ -146,22 +146,22 @@ public class BetterSpearEntity extends AbstractArrowEntity implements IEntityAdd
 
 	@Override
 	@Nullable
-	protected EntityRayTraceResult findHitEntity(Vector3d vector3D, Vector3d vector3D1) {
+	protected EntityHitResult findHitEntity(Vec3 vector3D, Vec3 vector3D1) {
 		return this.dealtDamage ? null : super.findHitEntity(vector3D, vector3D1);
 	}
 
 	@Override
-	protected void onHitBlock(BlockRayTraceResult rayTrace) {
+	protected void onHitBlock(BlockHitResult rayTrace) {
 		if (!this.effectTriggered) {
 			int maxBounces = ToolsEnchantments.getMaxBounces(this.spearItem);
 
 			if (this.bounceCount < maxBounces) {
 				bounceCount++;
-				Vector3d motion = this.getDeltaMovement();
+				Vec3 motion = this.getDeltaMovement();
 
 				motion = motion.scale(this.bounceCount == 1 ? 0.42F : 0.99F);
 				this.setDeltaMovement(motion.x, motion.y * -1D, motion.z);
-				level.playSound((PlayerEntity) null, this.blockPosition(), SoundEvents.SLIME_SQUISH_SMALL, SoundCategory.PLAYERS, 1.0F, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
+				level.playSound((Player) null, this.blockPosition(), SoundEvents.SLIME_SQUISH_SMALL, SoundSource.PLAYERS, 1.0F, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
 				this.spawnSlimeParticles();
 			} else {
 				super.onHitBlock(rayTrace);
@@ -179,7 +179,7 @@ public class BetterSpearEntity extends AbstractArrowEntity implements IEntityAdd
 	}
 
 	@Override
-	protected void onHitEntity(EntityRayTraceResult rayTrace) {
+	protected void onHitEntity(EntityHitResult rayTrace) {
 		Entity hitEntity = rayTrace.getEntity();
 		float f = this.getDamage(this.spearItem);
 		if (hitEntity instanceof LivingEntity) {
@@ -224,8 +224,8 @@ public class BetterSpearEntity extends AbstractArrowEntity implements IEntityAdd
 		for (int j = 0; j < 8; ++j) {
 			float f = this.random.nextFloat() * ((float) Math.PI * 2F);
 			float f1 = this.random.nextFloat() * 0.5F + 0.5F;
-			float f2 = MathHelper.sin(f) * (float) 1 * 0.5F * f1;
-			float f3 = MathHelper.cos(f) * (float) 1 * 0.5F * f1;
+			float f2 = Mth.sin(f) * (float) 1 * 0.5F * f1;
+			float f3 = Mth.cos(f) * (float) 1 * 0.5F * f1;
 			this.level.addParticle(ParticleTypes.ITEM_SLIME, this.getX() + (double) f2, this.getY(), this.getZ() + (double) f3, 0.0D, 0.0D, 0.0D);
 		}
 	}
@@ -234,12 +234,12 @@ public class BetterSpearEntity extends AbstractArrowEntity implements IEntityAdd
 		int conductivity = ToolsEnchantments.getConductivity(this.spearItem);
 		boolean flag = conductivity > 0 && this.random.nextDouble() <= 1.0D - ToolsConfig.COMMON.conductivityLightningChances.get().get(conductivity - 1);
 
-		if (this.level instanceof ServerWorld && flag) {
+		if (this.level instanceof ServerLevel && flag) {
 			if (this.level.canSeeSky(pos)) {
 				Entity owner = this.getOwner();
-				LightningBoltEntity lightningboltentity = EntityType.LIGHTNING_BOLT.create(this.level);
-				lightningboltentity.moveTo(Vector3d.atBottomCenterOf(pos));
-				lightningboltentity.setCause(owner instanceof ServerPlayerEntity ? (ServerPlayerEntity) owner : null);
+				LightningBolt lightningboltentity = EntityType.LIGHTNING_BOLT.create(this.level);
+				lightningboltentity.moveTo(Vec3.atBottomCenterOf(pos));
+				lightningboltentity.setCause(owner instanceof ServerPlayer ? (ServerPlayer) owner : null);
 				this.level.addFreshEntity(lightningboltentity);
 			}
 		}
@@ -250,7 +250,7 @@ public class BetterSpearEntity extends AbstractArrowEntity implements IEntityAdd
 
 		if (instability > 0) {
 			if (!level.isClientSide) {
-				level.explode(null, this.getX(), this.getY(), this.getZ(), instability * 2F, Explosion.Mode.BREAK);
+				level.explode(null, this.getX(), this.getY(), this.getZ(), instability * 2F, Explosion.BlockInteraction.BREAK);
 			}
 		}
 	}
@@ -262,8 +262,8 @@ public class BetterSpearEntity extends AbstractArrowEntity implements IEntityAdd
 			for (int fire = 0; fire < 6; ++fire) {
 				BlockPos blockPos = pos.offset(this.random.nextInt(3) - 1, this.random.nextInt(3) - 1, this.random.nextInt(3) - 1);
 
-				if (this.level.getBlockState(blockPos).isAir() && AbstractFireBlock.canBePlacedAt(level, blockPos, getDirection())) {
-					level.setBlockAndUpdate(blockPos, AbstractFireBlock.getState(this.level, blockPos));
+				if (this.level.getBlockState(blockPos).isAir() && BaseFireBlock.canBePlacedAt(level, blockPos, getDirection())) {
+					level.setBlockAndUpdate(blockPos, BaseFireBlock.getState(this.level, blockPos));
 				}
 			}
 		}
@@ -280,7 +280,7 @@ public class BetterSpearEntity extends AbstractArrowEntity implements IEntityAdd
 	}
 
 	@Override
-	public void playerTouch(PlayerEntity player) {
+	public void playerTouch(Player player) {
 		Entity entity = this.getOwner();
 		if (entity == null || entity.getUUID() == player.getUUID()) {
 			super.playerTouch(player);
@@ -288,16 +288,16 @@ public class BetterSpearEntity extends AbstractArrowEntity implements IEntityAdd
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundNBT nbt) {
+	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
-		nbt.put("Spear", this.spearItem.save(new CompoundNBT()));
+		nbt.put("Spear", this.spearItem.save(new CompoundTag()));
 		nbt.putBoolean("DealtDamage", this.dealtDamage);
 		nbt.putBoolean("EffectTriggered", this.effectTriggered);
 		nbt.putInt("BounceCount", this.bounceCount);
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundNBT nbt) {
+	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
 		if (nbt.contains("Spear", 10)) {
 			this.spearItem = ItemStack.of(nbt.getCompound("Spear"));
@@ -310,7 +310,7 @@ public class BetterSpearEntity extends AbstractArrowEntity implements IEntityAdd
 	}
 
 	@Override
-	public void writeSpawnData(PacketBuffer buffer) {
+	public void writeSpawnData(FriendlyByteBuf buffer) {
 		buffer.writeInt(bounceCount);
 		buffer.writeBoolean(dealtDamage);
 		buffer.writeBoolean(effectTriggered);
@@ -318,7 +318,7 @@ public class BetterSpearEntity extends AbstractArrowEntity implements IEntityAdd
 	}
 
 	@Override
-	public void readSpawnData(PacketBuffer additionalData) {
+	public void readSpawnData(FriendlyByteBuf additionalData) {
 		this.bounceCount = additionalData.readInt();
 		this.dealtDamage = additionalData.readBoolean();
 		this.effectTriggered = additionalData.readBoolean();
@@ -326,14 +326,14 @@ public class BetterSpearEntity extends AbstractArrowEntity implements IEntityAdd
 	}
 
 	@Override
-	public IPacket<?> getAddEntityPacket() {
+	public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 
 	@Override
 	public void tickDespawn() {
 		int i = this.entityData.get(ID_LOYALTY);
-		if (this.pickup != AbstractArrowEntity.PickupStatus.ALLOWED || i <= 0) {
+		if (this.pickup != AbstractArrow.Pickup.ALLOWED || i <= 0) {
 			super.tickDespawn();
 		}
 

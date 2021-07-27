@@ -2,13 +2,13 @@ package com.grim3212.assorted.tools.common.handler;
 
 import com.grim3212.assorted.tools.common.util.ToolsItemTier;
 
-import net.minecraft.item.IItemTier;
+import net.minecraft.world.item.Tier;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public class ItemTierHolder {
 
 	private final String name;
-	private final IItemTier defaultTier;
+	private final Tier defaultTier;
 
 	private final ForgeConfigSpec.IntValue harvestLevel;
 	private final ForgeConfigSpec.IntValue maxUses;
@@ -18,7 +18,7 @@ public class ItemTierHolder {
 	protected final ForgeConfigSpec.DoubleValue axeDamage;
 	protected final ForgeConfigSpec.DoubleValue axeSpeed;
 
-	public ItemTierHolder(ForgeConfigSpec.Builder builder, String name, IItemTier defaultTier, float defaultAxeDamage, float defaultAxeSpeed) {
+	public ItemTierHolder(ForgeConfigSpec.Builder builder, String name, Tier defaultTier, float defaultAxeDamage, float defaultAxeSpeed) {
 		this.name = name;
 		this.defaultTier = defaultTier;
 
@@ -58,7 +58,7 @@ public class ItemTierHolder {
 		return name;
 	}
 
-	public IItemTier getDefaultTier() {
+	public Tier getDefaultTier() {
 		return defaultTier;
 	}
 

@@ -1,11 +1,11 @@
 package com.grim3212.assorted.tools.common.util;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class WandCoord3D {
 
@@ -33,17 +33,17 @@ public class WandCoord3D {
 		return Math.abs(pos.getX() - b.pos.getX() + 1) * Math.abs(pos.getY() - b.pos.getY() + 1) * Math.abs(pos.getZ() - b.pos.getZ() + 1);
 	}
 
-	public double getDistance(WandCoord3D b) {
-		double d3 = pos.getX() - b.pos.getX();
-		double d4 = pos.getY() - b.pos.getY();
-		double d5 = pos.getZ() - b.pos.getZ();
-		return MathHelper.sqrt(d3 * d3 + d4 * d4 + d5 * d5);
+	public float getDistance(WandCoord3D b) {
+		float d3 = pos.getX() - b.pos.getX();
+		float d4 = pos.getY() - b.pos.getY();
+		float d5 = pos.getZ() - b.pos.getZ();
+		return Mth.sqrt(d3 * d3 + d4 * d4 + d5 * d5);
 	}
 
-	public double getDistanceFlat(WandCoord3D b) {
-		double d3 = pos.getX() - b.pos.getX();
-		double d5 = pos.getZ() - b.pos.getZ();
-		return MathHelper.sqrt(d3 * d3 + d5 * d5);
+	public float getDistanceFlat(WandCoord3D b) {
+		float d3 = pos.getX() - b.pos.getX();
+		float d5 = pos.getZ() - b.pos.getZ();
+		return Mth.sqrt(d3 * d3 + d5 * d5);
 	}
 
 	public int getFlatArea(WandCoord3D b) {
@@ -58,13 +58,13 @@ public class WandCoord3D {
 		setPos(a.pos);
 	}
 
-	public void writeToNBT(CompoundNBT compound, String key) {
+	public void writeToNBT(CompoundTag compound, String key) {
 		if (!compound.contains(key)) {
-			compound.put(key, new CompoundNBT());
+			compound.put(key, new CompoundTag());
 		}
-		CompoundNBT coord = compound.getCompound(key);
+		CompoundTag coord = compound.getCompound(key);
 		coord.putIntArray("Pos", new int[] { pos.getX(), pos.getY(), pos.getZ() });
-		coord.put("BlockState", NBTUtil.writeBlockState(this.state));
+		coord.put("BlockState", NbtUtils.writeBlockState(this.state));
 	}
 
 	public static void findEnds(WandCoord3D a, WandCoord3D b) {
@@ -93,12 +93,12 @@ public class WandCoord3D {
 		return Math.abs(a.pos.getX() - b.pos.getX() + 1) * Math.abs(a.pos.getZ() - b.pos.getZ() + 1);
 	}
 
-	public static WandCoord3D getFromNBT(CompoundNBT compound, String key) {
+	public static WandCoord3D getFromNBT(CompoundTag compound, String key) {
 		if (compound.contains(key)) {
-			CompoundNBT nbt = compound.getCompound(key);
+			CompoundTag nbt = compound.getCompound(key);
 			if (nbt.contains("Pos")) {
 				int[] coord = nbt.getIntArray("Pos");
-				BlockState state = NBTUtil.readBlockState(nbt.getCompound("BlockState"));
+				BlockState state = NbtUtils.readBlockState(nbt.getCompound("BlockState"));
 				if (coord.length == 3) {
 					return new WandCoord3D(new BlockPos(coord[0], coord[1], coord[2]), state);
 				}

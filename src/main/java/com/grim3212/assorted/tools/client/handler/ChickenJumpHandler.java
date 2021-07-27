@@ -7,13 +7,13 @@ import com.grim3212.assorted.tools.common.network.ChickenSuitUpdatePacket;
 import com.grim3212.assorted.tools.common.network.PacketHandler;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -55,7 +55,7 @@ public class ChickenJumpHandler {
 						mc.player.fallDistance = 0.0f;
 
 						// Only play sound to client player
-						mc.level.playSound(mc.player, mc.player.blockPosition(), SoundEvents.CHICKEN_AMBIENT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+						mc.level.playSound(mc.player, mc.player.blockPosition(), SoundEvents.CHICKEN_AMBIENT, SoundSource.PLAYERS, 1.0F, 1.0F);
 
 						// Double jump on server
 						PacketHandler.sendToServer(new ChickenSuitUpdatePacket());
@@ -67,7 +67,7 @@ public class ChickenJumpHandler {
 							mc.player.fallDistance = -this.numJumps;
 
 							// Only play sound to client player
-							mc.level.playSound(mc.player, mc.player.blockPosition(), SoundEvents.CHICKEN_AMBIENT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+							mc.level.playSound(mc.player, mc.player.blockPosition(), SoundEvents.CHICKEN_AMBIENT, SoundSource.PLAYERS, 1.0F, 1.0F);
 
 							// Double jump on server
 							PacketHandler.sendToServer(new ChickenSuitUpdatePacket());
@@ -77,7 +77,7 @@ public class ChickenJumpHandler {
 					numJumps++;
 				}
 
-				Vector3d mot = mc.player.getDeltaMovement();
+				Vec3 mot = mc.player.getDeltaMovement();
 				if (!mc.options.keyShift.isDown() && mot.y < 0.0D) {
 					double d = -0.14999999999999999D - 0.14999999999999999D * (1.0D - (double) numJumps / 5D);
 					if (mot.y < d) {
@@ -97,7 +97,7 @@ public class ChickenJumpHandler {
 		}
 	}
 
-	private int getMaxJumps(PlayerEntity player) {
+	private int getMaxJumps(Player player) {
 		// Start at one for original jump
 		int maxJumps = 1;
 		for (ItemStack stack : player.getArmorSlots()) {

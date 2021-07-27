@@ -5,14 +5,14 @@ import java.util.stream.Collectors;
 
 import com.grim3212.assorted.tools.AssortedTools;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.tags.Tag;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Registry;
 
 public class ConfigurableBlockStates {
 
@@ -78,7 +78,7 @@ public class ConfigurableBlockStates {
 			}
 
 			for (ResourceLocation t : this.tags) {
-				ITag<Block> foundTag = BlockTags.getAllTags().getTag(t);
+				Tag<Block> foundTag = BlockTags.getAllTags().getTag(t);
 				if (foundTag != null) {
 					states.addAll(foundTag.getValues().stream().map(Block::defaultBlockState).collect(Collectors.toList()));
 				} else {

@@ -2,30 +2,30 @@ package com.grim3212.assorted.tools.common.entity;
 
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.IndirectEntityDamageSource;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.IndirectEntityDamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 public class DiamondBoomerangEntity extends BoomerangEntity {
 
-	public DiamondBoomerangEntity(EntityType<BoomerangEntity> type, World world) {
+	public DiamondBoomerangEntity(EntityType<BoomerangEntity> type, Level world) {
 		super(type, world);
 		this.timeBeforeTurnAround = ToolsConfig.COMMON.diamondBoomerangRange.get() <= 0 ? 20 : ToolsConfig.COMMON.diamondBoomerangRange.get();
 	}
 
-	public DiamondBoomerangEntity(World worldIn, PlayerEntity entity, ItemStack itemstack, Hand hand) {
+	public DiamondBoomerangEntity(Level worldIn, Player entity, ItemStack itemstack, InteractionHand hand) {
 		super(ToolsEntities.DIAMOND_BOOMERANG.get(), worldIn, entity, itemstack, hand);
 		this.timeBeforeTurnAround = ToolsConfig.COMMON.diamondBoomerangRange.get() <= 0 ? 20 : ToolsConfig.COMMON.diamondBoomerangRange.get();
 	}
 
 	@Override
-	protected int getDamage(Entity hitEntity, PlayerEntity player) {
+	protected int getDamage(Entity hitEntity, Player player) {
 		if (ToolsConfig.COMMON.diamondBoomerangDamage.get() > 0) {
 			return ToolsConfig.COMMON.diamondBoomerangDamage.get();
 		}
@@ -39,16 +39,16 @@ public class DiamondBoomerangEntity extends BoomerangEntity {
 	}
 
 	@Override
-	public void beforeTurnAround(PlayerEntity player) {
+	public void beforeTurnAround(Player player) {
 		// Following is diamond boomerang only
 		// Follows where the entity is looking
 		if (!isBouncing && ToolsConfig.COMMON.diamondBoomerangFollows.get()) {
-			double x = -MathHelper.sin((player.yRot * 3.141593F) / 180F);
-			double z = MathHelper.cos((player.yRot * 3.141593F) / 180F);
+			double x = -Mth.sin((player.getYRot() * 3.141593F) / 180F);
+			double z = Mth.cos((player.getYRot() * 3.141593F) / 180F);
 
-			double motionX = 0.5D * x * (double) MathHelper.cos((player.xRot / 180F) * 3.141593F);
-			double motionY = -0.5D * (double) MathHelper.sin((player.xRot / 180F) * 3.141593F);
-			double motionZ = 0.5D * z * (double) MathHelper.cos((player.xRot / 180F) * 3.141593F);
+			double motionX = 0.5D * x * (double) Mth.cos((player.getXRot() / 180F) * 3.141593F);
+			double motionY = -0.5D * (double) Mth.sin((player.getXRot() / 180F) * 3.141593F);
+			double motionZ = 0.5D * z * (double) Mth.cos((player.getXRot() / 180F) * 3.141593F);
 			this.setDeltaMovement(motionX, motionY, motionZ);
 		}
 	}

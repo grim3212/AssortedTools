@@ -12,7 +12,7 @@ import com.grim3212.assorted.tools.common.util.ConfigurableBlockStates;
 import com.grim3212.assorted.tools.common.util.ToolsArmorMaterials;
 import com.grim3212.assorted.tools.common.util.ToolsItemTier;
 
-import net.minecraft.item.ItemTier;
+import net.minecraft.world.item.Tiers;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public final class ToolsConfig {
@@ -151,12 +151,12 @@ public final class ToolsConfig {
 
 			builder.comment("These are used by Hammers and MultiTools to allow you to override the default vanilla values that they use.", "These will not change the values that vanilla tools use.");
 			builder.push("Vanilla Overrides");
-			woodItemTier = new ItemTierHolder(builder, "wood", ItemTier.WOOD, 6.0F, -3.2F);
-			stoneItemTier = new ItemTierHolder(builder, "stone", ItemTier.STONE, 7.0F, -3.2F);
-			goldItemTier = new ItemTierHolder(builder, "gold", ItemTier.GOLD, 6.0F, -3.0F);
-			ironItemTier = new ItemTierHolder(builder, "iron", ItemTier.IRON, 6.0F, -3.1F);
-			diamondItemTier = new ItemTierHolder(builder, "diamond", ItemTier.DIAMOND, 5.0F, -3.0F);
-			netheriteItemTier = new ItemTierHolder(builder, "netherite", ItemTier.NETHERITE, 5.0F, -3.0F);
+			woodItemTier = new ItemTierHolder(builder, "wood", Tiers.WOOD, 6.0F, -3.2F);
+			stoneItemTier = new ItemTierHolder(builder, "stone", Tiers.STONE, 7.0F, -3.2F);
+			goldItemTier = new ItemTierHolder(builder, "gold", Tiers.GOLD, 6.0F, -3.0F);
+			ironItemTier = new ItemTierHolder(builder, "iron", Tiers.IRON, 6.0F, -3.1F);
+			diamondItemTier = new ItemTierHolder(builder, "diamond", Tiers.DIAMOND, 5.0F, -3.0F);
+			netheriteItemTier = new ItemTierHolder(builder, "netherite", Tiers.NETHERITE, 5.0F, -3.0F);
 			builder.pop();
 
 			builder.comment("These are used by Hammers, MultiTools, and the normal tool sets to allow you to override the default values that are used.");

@@ -4,7 +4,9 @@ import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import com.grim3212.assorted.tools.common.item.configurable.ConfigurableSwordItem;
 
-import net.minecraft.item.ItemGroup;
+import net.minecraft.world.item.CreativeModeTab;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class MaterialSwordItem extends ConfigurableSwordItem {
 
@@ -13,7 +15,7 @@ public class MaterialSwordItem extends ConfigurableSwordItem {
 	}
 
 	@Override
-	protected boolean allowdedIn(ItemGroup group) {
+	protected boolean allowdedIn(CreativeModeTab group) {
 		return ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.allowdedIn(group) : false;
 	}
 

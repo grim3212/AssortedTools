@@ -5,39 +5,39 @@ import java.util.Optional;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
 import com.grim3212.assorted.tools.common.util.NBTHelper;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.boss.dragon.EnderDragonEntity;
-import net.minecraft.entity.boss.dragon.EnderDragonPartEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ProjectileItemEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.boss.EnderDragonPart;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
-public class PokeballEntity extends ProjectileItemEntity {
+public class PokeballEntity extends ThrowableItemProjectile {
 
 	private boolean hasEntity;
 	private ItemStack currentPokeball = new ItemStack(ToolsItems.POKEBALL.get(), 1);
 
-	public PokeballEntity(EntityType<? extends PokeballEntity> type, World worldIn) {
+	public PokeballEntity(EntityType<? extends PokeballEntity> type, Level worldIn) {
 		super(type, worldIn);
 	}
 
-	public PokeballEntity(EntityType<? extends PokeballEntity> type, double x, double y, double z, World worldIn) {
+	public PokeballEntity(EntityType<? extends PokeballEntity> type, double x, double y, double z, Level worldIn) {
 		super(type, x, y, z, worldIn);
 	}
 
-	public PokeballEntity(LivingEntity livingEntityIn, World worldIn, ItemStack stack) {
+	public PokeballEntity(LivingEntity livingEntityIn, Level worldIn, ItemStack stack) {
 		super(ToolsEntities.POKEBALL.get(), livingEntityIn, worldIn);
 		this.currentPokeball = stack;
 		this.hasEntity = false;
@@ -47,30 +47,30 @@ public class PokeballEntity extends ProjectileItemEntity {
 	}
 
 	@Override
-	protected void onHit(RayTraceResult result) {
+	protected void onHit(HitResult result) {
 		if (!level.isClientSide) {
-			if (result.getType() == RayTraceResult.Type.BLOCK) {
+			if (result.getType() == HitResult.Type.BLOCK) {
 				if (this.hasEntity) {
 					Optional<Entity> loadEntity = EntityType.create(NBTHelper.getTag(currentPokeball, "StoredEntity"), this.level);
 					if (loadEntity.isPresent()) {
 						Entity spawnEntity = loadEntity.get();
-						spawnEntity.moveTo(this.getX(), this.getY() + 1.0D, this.getZ(), this.yRot, 0.0F);
+						spawnEntity.moveTo(this.getX(), this.getY() + 1.0D, this.getZ(), this.getYRot(), 0.0F);
 						this.level.addFreshEntity(spawnEntity);
 					}
 
 					// Always reset pokeball
 					this.currentPokeball = new ItemStack(ToolsItems.POKEBALL.get());
 				}
-			} else if (result.getType() == RayTraceResult.Type.ENTITY) {
-				EntityRayTraceResult entityResult = (EntityRayTraceResult) result;
+			} else if (result.getType() == HitResult.Type.ENTITY) {
+				EntityHitResult entityResult = (EntityHitResult) result;
 
 				if (entityResult != null) {
 					Entity hitEntity = entityResult.getEntity();
-					if (hitEntity != null && !this.hasEntity && !(hitEntity instanceof PlayerEntity || hitEntity instanceof EnderDragonEntity || hitEntity instanceof EnderDragonPartEntity)) {
+					if (hitEntity != null && !this.hasEntity && !(hitEntity instanceof Player || hitEntity instanceof EnderDragon || hitEntity instanceof EnderDragonPart)) {
 						if (hitEntity instanceof LivingEntity) {
 
 							LivingEntity livingEntity = (LivingEntity) hitEntity;
-							CompoundNBT entity = livingEntity.serializeNBT();
+							CompoundTag entity = livingEntity.serializeNBT();
 							entity.putString("pokeball_name", livingEntity.getType().getDescriptionId());
 
 							NBTHelper.putTag(currentPokeball, "StoredEntity", entity);
@@ -78,7 +78,7 @@ public class PokeballEntity extends ProjectileItemEntity {
 							});
 							this.currentPokeball.setCount(1);
 
-							hitEntity.remove();
+							hitEntity.discard();
 						}
 					}
 				}
@@ -106,7 +106,7 @@ public class PokeballEntity extends ProjectileItemEntity {
 	}
 
 	@Override
-	public IPacket<?> getAddEntityPacket() {
+	public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

@@ -6,8 +6,8 @@ import com.grim3212.assorted.tools.common.network.PacketHandler;
 import com.grim3212.assorted.tools.common.network.ToolCycleModesPacket;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Hand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.InteractionHand;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -21,7 +21,7 @@ public class KeyBindHandler {
 			--switchCooldown;
 
 		Minecraft mc = Minecraft.getInstance();
-		PlayerEntity player = mc.player;
+		Player player = mc.player;
 		if (mc.isWindowActive()) {
 			if (player != null) {
 				if (ClientProxy.TOOL_SWITCH_MODES.consumeClick()) {
@@ -29,14 +29,14 @@ public class KeyBindHandler {
 						if (player.getMainHandItem() != null) {
 							if (player.getMainHandItem().getItem() instanceof WandItem) {
 								switchCooldown = 20;
-								PacketHandler.sendToServer(new ToolCycleModesPacket(Hand.MAIN_HAND));
+								PacketHandler.sendToServer(new ToolCycleModesPacket(InteractionHand.MAIN_HAND));
 							}
 						}
 
 						if (player.getOffhandItem() != null) {
 							if (player.getOffhandItem().getItem() instanceof WandItem) {
 								switchCooldown = 20;
-								PacketHandler.sendToServer(new ToolCycleModesPacket(Hand.OFF_HAND));
+								PacketHandler.sendToServer(new ToolCycleModesPacket(InteractionHand.OFF_HAND));
 							}
 						}
 					}

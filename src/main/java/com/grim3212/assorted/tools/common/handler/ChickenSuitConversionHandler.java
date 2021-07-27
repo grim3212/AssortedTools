@@ -7,12 +7,12 @@ import org.apache.commons.lang3.StringUtils;
 import com.grim3212.assorted.tools.common.enchantment.ToolsEnchantments;
 import com.grim3212.assorted.tools.common.item.ChickenSuitArmor;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -39,19 +39,19 @@ public class ChickenSuitConversionHandler {
 					if (!StringUtils.isBlank(event.getName()) && !event.getName().equals(output.getHoverName().toString())) {
 						cost++;
 
-						output.setHoverName(new StringTextComponent(event.getName()));
+						output.setHoverName(new TextComponent(event.getName()));
 					}
 
 					event.setOutput(output);
 					event.setMaterialCost(1);
 
-					if (convertArmor.getSlot() == EquipmentSlotType.HEAD) {
+					if (convertArmor.getSlot() == EquipmentSlot.HEAD) {
 						event.setCost(cost + 2);
-					} else if (convertArmor.getSlot() == EquipmentSlotType.CHEST) {
+					} else if (convertArmor.getSlot() == EquipmentSlot.CHEST) {
 						event.setCost(cost + 5);
-					} else if (convertArmor.getSlot() == EquipmentSlotType.LEGS) {
+					} else if (convertArmor.getSlot() == EquipmentSlot.LEGS) {
 						event.setCost(cost + 4);
-					} else if (convertArmor.getSlot() == EquipmentSlotType.FEET) {
+					} else if (convertArmor.getSlot() == EquipmentSlot.FEET) {
 						event.setCost(cost + 2);
 					}
 				}

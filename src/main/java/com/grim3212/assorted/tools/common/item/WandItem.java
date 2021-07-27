@@ -8,24 +8,26 @@ import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import com.grim3212.assorted.tools.common.util.NBTHelper;
 import com.grim3212.assorted.tools.common.util.WandCoord3D;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.particles.RedstoneParticleData;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
+
+import net.minecraft.world.item.Item.Properties;
 
 public abstract class WandItem extends Item implements ISwitchModes {
 
@@ -42,16 +44,16 @@ public abstract class WandItem extends Item implements ISwitchModes {
 	}
 
 	@Override
-	protected boolean allowdedIn(ItemGroup group) {
+	protected boolean allowdedIn(CreativeModeTab group) {
 		return ToolsConfig.COMMON.wandsEnabled.get() ? super.allowdedIn(group) : false;
 	}
 
 	@Override
-	public abstract void onCraftedBy(ItemStack stack, World worldIn, PlayerEntity playerIn);
+	public abstract void onCraftedBy(ItemStack stack, Level worldIn, Player playerIn);
 
-	protected abstract boolean canBreak(World worldIn, BlockPos pos, ItemStack stack);
+	protected abstract boolean canBreak(Level worldIn, BlockPos pos, ItemStack stack);
 
-	public ItemStack getNeededItem(World world, BlockState state, PlayerEntity player) {
+	public ItemStack getNeededItem(Level world, BlockState state, Player player) {
 		return state.getBlock().getPickBlock(state, null, world, BlockPos.ZERO, player);
 	}
 
@@ -75,27 +77,27 @@ public abstract class WandItem extends Item implements ISwitchModes {
 		return this.isTooFar((int) a.getDistance(b), 10, (int) a.getDistanceFlat(b), stack);
 	}
 
-	protected abstract boolean doEffect(World world, PlayerEntity entityplayer, Hand hand, WandCoord3D start, WandCoord3D end, BlockState state);
+	protected abstract boolean doEffect(Level world, Player entityplayer, InteractionHand hand, WandCoord3D start, WandCoord3D end, BlockState state);
 
-	protected void sendMessage(PlayerEntity player, ITextComponent message) {
+	protected void sendMessage(Player player, Component message) {
 		if (!player.level.isClientSide) {
 			player.sendMessage(message, player.getUUID());
 		}
 	}
 
-	protected void error(PlayerEntity entityplayer, WandCoord3D p, String reason) {
-		entityplayer.level.playSound(entityplayer, p.pos, SoundEvents.LAVA_EXTINGUISH, SoundCategory.BLOCKS, (entityplayer.level.random.nextFloat() + 0.7F) / 2.0F, 0.5F + entityplayer.level.random.nextFloat() * 0.3F);
-		sendMessage(entityplayer, new TranslationTextComponent("error.wand." + reason));
+	protected void error(Player entityplayer, WandCoord3D p, String reason) {
+		entityplayer.level.playSound(entityplayer, p.pos, SoundEvents.LAVA_EXTINGUISH, SoundSource.BLOCKS, (entityplayer.level.random.nextFloat() + 0.7F) / 2.0F, 0.5F + entityplayer.level.random.nextFloat() * 0.3F);
+		sendMessage(entityplayer, new TranslatableComponent("error.wand." + reason));
 		particles(entityplayer.level, p.pos, 3);
 	}
 
 	protected abstract double[] getParticleColor();
 
-	private void particles(World world, WandCoord3D c, int effect) {
+	private void particles(Level world, WandCoord3D c, int effect) {
 		particles(world, c.pos, effect);
 	}
 
-	protected void particles(World world, BlockPos pos, int effect) {
+	protected void particles(Level world, BlockPos pos, int effect) {
 		double d = 0.0625D;
 
 		if (effect == 1) {
@@ -144,16 +146,16 @@ public abstract class WandItem extends Item implements ISwitchModes {
 				d1 = pos.getX() + 0 - d;
 			}
 			if ((d1 < pos.getX()) || (d1 > pos.getX() + 1) || (d2 < 0.0D) || (d2 > pos.getY() + 1) || (d3 < pos.getZ()) || (d3 > pos.getZ() + 1))
-				world.addParticle(RedstoneParticleData.REDSTONE, d1, d2, d3, R, G, B);
+				world.addParticle(DustParticleOptions.REDSTONE, d1, d2, d3, R, G, B);
 		}
 	}
 
 	@Override
-	public ActionResultType useOn(ItemUseContext context) {
+	public InteractionResult useOn(UseOnContext context) {
 		BlockPos pos = context.getClickedPos();
-		World worldIn = context.getLevel();
-		PlayerEntity playerIn = context.getPlayer();
-		Hand hand = context.getHand();
+		Level worldIn = context.getLevel();
+		Player playerIn = context.getPlayer();
+		InteractionHand hand = context.getHand();
 		boolean isFree = ToolsConfig.COMMON.freeBuildMode.get() || playerIn.isCreative();
 
 		this.stateOrig = worldIn.getBlockState(pos);
@@ -167,14 +169,14 @@ public abstract class WandItem extends Item implements ISwitchModes {
 
 		if (isIncompatible(state)) {
 			error(playerIn, clicked_current, "cantbuild");
-			return ActionResultType.SUCCESS;
+			return InteractionResult.SUCCESS;
 		}
 
 		ItemStack stack = playerIn.getItemInHand(hand);
 		WandCoord3D start = WandCoord3D.getFromNBT(stack.getTag(), "Start");
 
 		if (start == null) {
-			worldIn.playSound((PlayerEntity) null, pos, state.getBlock().getSoundType(state, worldIn, pos, null).getBreakSound(), SoundCategory.BLOCKS, (state.getBlock().getSoundType(state, worldIn, pos, null).getVolume() + 1.0F) / 2.0F, state.getBlock().getSoundType(state, worldIn, pos, null).getPitch() * 0.8F);
+			worldIn.playSound((Player) null, pos, state.getBlock().getSoundType(state, worldIn, pos, null).getBreakSound(), SoundSource.BLOCKS, (state.getBlock().getSoundType(state, worldIn, pos, null).getVolume() + 1.0F) / 2.0F, state.getBlock().getSoundType(state, worldIn, pos, null).getPitch() * 0.8F);
 
 			this.stateClicked = state;
 			clicked_current.writeToNBT(stack.getTag(), "Start");
@@ -182,13 +184,13 @@ public abstract class WandItem extends Item implements ISwitchModes {
 			particles(worldIn, clicked_current, 0);
 
 			NBTHelper.putBoolean(stack, "firstUse", false);
-			return ActionResultType.SUCCESS;
+			return InteractionResult.SUCCESS;
 		} else {
 
 			if (NBTHelper.getBoolean(stack, "firstUse")) {
 				NBTHelper.removeTag(stack, "Start");
 				error(playerIn, clicked_current, "nostart");
-				return ActionResultType.SUCCESS;
+				return InteractionResult.SUCCESS;
 			}
 
 			WandCoord3D.findEnds(start, clicked_current);
@@ -196,7 +198,7 @@ public abstract class WandItem extends Item implements ISwitchModes {
 			if (isTooFar(start, clicked_current, stack)) {
 				NBTHelper.removeTag(stack, "Start");
 				error(playerIn, clicked_current, "toofar");
-				return ActionResultType.SUCCESS;
+				return InteractionResult.SUCCESS;
 			}
 
 			boolean damage = this.doEffect(worldIn, playerIn, hand, start, clicked_current, state);
@@ -208,14 +210,14 @@ public abstract class WandItem extends Item implements ISwitchModes {
 					stack.hurtAndBreak(1, playerIn, (s) -> {
 						s.broadcastBreakEvent(hand);
 					});
-					return ActionResultType.SUCCESS;
+					return InteractionResult.SUCCESS;
 				}
 			}
 		}
 
 		// Clear out start if we somehow pop out one of the ifs above
 		NBTHelper.removeTag(stack, "Start");
-		return ActionResultType.SUCCESS;
+		return InteractionResult.SUCCESS;
 	}
 
 	protected boolean isIncompatible(BlockState state) {

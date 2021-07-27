@@ -19,8 +19,8 @@ import com.grim3212.assorted.tools.common.network.PacketHandler;
 import com.grim3212.assorted.tools.common.proxy.IProxy;
 
 import net.minecraft.data.DataGenerator;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
@@ -32,8 +32,8 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig.Type;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 
 @Mod(AssortedTools.MODID)
 public class AssortedTools {
@@ -45,7 +45,7 @@ public class AssortedTools {
 
 	public static final Logger LOGGER = LogManager.getLogger(MODID);
 
-	public static final ItemGroup ASSORTED_TOOLS_ITEM_GROUP = (new ItemGroup("assortedtools") {
+	public static final CreativeModeTab ASSORTED_TOOLS_ITEM_GROUP = (new CreativeModeTab("assortedtools") {
 		@Override
 		@OnlyIn(Dist.CLIENT)
 		public ItemStack makeIcon() {
@@ -54,7 +54,7 @@ public class AssortedTools {
 	});
 
 	public AssortedTools() {
-		DistExecutor.callWhenOn(Dist.CLIENT, () -> () -> proxy = new ClientProxy());
+		DistExecutor.unsafeCallWhenOn(Dist.CLIENT, () -> () -> proxy = new ClientProxy());
 		proxy.starting();
 
 		final IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();

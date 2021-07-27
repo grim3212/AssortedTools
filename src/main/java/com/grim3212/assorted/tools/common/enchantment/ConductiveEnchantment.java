@@ -2,14 +2,14 @@ package com.grim3212.assorted.tools.common.enchantment;
 
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
 
 public class ConductiveEnchantment extends Enchantment {
 
 	protected ConductiveEnchantment() {
-		super(Rarity.VERY_RARE, ToolsEnchantmentTypes.SPEAR, new EquipmentSlotType[] { EquipmentSlotType.MAINHAND });
+		super(Rarity.VERY_RARE, ToolsEnchantmentTypes.SPEAR, new EquipmentSlot[] { EquipmentSlot.MAINHAND });
 	}
 
 	@Override

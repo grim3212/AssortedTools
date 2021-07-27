@@ -3,12 +3,12 @@ package com.grim3212.assorted.tools.client.data;
 import com.grim3212.assorted.tools.AssortedTools;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
 
-import net.minecraft.client.renderer.model.BlockModel.GuiLight;
-import net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType;
+import net.minecraft.client.renderer.block.model.BlockModel.GuiLight;
+import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
+import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelBuilder.Perspective;
@@ -44,15 +44,6 @@ public class ToolsItemModelProvider extends ItemModelProvider {
 		handheldItem(ToolsItems.REINFORCED_BREAKING_WAND.get());
 		handheldItem(ToolsItems.MINING_WAND.get());
 		handheldItem(ToolsItems.REINFORCED_MINING_WAND.get());
-
-		handheldItem(ToolsItems.FLINT_SPEAR.get());
-		handheldItem(ToolsItems.IRON_SPEAR_BASIC.get());
-		handheldItem(ToolsItems.DIAMOND_SPEAR_BASIC.get());
-		handheldItem(ToolsItems.EXPLOSIVE_SPEAR.get());
-		handheldItem(ToolsItems.FIRE_SPEAR.get());
-		handheldItem(ToolsItems.LIGHT_SPEAR.get());
-		handheldItem(ToolsItems.LIGHTNING_SPEAR.get());
-		handheldItem(ToolsItems.SLIME_SPEAR.get());
 
 		armor(ToolsItems.CHICKEN_SUIT_HELMET.get());
 		armor(ToolsItems.CHICKEN_SUIT_CHESTPLATE.get());

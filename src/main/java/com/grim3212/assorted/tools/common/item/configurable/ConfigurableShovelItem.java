@@ -1,34 +1,29 @@
 package com.grim3212.assorted.tools.common.item.configurable;
 
 import java.util.Map;
-import java.util.Set;
 
-import com.google.common.collect.Sets;
 import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.CampfireBlock;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CampfireBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ToolType;
 
 public class ConfigurableShovelItem extends ConfigurableToolItem {
 
-	private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.CLAY, Blocks.DIRT, Blocks.COARSE_DIRT, Blocks.PODZOL, Blocks.FARMLAND, Blocks.GRASS_BLOCK, Blocks.GRAVEL, Blocks.MYCELIUM, Blocks.SAND, Blocks.RED_SAND, Blocks.SNOW_BLOCK, Blocks.SNOW, Blocks.SOUL_SAND, Blocks.GRASS_PATH, Blocks.WHITE_CONCRETE_POWDER, Blocks.ORANGE_CONCRETE_POWDER, Blocks.MAGENTA_CONCRETE_POWDER, Blocks.LIGHT_BLUE_CONCRETE_POWDER, Blocks.YELLOW_CONCRETE_POWDER, Blocks.LIME_CONCRETE_POWDER,
-			Blocks.PINK_CONCRETE_POWDER, Blocks.GRAY_CONCRETE_POWDER, Blocks.LIGHT_GRAY_CONCRETE_POWDER, Blocks.CYAN_CONCRETE_POWDER, Blocks.PURPLE_CONCRETE_POWDER, Blocks.BLUE_CONCRETE_POWDER, Blocks.BROWN_CONCRETE_POWDER, Blocks.GREEN_CONCRETE_POWDER, Blocks.RED_CONCRETE_POWDER, Blocks.BLACK_CONCRETE_POWDER, Blocks.SOUL_SOIL);
-
 	public ConfigurableShovelItem(ItemTierHolder tierHolder, Item.Properties builder) {
-		super(tierHolder, 1.5F, -3.0F, EFFECTIVE_ON, builder.addToolType(ToolType.SHOVEL, tierHolder.getHarvestLevel()));
+		super(tierHolder, 1.5F, -3.0F, BlockTags.MINEABLE_WITH_SHOVEL, builder.addToolType(ToolType.SHOVEL, tierHolder.getHarvestLevel()));
 	}
 
 	@Override
@@ -37,25 +32,25 @@ public class ConfigurableShovelItem extends ConfigurableToolItem {
 	}
 
 	@Override
-	public ActionResultType useOn(ItemUseContext context) {
-		World world = context.getLevel();
+	public InteractionResult useOn(UseOnContext context) {
+		Level world = context.getLevel();
 		BlockPos blockpos = context.getClickedPos();
 		BlockState blockstate = world.getBlockState(blockpos);
 		if (context.getClickedFace() == Direction.DOWN) {
-			return ActionResultType.PASS;
+			return InteractionResult.PASS;
 		} else {
-			PlayerEntity playerentity = context.getPlayer();
+			Player playerentity = context.getPlayer();
 			BlockState blockstate1 = blockstate.getToolModifiedState(world, blockpos, playerentity, context.getItemInHand(), ToolType.SHOVEL);
 			BlockState blockstate2 = null;
 			if (blockstate1 != null && world.isEmptyBlock(blockpos.above())) {
-				world.playSound(playerentity, blockpos, SoundEvents.SHOVEL_FLATTEN, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				world.playSound(playerentity, blockpos, SoundEvents.SHOVEL_FLATTEN, SoundSource.BLOCKS, 1.0F, 1.0F);
 				blockstate2 = blockstate1;
 			} else if (blockstate.getBlock() instanceof CampfireBlock && blockstate.getValue(CampfireBlock.LIT)) {
 				if (!world.isClientSide()) {
-					world.levelEvent((PlayerEntity) null, 1009, blockpos, 0);
+					world.levelEvent((Player) null, 1009, blockpos, 0);
 				}
 
-				CampfireBlock.dowse(world, blockpos, blockstate);
+				CampfireBlock.dowse(playerentity, world, blockpos, blockstate);
 				blockstate2 = blockstate.setValue(CampfireBlock.LIT, Boolean.valueOf(false));
 			}
 
@@ -69,9 +64,9 @@ public class ConfigurableShovelItem extends ConfigurableToolItem {
 					}
 				}
 
-				return ActionResultType.sidedSuccess(world.isClientSide);
+				return InteractionResult.sidedSuccess(world.isClientSide);
 			} else {
-				return ActionResultType.PASS;
+				return InteractionResult.PASS;
 			}
 		}
 	}

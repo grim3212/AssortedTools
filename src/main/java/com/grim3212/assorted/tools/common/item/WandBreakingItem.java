@@ -10,22 +10,24 @@ import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import com.grim3212.assorted.tools.common.util.NBTHelper;
 import com.grim3212.assorted.tools.common.util.WandCoord3D;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.PushReaction;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.core.NonNullList;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class WandBreakingItem extends WandItem {
 
@@ -38,7 +40,7 @@ public class WandBreakingItem extends WandItem {
 	}
 
 	@Override
-	protected boolean canBreak(World worldIn, BlockPos pos, ItemStack stack) {
+	protected boolean canBreak(Level worldIn, BlockPos pos, ItemStack stack) {
 		BlockState state = worldIn.getBlockState(pos);
 
 		switch (BreakingMode.fromString(NBTHelper.getString(stack, "Mode"))) {
@@ -63,14 +65,14 @@ public class WandBreakingItem extends WandItem {
 	}
 
 	@Override
-	protected boolean doEffect(World world, PlayerEntity entityplayer, Hand hand, WandCoord3D start, WandCoord3D end, BlockState state) {
+	protected boolean doEffect(Level world, Player entityplayer, InteractionHand hand, WandCoord3D start, WandCoord3D end, BlockState state) {
 		boolean damage = doBreaking(world, start, end, entityplayer, hand);
 		if (damage)
-			world.playSound((PlayerEntity) null, end.pos, SoundEvents.GENERIC_EXPLODE, SoundCategory.BLOCKS, 2.5F, 0.5F + world.random.nextFloat() * 0.3F);
+			world.playSound((Player) null, end.pos, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 2.5F, 0.5F + world.random.nextFloat() * 0.3F);
 		return damage;
 	}
 
-	private boolean doBreaking(World world, WandCoord3D start, WandCoord3D end, PlayerEntity entityplayer, Hand hand) {
+	private boolean doBreaking(Level world, WandCoord3D start, WandCoord3D end, Player entityplayer, InteractionHand hand) {
 		int cnt = 0;
 		for (int X = start.pos.getX(); X <= end.pos.getX(); X++) {
 			for (int Y = start.pos.getY(); Y <= end.pos.getY(); Y++) {
@@ -112,16 +114,16 @@ public class WandBreakingItem extends WandItem {
 	}
 
 	@Override
-	public ItemStack cycleMode(PlayerEntity player, ItemStack stack) {
+	public ItemStack cycleMode(Player player, ItemStack stack) {
 		BreakingMode mode = BreakingMode.fromString(NBTHelper.getString(stack, "Mode"));
 		BreakingMode next = BreakingMode.getNext(mode, stack, reinforced);
 		NBTHelper.putString(stack, "Mode", next.getSerializedName());
-		this.sendMessage(player, new TranslationTextComponent(AssortedTools.MODID + ".wand.switched", next.getTranslatedString()));
+		this.sendMessage(player, new TranslatableComponent(AssortedTools.MODID + ".wand.switched", next.getTranslatedString()));
 		return stack;
 	}
 
 	@Override
-	public void fillItemCategory(ItemGroup group, NonNullList<ItemStack> items) {
+	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		if (this.allowdedIn(group)) {
 			ItemStack stack = new ItemStack(this);
 			NBTHelper.putString(stack, "Mode", BreakingMode.BREAK_WEAK.getSerializedName());
@@ -130,20 +132,20 @@ public class WandBreakingItem extends WandItem {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		BreakingMode mode = BreakingMode.fromString(NBTHelper.getString(stack, "Mode"));
 		if (mode != null)
-			tooltip.add(new TranslationTextComponent(AssortedTools.MODID + ".wand.current", mode.getTranslatedString()));
+			tooltip.add(new TranslatableComponent(AssortedTools.MODID + ".wand.current", mode.getTranslatedString()));
 		else
-			tooltip.add(new TranslationTextComponent(AssortedTools.MODID + ".broken"));
+			tooltip.add(new TranslatableComponent(AssortedTools.MODID + ".broken"));
 	}
 
 	@Override
-	public void onCraftedBy(ItemStack stack, World worldIn, PlayerEntity playerIn) {
+	public void onCraftedBy(ItemStack stack, Level worldIn, Player playerIn) {
 		NBTHelper.putString(stack, "Mode", BreakingMode.BREAK_WEAK.getSerializedName());
 	}
 
-	private static enum BreakingMode implements IStringSerializable {
+	private static enum BreakingMode implements StringRepresentable {
 		BREAK_WEAK("breakweak", 0), BREAK_ALL("breakall", 1), BREAK_XORES("breakxores", 2);
 
 		private final String name;
@@ -197,8 +199,8 @@ public class WandBreakingItem extends WandItem {
 			return this.name;
 		}
 
-		public TranslationTextComponent getTranslatedString() {
-			return new TranslationTextComponent(AssortedTools.MODID + ".wand.mode." + this.name);
+		public TranslatableComponent getTranslatedString() {
+			return new TranslatableComponent(AssortedTools.MODID + ".wand.mode." + this.name);
 		}
 	}
 }

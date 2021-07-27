@@ -2,22 +2,22 @@ package com.grim3212.assorted.tools.common.enchantment;
 
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentType;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
 public class ChickenJumpEnchantment extends Enchantment {
 
 	protected ChickenJumpEnchantment() {
-		super(Rarity.UNCOMMON, EnchantmentType.ARMOR, new EquipmentSlotType[] { EquipmentSlotType.HEAD, EquipmentSlotType.CHEST, EquipmentSlotType.LEGS, EquipmentSlotType.FEET });
+		super(Rarity.UNCOMMON, EnchantmentCategory.ARMOR, new EquipmentSlot[] { EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET });
 	}
 
 	@Override
 	public boolean canEnchant(ItemStack stack) {
 		return ToolsConfig.COMMON.chickenSuitEnabled.get() ? super.canEnchant(stack) : false;
 	}
-	
+
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack) {
 		return ToolsConfig.COMMON.chickenSuitEnabled.get() ? super.canApplyAtEnchantingTable(stack) : false;
@@ -27,7 +27,7 @@ public class ChickenJumpEnchantment extends Enchantment {
 	public boolean isAllowedOnBooks() {
 		return ToolsConfig.COMMON.chickenSuitEnabled.get() ? super.isAllowedOnBooks() : false;
 	}
-	
+
 	@Override
 	public boolean isDiscoverable() {
 		return ToolsConfig.COMMON.chickenSuitEnabled.get() ? super.isDiscoverable() : false;

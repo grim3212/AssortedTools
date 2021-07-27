@@ -4,10 +4,10 @@ import com.grim3212.assorted.tools.AssortedTools;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
 import com.grim3212.assorted.tools.common.util.ToolsTags;
 
-import net.minecraft.data.BlockTagsProvider;
+import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.ItemTagsProvider;
-import net.minecraft.item.Items;
+import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.world.item.Items;
 import net.minecraft.tags.ItemTags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 

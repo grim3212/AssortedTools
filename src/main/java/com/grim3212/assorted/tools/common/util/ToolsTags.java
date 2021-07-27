@@ -1,15 +1,25 @@
 package com.grim3212.assorted.tools.common.util;
 
-import net.minecraft.item.Item;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags.IOptionalNamedTag;
 
 public class ToolsTags {
 
+	public static class Blocks {
+		public static final IOptionalNamedTag<Block> MINEABLE_MULTITOOL = forgeTag("mineable/multitool");
+
+		public static IOptionalNamedTag<Block> forgeTag(String name) {
+			return BlockTags.createOptional(new ResourceLocation("forge", name));
+		}
+	}
+
 	public static class Items {
 		public static final IOptionalNamedTag<Item> FEATHERS = forgeTag("feathers");
-		
+
 		public static final IOptionalNamedTag<Item> INGOTS_TIN = forgeTag("ingots/tin");
 		public static final IOptionalNamedTag<Item> INGOTS_COPPER = forgeTag("ingots/copper");
 		public static final IOptionalNamedTag<Item> INGOTS_SILVER = forgeTag("ingots/silver");
@@ -25,7 +35,7 @@ public class ToolsTags {
 		public static final IOptionalNamedTag<Item> GEMS_AMETHYST = forgeTag("gems/amethyst");
 		public static final IOptionalNamedTag<Item> GEMS_SAPPHIRE = forgeTag("gems/sapphire");
 		public static final IOptionalNamedTag<Item> GEMS_TOPAZ = forgeTag("gems/topaz");
-		
+
 		public static final IOptionalNamedTag<Item> SWORDS = forgeTag("swords");
 		public static final IOptionalNamedTag<Item> SWORDS_TIN = forgeTag("swords/tin");
 		public static final IOptionalNamedTag<Item> SWORDS_COPPER = forgeTag("swords/copper");
@@ -49,7 +59,7 @@ public class ToolsTags {
 		public static final IOptionalNamedTag<Item> SWORDS_IRON = forgeTag("swords/iron");
 		public static final IOptionalNamedTag<Item> SWORDS_DIAMOND = forgeTag("swords/diamond");
 		public static final IOptionalNamedTag<Item> SWORDS_NETHERITE = forgeTag("swords/netherite");
-		
+
 		public static final IOptionalNamedTag<Item> PICKAXES = forgeTag("pickaxes");
 		public static final IOptionalNamedTag<Item> PICKAXES_TIN = forgeTag("pickaxes/tin");
 		public static final IOptionalNamedTag<Item> PICKAXES_COPPER = forgeTag("pickaxes/copper");
@@ -73,7 +83,7 @@ public class ToolsTags {
 		public static final IOptionalNamedTag<Item> PICKAXES_IRON = forgeTag("pickaxes/iron");
 		public static final IOptionalNamedTag<Item> PICKAXES_DIAMOND = forgeTag("pickaxes/diamond");
 		public static final IOptionalNamedTag<Item> PICKAXES_NETHERITE = forgeTag("pickaxes/netherite");
-		
+
 		public static final IOptionalNamedTag<Item> SHOVELS = forgeTag("shovels");
 		public static final IOptionalNamedTag<Item> SHOVELS_TIN = forgeTag("shovels/tin");
 		public static final IOptionalNamedTag<Item> SHOVELS_COPPER = forgeTag("shovels/copper");
@@ -97,7 +107,7 @@ public class ToolsTags {
 		public static final IOptionalNamedTag<Item> SHOVELS_IRON = forgeTag("shovels/iron");
 		public static final IOptionalNamedTag<Item> SHOVELS_DIAMOND = forgeTag("shovels/diamond");
 		public static final IOptionalNamedTag<Item> SHOVELS_NETHERITE = forgeTag("shovels/netherite");
-		
+
 		public static final IOptionalNamedTag<Item> AXES = forgeTag("axes");
 		public static final IOptionalNamedTag<Item> AXES_TIN = forgeTag("axes/tin");
 		public static final IOptionalNamedTag<Item> AXES_COPPER = forgeTag("axes/copper");
@@ -121,7 +131,7 @@ public class ToolsTags {
 		public static final IOptionalNamedTag<Item> AXES_IRON = forgeTag("axes/iron");
 		public static final IOptionalNamedTag<Item> AXES_DIAMOND = forgeTag("axes/diamond");
 		public static final IOptionalNamedTag<Item> AXES_NETHERITE = forgeTag("axes/netherite");
-			
+
 		public static final IOptionalNamedTag<Item> HOES = forgeTag("hoes");
 		public static final IOptionalNamedTag<Item> HOES_TIN = forgeTag("hoes/tin");
 		public static final IOptionalNamedTag<Item> HOES_COPPER = forgeTag("hoes/copper");
@@ -145,7 +155,7 @@ public class ToolsTags {
 		public static final IOptionalNamedTag<Item> HOES_IRON = forgeTag("hoes/iron");
 		public static final IOptionalNamedTag<Item> HOES_DIAMOND = forgeTag("hoes/diamond");
 		public static final IOptionalNamedTag<Item> HOES_NETHERITE = forgeTag("hoes/netherite");
-		
+
 		public static final IOptionalNamedTag<Item> HELMETS = forgeTag("helmets");
 		public static final IOptionalNamedTag<Item> HELMETS_TIN = forgeTag("helmets/tin");
 		public static final IOptionalNamedTag<Item> HELMETS_COPPER = forgeTag("helmets/copper");
@@ -170,7 +180,7 @@ public class ToolsTags {
 		public static final IOptionalNamedTag<Item> HELMETS_DIAMOND = forgeTag("helmets/diamond");
 		public static final IOptionalNamedTag<Item> HELMETS_NETHERITE = forgeTag("helmets/netherite");
 		public static final IOptionalNamedTag<Item> HELMETS_TURTLE = forgeTag("helmets/turtle");
-		
+
 		public static final IOptionalNamedTag<Item> CHESTPLATES = forgeTag("chestplates");
 		public static final IOptionalNamedTag<Item> CHESTPLATES_TIN = forgeTag("chestplates/tin");
 		public static final IOptionalNamedTag<Item> CHESTPLATES_COPPER = forgeTag("chestplates/copper");
@@ -194,7 +204,7 @@ public class ToolsTags {
 		public static final IOptionalNamedTag<Item> CHESTPLATES_IRON = forgeTag("chestplates/iron");
 		public static final IOptionalNamedTag<Item> CHESTPLATES_DIAMOND = forgeTag("chestplates/diamond");
 		public static final IOptionalNamedTag<Item> CHESTPLATES_NETHERITE = forgeTag("chestplates/netherite");
-		
+
 		public static final IOptionalNamedTag<Item> LEGGINGS = forgeTag("leggings");
 		public static final IOptionalNamedTag<Item> LEGGINGS_TIN = forgeTag("leggings/tin");
 		public static final IOptionalNamedTag<Item> LEGGINGS_COPPER = forgeTag("leggings/copper");
@@ -218,7 +228,7 @@ public class ToolsTags {
 		public static final IOptionalNamedTag<Item> LEGGINGS_IRON = forgeTag("leggings/iron");
 		public static final IOptionalNamedTag<Item> LEGGINGS_DIAMOND = forgeTag("leggings/diamond");
 		public static final IOptionalNamedTag<Item> LEGGINGS_NETHERITE = forgeTag("leggings/netherite");
-		
+
 		public static final IOptionalNamedTag<Item> BOOTS = forgeTag("boots");
 		public static final IOptionalNamedTag<Item> BOOTS_TIN = forgeTag("boots/tin");
 		public static final IOptionalNamedTag<Item> BOOTS_COPPER = forgeTag("boots/copper");

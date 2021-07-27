@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 import com.grim3212.assorted.tools.common.util.ToolsArmorMaterials;
 
-import net.minecraft.util.LazyValue;
+import net.minecraft.util.LazyLoadedValue;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public class ArmorMaterialHolder {
@@ -19,11 +19,11 @@ public class ArmorMaterialHolder {
 	private final ForgeConfigSpec.DoubleValue toughness;
 	private final ForgeConfigSpec.DoubleValue knockbackResistance;
 	private final ForgeConfigSpec.ConfigValue<List<Integer>> reductionAmounts;
-	private final LazyValue<ToolsArmorMaterials> materialRef;
+	private final LazyLoadedValue<ToolsArmorMaterials> materialRef;
 
 	public ArmorMaterialHolder(ForgeConfigSpec.Builder builder, String name, int durability, int enchantability, double toughness, double knockbackResistance, int[] reductionAmounts, Supplier<ToolsArmorMaterials> materialRef) {
 		this.name = name;
-		this.materialRef = new LazyValue<>(materialRef);
+		this.materialRef = new LazyLoadedValue<>(materialRef);
 
 		builder.push(name);
 		this.durability = builder.comment("The durability multiplier for this armor material").defineInRange("durability", durability, 1, 100000);

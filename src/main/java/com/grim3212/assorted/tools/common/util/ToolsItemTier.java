@@ -2,14 +2,14 @@ package com.grim3212.assorted.tools.common.util;
 
 import java.util.function.Supplier;
 
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.Item;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.LazyValue;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.tags.Tag;
+import net.minecraft.util.LazyLoadedValue;
 import net.minecraftforge.common.Tags;
 
-public enum ToolsItemTier implements IItemTier {
+public enum ToolsItemTier implements Tier {
 	TIN(1, 80, 2.5F, 0.4F, 14, () -> {
 		return ToolsTags.Items.INGOTS_TIN;
 	}, 6.0F, -3.2F),
@@ -79,17 +79,17 @@ public enum ToolsItemTier implements IItemTier {
 	private final float efficiency;
 	private final float attackDamage;
 	private final int enchantability;
-	private final LazyValue<ITag<Item>> repairMaterial;
+	private final LazyLoadedValue<Tag<Item>> repairMaterial;
 	private final float axeDamage;
 	private final float axeSpeedIn;
 	
-	private ToolsItemTier(int harvestLevelIn, int maxUsesIn, float efficiencyIn, float attackDamageIn, int enchantabilityIn, Supplier<ITag<Item>> repairTagIn, float axeDamageIn, float axeSpeedIn) {
+	private ToolsItemTier(int harvestLevelIn, int maxUsesIn, float efficiencyIn, float attackDamageIn, int enchantabilityIn, Supplier<Tag<Item>> repairTagIn, float axeDamageIn, float axeSpeedIn) {
 		this.harvestLevel = harvestLevelIn;
 		this.maxUses = maxUsesIn;
 		this.efficiency = efficiencyIn;
 		this.attackDamage = attackDamageIn;
 		this.enchantability = enchantabilityIn;
-		this.repairMaterial = new LazyValue<ITag<Item>>(repairTagIn);
+		this.repairMaterial = new LazyLoadedValue<Tag<Item>>(repairTagIn);
 		this.axeDamage = axeDamageIn;
 		this.axeSpeedIn = axeSpeedIn;
 	}
@@ -127,7 +127,7 @@ public enum ToolsItemTier implements IItemTier {
 		return this.enchantability;
 	}
 
-	public ITag<Item> repairTag() {
+	public Tag<Item> repairTag() {
 		return this.repairMaterial.get();
 	}
 

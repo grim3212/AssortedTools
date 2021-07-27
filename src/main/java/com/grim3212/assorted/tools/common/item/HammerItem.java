@@ -4,16 +4,18 @@ import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import com.grim3212.assorted.tools.common.item.configurable.ConfigurableTieredItem;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class HammerItem extends ConfigurableTieredItem {
 
@@ -29,7 +31,7 @@ public class HammerItem extends ConfigurableTieredItem {
 	}
 
 	@Override
-	protected boolean allowdedIn(ItemGroup group) {
+	protected boolean allowdedIn(CreativeModeTab group) {
 		if (this.isExtraMaterial) {
 			return ToolsConfig.COMMON.hammersEnabled.get() && ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.allowdedIn(group) : false;
 		}
@@ -48,8 +50,8 @@ public class HammerItem extends ConfigurableTieredItem {
 	}
 
 	@Override
-	public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, PlayerEntity player) {
-		World worldIn = player.level;
+	public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, Player player) {
+		Level worldIn = player.level;
 
 		if (!player.isCreative() && player.mayUseItemAt(pos, player.getDirection(), itemstack)) {
 			if (!worldIn.isClientSide) {
@@ -60,7 +62,7 @@ public class HammerItem extends ConfigurableTieredItem {
 				worldIn.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 
 				itemstack.hurtAndBreak(1, player, (pEnt) -> {
-					pEnt.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+					pEnt.broadcastBreakEvent(EquipmentSlot.MAINHAND);
 				});
 			}
 			return true;

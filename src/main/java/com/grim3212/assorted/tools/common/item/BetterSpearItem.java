@@ -1,31 +1,35 @@
 package com.grim3212.assorted.tools.common.item;
 
+import java.util.function.Consumer;
+
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Multimap;
-import com.grim3212.assorted.tools.client.render.item.ItemRendererProvider;
+import com.grim3212.assorted.tools.client.render.item.SpearBEWLR;
 import com.grim3212.assorted.tools.common.entity.BetterSpearEntity;
 import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.TridentItem;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TridentItem;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.client.IItemRenderProperties;
 
 public class BetterSpearItem extends TridentItem {
 
@@ -38,10 +42,10 @@ public class BetterSpearItem extends TridentItem {
 	}
 
 	public BetterSpearItem(Properties props, ItemTierHolder tierHolder, boolean extraMaterial) {
-		super(props.defaultDurability(tierHolder.getMaxUses()).setISTER(ItemRendererProvider::spear));
+		super(props.defaultDurability(tierHolder.getMaxUses()));
 		this.isExtraMaterial = extraMaterial;
 		this.tierHolder = tierHolder;
-		
+
 		Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
 		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", (double) 2.0D + tierHolder.getDamage(), AttributeModifier.Operation.ADDITION));
 		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", (double) -2.4f, AttributeModifier.Operation.ADDITION));
@@ -49,7 +53,17 @@ public class BetterSpearItem extends TridentItem {
 	}
 
 	@Override
-	protected boolean allowdedIn(ItemGroup group) {
+	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+		consumer.accept(new IItemRenderProperties() {
+			@Override
+			public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
+				return SpearBEWLR.SPEAR_ITEM_RENDERER;
+			}
+		});
+	}
+
+	@Override
+	protected boolean allowdedIn(CreativeModeTab group) {
 		if (this.isExtraMaterial) {
 			return ToolsConfig.COMMON.betterSpearsEnabled.get() && ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.allowdedIn(group) : false;
 		}
@@ -58,9 +72,9 @@ public class BetterSpearItem extends TridentItem {
 	}
 
 	@Override
-	public void releaseUsing(ItemStack stack, World level, LivingEntity entity, int ticks) {
-		if (entity instanceof PlayerEntity) {
-			PlayerEntity playerentity = (PlayerEntity) entity;
+	public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int ticks) {
+		if (entity instanceof Player) {
+			Player playerentity = (Player) entity;
 			int i = this.getUseDuration(stack) - ticks;
 			if (i >= 10) {
 				if (!level.isClientSide) {
@@ -68,15 +82,15 @@ public class BetterSpearItem extends TridentItem {
 						p_220047_1_.broadcastBreakEvent(entity.getUsedItemHand());
 					});
 					BetterSpearEntity spearEntity = new BetterSpearEntity(level, playerentity, stack);
-					spearEntity.shootFromRotation(playerentity, playerentity.xRot, playerentity.yRot, 0.0F, 2.5F, 1.0F);
-					if (playerentity.abilities.instabuild) {
-						spearEntity.pickup = AbstractArrowEntity.PickupStatus.CREATIVE_ONLY;
+					spearEntity.shootFromRotation(playerentity, playerentity.getXRot(), playerentity.getYRot(), 0.0F, 2.5F, 1.0F);
+					if (playerentity.getAbilities().instabuild) {
+						spearEntity.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
 					}
 
 					level.addFreshEntity(spearEntity);
-					level.playSound((PlayerEntity) null, spearEntity, SoundEvents.ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
-					if (!playerentity.abilities.instabuild) {
-						playerentity.inventory.removeItem(stack);
+					level.playSound((Player) null, spearEntity, SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F);
+					if (!playerentity.getAbilities().instabuild) {
+						playerentity.getInventory().removeItem(stack);
 					}
 				}
 
@@ -86,13 +100,13 @@ public class BetterSpearItem extends TridentItem {
 	}
 
 	@Override
-	public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack itemstack = player.getItemInHand(hand);
 		if (itemstack.getDamageValue() >= itemstack.getMaxDamage() - 1) {
-			return ActionResult.fail(itemstack);
+			return InteractionResultHolder.fail(itemstack);
 		} else {
 			player.startUsingItem(hand);
-			return ActionResult.consume(itemstack);
+			return InteractionResultHolder.consume(itemstack);
 		}
 	}
 
@@ -106,8 +120,8 @@ public class BetterSpearItem extends TridentItem {
 	}
 
 	@Override
-	public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlotType slot) {
-		return slot == EquipmentSlotType.MAINHAND ? this.defaultModifiers : ImmutableMultimap.of();
+	public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
+		return slot == EquipmentSlot.MAINHAND ? this.defaultModifiers : ImmutableMultimap.of();
 	}
 
 	public ItemTierHolder getTierHolder() {

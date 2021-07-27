@@ -5,18 +5,18 @@ import java.util.function.Supplier;
 import com.grim3212.assorted.tools.common.handler.ArmorMaterialHolder;
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorMaterial;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.Item;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.LazyValue;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorMaterials;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.tags.Tag;
+import net.minecraft.util.LazyLoadedValue;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraftforge.common.Tags;
 
-public enum ToolsArmorMaterials implements IArmorMaterial {
+public enum ToolsArmorMaterials implements ArmorMaterial {
 	CHICKEN_SUIT(() -> ToolsConfig.COMMON.chickenSuitArmorMaterial, () -> SoundEvents.WOOL_PLACE, () -> ToolsTags.Items.FEATHERS),
 	TIN(() -> ToolsConfig.COMMON.moddedArmors.get("tin"), () -> SoundEvents.ARMOR_EQUIP_IRON, () -> ToolsTags.Items.INGOTS_TIN),
 	COPPER(() -> ToolsConfig.COMMON.moddedArmors.get("copper"), () -> SoundEvents.ARMOR_EQUIP_IRON, () -> ToolsTags.Items.INGOTS_COPPER),
@@ -37,12 +37,12 @@ public enum ToolsArmorMaterials implements IArmorMaterial {
 
 	private final Supplier<ArmorMaterialHolder> material;
 	private final Supplier<SoundEvent> equipSound;
-	private final LazyValue<ITag<Item>> repairMaterial;
+	private final LazyLoadedValue<Tag<Item>> repairMaterial;
 
-	ToolsArmorMaterials(Supplier<ArmorMaterialHolder> material, Supplier<SoundEvent> equipSound, Supplier<ITag<Item>> repairTagIn) {
+	ToolsArmorMaterials(Supplier<ArmorMaterialHolder> material, Supplier<SoundEvent> equipSound, Supplier<Tag<Item>> repairTagIn) {
 		this.material = material;
 		this.equipSound = equipSound;
-		this.repairMaterial = new LazyValue<ITag<Item>>(repairTagIn);
+		this.repairMaterial = new LazyLoadedValue<Tag<Item>>(repairTagIn);
 	}
 
 	private ArmorMaterialHolder getMaterial() {
@@ -50,12 +50,12 @@ public enum ToolsArmorMaterials implements IArmorMaterial {
 	}
 
 	@Override
-	public int getDurabilityForSlot(EquipmentSlotType slot) {
-		return this.getMaterial().getDurability() * ArmorMaterial.HEALTH_PER_SLOT[slot.getIndex()];
+	public int getDurabilityForSlot(EquipmentSlot slot) {
+		return this.getMaterial().getDurability() * ArmorMaterials.HEALTH_PER_SLOT[slot.getIndex()];
 	}
 
 	@Override
-	public int getDefenseForSlot(EquipmentSlotType slot) {
+	public int getDefenseForSlot(EquipmentSlot slot) {
 		return this.getMaterial().getReductionAmounts()[slot.getIndex()];
 	}
 

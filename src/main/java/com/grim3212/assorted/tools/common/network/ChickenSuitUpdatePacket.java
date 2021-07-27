@@ -2,11 +2,11 @@ package com.grim3212.assorted.tools.common.network;
 
 import java.util.function.Supplier;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class ChickenSuitUpdatePacket {
 
@@ -20,22 +20,22 @@ public class ChickenSuitUpdatePacket {
 		this.glideJumps = glideJumps;
 	}
 
-	public static ChickenSuitUpdatePacket decode(PacketBuffer buf) {
+	public static ChickenSuitUpdatePacket decode(FriendlyByteBuf buf) {
 		return new ChickenSuitUpdatePacket(buf.readInt());
 	}
 
-	public void encode(PacketBuffer buf) {
+	public void encode(FriendlyByteBuf buf) {
 		buf.writeInt(this.glideJumps);
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		if (ctx.get().getDirection().getReceptionSide() == LogicalSide.SERVER) {
 			ctx.get().enqueueWork(() -> {
-				PlayerEntity player = ctx.get().getSender();
+				Player player = ctx.get().getSender();
 
 				if (this.glideJumps != -1) {
 					double d = -0.14999999999999999D - 0.14999999999999999D * (1.0D - (double) glideJumps / 5D);
-					Vector3d mot = player.getDeltaMovement();
+					Vec3 mot = player.getDeltaMovement();
 
 					if (mot.y < d) {
 						player.setDeltaMovement(mot.x, d, mot.z);

@@ -9,12 +9,11 @@ import com.grim3212.assorted.tools.common.handler.ArmorMaterialHolder;
 import com.grim3212.assorted.tools.common.handler.ModdedItemTierHolder;
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import com.grim3212.assorted.tools.common.item.configurable.ConfigurableArmorItem;
-import com.grim3212.assorted.tools.common.util.SpearType;
 
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Item;
-import net.minecraft.tags.ITag;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.Item;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -39,10 +38,10 @@ public class ToolsItems {
 	public static final RegistryObject<WandMiningItem> MINING_WAND = register("mining_wand", () -> new WandMiningItem(false, new Item.Properties().durability(15)));
 	public static final RegistryObject<WandMiningItem> REINFORCED_MINING_WAND = register("reinforced_mining_wand", () -> new WandMiningItem(true, new Item.Properties().durability(120)));
 
-	public static final RegistryObject<ChickenSuitArmor> CHICKEN_SUIT_HELMET = register("chicken_suit_helmet", () -> new ChickenSuitArmor(EquipmentSlotType.HEAD, new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
-	public static final RegistryObject<ChickenSuitArmor> CHICKEN_SUIT_CHESTPLATE = register("chicken_suit_chestplate", () -> new ChickenSuitArmor(EquipmentSlotType.CHEST, new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
-	public static final RegistryObject<ChickenSuitArmor> CHICKEN_SUIT_LEGGINGS = register("chicken_suit_leggings", () -> new ChickenSuitArmor(EquipmentSlotType.LEGS, new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
-	public static final RegistryObject<ChickenSuitArmor> CHICKEN_SUIT_BOOTS = register("chicken_suit_boots", () -> new ChickenSuitArmor(EquipmentSlotType.FEET, new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+	public static final RegistryObject<ChickenSuitArmor> CHICKEN_SUIT_HELMET = register("chicken_suit_helmet", () -> new ChickenSuitArmor(EquipmentSlot.HEAD, new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+	public static final RegistryObject<ChickenSuitArmor> CHICKEN_SUIT_CHESTPLATE = register("chicken_suit_chestplate", () -> new ChickenSuitArmor(EquipmentSlot.CHEST, new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+	public static final RegistryObject<ChickenSuitArmor> CHICKEN_SUIT_LEGGINGS = register("chicken_suit_leggings", () -> new ChickenSuitArmor(EquipmentSlot.LEGS, new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+	public static final RegistryObject<ChickenSuitArmor> CHICKEN_SUIT_BOOTS = register("chicken_suit_boots", () -> new ChickenSuitArmor(EquipmentSlot.FEET, new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
 
 	public static final RegistryObject<PokeballItem> POKEBALL = register("pokeball", () -> new PokeballItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
 
@@ -52,15 +51,6 @@ public class ToolsItems {
 	public static final RegistryObject<MultiToolItem> IRON_MULTITOOL = register("iron_multitool", () -> new MultiToolItem(ToolsConfig.COMMON.ironItemTier, new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
 	public static final RegistryObject<MultiToolItem> DIAMOND_MULTITOOL = register("diamond_multitool", () -> new MultiToolItem(ToolsConfig.COMMON.diamondItemTier, new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
 	public static final RegistryObject<MultiToolItem> NETHERITE_MULTITOOL = register("netherite_multitool", () -> new MultiToolItem(ToolsConfig.COMMON.netheriteItemTier, new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
-
-	public static final RegistryObject<SpearItem> FLINT_SPEAR = register("flint_spear", () -> new SpearItem(new Item.Properties(), SpearType.FLINT));
-	public static final RegistryObject<SpearItem> IRON_SPEAR_BASIC = register("iron_spear_basic", () -> new SpearItem(new Item.Properties(), SpearType.IRON));
-	public static final RegistryObject<SpearItem> DIAMOND_SPEAR_BASIC = register("diamond_spear_basic", () -> new SpearItem(new Item.Properties(), SpearType.DIAMOND));
-	public static final RegistryObject<SpearItem> EXPLOSIVE_SPEAR = register("explosive_spear", () -> new SpearItem(new Item.Properties(), SpearType.EXPLOSIVE));
-	public static final RegistryObject<SpearItem> FIRE_SPEAR = register("fire_spear", () -> new SpearItem(new Item.Properties(), SpearType.FIRE));
-	public static final RegistryObject<SpearItem> LIGHT_SPEAR = register("light_spear", () -> new SpearItem(new Item.Properties(), SpearType.LIGHT));
-	public static final RegistryObject<SpearItem> LIGHTNING_SPEAR = register("lightning_spear", () -> new SpearItem(new Item.Properties(), SpearType.LIGHTNING));
-	public static final RegistryObject<SpearItem> SLIME_SPEAR = register("slime_spear", () -> new SpearItem(new Item.Properties(), SpearType.SLIME));
 
 	public static final RegistryObject<BetterSpearItem> WOOD_SPEAR = register("wood_spear", () -> new BetterSpearItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), ToolsConfig.COMMON.woodItemTier));
 	public static final RegistryObject<BetterSpearItem> STONE_SPEAR = register("stone_spear", () -> new BetterSpearItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), ToolsConfig.COMMON.stoneItemTier));
@@ -95,7 +85,7 @@ public class ToolsItems {
 		public final RegistryObject<ConfigurableArmorItem> LEGGINGS;
 		public final RegistryObject<ConfigurableArmorItem> BOOTS;
 
-		public final ITag<Item> material;
+		public final Tag<Item> material;
 
 		public MaterialGroup(ModdedItemTierHolder tier, ArmorMaterialHolder armor) {
 			this.PICKAXE = register(tier.getName() + "_pickaxe", () -> new MaterialPickaxeItem(tier, new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
@@ -109,10 +99,10 @@ public class ToolsItems {
 			this.SPEAR = register(tier.getName() + "_spear", () -> new BetterSpearItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), tier, true));
 
 			if (armor != null) {
-				this.HELMET = register(tier.getName() + "_helmet", () -> new MaterialArmorItem(armor.getMaterial(), EquipmentSlotType.HEAD, new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
-				this.CHESTPLATE = register(tier.getName() + "_chestplate", () -> new MaterialArmorItem(armor.getMaterial(), EquipmentSlotType.CHEST, new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
-				this.LEGGINGS = register(tier.getName() + "_leggings", () -> new MaterialArmorItem(armor.getMaterial(), EquipmentSlotType.LEGS, new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
-				this.BOOTS = register(tier.getName() + "_boots", () -> new MaterialArmorItem(armor.getMaterial(), EquipmentSlotType.FEET, new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+				this.HELMET = register(tier.getName() + "_helmet", () -> new MaterialArmorItem(armor.getMaterial(), EquipmentSlot.HEAD, new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+				this.CHESTPLATE = register(tier.getName() + "_chestplate", () -> new MaterialArmorItem(armor.getMaterial(), EquipmentSlot.CHEST, new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+				this.LEGGINGS = register(tier.getName() + "_leggings", () -> new MaterialArmorItem(armor.getMaterial(), EquipmentSlot.LEGS, new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+				this.BOOTS = register(tier.getName() + "_boots", () -> new MaterialArmorItem(armor.getMaterial(), EquipmentSlot.FEET, new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
 			} else {
 				throw new NullPointerException("Got null ArmorMaterialHolder when registering Extra Materials");
 			}

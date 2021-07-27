@@ -1,8 +1,8 @@
 package com.grim3212.assorted.tools.common.util;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.BlockPos;
 
 public class NBTHelper {
 
@@ -24,42 +24,42 @@ public class NBTHelper {
 	 */
 	private static void initCompoundNBT(ItemStack itemStack) {
 		if (itemStack.getTag() == null) {
-			itemStack.setTag(new CompoundNBT());
+			itemStack.setTag(new CompoundTag());
 		}
 	}
 
-	private static void initCompoundNBT(CompoundNBT compound) {
+	private static void initCompoundNBT(CompoundTag compound) {
 		if (compound == null) {
-			compound = new CompoundNBT();
+			compound = new CompoundTag();
 		}
 	}
 
-	public static CompoundNBT getTag(CompoundNBT compound, String keyName) {
+	public static CompoundTag getTag(CompoundTag compound, String keyName) {
 		if (compound == null || !compound.contains(keyName)) {
-			return new CompoundNBT();
+			return new CompoundTag();
 		}
 
 		return compound.getCompound(keyName);
 	}
 
-	public static CompoundNBT getTag(ItemStack stack, String keyName) {
+	public static CompoundTag getTag(ItemStack stack, String keyName) {
 		initCompoundNBT(stack);
 
 		if (!stack.getTag().contains(keyName)) {
-			putTag(stack, keyName, new CompoundNBT());
+			putTag(stack, keyName, new CompoundTag());
 		}
 
 		return stack.getTag().getCompound(keyName);
 	}
 
-	public static void putTag(ItemStack stack, String keyName, CompoundNBT compound) {
+	public static void putTag(ItemStack stack, String keyName, CompoundTag compound) {
 		initCompoundNBT(stack);
 
 		stack.getTag().put(keyName, compound);
 	}
 
 	// =============== STRING ===============
-	public static String getString(CompoundNBT compound, String keyName) {
+	public static String getString(CompoundTag compound, String keyName) {
 		initCompoundNBT(compound);
 
 		if (compound == null || !compound.contains(keyName)) {
@@ -69,7 +69,7 @@ public class NBTHelper {
 		return compound.getString(keyName);
 	}
 
-	public static void putString(CompoundNBT compound, String keyName, String keyValue) {
+	public static void putString(CompoundTag compound, String keyName, String keyValue) {
 		initCompoundNBT(compound);
 
 		compound.putString(keyName, keyValue);
@@ -178,7 +178,7 @@ public class NBTHelper {
 	// =============== END SHORT ===============
 
 	// =============== INTEGER ===============
-	public static int getInt(CompoundNBT compound, String keyName) {
+	public static int getInt(CompoundTag compound, String keyName) {
 		initCompoundNBT(compound);
 
 		if (compound == null || !compound.contains(keyName)) {
@@ -188,7 +188,7 @@ public class NBTHelper {
 		return compound.getInt(keyName);
 	}
 
-	public static void putInt(CompoundNBT compound, String keyName, int keyValue) {
+	public static void putInt(CompoundTag compound, String keyName, int keyValue) {
 		initCompoundNBT(compound);
 
 		compound.putInt(keyName, keyValue);
@@ -319,7 +319,7 @@ public class NBTHelper {
 		return new BlockPos(pos[0], pos[1], pos[2]);
 	}
 
-	public static BlockPos getBlockPos(CompoundNBT tag, String keyName) {
+	public static BlockPos getBlockPos(CompoundTag tag, String keyName) {
 		initCompoundNBT(tag);
 
 		if (!tag.contains(keyName)) {
@@ -330,7 +330,7 @@ public class NBTHelper {
 		return new BlockPos(pos[0], pos[1], pos[2]);
 	}
 
-	public static void putBlockPos(CompoundNBT tag, String keyName, BlockPos keyValue) {
+	public static void putBlockPos(CompoundTag tag, String keyName, BlockPos keyValue) {
 		initCompoundNBT(tag);
 
 		tag.putIntArray(keyName, new int[] { keyValue.getX(), keyValue.getY(), keyValue.getZ() });

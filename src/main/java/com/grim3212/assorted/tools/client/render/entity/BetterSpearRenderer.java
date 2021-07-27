@@ -1,32 +1,34 @@
 package com.grim3212.assorted.tools.client.render.entity;
 
 import com.grim3212.assorted.tools.client.render.model.SpearModel;
+import com.grim3212.assorted.tools.client.render.model.ToolsModelLayers;
 import com.grim3212.assorted.tools.common.entity.BetterSpearEntity;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Vector3f;
 
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 public class BetterSpearRenderer extends EntityRenderer<BetterSpearEntity> {
 
-	private final SpearModel spearModel = new SpearModel();
+	private final SpearModel spearModel;
 
-	public BetterSpearRenderer(EntityRendererManager renderManager) {
-		super(renderManager);
+	public BetterSpearRenderer(EntityRendererProvider.Context context) {
+		super(context);
+		this.spearModel = new SpearModel(context.getModelSet().bakeLayer(ToolsModelLayers.SPEAR));
 	}
 
-	public void render(BetterSpearEntity entity, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer renderType, int light) {
+	public void render(BetterSpearEntity entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource renderType, int light) {
 		stack.pushPose();
-		stack.mulPose(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, entity.yRotO, entity.yRot) - 90.0F));
-		stack.mulPose(Vector3f.ZP.rotationDegrees(MathHelper.lerp(partialTicks, entity.xRotO, entity.xRot) + 90.0F));
-		IVertexBuilder ivertexbuilder = ItemRenderer.getFoilBufferDirect(renderType, this.spearModel.renderType(this.getTextureLocation(entity)), false, entity.isFoil());
+		stack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - 90.0F));
+		stack.mulPose(Vector3f.ZP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot()) + 90.0F));
+		VertexConsumer ivertexbuilder = ItemRenderer.getFoilBufferDirect(renderType, this.spearModel.renderType(this.getTextureLocation(entity)), false, entity.isFoil());
 		this.spearModel.renderToBuffer(stack, ivertexbuilder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		stack.popPose();
 		super.render(entity, entityYaw, partialTicks, stack, renderType, light);

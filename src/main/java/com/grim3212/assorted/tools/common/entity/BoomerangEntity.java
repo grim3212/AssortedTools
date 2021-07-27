@@ -10,37 +10,37 @@ import javax.annotation.Nullable;
 
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 
-import net.minecraft.block.AbstractButtonBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.LeverBlock;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MoverType;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceContext.BlockMode;
-import net.minecraft.util.math.RayTraceContext.FluidMode;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.ClipContext.Block;
+import net.minecraft.world.level.ClipContext.Fluid;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ButtonBlock;
+import net.minecraft.world.level.block.LeverBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 public abstract class BoomerangEntity extends Entity {
 
@@ -52,30 +52,30 @@ public abstract class BoomerangEntity extends Entity {
 	protected int timeBeforeTurnAround;
 	List<ItemEntity> itemsPickedUp;
 	private ItemStack selfStack;
-	private Hand hand;
-	private static final DataParameter<Float> ROTATION = EntityDataManager.defineId(BoomerangEntity.class, DataSerializers.FLOAT);
-	private static final DataParameter<Optional<UUID>> RETURN_UNIQUE_ID = EntityDataManager.defineId(BoomerangEntity.class, DataSerializers.OPTIONAL_UUID);
+	private InteractionHand hand;
+	private static final EntityDataAccessor<Float> ROTATION = SynchedEntityData.defineId(BoomerangEntity.class, EntityDataSerializers.FLOAT);
+	private static final EntityDataAccessor<Optional<UUID>> RETURN_UNIQUE_ID = SynchedEntityData.defineId(BoomerangEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 
-	public BoomerangEntity(EntityType<BoomerangEntity> type, World world) {
+	public BoomerangEntity(EntityType<BoomerangEntity> type, Level world) {
 		super(type, world);
 		this.bounceFactor = 0.84999999999999998D;
 		this.turningAround = false;
 		this.timeBeforeTurnAround = 30;
 		this.itemsPickedUp = new ArrayList<ItemEntity>();
-		this.hand = Hand.MAIN_HAND;
+		this.hand = InteractionHand.MAIN_HAND;
 	}
 
-	public BoomerangEntity(EntityType<BoomerangEntity> type, World worldIn, PlayerEntity entity, ItemStack itemstack, Hand hand) {
+	public BoomerangEntity(EntityType<BoomerangEntity> type, Level worldIn, Player entity, ItemStack itemstack, InteractionHand hand) {
 		this(type, worldIn);
 		this.selfStack = itemstack;
-		this.setRot(entity.yRot, entity.xRot);
-		double x = -MathHelper.sin((entity.yRot * 3.141593F) / 180F);
-		double z = MathHelper.cos((entity.yRot * 3.141593F) / 180F);
+		this.setRot(entity.getYRot(), entity.getXRot());
+		double x = -Mth.sin((entity.getYRot() * 3.141593F) / 180F);
+		double z = Mth.cos((entity.getYRot() * 3.141593F) / 180F);
 
-		double motionX = 0.5D * x * (double) MathHelper.cos((entity.xRot / 180F) * 3.141593F);
-		double motionY = -0.5D * (double) MathHelper.sin((entity.xRot / 180F) * 3.141593F);
-		double motionZ = 0.5D * z * (double) MathHelper.cos((entity.xRot / 180F) * 3.141593F);
-		this.setDeltaMovement(new Vector3d(motionX, motionY, motionZ));
+		double motionX = 0.5D * x * (double) Mth.cos((entity.getXRot() / 180F) * 3.141593F);
+		double motionY = -0.5D * (double) Mth.sin((entity.getXRot() / 180F) * 3.141593F);
+		double motionZ = 0.5D * z * (double) Mth.cos((entity.getXRot() / 180F) * 3.141593F);
+		this.setDeltaMovement(new Vec3(motionX, motionY, motionZ));
 		setPos(entity.getX(), this.getReturnEntityY(entity), entity.getZ());
 		xo = getX();
 		yo = getY();
@@ -86,20 +86,20 @@ public abstract class BoomerangEntity extends Entity {
 		this.setReturnToId(entity.getUUID());
 	}
 
-	public double getReturnEntityY(PlayerEntity entity) {
+	public double getReturnEntityY(Player entity) {
 		return entity.getY() + entity.getEyeHeight() - 0.10000000149011612D;
 	}
 
 	@Override
 	public void tick() {
-		PlayerEntity player = this.getReturnTo();
+		Player player = this.getReturnTo();
 
-		Vector3d vec3d1 = this.position();
-		Vector3d vec3d = this.position().add(this.getDeltaMovement());
-		RayTraceResult raytraceresult = this.level.clip(new RayTraceContext(vec3d1, vec3d, BlockMode.OUTLINE, FluidMode.ANY, null));
+		Vec3 vec3d1 = this.position();
+		Vec3 vec3d = this.position().add(this.getDeltaMovement());
+		HitResult raytraceresult = this.level.clip(new ClipContext(vec3d1, vec3d, Block.OUTLINE, Fluid.ANY, null));
 
 		if (raytraceresult != null) {
-			if (raytraceresult.getType() == RayTraceResult.Type.BLOCK) {
+			if (raytraceresult.getType() == HitResult.Type.BLOCK) {
 				BlockPos pos = new BlockPos(raytraceresult.getLocation());
 				BlockState state = level.getBlockState(pos);
 
@@ -107,23 +107,23 @@ public abstract class BoomerangEntity extends Entity {
 					level.destroyBlock(pos, true);
 				}
 
-				if ((state.getBlock() instanceof LeverBlock || state.getBlock() instanceof AbstractButtonBlock) && ToolsConfig.COMMON.hitsButtons.get()) {
+				if ((state.getBlock() instanceof LeverBlock || state.getBlock() instanceof ButtonBlock) && ToolsConfig.COMMON.hitsButtons.get()) {
 					if (timeBeforeTurnAround > 0 && ToolsConfig.COMMON.turnAroundButton.get()) {
 						timeBeforeTurnAround = 0;
 					}
 					if (activatedPos == null || !activatedPos.equals(pos)) {
 						activatedPos = pos;
-						state.getBlock().use(state, level, pos, player, Hand.MAIN_HAND, (BlockRayTraceResult) raytraceresult.hitInfo);
+						state.getBlock().use(state, level, pos, player, InteractionHand.MAIN_HAND, (BlockHitResult) raytraceresult);
 					}
 				}
 			}
 		}
 
 		if (!turningAround) {
-			Vector3d motionBefore = this.getDeltaMovement();
+			Vec3 motionBefore = this.getDeltaMovement();
 			this.move(MoverType.SELF, motionBefore);
 
-			Vector3d motionAfter = this.getDeltaMovement();
+			Vec3 motionAfter = this.getDeltaMovement();
 			double newX = motionAfter.x;
 			double newY = motionAfter.y;
 			double newZ = motionAfter.z;
@@ -143,7 +143,7 @@ public abstract class BoomerangEntity extends Entity {
 			}
 			if (flag) {
 				isBouncing = true;
-				this.setDeltaMovement(new Vector3d(newX, newY, newZ).multiply(bounceFactor, bounceFactor, bounceFactor));
+				this.setDeltaMovement(new Vec3(newX, newY, newZ).multiply(bounceFactor, bounceFactor, bounceFactor));
 			}
 
 			this.beforeTurnAround(player);
@@ -193,7 +193,7 @@ public abstract class BoomerangEntity extends Entity {
 			ItemEntity item = iterator.next();
 			item.setDeltaMovement(0, 0, 0);
 			if (item.isAlive()) {
-				Vector3d pos = this.position();
+				Vec3 pos = this.position();
 				item.setPos(pos.x, pos.y, pos.z);
 			}
 		}
@@ -201,29 +201,29 @@ public abstract class BoomerangEntity extends Entity {
 		super.tick();
 	}
 
-	public void beforeTurnAround(PlayerEntity player) {
+	public void beforeTurnAround(Player player) {
 		// NO-OP
 	}
 
-	public void onEntityHit(Entity hitEntity, PlayerEntity player) {
+	public void onEntityHit(Entity hitEntity, Player player) {
 		hitEntity.hurt(causeNewDamage(this, player), getDamage(hitEntity, player));
 	}
 
-	protected abstract int getDamage(Entity hitEntity, PlayerEntity player);
+	protected abstract int getDamage(Entity hitEntity, Player player);
 
 	public abstract DamageSource causeNewDamage(BoomerangEntity entityboomerang, Entity entity);
 
 	public void setEntityDead() {
 		if (this.getReturnTo() != null) {
 			if (selfStack != null) {
-				if (this.hand == Hand.OFF_HAND) {
+				if (this.hand == InteractionHand.OFF_HAND) {
 					if (this.getReturnTo().getOffhandItem().isEmpty()) {
-						this.getReturnTo().setItemInHand(Hand.OFF_HAND, selfStack);
+						this.getReturnTo().setItemInHand(InteractionHand.OFF_HAND, selfStack);
 					} else {
-						this.getReturnTo().inventory.add(selfStack);
+						this.getReturnTo().getInventory().add(selfStack);
 					}
 				} else {
-					this.getReturnTo().inventory.add(selfStack);
+					this.getReturnTo().getInventory().add(selfStack);
 				}
 			}
 		}
@@ -254,7 +254,7 @@ public abstract class BoomerangEntity extends Entity {
 	}
 
 	@Nullable
-	public PlayerEntity getReturnTo() {
+	public Player getReturnTo() {
 		try {
 			UUID uuid = this.getReturnToId();
 			return uuid == null ? null : this.level.getPlayerByUUID(uuid);
@@ -268,20 +268,20 @@ public abstract class BoomerangEntity extends Entity {
 	}
 
 	public void determineRotation() {
-		Vector3d motion = this.getDeltaMovement();
+		Vec3 motion = this.getDeltaMovement();
 
-		yRot = -57.29578F * (float) Math.atan2(motion.x, motion.z);
+		this.setYRot(-57.29578F * (float) Math.atan2(motion.x, motion.z));
 		double d1 = Math.sqrt(motion.z * motion.z + motion.x * motion.x);
-		xRot = -57.29578F * (float) Math.atan2(motion.y, d1);
+		this.setXRot(-57.29578F * (float) Math.atan2(motion.y, d1));
 	}
 
 	@Override
-	public void load(CompoundNBT compound) {
+	public void load(CompoundTag compound) {
 		super.load(compound);
 	}
 
 	@Override
-	protected void readAdditionalSaveData(CompoundNBT compound) {
+	protected void readAdditionalSaveData(CompoundTag compound) {
 		this.isBouncing = compound.getBoolean("IsBouncing");
 		this.bounceFactor = compound.getDouble("BounceFactor");
 		this.prevBoomerangRotation = compound.getFloat("PrevBoomerangRotation");
@@ -301,19 +301,19 @@ public abstract class BoomerangEntity extends Entity {
 
 		this.selfStack = ItemStack.of(compound.getCompound("SelfStack"));
 
-		ListNBT itemsGathered = compound.getList("ItemsPickedUp", Constants.NBT.TAG_COMPOUND);
+		ListTag itemsGathered = compound.getList("ItemsPickedUp", Constants.NBT.TAG_COMPOUND);
 		for (int i = 0; i < itemsGathered.size(); i++) {
-			CompoundNBT tag = itemsGathered.getCompound(i);
-			ItemEntity item = new ItemEntity(level, 0, 0, 0);
+			CompoundTag tag = itemsGathered.getCompound(i);
+			ItemEntity item = new ItemEntity(level, 0, 0, 0, ItemStack.EMPTY);
 			item.readAdditionalSaveData(tag);
 			this.itemsPickedUp.add(item);
 		}
 
-		this.hand = Hand.valueOf(compound.getString("hand"));
+		this.hand = InteractionHand.valueOf(compound.getString("hand"));
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundNBT compound) {
+	protected void addAdditionalSaveData(CompoundTag compound) {
 		compound.putBoolean("IsBouncing", isBouncing);
 		compound.putDouble("BounceFactor", bounceFactor);
 		compound.putFloat("PrevBoomerangRotation", prevBoomerangRotation);
@@ -332,14 +332,14 @@ public abstract class BoomerangEntity extends Entity {
 			compound.putString("ReturnToUUID", this.getReturnToId().toString());
 		}
 
-		CompoundNBT selfStackTag = new CompoundNBT();
+		CompoundTag selfStackTag = new CompoundTag();
 		selfStack.save(selfStackTag);
 		compound.put("SelfStack", selfStackTag);
 
-		ListNBT itemsGathered = new ListNBT();
+		ListTag itemsGathered = new ListTag();
 		for (int i = 0; i < itemsPickedUp.size(); i++) {
 			if (itemsPickedUp.get(i) != null) {
-				CompoundNBT tag = new CompoundNBT();
+				CompoundTag tag = new CompoundTag();
 				itemsPickedUp.get(i).addAdditionalSaveData(compound);
 				itemsGathered.add(tag);
 			}
@@ -350,7 +350,7 @@ public abstract class BoomerangEntity extends Entity {
 	}
 
 	@Override
-	public IPacket<?> getAddEntityPacket() {
+	public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

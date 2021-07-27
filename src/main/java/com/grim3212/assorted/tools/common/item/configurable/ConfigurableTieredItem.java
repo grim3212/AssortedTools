@@ -2,8 +2,10 @@ package com.grim3212.assorted.tools.common.item.configurable;
 
 import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class ConfigurableTieredItem extends Item {
 
