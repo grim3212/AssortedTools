@@ -4,11 +4,11 @@ import com.grim3212.assorted.tools.AssortedTools;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
 import com.grim3212.assorted.tools.common.util.ToolsTags;
 
-import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
-import net.minecraft.world.item.Items;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class ToolsItemTagProvider extends ItemTagsProvider {
@@ -20,6 +20,8 @@ public class ToolsItemTagProvider extends ItemTagsProvider {
 	@Override
 	protected void addTags() {
 		this.tag(ToolsTags.Items.FEATHERS).add(Items.FEATHER);
+		this.tag(ToolsTags.Items.INGOTS_COPPER).add(Items.COPPER_INGOT);
+		this.tag(ToolsTags.Items.GEMS_AMETHYST).add(Items.AMETHYST_SHARD);
 
 		ToolsItems.MATERIAL_GROUPS.forEach((s, group) -> {
 			// Add to top level tags

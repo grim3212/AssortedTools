@@ -35,6 +35,7 @@ public class ToolsTags {
 		public static final IOptionalNamedTag<Item> GEMS_AMETHYST = forgeTag("gems/amethyst");
 		public static final IOptionalNamedTag<Item> GEMS_SAPPHIRE = forgeTag("gems/sapphire");
 		public static final IOptionalNamedTag<Item> GEMS_TOPAZ = forgeTag("gems/topaz");
+		public static final IOptionalNamedTag<Item> GEMS_PERIDOT = forgeTag("gems/peridot");
 
 		public static final IOptionalNamedTag<Item> SWORDS = forgeTag("swords");
 		public static final IOptionalNamedTag<Item> SWORDS_TIN = forgeTag("swords/tin");
@@ -53,6 +54,7 @@ public class ToolsTags {
 		public static final IOptionalNamedTag<Item> SWORDS_SAPPHIRE = forgeTag("swords/sapphire");
 		public static final IOptionalNamedTag<Item> SWORDS_TOPAZ = forgeTag("swords/topaz");
 		public static final IOptionalNamedTag<Item> SWORDS_EMERALD = forgeTag("swords/emerald");
+		public static final IOptionalNamedTag<Item> SWORDS_PERIDOT = forgeTag("swords/peridot");
 		public static final IOptionalNamedTag<Item> SWORDS_WOODEN = forgeTag("swords/wooden");
 		public static final IOptionalNamedTag<Item> SWORDS_STONE = forgeTag("swords/stone");
 		public static final IOptionalNamedTag<Item> SWORDS_GOLDEN = forgeTag("swords/golden");
@@ -77,6 +79,7 @@ public class ToolsTags {
 		public static final IOptionalNamedTag<Item> PICKAXES_SAPPHIRE = forgeTag("pickaxes/sapphire");
 		public static final IOptionalNamedTag<Item> PICKAXES_TOPAZ = forgeTag("pickaxes/topaz");
 		public static final IOptionalNamedTag<Item> PICKAXES_EMERALD = forgeTag("pickaxes/emerald");
+		public static final IOptionalNamedTag<Item> PICKAXES_PERIDOT = forgeTag("pickaxes/peridot");
 		public static final IOptionalNamedTag<Item> PICKAXES_WOODEN = forgeTag("pickaxes/wooden");
 		public static final IOptionalNamedTag<Item> PICKAXES_STONE = forgeTag("pickaxes/stone");
 		public static final IOptionalNamedTag<Item> PICKAXES_GOLDEN = forgeTag("pickaxes/golden");
@@ -101,6 +104,7 @@ public class ToolsTags {
 		public static final IOptionalNamedTag<Item> SHOVELS_SAPPHIRE = forgeTag("shovels/sapphire");
 		public static final IOptionalNamedTag<Item> SHOVELS_TOPAZ = forgeTag("shovels/topaz");
 		public static final IOptionalNamedTag<Item> SHOVELS_EMERALD = forgeTag("shovels/emerald");
+		public static final IOptionalNamedTag<Item> SHOVELS_PERIDOT = forgeTag("shovels/peridot");
 		public static final IOptionalNamedTag<Item> SHOVELS_WOODEN = forgeTag("shovels/wooden");
 		public static final IOptionalNamedTag<Item> SHOVELS_STONE = forgeTag("shovels/stone");
 		public static final IOptionalNamedTag<Item> SHOVELS_GOLDEN = forgeTag("shovels/golden");
@@ -125,6 +129,7 @@ public class ToolsTags {
 		public static final IOptionalNamedTag<Item> AXES_SAPPHIRE = forgeTag("axes/sapphire");
 		public static final IOptionalNamedTag<Item> AXES_TOPAZ = forgeTag("axes/topaz");
 		public static final IOptionalNamedTag<Item> AXES_EMERALD = forgeTag("axes/emerald");
+		public static final IOptionalNamedTag<Item> AXES_PERIDOT = forgeTag("axes/peridot");
 		public static final IOptionalNamedTag<Item> AXES_WOODEN = forgeTag("axes/wooden");
 		public static final IOptionalNamedTag<Item> AXES_STONE = forgeTag("axes/stone");
 		public static final IOptionalNamedTag<Item> AXES_GOLDEN = forgeTag("axes/golden");
@@ -149,6 +154,7 @@ public class ToolsTags {
 		public static final IOptionalNamedTag<Item> HOES_SAPPHIRE = forgeTag("hoes/sapphire");
 		public static final IOptionalNamedTag<Item> HOES_TOPAZ = forgeTag("hoes/topaz");
 		public static final IOptionalNamedTag<Item> HOES_EMERALD = forgeTag("hoes/emerald");
+		public static final IOptionalNamedTag<Item> HOES_PERIDOT = forgeTag("hoes/peridot");
 		public static final IOptionalNamedTag<Item> HOES_WOODEN = forgeTag("hoes/wooden");
 		public static final IOptionalNamedTag<Item> HOES_STONE = forgeTag("hoes/stone");
 		public static final IOptionalNamedTag<Item> HOES_GOLDEN = forgeTag("hoes/golden");
@@ -173,6 +179,7 @@ public class ToolsTags {
 		public static final IOptionalNamedTag<Item> HELMETS_SAPPHIRE = forgeTag("helmets/sapphire");
 		public static final IOptionalNamedTag<Item> HELMETS_TOPAZ = forgeTag("helmets/topaz");
 		public static final IOptionalNamedTag<Item> HELMETS_EMERALD = forgeTag("helmets/emerald");
+		public static final IOptionalNamedTag<Item> HELMETS_PERIDOT = forgeTag("helmets/peridot");
 		public static final IOptionalNamedTag<Item> HELMETS_LEATHER = forgeTag("helmets/leather");
 		public static final IOptionalNamedTag<Item> HELMETS_CHAINMAIL = forgeTag("helmets/chainmail");
 		public static final IOptionalNamedTag<Item> HELMETS_GOLDEN = forgeTag("helmets/golden");
@@ -198,6 +205,7 @@ public class ToolsTags {
 		public static final IOptionalNamedTag<Item> CHESTPLATES_SAPPHIRE = forgeTag("chestplates/sapphire");
 		public static final IOptionalNamedTag<Item> CHESTPLATES_TOPAZ = forgeTag("chestplates/topaz");
 		public static final IOptionalNamedTag<Item> CHESTPLATES_EMERALD = forgeTag("chestplates/emerald");
+		public static final IOptionalNamedTag<Item> CHESTPLATES_PERIDOT = forgeTag("chestplates/peridot");
 		public static final IOptionalNamedTag<Item> CHESTPLATES_LEATHER = forgeTag("chestplates/leather");
 		public static final IOptionalNamedTag<Item> CHESTPLATES_CHAINMAIL = forgeTag("chestplates/chainmail");
 		public static final IOptionalNamedTag<Item> CHESTPLATES_GOLDEN = forgeTag("chestplates/golden");
@@ -222,6 +230,7 @@ public class ToolsTags {
 		public static final IOptionalNamedTag<Item> LEGGINGS_SAPPHIRE = forgeTag("leggings/sapphire");
 		public static final IOptionalNamedTag<Item> LEGGINGS_TOPAZ = forgeTag("leggings/topaz");
 		public static final IOptionalNamedTag<Item> LEGGINGS_EMERALD = forgeTag("leggings/emerald");
+		public static final IOptionalNamedTag<Item> LEGGINGS_PERIDOT = forgeTag("leggings/peridot");
 		public static final IOptionalNamedTag<Item> LEGGINGS_LEATHER = forgeTag("leggings/leather");
 		public static final IOptionalNamedTag<Item> LEGGINGS_CHAINMAIL = forgeTag("leggings/chainmail");
 		public static final IOptionalNamedTag<Item> LEGGINGS_GOLDEN = forgeTag("leggings/golden");
@@ -246,6 +255,7 @@ public class ToolsTags {
 		public static final IOptionalNamedTag<Item> BOOTS_SAPPHIRE = forgeTag("boots/sapphire");
 		public static final IOptionalNamedTag<Item> BOOTS_TOPAZ = forgeTag("boots/topaz");
 		public static final IOptionalNamedTag<Item> BOOTS_EMERALD = forgeTag("boots/emerald");
+		public static final IOptionalNamedTag<Item> BOOTS_PERIDOT = forgeTag("boots/peridot");
 		public static final IOptionalNamedTag<Item> BOOTS_LEATHER = forgeTag("boots/leather");
 		public static final IOptionalNamedTag<Item> BOOTS_CHAINMAIL = forgeTag("boots/chainmail");
 		public static final IOptionalNamedTag<Item> BOOTS_GOLDEN = forgeTag("boots/golden");

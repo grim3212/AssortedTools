@@ -72,7 +72,11 @@ public enum ToolsItemTier implements Tier {
 
 	EMERALD(3, 1547, 8.2F, 3.0F, 14, () -> {
 		return Tags.Items.GEMS_EMERALD;
-	}, 5.2F, -3.2F);
+	}, 5.2F, -3.2F),
+	
+	PERIDOT(2, 1456, 7.7F, 2.7F, 9, () -> {
+		return ToolsTags.Items.GEMS_PERIDOT;
+	}, 5.0F, -3.0F);
 
 	private final int harvestLevel;
 	private final int maxUses;

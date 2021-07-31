@@ -5,15 +5,15 @@ import java.util.function.Supplier;
 import com.grim3212.assorted.tools.common.handler.ArmorMaterialHolder;
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.ArmorMaterials;
-import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.tags.Tag;
-import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.Tag;
+import net.minecraft.util.LazyLoadedValue;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.ArmorMaterials;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.Tags;
 
 public enum ToolsArmorMaterials implements ArmorMaterial {
@@ -33,7 +33,8 @@ public enum ToolsArmorMaterials implements ArmorMaterial {
 	AMETHYST(() -> ToolsConfig.COMMON.moddedArmors.get("amethyst"), () -> SoundEvents.ARMOR_EQUIP_DIAMOND, () -> ToolsTags.Items.GEMS_AMETHYST),
 	SAPPHIRE(() -> ToolsConfig.COMMON.moddedArmors.get("sapphire"), () -> SoundEvents.ARMOR_EQUIP_DIAMOND, () -> ToolsTags.Items.GEMS_SAPPHIRE),
 	TOPAZ(() -> ToolsConfig.COMMON.moddedArmors.get("topaz"), () -> SoundEvents.ARMOR_EQUIP_DIAMOND, () -> ToolsTags.Items.GEMS_TOPAZ),
-	EMERALD(() -> ToolsConfig.COMMON.moddedArmors.get("emerald"), () -> SoundEvents.ARMOR_EQUIP_DIAMOND, () -> Tags.Items.GEMS_EMERALD);
+	EMERALD(() -> ToolsConfig.COMMON.moddedArmors.get("emerald"), () -> SoundEvents.ARMOR_EQUIP_DIAMOND, () -> Tags.Items.GEMS_EMERALD),
+	PERIDOT(() -> ToolsConfig.COMMON.moddedArmors.get("peridot"), () -> SoundEvents.ARMOR_EQUIP_DIAMOND, () -> ToolsTags.Items.GEMS_PERIDOT);
 
 	private final Supplier<ArmorMaterialHolder> material;
 	private final Supplier<SoundEvent> equipSound;

@@ -109,6 +109,7 @@
 	"item.assortedtools.sapphire_spear": "Sapphire Spear",
 	"item.assortedtools.topaz_spear": "Topaz Spear",
 	"item.assortedtools.emerald_spear": "Emerald Spear",
+	"item.assortedtools.peridot_spear": "Peridot Spear",
 	
 	"item.assortedtools.tin_hammer": "Tin Hammer",
 	"item.assortedtools.copper_hammer": "Copper Hammer",
@@ -126,6 +127,7 @@
 	"item.assortedtools.sapphire_hammer": "Sapphire Hammer",
 	"item.assortedtools.topaz_hammer": "Topaz Hammer",
 	"item.assortedtools.emerald_hammer": "Emerald Hammer",
+	"item.assortedtools.peridot_hammer": "Peridot Hammer",
 	
 	"item.assortedtools.tin_multitool": "Tin MultiTool",
 	"item.assortedtools.copper_multitool": "Copper MultiTool",
@@ -143,6 +145,7 @@
 	"item.assortedtools.sapphire_multitool": "Sapphire MultiTool",
 	"item.assortedtools.topaz_multitool": "Topaz MultiTool",
 	"item.assortedtools.emerald_multitool": "Emerald MultiTool",
+	"item.assortedtools.peridot_multitool": "Peridot MultiTool",
 	
 	"item.assortedtools.tin_pickaxe": "Tin Pickaxe",
 	"item.assortedtools.copper_pickaxe": "Copper Pickaxe",
@@ -160,6 +163,7 @@
 	"item.assortedtools.sapphire_pickaxe": "Sapphire Pickaxe",
 	"item.assortedtools.topaz_pickaxe": "Topaz Pickaxe",
 	"item.assortedtools.emerald_pickaxe": "Emerald Pickaxe",
+	"item.assortedtools.peridot_pickaxe": "Peridot Pickaxe",
 	
 	"item.assortedtools.tin_shovel": "Tin Shovel",
 	"item.assortedtools.copper_shovel": "Copper Shovel",
@@ -177,6 +181,7 @@
 	"item.assortedtools.sapphire_shovel": "Sapphire Shovel",
 	"item.assortedtools.topaz_shovel": "Topaz Shovel",
 	"item.assortedtools.emerald_shovel": "Emerald Shovel",
+	"item.assortedtools.peridot_shovel": "Peridot Shovel",
 	
 	"item.assortedtools.tin_axe": "Tin Axe",
 	"item.assortedtools.copper_axe": "Copper Axe",
@@ -194,6 +199,7 @@
 	"item.assortedtools.sapphire_axe": "Sapphire Axe",
 	"item.assortedtools.topaz_axe": "Topaz Axe",
 	"item.assortedtools.emerald_axe": "Emerald Axe",
+	"item.assortedtools.peridot_axe": "Peridot Axe",
 	
 	"item.assortedtools.tin_hoe": "Tin Hoe",
 	"item.assortedtools.copper_hoe": "Copper Hoe",
@@ -211,6 +217,7 @@
 	"item.assortedtools.sapphire_hoe": "Sapphire Hoe",
 	"item.assortedtools.topaz_hoe": "Topaz Hoe",
 	"item.assortedtools.emerald_hoe": "Emerald Hoe",
+	"item.assortedtools.peridot_hoe": "Peridot Hoe",
 	
 	"item.assortedtools.tin_sword": "Tin Sword",
 	"item.assortedtools.copper_sword": "Copper Sword",
@@ -228,6 +235,7 @@
 	"item.assortedtools.sapphire_sword": "Sapphire Sword",
 	"item.assortedtools.topaz_sword": "Topaz Sword",
 	"item.assortedtools.emerald_sword": "Emerald Sword",
+	"item.assortedtools.peridot_sword": "Peridot Sword",
 	
 	"item.assortedtools.tin_helmet": "Tin Helmet",
 	"item.assortedtools.copper_helmet": "Copper Helmet",
@@ -245,6 +253,7 @@
 	"item.assortedtools.sapphire_helmet": "Sapphire Helmet",
 	"item.assortedtools.topaz_helmet": "Topaz Helmet",
 	"item.assortedtools.emerald_helmet": "Emerald Helmet",
+	"item.assortedtools.peridot_helmet": "Peridot Helmet",
 	
 	"item.assortedtools.tin_chestplate": "Tin Chestplate",
 	"item.assortedtools.copper_chestplate": "Copper Chestplate",
@@ -262,6 +271,7 @@
 	"item.assortedtools.sapphire_chestplate": "Sapphire Chestplate",
 	"item.assortedtools.topaz_chestplate": "Topaz Chestplate",
 	"item.assortedtools.emerald_chestplate": "Emerald Chestplate",
+	"item.assortedtools.peridot_chestplate": "Peridot Chestplate",
 	
 	"item.assortedtools.tin_leggings": "Tin Leggings",
 	"item.assortedtools.copper_leggings": "Copper Leggings",
@@ -279,6 +289,7 @@
 	"item.assortedtools.sapphire_leggings": "Sapphire Leggings",
 	"item.assortedtools.topaz_leggings": "Topaz Leggings",
 	"item.assortedtools.emerald_leggings": "Emerald Leggings",
+	"item.assortedtools.peridot_leggings": "Peridot Leggings",
 	
 	"item.assortedtools.tin_boots": "Tin Boots",
 	"item.assortedtools.copper_boots": "Copper Boots",
@@ -295,5 +306,6 @@
 	"item.assortedtools.amethyst_boots": "Amethyst Boots",
 	"item.assortedtools.sapphire_boots": "Sapphire Boots",
 	"item.assortedtools.topaz_boots": "Topaz Boots",
-	"item.assortedtools.emerald_boots": "Emerald Boots"
+	"item.assortedtools.emerald_boots": "Emerald Boots",
+	"item.assortedtools.peridot_boots": "Peridot Boots"
 }

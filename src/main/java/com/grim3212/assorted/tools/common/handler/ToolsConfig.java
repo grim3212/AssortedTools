@@ -145,6 +145,7 @@ public final class ToolsConfig {
 			moddedArmors.put("sapphire", new ArmorMaterialHolder(builder, "sapphire", 31, 14, 1.0F, 0.0F, new int[] { 3, 6, 8, 3 }, () -> ToolsArmorMaterials.SAPPHIRE));
 			moddedArmors.put("topaz", new ArmorMaterialHolder(builder, "topaz", 30, 8, 1.0F, 0.0F, new int[] { 3, 6, 8, 3 }, () -> ToolsArmorMaterials.TOPAZ));
 			moddedArmors.put("emerald", new ArmorMaterialHolder(builder, "emerald", 32, 14, 2.0F, 0.0F, new int[] { 3, 6, 8, 3 }, () -> ToolsArmorMaterials.EMERALD));
+			moddedArmors.put("peridot", new ArmorMaterialHolder(builder, "peridot", 30, 8, 1.0F, 0.0F, new int[] { 3, 6, 8, 3 }, () -> ToolsArmorMaterials.PERIDOT));
 			builder.pop();
 
 			builder.push("Item Tiers");
@@ -178,6 +179,7 @@ public final class ToolsConfig {
 			moddedTiers.put("sapphire", new ModdedItemTierHolder(builder, "sapphire", ToolsItemTier.SAPPHIRE));
 			moddedTiers.put("topaz", new ModdedItemTierHolder(builder, "topaz", ToolsItemTier.TOPAZ));
 			moddedTiers.put("emerald", new ModdedItemTierHolder(builder, "emerald", ToolsItemTier.EMERALD));
+			moddedTiers.put("peridot", new ModdedItemTierHolder(builder, "peridot", ToolsItemTier.PERIDOT));
 			builder.pop();
 
 			builder.pop();
