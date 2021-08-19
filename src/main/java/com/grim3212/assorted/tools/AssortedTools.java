@@ -17,6 +17,7 @@ import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
 import com.grim3212.assorted.tools.common.network.PacketHandler;
 import com.grim3212.assorted.tools.common.proxy.IProxy;
+import com.grim3212.assorted.tools.common.util.TierRegistryHandler;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraft.world.item.CreativeModeTab;
@@ -76,6 +77,7 @@ public class AssortedTools {
 
 	private void setup(final FMLCommonSetupEvent event) {
 		PacketHandler.init();
+		TierRegistryHandler.registerTiers();
 	}
 
 	private void gatherData(GatherDataEvent event) {

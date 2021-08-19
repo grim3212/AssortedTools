@@ -9,6 +9,6 @@ import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 public class ToolsDamageSources {
 
 	public static DamageSource spear(Entity hitEntity, @Nullable Entity owner) {
-	      return (new IndirectEntityDamageSource("spear", hitEntity, owner)).setProjectile();
-	   }
+		return (new IndirectEntityDamageSource("spear", hitEntity, owner)).setProjectile();
+	}
 }

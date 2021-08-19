@@ -27,16 +27,16 @@
             "tag": "forge:axes/stone"
           },
           {
-            "tag": "forge:cobblestone"
+            "tag": "minecraft:stone_tool_materials"
           },
           {
-            "tag": "forge:cobblestone"
+            "tag": "minecraft:stone_tool_materials"
           },
           {
-            "tag": "forge:cobblestone"
+            "tag": "minecraft:stone_tool_materials"
           },
           {
-            "tag": "forge:cobblestone"
+            "tag": "minecraft:stone_tool_materials"
           }
         ],
         "result": {

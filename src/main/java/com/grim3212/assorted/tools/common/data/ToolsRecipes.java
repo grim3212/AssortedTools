@@ -36,11 +36,11 @@ public class ToolsRecipes extends RecipeProvider {
 		hammerPattern(ToolsItems.DIAMOND_HAMMER.get(), Tags.Items.GEMS_DIAMOND, consumer);
 		hammerPattern(ToolsItems.IRON_HAMMER.get(), Tags.Items.INGOTS_IRON, consumer);
 		hammerPattern(ToolsItems.GOLD_HAMMER.get(), Tags.Items.INGOTS_GOLD, consumer);
-		hammerPattern(ToolsItems.STONE_HAMMER.get(), Tags.Items.COBBLESTONE, consumer);
+		hammerPattern(ToolsItems.STONE_HAMMER.get(), ItemTags.STONE_TOOL_MATERIALS, consumer);
 		hammerPattern(ToolsItems.WOOD_HAMMER.get(), ItemTags.PLANKS, consumer);
 
 		spearPattern(ToolsItems.WOOD_SPEAR.get(), ItemTags.PLANKS, consumer);
-		spearPattern(ToolsItems.STONE_SPEAR.get(), Tags.Items.COBBLESTONE, consumer);
+		spearPattern(ToolsItems.STONE_SPEAR.get(),  ItemTags.STONE_TOOL_MATERIALS, consumer);
 		spearPattern(ToolsItems.GOLD_SPEAR.get(), Tags.Items.INGOTS_GOLD, consumer);
 		spearPattern(ToolsItems.IRON_SPEAR.get(), Tags.Items.INGOTS_IRON, consumer);
 		spearPattern(ToolsItems.DIAMOND_SPEAR.get(), Tags.Items.GEMS_DIAMOND, consumer);
@@ -61,7 +61,7 @@ public class ToolsRecipes extends RecipeProvider {
 		armorSet(ToolsItems.CHICKEN_SUIT_HELMET.get(), ToolsItems.CHICKEN_SUIT_CHESTPLATE.get(), ToolsItems.CHICKEN_SUIT_LEGGINGS.get(), ToolsItems.CHICKEN_SUIT_BOOTS.get(), Tags.Items.FEATHERS, consumer, "chickensuit");
 
 		multiTool(ToolsItems.WOODEN_MULTITOOL.get(), "wooden", ItemTags.PLANKS, consumer);
-		multiTool(ToolsItems.STONE_MULTITOOL.get(), "stone", Tags.Items.COBBLESTONE, consumer);
+		multiTool(ToolsItems.STONE_MULTITOOL.get(), "stone",  ItemTags.STONE_TOOL_MATERIALS, consumer);
 		multiTool(ToolsItems.GOLDEN_MULTITOOL.get(), "golden", Tags.Items.INGOTS_GOLD, consumer);
 		multiTool(ToolsItems.IRON_MULTITOOL.get(), "iron", Tags.Items.INGOTS_IRON, consumer);
 		multiTool(ToolsItems.DIAMOND_MULTITOOL.get(), "diamond", Tags.Items.GEMS_DIAMOND, consumer);

@@ -2,11 +2,11 @@ package com.grim3212.assorted.tools.common.util;
 
 import java.util.function.Supplier;
 
-import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.LazyLoadedValue;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.Tags;
 
 public enum ToolsItemTier implements Tier {
@@ -73,7 +73,7 @@ public enum ToolsItemTier implements Tier {
 	EMERALD(3, 1547, 8.2F, 3.0F, 14, () -> {
 		return Tags.Items.GEMS_EMERALD;
 	}, 5.2F, -3.2F),
-	
+
 	PERIDOT(2, 1456, 7.7F, 2.7F, 9, () -> {
 		return ToolsTags.Items.GEMS_PERIDOT;
 	}, 5.0F, -3.0F);
@@ -86,7 +86,7 @@ public enum ToolsItemTier implements Tier {
 	private final LazyLoadedValue<Tag<Item>> repairMaterial;
 	private final float axeDamage;
 	private final float axeSpeedIn;
-	
+
 	private ToolsItemTier(int harvestLevelIn, int maxUsesIn, float efficiencyIn, float attackDamageIn, int enchantabilityIn, Supplier<Tag<Item>> repairTagIn, float axeDamageIn, float axeSpeedIn) {
 		this.harvestLevel = harvestLevelIn;
 		this.maxUses = maxUsesIn;
@@ -97,11 +97,11 @@ public enum ToolsItemTier implements Tier {
 		this.axeDamage = axeDamageIn;
 		this.axeSpeedIn = axeSpeedIn;
 	}
-	
+
 	public float getAxeDamage() {
 		return this.axeDamage;
 	}
-	
+
 	public float getAxeSpeedIn() {
 		return this.axeSpeedIn;
 	}

@@ -1,7 +1,5 @@
 package com.grim3212.assorted.tools.common.item.configurable;
 
-import java.util.Map;
-
 import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
 
 import net.minecraft.core.BlockPos;
@@ -15,20 +13,15 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.ToolType;
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
 
 public class ConfigurableShovelItem extends ConfigurableToolItem {
 
 	public ConfigurableShovelItem(ItemTierHolder tierHolder, Item.Properties builder) {
-		super(tierHolder, 1.5F, -3.0F, BlockTags.MINEABLE_WITH_SHOVEL, builder.addToolType(ToolType.SHOVEL, tierHolder.getHarvestLevel()));
-	}
-
-	@Override
-	public boolean isCorrectToolForDrops(BlockState blockIn) {
-		return blockIn.is(Blocks.SNOW) || blockIn.is(Blocks.SNOW_BLOCK);
+		super(tierHolder, 1.5F, -3.0F, BlockTags.MINEABLE_WITH_SHOVEL, builder);
 	}
 
 	@Override
@@ -40,7 +33,7 @@ public class ConfigurableShovelItem extends ConfigurableToolItem {
 			return InteractionResult.PASS;
 		} else {
 			Player playerentity = context.getPlayer();
-			BlockState blockstate1 = blockstate.getToolModifiedState(world, blockpos, playerentity, context.getItemInHand(), ToolType.SHOVEL);
+			BlockState blockstate1 = blockstate.getToolModifiedState(world, blockpos, playerentity, context.getItemInHand(), ToolActions.SHOVEL_FLATTEN);
 			BlockState blockstate2 = null;
 			if (blockstate1 != null && world.isEmptyBlock(blockpos.above())) {
 				world.playSound(playerentity, blockpos, SoundEvents.SHOVEL_FLATTEN, SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -72,7 +65,7 @@ public class ConfigurableShovelItem extends ConfigurableToolItem {
 	}
 
 	@Override
-	public void addToolTypes(Map<ToolType, Integer> toolClasses, ItemStack stack) {
-		toolClasses.put(ToolType.SHOVEL, this.getTierHarvestLevel());
+	public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
+		return ToolActions.DEFAULT_SHOVEL_ACTIONS.contains(toolAction);
 	}
 }
