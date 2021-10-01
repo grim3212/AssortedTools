@@ -44,6 +44,8 @@ public final class ToolsConfig {
 		public final ForgeConfigSpec.ConfigValue<List<String>> destructiveWandSparedBlocks;
 		public final ForgeConfigSpec.ConfigValue<List<String>> miningWandBlocksForSurfaceMining;
 		public final ForgeConfigSpec.ConfigValue<List<Double>> conductivityLightningChances;
+		
+		public final ForgeConfigSpec.BooleanValue allowPartialBucketAmounts;
 
 		public final ArmorMaterialHolder chickenSuitArmorMaterial;
 
@@ -69,6 +71,7 @@ public final class ToolsConfig {
 		public final ForgeConfigSpec.BooleanValue extraMaterialsEnabled;
 		public final ForgeConfigSpec.BooleanValue spearsEnabled;
 		public final ForgeConfigSpec.BooleanValue betterSpearsEnabled;
+		public final ForgeConfigSpec.BooleanValue betterBucketsEnabled;
 
 		public Common(ForgeConfigSpec.Builder builder) {
 			builder.push("Parts");
@@ -81,6 +84,7 @@ public final class ToolsConfig {
 			extraMaterialsEnabled = builder.comment("Set this to true if you would like to enable support for crafting the extra tools and armor that this supports. For example, Steel, Copper, or Ruby tools and armor.").define("extraMaterialsEnabled", true);
 			spearsEnabled = builder.comment("Set this to true if you would like the spears to be craftable and found in the creative tab.").define("spearsEnabled", true);
 			betterSpearsEnabled = builder.comment("Set this to true if you would like the better spears (the ones that can be enchanted) to be craftable and found in the creative tab as well as the Enchantments for it to be enchanted on books.").define("betterSpearsEnabled", true);
+			betterBucketsEnabled = builder.comment("Set this to true if you would like better buckets to be craftable and found in the creative tab.").define("betterBucketsEnabled", true);
 			builder.pop();
 
 			builder.push("Boomerangs");
@@ -124,6 +128,10 @@ public final class ToolsConfig {
 				AssortedTools.LOGGER.error("The array for conductivity lightning chances must be exactly 3 elements at all times and all items must be in the range from [0.0D - 1.0D). No exceptions!");
 				return false;
 			});
+			builder.pop();
+			
+			builder.push("Better Buckets");
+			allowPartialBucketAmounts = builder.comment("Set to true if you would like the better buckets to be able to accept partial bucket amounts. Meaning some can get left over after placing all the full buckets.").define("allowPartialBucketAmounts", false);
 			builder.pop();
 
 			builder.push("Armors");

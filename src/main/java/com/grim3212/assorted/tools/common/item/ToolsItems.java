@@ -9,6 +9,7 @@ import com.grim3212.assorted.tools.common.handler.ArmorMaterialHolder;
 import com.grim3212.assorted.tools.common.handler.ModdedItemTierHolder;
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import com.grim3212.assorted.tools.common.item.configurable.ConfigurableArmorItem;
+import com.grim3212.assorted.tools.common.util.BucketType;
 
 import net.minecraft.tags.Tag;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -58,6 +59,9 @@ public class ToolsItems {
 	public static final RegistryObject<BetterSpearItem> GOLD_SPEAR = register("gold_spear", () -> new BetterSpearItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), ToolsConfig.COMMON.goldItemTier));
 	public static final RegistryObject<BetterSpearItem> DIAMOND_SPEAR = register("diamond_spear", () -> new BetterSpearItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), ToolsConfig.COMMON.diamondItemTier));
 	public static final RegistryObject<BetterSpearItem> NETHERITE_SPEAR = register("netherite_spear", () -> new BetterSpearItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), ToolsConfig.COMMON.netheriteItemTier));
+
+	public static final RegistryObject<BetterBucketItem> DIAMOND_BUCKET = register("diamond_bucket", () -> new BetterBucketItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), BucketType.DIAMOND));
+	public static final RegistryObject<BetterMilkBucketItem> DIAMOND_MILK_BUCKET = register("diamond_milk_bucket", () -> new BetterMilkBucketItem(() -> DIAMOND_BUCKET.get(), new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
 
 	public static final Map<String, MaterialGroup> MATERIAL_GROUPS = Maps.newHashMap();
 

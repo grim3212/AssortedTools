@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "assortedtools:item/diamond_bucket",
+    "layer1": "assortedtools:item/overlay_milk"
+  }
+}
