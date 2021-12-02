@@ -41,8 +41,8 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fmllegacy.common.registry.IEntityAdditionalSpawnData;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import net.minecraftforge.entity.IEntityAdditionalSpawnData;
+import net.minecraftforge.network.NetworkHooks;
 
 public class BetterSpearEntity extends AbstractArrow implements IEntityAdditionalSpawnData {
 	private static final EntityDataAccessor<Byte> ID_LOYALTY = SynchedEntityData.defineId(BetterSpearEntity.class, EntityDataSerializers.BYTE);
@@ -191,7 +191,6 @@ public class BetterSpearEntity extends AbstractArrow implements IEntityAdditiona
 		DamageSource damagesource = ToolsDamageSources.spear(this, (Entity) (owner == null ? this : owner));
 		this.dealtDamage = true;
 		SoundEvent soundevent = SoundEvents.TRIDENT_HIT;
-		AssortedTools.LOGGER.info("Damage: " + f);
 		if (hitEntity.hurt(damagesource, f)) {
 			if (hitEntity.getType() == EntityType.ENDERMAN) {
 				return;

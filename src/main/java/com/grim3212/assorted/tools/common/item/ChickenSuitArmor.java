@@ -10,8 +10,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
-import net.minecraft.world.item.Item.Properties;
-
 public class ChickenSuitArmor extends ConfigurableArmorItem {
 
 	public ChickenSuitArmor(EquipmentSlot slot, Properties builderIn) {

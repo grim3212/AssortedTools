@@ -9,8 +9,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.SwordItem;
 
-import net.minecraft.world.item.Item.Properties;
-
 public class ConfigurableSwordItem extends SwordItem {
 
 	private final static int swordDamage = 3;

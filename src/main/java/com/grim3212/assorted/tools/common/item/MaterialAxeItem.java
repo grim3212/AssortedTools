@@ -6,8 +6,6 @@ import com.grim3212.assorted.tools.common.item.configurable.ConfigurableAxeItem;
 
 import net.minecraft.world.item.CreativeModeTab;
 
-import net.minecraft.world.item.Item.Properties;
-
 public class MaterialAxeItem extends ConfigurableAxeItem {
 
 	public MaterialAxeItem(ModdedItemTierHolder tierHolder, Properties builder) {

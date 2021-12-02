@@ -6,8 +6,6 @@ import com.grim3212.assorted.tools.common.item.configurable.ConfigurablePickaxeI
 
 import net.minecraft.world.item.CreativeModeTab;
 
-import net.minecraft.world.item.Item.Properties;
-
 public class MaterialPickaxeItem extends ConfigurablePickaxeItem {
 
 	public MaterialPickaxeItem(ItemTierHolder tierHolder, Properties builder) {
