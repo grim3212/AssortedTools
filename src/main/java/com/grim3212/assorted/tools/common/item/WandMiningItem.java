@@ -10,27 +10,25 @@ import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import com.grim3212.assorted.tools.common.util.NBTHelper;
 import com.grim3212.assorted.tools.common.util.WandCoord3D;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.FlowerBlock;
-import net.minecraft.world.level.block.LeavesBlock;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.util.StringRepresentable;
-import net.minecraft.core.NonNullList;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-
-import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FlowerBlock;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
 
 public class WandMiningItem extends WandItem {
 
@@ -47,14 +45,14 @@ public class WandMiningItem extends WandItem {
 		BlockState state = worldIn.getBlockState(pos);
 
 		switch (MiningMode.fromString(NBTHelper.getString(stack, "Mode"))) {
-		case MINE_ALL:
-			return (state.getBlock() != Blocks.BEDROCK || ToolsConfig.COMMON.bedrockBreaking.get()) && (state.getBlock() != Blocks.OBSIDIAN || ToolsConfig.COMMON.easyMiningObsidian.get());
-		case MINE_DIRT:
-			return (state.getBlock() == Blocks.GRASS || state.getBlock() == Blocks.DIRT || state.getBlock() == Blocks.SAND || state.getBlock() == Blocks.GRAVEL || state.getBlock() instanceof LeavesBlock || state.getBlock() == Blocks.FARMLAND || state.getBlock() == Blocks.SNOW || state.getBlock() == Blocks.SOUL_SAND || state.getBlock() == Blocks.VINE || state.getBlock() instanceof FlowerBlock);
-		case MINE_WOOD:
-			return state.getMaterial() == Material.WOOD;
-		case MINE_ORES:
-			return isMiningOre(state) && (state.getBlock() != Blocks.BEDROCK || ToolsConfig.COMMON.bedrockBreaking.get()) && (state.getBlock() != Blocks.OBSIDIAN || ToolsConfig.COMMON.easyMiningObsidian.get());
+			case MINE_ALL:
+				return (state.getBlock() != Blocks.BEDROCK || ToolsConfig.COMMON.bedrockBreaking.get()) && (state.getBlock() != Blocks.OBSIDIAN || ToolsConfig.COMMON.easyMiningObsidian.get());
+			case MINE_DIRT:
+				return (state.getBlock() == Blocks.GRASS || state.getBlock() == Blocks.DIRT || state.getBlock() == Blocks.SAND || state.getBlock() == Blocks.GRAVEL || state.getBlock() instanceof LeavesBlock || state.getBlock() == Blocks.FARMLAND || state.getBlock() == Blocks.SNOW || state.getBlock() == Blocks.SOUL_SAND || state.getBlock() == Blocks.VINE || state.getBlock() instanceof FlowerBlock);
+			case MINE_WOOD:
+				return state.getMaterial() == Material.WOOD;
+			case MINE_ORES:
+				return isMiningOre(state) && (state.getBlock() != Blocks.BEDROCK || ToolsConfig.COMMON.bedrockBreaking.get()) && (state.getBlock() != Blocks.OBSIDIAN || ToolsConfig.COMMON.easyMiningObsidian.get());
 		}
 		return false;
 	}
@@ -62,13 +60,13 @@ public class WandMiningItem extends WandItem {
 	@Override
 	protected boolean isTooFar(int range, int maxDiff, int range2D, ItemStack stack) {
 		switch (MiningMode.fromString(NBTHelper.getString(stack, "Mode"))) {
-		case MINE_ALL:
-		case MINE_DIRT:
-			return range - 250 > maxDiff;
-		case MINE_WOOD:
-			return range2D - 400 > maxDiff;
-		case MINE_ORES:
-			return range2D - 60 > maxDiff;
+			case MINE_ALL:
+			case MINE_DIRT:
+				return range - 250 > maxDiff;
+			case MINE_WOOD:
+				return range2D - 400 > maxDiff;
+			case MINE_ORES:
+				return range2D - 60 > maxDiff;
 		}
 		return true;
 	}
@@ -197,7 +195,7 @@ public class WandMiningItem extends WandItem {
 			stateAt = world.getBlockState(newPos);
 			if (canBreak(world, newPos, stack)) {
 				BlockEntity tile = world.getBlockEntity(newPos);
-				if (stateAt.getBlock().removedByPlayer(stateAt, world, newPos, entityplayer, true, world.getFluidState(newPos))) {
+				if (stateAt.getBlock().onDestroyedByPlayer(stateAt, world, newPos, entityplayer, true, world.getFluidState(newPos))) {
 					stateAt.getBlock().playerWillDestroy(world, newPos, stateAt, entityplayer);
 					stateAt.getBlock().playerDestroy(world, entityplayer, newPos, stateAt, tile, entityplayer.getUseItem());
 					if (rand.nextInt(blocks2Dig / 50 + 1) == 0)
@@ -241,7 +239,10 @@ public class WandMiningItem extends WandItem {
 	}
 
 	private static enum MiningMode implements StringRepresentable {
-		MINE_ALL("mineall", 0), MINE_DIRT("minedirt", 1), MINE_WOOD("minewood", 2), MINE_ORES("mineores", 3, true);
+		MINE_ALL("mineall", 0),
+		MINE_DIRT("minedirt", 1),
+		MINE_WOOD("minewood", 2),
+		MINE_ORES("mineores", 3, true);
 
 		private final String name;
 		private final int order;

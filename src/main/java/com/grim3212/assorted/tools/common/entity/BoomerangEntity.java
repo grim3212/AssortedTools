@@ -13,6 +13,7 @@ import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -39,8 +40,7 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import net.minecraftforge.network.NetworkHooks;
 
 public abstract class BoomerangEntity extends Entity {
 
@@ -301,7 +301,7 @@ public abstract class BoomerangEntity extends Entity {
 
 		this.selfStack = ItemStack.of(compound.getCompound("SelfStack"));
 
-		ListTag itemsGathered = compound.getList("ItemsPickedUp", Constants.NBT.TAG_COMPOUND);
+		ListTag itemsGathered = compound.getList("ItemsPickedUp", Tag.TAG_COMPOUND);
 		for (int i = 0; i < itemsGathered.size(); i++) {
 			CompoundTag tag = itemsGathered.getCompound(i);
 			ItemEntity item = new ItemEntity(level, 0, 0, 0, ItemStack.EMPTY);

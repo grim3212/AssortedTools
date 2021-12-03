@@ -6,8 +6,6 @@ import com.grim3212.assorted.tools.common.item.configurable.ConfigurableSwordIte
 
 import net.minecraft.world.item.CreativeModeTab;
 
-import net.minecraft.world.item.Item.Properties;
-
 public class MaterialSwordItem extends ConfigurableSwordItem {
 
 	public MaterialSwordItem(ItemTierHolder tierHolder, Properties builder) {

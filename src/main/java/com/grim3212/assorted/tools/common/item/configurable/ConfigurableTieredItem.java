@@ -5,8 +5,6 @@ import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-import net.minecraft.world.item.Item.Properties;
-
 public class ConfigurableTieredItem extends Item {
 
 	private final ItemTierHolder tierHolder;

@@ -6,8 +6,6 @@ import com.grim3212.assorted.tools.common.item.configurable.ConfigurableHoeItem;
 
 import net.minecraft.world.item.CreativeModeTab;
 
-import net.minecraft.world.item.Item.Properties;
-
 public class MaterialHoeItem extends ConfigurableHoeItem {
 
 	public MaterialHoeItem(ItemTierHolder tierHolder, Properties builder) {

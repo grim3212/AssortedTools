@@ -6,8 +6,6 @@ import com.grim3212.assorted.tools.common.item.configurable.ConfigurableShovelIt
 
 import net.minecraft.world.item.CreativeModeTab;
 
-import net.minecraft.world.item.Item.Properties;
-
 public class MaterialShovelItem extends ConfigurableShovelItem {
 
 	public MaterialShovelItem(ItemTierHolder tierHolder, Properties builder) {
