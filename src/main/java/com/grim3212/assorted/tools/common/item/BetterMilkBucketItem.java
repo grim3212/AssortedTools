@@ -12,6 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -117,7 +118,7 @@ public class BetterMilkBucketItem extends Item {
 	}
 
 	@Override
-	public boolean showDurabilityBar(ItemStack stack) {
+	public boolean isBarVisible(ItemStack stack) {
 		// Don't show if the bucket is empty
 		if (BetterBucketItem.getAmount(stack) <= 0)
 			return false;
@@ -125,10 +126,16 @@ public class BetterMilkBucketItem extends Item {
 	}
 
 	@Override
-	public double getDurabilityForDisplay(ItemStack stack) {
+	public int getBarWidth(ItemStack stack) {
 		// Get remainder calculations from stored and maxAmount
 		int reversedAmount = this.getParent().getMaximumMillibuckets() - BetterBucketItem.getAmount(stack);
-		return (double) reversedAmount / (double) this.getParent().getMaximumMillibuckets();
+		return Math.round(13.0F - (float) reversedAmount * 13.0F / (float) this.getParent().getMaximumMillibuckets());
+	}
+
+	@Override
+	public int getBarColor(ItemStack stack) {
+		float f = Math.max(0.0F, (float) BetterBucketItem.getAmount(stack) / (float) this.getParent().getMaximumMillibuckets());
+		return Mth.hsvToRgb(f / 3.0F, 1.0F, 1.0F);
 	}
 
 	@Override

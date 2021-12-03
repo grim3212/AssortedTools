@@ -15,6 +15,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -95,15 +96,15 @@ public class BetterBucketItem extends Item {
 		}
 		return FluidStack.loadFluidStackFromNBT(NBTHelper.getTag(tagCompound, FluidHandlerItemStack.FLUID_NBT_KEY));
 	}
-	
+
 	@Override
 	public Component getName(ItemStack stack) {
 		FluidStack fluidStack = getFluidStack(stack);
-		
-		if(!fluidStack.isEmpty()) {
+
+		if (!fluidStack.isEmpty()) {
 			return new TranslatableComponent("item.assortedtools.diamond_bucket_filled", fluidStack.getDisplayName());
 		}
-		
+
 		return super.getName(stack);
 	}
 
@@ -290,7 +291,7 @@ public class BetterBucketItem extends Item {
 	}
 
 	@Override
-	public boolean showDurabilityBar(ItemStack stack) {
+	public boolean isBarVisible(ItemStack stack) {
 		// Don't show if the bucket is empty
 		if (getAmount(stack) <= 0)
 			return false;
@@ -298,10 +299,16 @@ public class BetterBucketItem extends Item {
 	}
 
 	@Override
-	public double getDurabilityForDisplay(ItemStack stack) {
+	public int getBarWidth(ItemStack stack) {
 		// Get remainder calculations from stored and maxAmount
 		int reversedAmount = maximumMillibuckets - getAmount(stack);
-		return (double) reversedAmount / (double) maximumMillibuckets;
+		return Math.round(13.0F - (float) reversedAmount * 13.0F / (float) maximumMillibuckets);
+	}
+
+	@Override
+	public int getBarColor(ItemStack stack) {
+		float f = Math.max(0.0F, (float) getAmount(stack) / (float) maximumMillibuckets);
+		return Mth.hsvToRgb(f / 3.0F, 1.0F, 1.0F);
 	}
 
 	public ItemStack tryBreakBucket(ItemStack stack) {

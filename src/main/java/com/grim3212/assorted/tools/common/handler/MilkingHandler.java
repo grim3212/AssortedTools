@@ -61,9 +61,8 @@ public class MilkingHandler {
 	}
 
 	private void tryMilk(ItemStack stack, EntityInteract event) {
-		Entity entity = event.getEntity();
+		Entity entity = event.getTarget();
 		Player player = event.getPlayer();
-		
 
 		if (entity instanceof LivingEntity && !entity.level.isClientSide()) {
 			if (!player.isCreative() && !((LivingEntity) entity).isBaby()) {
@@ -75,7 +74,8 @@ public class MilkingHandler {
 						for (int i = 0; i <= milkingLevel; i++) {
 							for (int j = 0; j < levels.get(i).size(); j++) {
 								if (levels.get(i).contains(entity.getClass())) {
-									if (BetterBucketItem.getAmount(stack) < bucket.getParent().bucketType.getMaxBuckets()) {
+									if (BetterBucketItem.getAmount(stack) < bucket.getParent().getMaximumMillibuckets()) {
+
 										player.playSound(SoundEvents.COW_MILK, 1.0F, 1.0F);
 
 										int amount = BetterBucketItem.getAmount(stack);
@@ -91,18 +91,14 @@ public class MilkingHandler {
 				} else if (stack.getItem() instanceof BetterBucketItem) {
 					BetterBucketItem bucket = (BetterBucketItem) stack.getItem();
 					int milkingLevel = bucket.bucketType.getMilkingLevel();
-					
-					
 
 					if (bucket != null) {
 						for (int i = 0; i <= milkingLevel; i++) {
 							for (int j = 0; j < levels.get(i).size(); j++) {
 								if (levels.get(i).contains(entity.getClass())) {
-									System.out.println("Emtpty bucket");
 									if (BetterBucketItem.isEmptyOrContains(stack, "milk")) {
-										
-										
-										if (BetterBucketItem.getAmount(stack) < bucket.bucketType.getMaxBuckets()) {
+
+										if (BetterBucketItem.getAmount(stack) < bucket.getMaximumMillibuckets()) {
 											player.playSound(SoundEvents.COW_MILK, 1.0F, 1.0F);
 
 											ItemStack milkBucket = ItemStack.EMPTY;
