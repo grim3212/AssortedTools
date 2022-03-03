@@ -1,18 +1,18 @@
 package com.grim3212.assorted.tools.common.util;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import com.grim3212.assorted.tools.AssortedTools;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.core.HolderSet.Named;
 import net.minecraft.core.NonNullList;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class ConfigurableBlockStates {
 
@@ -78,9 +78,9 @@ public class ConfigurableBlockStates {
 			}
 
 			for (ResourceLocation t : this.tags) {
-				Tag<Block> foundTag = BlockTags.getAllTags().getTag(t);
-				if (foundTag != null) {
-					states.addAll(foundTag.getValues().stream().map(Block::defaultBlockState).collect(Collectors.toList()));
+				Optional<Named<Block>> foundTag = Registry.BLOCK.getTag(BlockTags.create(t));
+				if (foundTag != null && foundTag.isPresent()) {
+					foundTag.stream().flatMap((o) -> o.stream().map((bls) -> bls.value().defaultBlockState())).forEach(state -> states.add(state));
 				} else {
 					AssortedTools.LOGGER.warn(t.toString() + " is not a valid block tag.");
 				}

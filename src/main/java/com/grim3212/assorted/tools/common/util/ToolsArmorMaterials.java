@@ -7,7 +7,7 @@ import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorMaterial;
@@ -38,12 +38,12 @@ public enum ToolsArmorMaterials implements ArmorMaterial {
 
 	private final Supplier<ArmorMaterialHolder> material;
 	private final Supplier<SoundEvent> equipSound;
-	private final LazyLoadedValue<Tag<Item>> repairMaterial;
+	private final LazyLoadedValue<TagKey<Item>> repairMaterial;
 
-	ToolsArmorMaterials(Supplier<ArmorMaterialHolder> material, Supplier<SoundEvent> equipSound, Supplier<Tag<Item>> repairTagIn) {
+	ToolsArmorMaterials(Supplier<ArmorMaterialHolder> material, Supplier<SoundEvent> equipSound, Supplier<TagKey<Item>> repairTagIn) {
 		this.material = material;
 		this.equipSound = equipSound;
-		this.repairMaterial = new LazyLoadedValue<Tag<Item>>(repairTagIn);
+		this.repairMaterial = new LazyLoadedValue<TagKey<Item>>(repairTagIn);
 	}
 
 	private ArmorMaterialHolder getMaterial() {
