@@ -15,7 +15,7 @@ import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.data.recipes.UpgradeRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -85,25 +85,25 @@ public class ToolsRecipes extends RecipeProvider {
 		return "Assorted Tools recipes";
 	}
 
-	private void spearPattern(ItemLike output, Tag<Item> input, Consumer<FinishedRecipe> consumer) {
+	private void spearPattern(ItemLike output, TagKey<Item> input, Consumer<FinishedRecipe> consumer) {
 		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.BETTER_SPEARS_CONDITION)).addRecipe(ShapedRecipeBuilder.shaped(output).define('S', Tags.Items.RODS_WOODEN).define('I', input).pattern("I  ").pattern(" S ").pattern("  S").unlockedBy("has_item", has(input))::save).generateAdvancement().build(consumer, output.asItem().getRegistryName());
 		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.BETTER_SPEARS_CONDITION)).addRecipe(ShapedRecipeBuilder.shaped(output).define('S', Tags.Items.RODS_WOODEN).define('I', input).pattern("SSI").unlockedBy("has_item", has(input))::save).generateAdvancement().build(consumer, new ResourceLocation(output.asItem().getRegistryName() + "_alt"));
 	}
 
-	private void spearPattern(ItemLike output, Tag<Item> input, Consumer<FinishedRecipe> consumer, String condition) {
+	private void spearPattern(ItemLike output, TagKey<Item> input, Consumer<FinishedRecipe> consumer, String condition) {
 		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.BETTER_SPEARS_CONDITION)).addCondition(new EnabledCondition(condition)).addRecipe(ShapedRecipeBuilder.shaped(output).define('S', Tags.Items.RODS_WOODEN).define('I', input).pattern("I  ").pattern(" S ").pattern("  S").unlockedBy("has_item", has(input))::save).generateAdvancement().build(consumer, output.asItem().getRegistryName());
 		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.BETTER_SPEARS_CONDITION)).addCondition(new EnabledCondition(condition)).addRecipe(ShapedRecipeBuilder.shaped(output).define('S', Tags.Items.RODS_WOODEN).define('I', input).pattern("SSI").unlockedBy("has_item", has(input))::save).generateAdvancement().build(consumer, new ResourceLocation(output.asItem().getRegistryName() + "_alt"));
 	}
 
-	private void hammerPattern(ItemLike output, Tag<Item> input, Consumer<FinishedRecipe> consumer) {
+	private void hammerPattern(ItemLike output, TagKey<Item> input, Consumer<FinishedRecipe> consumer) {
 		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.HAMMERS_CONDITION)).addRecipe(ShapedRecipeBuilder.shaped(output).define('S', Tags.Items.RODS_WOODEN).define('I', input).pattern("III").pattern("ISI").pattern(" S ").unlockedBy("has_item", has(input))::save).generateAdvancement().build(consumer, output.asItem().getRegistryName());
 	}
 
-	private void hammerPattern(ItemLike output, Tag<Item> input, Consumer<FinishedRecipe> consumer, String condition) {
+	private void hammerPattern(ItemLike output, TagKey<Item> input, Consumer<FinishedRecipe> consumer, String condition) {
 		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.HAMMERS_CONDITION)).addCondition(new EnabledCondition(condition)).addRecipe(ShapedRecipeBuilder.shaped(output).define('S', Tags.Items.RODS_WOODEN).define('I', input).pattern("III").pattern("ISI").pattern(" S ").unlockedBy("has_item", has(input))::save).generateAdvancement().build(consumer, output.asItem().getRegistryName());
 	}
 
-	private void toolSet(ItemLike pickaxe, ItemLike shovel, ItemLike axe, ItemLike hoe, ItemLike sword, Tag<Item> input, Consumer<FinishedRecipe> consumer, String condition) {
+	private void toolSet(ItemLike pickaxe, ItemLike shovel, ItemLike axe, ItemLike hoe, ItemLike sword, TagKey<Item> input, Consumer<FinishedRecipe> consumer, String condition) {
 		ConditionalRecipe.builder().addCondition(new EnabledCondition(condition)).addRecipe(ShapedRecipeBuilder.shaped(pickaxe).define('X', input).define('S', Tags.Items.RODS_WOODEN).pattern("XXX").pattern(" S ").pattern(" S ").unlockedBy("has_item", has(input))::save).generateAdvancement().build(consumer, pickaxe.asItem().getRegistryName());
 		ConditionalRecipe.builder().addCondition(new EnabledCondition(condition)).addRecipe(ShapedRecipeBuilder.shaped(shovel).define('X', input).define('S', Tags.Items.RODS_WOODEN).pattern("X").pattern("S").pattern("S").unlockedBy("has_item", has(input))::save).generateAdvancement().build(consumer, shovel.asItem().getRegistryName());
 		ConditionalRecipe.builder().addCondition(new EnabledCondition(condition)).addRecipe(ShapedRecipeBuilder.shaped(axe).define('X', input).define('S', Tags.Items.RODS_WOODEN).pattern("XX").pattern("XS").pattern(" S").unlockedBy("has_item", has(input))::save).generateAdvancement().build(consumer, axe.asItem().getRegistryName());
@@ -113,20 +113,20 @@ public class ToolsRecipes extends RecipeProvider {
 		ConditionalRecipe.builder().addCondition(new EnabledCondition(condition)).addRecipe(ShapedRecipeBuilder.shaped(sword).define('X', input).define('S', Tags.Items.RODS_WOODEN).pattern("X").pattern("X").pattern("S").unlockedBy("has_item", has(input))::save).generateAdvancement().build(consumer, sword.asItem().getRegistryName());
 	}
 
-	private void armorSet(ItemLike helmet, ItemLike chestplate, ItemLike leggings, ItemLike boots, Tag<Item> input, Consumer<FinishedRecipe> consumer, String condition) {
+	private void armorSet(ItemLike helmet, ItemLike chestplate, ItemLike leggings, ItemLike boots, TagKey<Item> input, Consumer<FinishedRecipe> consumer, String condition) {
 		ConditionalRecipe.builder().addCondition(new EnabledCondition(condition)).addRecipe(ShapedRecipeBuilder.shaped(helmet).define('X', input).pattern("XXX").pattern("X X").unlockedBy("has_item", has(input))::save).generateAdvancement().build(consumer, helmet.asItem().getRegistryName());
 		ConditionalRecipe.builder().addCondition(new EnabledCondition(condition)).addRecipe(ShapedRecipeBuilder.shaped(chestplate).define('X', input).pattern("X X").pattern("XXX").pattern("XXX").unlockedBy("has_item", has(input))::save).generateAdvancement().build(consumer, chestplate.asItem().getRegistryName());
 		ConditionalRecipe.builder().addCondition(new EnabledCondition(condition)).addRecipe(ShapedRecipeBuilder.shaped(leggings).define('X', input).pattern("XXX").pattern("X X").pattern("X X").unlockedBy("has_item", has(input))::save).generateAdvancement().build(consumer, leggings.asItem().getRegistryName());
 		ConditionalRecipe.builder().addCondition(new EnabledCondition(condition)).addRecipe(ShapedRecipeBuilder.shaped(boots).define('X', input).pattern("X X").pattern("X X").unlockedBy("has_item", has(input))::save).generateAdvancement().build(consumer, boots.asItem().getRegistryName());
 	}
 
-	private void multiTool(ItemLike output, String materialName, Tag<Item> input, Consumer<FinishedRecipe> consumer) {
+	private void multiTool(ItemLike output, String materialName, TagKey<Item> input, Consumer<FinishedRecipe> consumer) {
 		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.MULTITOOL_CONDITION))
 				.addRecipe(ShapelessRecipeBuilder.shapeless(output).requires(ToolsTags.Items.forgeTag("swords/" + materialName)).requires(ToolsTags.Items.forgeTag("pickaxes/" + materialName)).requires(ToolsTags.Items.forgeTag("shovels/" + materialName)).requires(ToolsTags.Items.forgeTag("hoes/" + materialName)).requires(ToolsTags.Items.forgeTag("axes/" + materialName)).requires(input).requires(input).requires(input).requires(input).unlockedBy("has_item", has(input))::save).generateAdvancement()
 				.build(consumer, output.asItem().getRegistryName());
 	}
 
-	private void multiTool(ItemLike output, String materialName, Tag<Item> input, Consumer<FinishedRecipe> consumer, String condition) {
+	private void multiTool(ItemLike output, String materialName, TagKey<Item> input, Consumer<FinishedRecipe> consumer, String condition) {
 		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.MULTITOOL_CONDITION)).addCondition(new EnabledCondition(condition))
 				.addRecipe(ShapelessRecipeBuilder.shapeless(output).requires(ToolsTags.Items.forgeTag("swords/" + materialName)).requires(ToolsTags.Items.forgeTag("pickaxes/" + materialName)).requires(ToolsTags.Items.forgeTag("shovels/" + materialName)).requires(ToolsTags.Items.forgeTag("hoes/" + materialName)).requires(ToolsTags.Items.forgeTag("axes/" + materialName)).requires(input).requires(input).requires(input).requires(input).unlockedBy("has_item", has(input))::save).generateAdvancement()
 				.build(consumer, output.asItem().getRegistryName());

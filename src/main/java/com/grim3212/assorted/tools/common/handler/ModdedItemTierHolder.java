@@ -2,7 +2,7 @@ package com.grim3212.assorted.tools.common.handler;
 
 import com.grim3212.assorted.tools.common.util.ToolsItemTier;
 
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
 
@@ -15,7 +15,7 @@ public class ModdedItemTierHolder extends ItemTierHolder {
 		this.moddedTier = defaultTier;
 	}
 
-	public Tag<Item> getMaterial() {
+	public TagKey<Item> getMaterial() {
 		return this.moddedTier.repairTag();
 	}
 }

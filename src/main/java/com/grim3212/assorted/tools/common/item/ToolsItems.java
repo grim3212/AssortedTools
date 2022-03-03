@@ -11,7 +11,7 @@ import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import com.grim3212.assorted.tools.common.item.configurable.ConfigurableArmorItem;
 import com.grim3212.assorted.tools.common.util.BucketType;
 
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
@@ -89,7 +89,7 @@ public class ToolsItems {
 		public final RegistryObject<ConfigurableArmorItem> LEGGINGS;
 		public final RegistryObject<ConfigurableArmorItem> BOOTS;
 
-		public final Tag<Item> material;
+		public final TagKey<Item> material;
 
 		public MaterialGroup(ModdedItemTierHolder tier, ArmorMaterialHolder armor) {
 			this.PICKAXE = register(tier.getName() + "_pickaxe", () -> new MaterialPickaxeItem(tier, new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));

@@ -2,7 +2,7 @@ package com.grim3212.assorted.tools.common.util;
 
 import java.util.function.Supplier;
 
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Tier;
@@ -83,17 +83,17 @@ public enum ToolsItemTier implements Tier {
 	private final float efficiency;
 	private final float attackDamage;
 	private final int enchantability;
-	private final LazyLoadedValue<Tag<Item>> repairMaterial;
+	private final LazyLoadedValue<TagKey<Item>> repairMaterial;
 	private final float axeDamage;
 	private final float axeSpeedIn;
 
-	private ToolsItemTier(int harvestLevelIn, int maxUsesIn, float efficiencyIn, float attackDamageIn, int enchantabilityIn, Supplier<Tag<Item>> repairTagIn, float axeDamageIn, float axeSpeedIn) {
+	private ToolsItemTier(int harvestLevelIn, int maxUsesIn, float efficiencyIn, float attackDamageIn, int enchantabilityIn, Supplier<TagKey<Item>> repairTagIn, float axeDamageIn, float axeSpeedIn) {
 		this.harvestLevel = harvestLevelIn;
 		this.maxUses = maxUsesIn;
 		this.efficiency = efficiencyIn;
 		this.attackDamage = attackDamageIn;
 		this.enchantability = enchantabilityIn;
-		this.repairMaterial = new LazyLoadedValue<Tag<Item>>(repairTagIn);
+		this.repairMaterial = new LazyLoadedValue<TagKey<Item>>(repairTagIn);
 		this.axeDamage = axeDamageIn;
 		this.axeSpeedIn = axeSpeedIn;
 	}
@@ -131,7 +131,7 @@ public enum ToolsItemTier implements Tier {
 		return this.enchantability;
 	}
 
-	public Tag<Item> repairTag() {
+	public TagKey<Item> repairTag() {
 		return this.repairMaterial.get();
 	}
 

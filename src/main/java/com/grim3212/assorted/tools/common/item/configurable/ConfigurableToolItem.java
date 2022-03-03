@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
 import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
 
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -18,7 +18,7 @@ public abstract class ConfigurableToolItem extends DiggerItem {
 	private final ItemTierHolder tierHolder;
 	private final float toolDamage;
 
-	public ConfigurableToolItem(ItemTierHolder tierHolder, float attackDamageIn, float attackSpeedIn, Tag<Block> effectiveBlocksIn, Properties builderIn) {
+	public ConfigurableToolItem(ItemTierHolder tierHolder, float attackDamageIn, float attackSpeedIn, TagKey<Block> effectiveBlocksIn, Properties builderIn) {
 		super(attackDamageIn, attackSpeedIn, tierHolder.getDefaultTier(), effectiveBlocksIn, builderIn);
 		this.tierHolder = tierHolder;
 		this.toolDamage = attackDamageIn;
@@ -51,7 +51,7 @@ public abstract class ConfigurableToolItem extends DiggerItem {
 
 	@Override
 	public float getDestroySpeed(ItemStack stack, BlockState state) {
-		return this.blocks.contains(state.getBlock()) ? this.tierHolder.getEfficiency() : 1.0F;
+		return state.is(this.blocks) ? this.tierHolder.getEfficiency() : 1.0F;
 	}
 
 	public int getTierHarvestLevel() {
