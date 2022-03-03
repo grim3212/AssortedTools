@@ -66,7 +66,12 @@ public class ToolsItemModelProvider extends ItemModelProvider {
 		generateSpear(ToolsItems.DIAMOND_SPEAR.get());
 		generateSpear(ToolsItems.NETHERITE_SPEAR.get());
 
+		bucketItem(ToolsItems.WOOD_BUCKET.get(), ToolsItems.WOOD_MILK_BUCKET.get());
+		bucketItem(ToolsItems.STONE_BUCKET.get(), ToolsItems.STONE_MILK_BUCKET.get());
+		bucketItem(ToolsItems.GOLD_BUCKET.get(), ToolsItems.GOLD_MILK_BUCKET.get());
 		bucketItem(ToolsItems.DIAMOND_BUCKET.get(), ToolsItems.DIAMOND_MILK_BUCKET.get());
+		bucketItem(ToolsItems.NETHERITE_BUCKET.get(), ToolsItems.NETHERITE_MILK_BUCKET.get());
+		bucketItem(ToolsItems.OBSIDIAN_BUCKET.get(), ToolsItems.OBSIDIAN_MILK_BUCKET.get());
 
 		ToolsItems.MATERIAL_GROUPS.forEach((s, group) -> {
 			tool(group.PICKAXE.get());
@@ -105,8 +110,8 @@ public class ToolsItemModelProvider extends ItemModelProvider {
 
 	private void bucketItem(Item bucket, Item milkBucket) {
 		String name = name(bucket);
-		getBuilder(name).parent(getExistingFile(new ResourceLocation("forge:item/default"))).texture("base", prefix("item/" + name)).texture("fluid", prefix("item/bucket_fluid")).texture("cover", prefix("item/" + name + "_covered")).customLoader(DynamicBucketModelBuilder::begin).fluid(Fluids.EMPTY).flipGas(true).applyTint(true).applyFluidLuminosity(true).coverIsMask(true).end();
-		withExistingParent(name(milkBucket), "item/generated").texture("layer0", prefix("item/" + name)).texture("layer1", prefix("item/overlay_milk"));
+		getBuilder(name).parent(getExistingFile(new ResourceLocation("forge:item/default"))).texture("base", prefix("item/buckets/" + name)).texture("fluid", prefix("item/buckets/bucket_fluid")).texture("cover", prefix("item/buckets/" + name + "_covered")).customLoader(DynamicBucketModelBuilder::begin).fluid(Fluids.EMPTY).flipGas(true).applyTint(true).applyFluidLuminosity(true).coverIsMask(true).end();
+		withExistingParent(name(milkBucket), "item/generated").texture("layer0", prefix("item/buckets/" + name)).texture("layer1", prefix("item/buckets/overlay_milk"));
 	}
 
 	private ItemModelBuilder handheldItem(String name) {
