@@ -2,8 +2,8 @@ package com.grim3212.assorted.tools.common.item;
 
 import java.util.List;
 
+import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
-import com.grim3212.assorted.tools.common.util.BucketType;
 import com.grim3212.assorted.tools.common.util.NBTHelper;
 
 import net.minecraft.core.BlockPos;
@@ -19,6 +19,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -49,19 +50,24 @@ public class BetterBucketItem extends Item {
 
 	public ItemStack empty = ItemStack.EMPTY;
 	private boolean milkPause = false;
-	public final BucketType bucketType;
-	private final int maximumMillibuckets;
+	public final ItemTierHolder tierHolder;
+	private final boolean isExtraMaterial;
 
-	public BetterBucketItem(Properties props, BucketType bucketType) {
+	public BetterBucketItem(Properties props, ItemTierHolder tierHolder) {
+		this(props, tierHolder, false);
+	}
+
+	public BetterBucketItem(Properties props, ItemTierHolder tierHolder, boolean isExtraMaterial) {
 		super(props.stacksTo(1));
 
-		this.bucketType = bucketType;
-		this.maximumMillibuckets = this.bucketType.getMaxBuckets() * FluidAttributes.BUCKET_VOLUME;
+		this.tierHolder = tierHolder;
 
 		ItemStack stack = new ItemStack(this);
 		setFluid(stack, "empty");
 		setAmount(stack, 0);
 		this.empty = stack;
+
+		this.isExtraMaterial = isExtraMaterial;
 
 		DispenserBlock.registerBehavior(this, DispenseFluidContainer.getInstance());
 	}
@@ -72,12 +78,21 @@ public class BetterBucketItem extends Item {
 		setAmount(stack, 0);
 	}
 
+	@Override
+	protected boolean allowdedIn(CreativeModeTab group) {
+		if (this.isExtraMaterial) {
+			return ToolsConfig.COMMON.betterBucketsEnabled.get() && ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.allowdedIn(group) : false;
+		}
+
+		return ToolsConfig.COMMON.betterBucketsEnabled.get() ? super.allowdedIn(group) : false;
+	}
+
 	public void pauseForMilk() {
 		milkPause = true;
 	}
 
 	public int getMaximumMillibuckets() {
-		return maximumMillibuckets;
+		return this.tierHolder.getMaxBuckets() * FluidAttributes.BUCKET_VOLUME;
 	}
 
 	@Override
@@ -85,7 +100,7 @@ public class BetterBucketItem extends Item {
 		if (getAmount(stack) <= 0) {
 			tooltip.add(new TranslatableComponent("tooltip.buckets.empty"));
 		} else {
-			tooltip.add(new TranslatableComponent("tooltip.buckets.contains", getAmount(stack), maximumMillibuckets));
+			tooltip.add(new TranslatableComponent("tooltip.buckets.contains", getAmount(stack), getMaximumMillibuckets()));
 		}
 	}
 
@@ -102,7 +117,7 @@ public class BetterBucketItem extends Item {
 		FluidStack fluidStack = getFluidStack(stack);
 
 		if (!fluidStack.isEmpty()) {
-			return new TranslatableComponent("item.assortedtools.diamond_bucket_filled", fluidStack.getDisplayName());
+			return new TranslatableComponent("item.assortedtools." + stack.getItem().getRegistryName().getPath() + "_filled", fluidStack.getDisplayName());
 		}
 
 		return super.getName(stack);
@@ -112,7 +127,7 @@ public class BetterBucketItem extends Item {
 	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand hand) {
 		ItemStack itemStackIn = playerIn.getItemInHand(hand);
 
-		boolean canContainMore = getAmount(itemStackIn) < maximumMillibuckets;
+		boolean canContainMore = getAmount(itemStackIn) < getMaximumMillibuckets();
 		if (milkPause) {
 			milkPause = false;
 			return InteractionResultHolder.success(itemStackIn);
@@ -301,20 +316,30 @@ public class BetterBucketItem extends Item {
 	@Override
 	public int getBarWidth(ItemStack stack) {
 		// Get remainder calculations from stored and maxAmount
-		int reversedAmount = maximumMillibuckets - getAmount(stack);
-		return Math.round(13.0F - (float) reversedAmount * 13.0F / (float) maximumMillibuckets);
+		int reversedAmount = getMaximumMillibuckets() - getAmount(stack);
+		return Math.round(13.0F - (float) reversedAmount * 13.0F / (float) getMaximumMillibuckets());
 	}
 
 	@Override
 	public int getBarColor(ItemStack stack) {
-		float f = Math.max(0.0F, (float) getAmount(stack) / (float) maximumMillibuckets);
+		float f = Math.max(0.0F, (float) getAmount(stack) / (float) getMaximumMillibuckets());
 		return Mth.hsvToRgb(f / 3.0F, 1.0F, 1.0F);
+	}
+
+	public ItemStack getBreakStack() {
+		if (this.tierHolder.getBreaksAfterUse()) {
+			ItemStack[] repairMaterial = this.tierHolder.getDefaultTier().getRepairIngredient().getItems();
+			if (repairMaterial.length > 0) {
+				return new ItemStack(repairMaterial[0].copy().getItem(), 2);
+			}
+		}
+		return ItemStack.EMPTY;
 	}
 
 	public ItemStack tryBreakBucket(ItemStack stack) {
 		if (getAmount(stack) <= 0) {
-			if (!this.bucketType.getDestroyedAfterUse().isEmpty()) {
-				return this.bucketType.getDestroyedAfterUse().copy();
+			if (this.tierHolder.getBreaksAfterUse()) {
+				return this.getBreakStack();
 			} else if (!this.empty.isEmpty()) {
 				return this.empty.copy();
 			} else {
@@ -352,7 +377,7 @@ public class BetterBucketItem extends Item {
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-		return new BucketFluidHandler(stack, bucketType.getDestroyedAfterUse(), empty, maximumMillibuckets);
+		return new BucketFluidHandler(stack, this.getBreakStack(), empty, getMaximumMillibuckets());
 	}
 
 	public static class BucketFluidHandler extends FluidHandlerItemStack {

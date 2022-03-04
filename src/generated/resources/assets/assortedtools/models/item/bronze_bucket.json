@@ -1,9 +1,9 @@
 {
   "parent": "forge:item/default",
   "textures": {
-    "base": "assortedtools:item/buckets/obsidian_bucket",
+    "base": "assortedtools:item/buckets/bronze_bucket",
     "fluid": "assortedtools:item/buckets/bucket_fluid",
-    "cover": "assortedtools:item/buckets/obsidian_bucket_covered"
+    "cover": "assortedtools:item/buckets/bronze_bucket_covered"
   },
   "loader": "forge:bucket",
   "fluid": "minecraft:empty",

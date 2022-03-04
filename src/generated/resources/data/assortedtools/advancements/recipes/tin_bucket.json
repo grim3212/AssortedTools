@@ -5,13 +5,17 @@
         {
           "part": "betterbuckets",
           "type": "assortedtools:part_enabled"
+        },
+        {
+          "part": "extramaterials",
+          "type": "assortedtools:part_enabled"
         }
       ],
       "advancement": {
         "parent": "minecraft:recipes/root",
         "rewards": {
           "recipes": [
-            "assortedtools:obsidian_bucket"
+            "assortedtools:tin_bucket"
           ]
         },
         "criteria": {
@@ -20,7 +24,7 @@
             "conditions": {
               "items": [
                 {
-                  "tag": "forge:obsidian"
+                  "tag": "forge:ingots/tin"
                 }
               ]
             }
@@ -28,7 +32,7 @@
           "has_the_recipe": {
             "trigger": "minecraft:recipe_unlocked",
             "conditions": {
-              "recipe": "assortedtools:obsidian_bucket"
+              "recipe": "assortedtools:tin_bucket"
             }
           }
         },

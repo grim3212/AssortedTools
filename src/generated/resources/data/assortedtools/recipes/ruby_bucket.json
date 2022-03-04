@@ -6,6 +6,10 @@
         {
           "part": "betterbuckets",
           "type": "assortedtools:part_enabled"
+        },
+        {
+          "part": "extramaterials",
+          "type": "assortedtools:part_enabled"
         }
       ],
       "recipe": {
@@ -16,11 +20,11 @@
         ],
         "key": {
           "I": {
-            "tag": "forge:obsidian"
+            "tag": "forge:gems/ruby"
           }
         },
         "result": {
-          "item": "assortedtools:obsidian_bucket"
+          "item": "assortedtools:ruby_bucket"
         }
       }
     }

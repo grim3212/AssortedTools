@@ -40,7 +40,7 @@ public class ToolsRecipes extends RecipeProvider {
 		hammerPattern(ToolsItems.WOOD_HAMMER.get(), ItemTags.PLANKS, consumer);
 
 		spearPattern(ToolsItems.WOOD_SPEAR.get(), ItemTags.PLANKS, consumer);
-		spearPattern(ToolsItems.STONE_SPEAR.get(),  ItemTags.STONE_TOOL_MATERIALS, consumer);
+		spearPattern(ToolsItems.STONE_SPEAR.get(), ItemTags.STONE_TOOL_MATERIALS, consumer);
 		spearPattern(ToolsItems.GOLD_SPEAR.get(), Tags.Items.INGOTS_GOLD, consumer);
 		spearPattern(ToolsItems.IRON_SPEAR.get(), Tags.Items.INGOTS_IRON, consumer);
 		spearPattern(ToolsItems.DIAMOND_SPEAR.get(), Tags.Items.GEMS_DIAMOND, consumer);
@@ -61,7 +61,7 @@ public class ToolsRecipes extends RecipeProvider {
 		armorSet(ToolsItems.CHICKEN_SUIT_HELMET.get(), ToolsItems.CHICKEN_SUIT_CHESTPLATE.get(), ToolsItems.CHICKEN_SUIT_LEGGINGS.get(), ToolsItems.CHICKEN_SUIT_BOOTS.get(), Tags.Items.FEATHERS, consumer, "chickensuit");
 
 		multiTool(ToolsItems.WOODEN_MULTITOOL.get(), "wooden", ItemTags.PLANKS, consumer);
-		multiTool(ToolsItems.STONE_MULTITOOL.get(), "stone",  ItemTags.STONE_TOOL_MATERIALS, consumer);
+		multiTool(ToolsItems.STONE_MULTITOOL.get(), "stone", ItemTags.STONE_TOOL_MATERIALS, consumer);
 		multiTool(ToolsItems.GOLDEN_MULTITOOL.get(), "golden", Tags.Items.INGOTS_GOLD, consumer);
 		multiTool(ToolsItems.IRON_MULTITOOL.get(), "iron", Tags.Items.INGOTS_IRON, consumer);
 		multiTool(ToolsItems.DIAMOND_MULTITOOL.get(), "diamond", Tags.Items.GEMS_DIAMOND, consumer);
@@ -73,31 +73,33 @@ public class ToolsRecipes extends RecipeProvider {
 			multiTool(group.MULTITOOL.get(), s, group.material, consumer, EnabledCondition.EXTRA_MATERIAL_CONDITION);
 			armorSet(group.HELMET.get(), group.CHESTPLATE.get(), group.LEGGINGS.get(), group.BOOTS.get(), group.material, consumer, EnabledCondition.EXTRA_MATERIAL_CONDITION);
 			spearPattern(group.SPEAR.get(), group.material, consumer, EnabledCondition.EXTRA_MATERIAL_CONDITION);
+			bucketPattern(group.BUCKET.get(), group.material, consumer, EnabledCondition.EXTRA_MATERIAL_CONDITION);
 		});
 
 		UpgradeRecipeBuilder.smithing(Ingredient.of(ToolsItems.DIAMOND_MULTITOOL.get()), Ingredient.of(Blocks.NETHERITE_BLOCK), ToolsItems.NETHERITE_MULTITOOL.get()).unlocks("has_netherite_block", has(Blocks.NETHERITE_BLOCK)).save(consumer, ToolsItems.NETHERITE_MULTITOOL.get().getRegistryName() + "_smithing");
 		UpgradeRecipeBuilder.smithing(Ingredient.of(ToolsItems.DIAMOND_HAMMER.get()), Ingredient.of(Tags.Items.INGOTS_NETHERITE), ToolsItems.NETHERITE_HAMMER.get()).unlocks("has_netherite_ingot", has(Tags.Items.INGOTS_NETHERITE)).save(consumer, ToolsItems.NETHERITE_HAMMER.get().getRegistryName() + "_smithing");
 		UpgradeRecipeBuilder.smithing(Ingredient.of(ToolsItems.DIAMOND_SPEAR.get()), Ingredient.of(Tags.Items.INGOTS_NETHERITE), ToolsItems.NETHERITE_SPEAR.get()).unlocks("has_netherite_ingot", has(Tags.Items.INGOTS_NETHERITE)).save(consumer, ToolsItems.NETHERITE_SPEAR.get().getRegistryName() + "_smithing");
-	
-		
-		
+
 		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.BETTER_BUCKETS_CONDITION)).addRecipe(ShapedRecipeBuilder.shaped(Blocks.CAKE).define('A', ToolsTags.Items.BUCKETS_MILK).define('B', Items.SUGAR).define('C', Tags.Items.CROPS_WHEAT).define('E', Tags.Items.EGGS).pattern("AAA").pattern("BEB").pattern("CCC").unlockedBy("has_egg", has(Tags.Items.EGGS))::save).generateAdvancement().build(consumer, new ResourceLocation(Blocks.CAKE.getRegistryName() + "_alt"));
 		bucketPattern(ToolsItems.WOOD_BUCKET.get(), ItemTags.PLANKS, consumer);
 		bucketPattern(ToolsItems.STONE_BUCKET.get(), ItemTags.STONE_TOOL_MATERIALS, consumer);
 		bucketPattern(ToolsItems.GOLD_BUCKET.get(), Tags.Items.INGOTS_GOLD, consumer);
-		bucketPattern(ToolsItems.COPPER_BUCKET.get(), Tags.Items.INGOTS_COPPER, consumer);
+
 		bucketPattern(ToolsItems.DIAMOND_BUCKET.get(), Tags.Items.GEMS_DIAMOND, consumer);
 		bucketPattern(ToolsItems.NETHERITE_BUCKET.get(), Tags.Items.INGOTS_NETHERITE, consumer);
-		bucketPattern(ToolsItems.OBSIDIAN_BUCKET.get(), Tags.Items.OBSIDIAN, consumer);
 	}
 
 	@Override
 	public String getName() {
 		return "Assorted Tools recipes";
 	}
-	
+
 	private void bucketPattern(ItemLike output, TagKey<Item> input, Consumer<FinishedRecipe> consumer) {
 		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.BETTER_BUCKETS_CONDITION)).addRecipe(ShapedRecipeBuilder.shaped(output).define('I', input).pattern("I I").pattern(" I ").unlockedBy("has_item", has(input))::save).generateAdvancement().build(consumer, output.asItem().getRegistryName());
+	}
+
+	private void bucketPattern(ItemLike output, TagKey<Item> input, Consumer<FinishedRecipe> consumer, String condition) {
+		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.BETTER_BUCKETS_CONDITION)).addCondition(new EnabledCondition(condition)).addRecipe(ShapedRecipeBuilder.shaped(output).define('I', input).pattern("I I").pattern(" I ").unlockedBy("has_item", has(input))::save).generateAdvancement().build(consumer, output.asItem().getRegistryName());
 	}
 
 	private void spearPattern(ItemLike output, TagKey<Item> input, Consumer<FinishedRecipe> consumer) {

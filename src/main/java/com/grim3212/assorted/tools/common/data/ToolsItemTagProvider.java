@@ -23,7 +23,7 @@ public class ToolsItemTagProvider extends ItemTagsProvider {
 		this.tag(ToolsTags.Items.INGOTS_COPPER).add(Items.COPPER_INGOT);
 		this.tag(ToolsTags.Items.GEMS_AMETHYST).add(Items.AMETHYST_SHARD);
 
-		this.tag(ToolsTags.Items.BUCKETS_MILK).add(ToolsItems.WOOD_MILK_BUCKET.get(), ToolsItems.STONE_MILK_BUCKET.get(), ToolsItems.GOLD_MILK_BUCKET.get(), ToolsItems.COPPER_MILK_BUCKET.get(), Items.MILK_BUCKET, ToolsItems.DIAMOND_MILK_BUCKET.get(), ToolsItems.NETHERITE_MILK_BUCKET.get(), ToolsItems.OBSIDIAN_MILK_BUCKET.get());
+		this.tag(ToolsTags.Items.BUCKETS_MILK).add(ToolsItems.WOOD_MILK_BUCKET.get(), ToolsItems.STONE_MILK_BUCKET.get(), ToolsItems.GOLD_MILK_BUCKET.get(), Items.MILK_BUCKET, ToolsItems.DIAMOND_MILK_BUCKET.get(), ToolsItems.NETHERITE_MILK_BUCKET.get());
 
 		ToolsItems.MATERIAL_GROUPS.forEach((s, group) -> {
 			// Add to top level tags
@@ -36,6 +36,7 @@ public class ToolsItemTagProvider extends ItemTagsProvider {
 			this.tag(ToolsTags.Items.CHESTPLATES).add(group.CHESTPLATE.get());
 			this.tag(ToolsTags.Items.LEGGINGS).add(group.LEGGINGS.get());
 			this.tag(ToolsTags.Items.BOOTS).add(group.BOOTS.get());
+			this.tag(ToolsTags.Items.BUCKETS_MILK).add(group.MILK_BUCKET.get());
 
 			// Add to specific material tags
 			this.tag(ToolsTags.Items.forgeTag("swords/" + s)).add(group.SWORD.get());

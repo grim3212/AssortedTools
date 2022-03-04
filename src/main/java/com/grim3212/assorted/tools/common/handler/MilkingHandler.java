@@ -2,13 +2,16 @@ package com.grim3212.assorted.tools.common.handler;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.collect.Lists;
 import com.grim3212.assorted.tools.common.item.BetterBucketItem;
 import com.grim3212.assorted.tools.common.item.BetterMilkBucketItem;
-import com.grim3212.assorted.tools.common.item.ToolsItems;
 
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -25,6 +28,8 @@ import net.minecraftforge.fluids.FluidAttributes;
 public class MilkingHandler {
 
 	public static List<List<Class<? extends Entity>>> levels = Lists.newArrayList();
+
+	private final Map<ResourceLocation, ItemStack> cache = new HashMap<>();
 
 	static {
 		addMilkable(0, Cow.class);
@@ -68,7 +73,7 @@ public class MilkingHandler {
 			if (!player.isCreative() && !((LivingEntity) entity).isBaby()) {
 				if (stack.getItem() instanceof BetterMilkBucketItem) {
 					BetterMilkBucketItem bucket = (BetterMilkBucketItem) stack.getItem();
-					int milkingLevel = bucket.getParent().bucketType.getMilkingLevel();
+					int milkingLevel = bucket.getParent().tierHolder.getMilkingLevel();
 
 					if (bucket != null) {
 						for (int i = 0; i <= milkingLevel; i++) {
@@ -90,7 +95,7 @@ public class MilkingHandler {
 					}
 				} else if (stack.getItem() instanceof BetterBucketItem) {
 					BetterBucketItem bucket = (BetterBucketItem) stack.getItem();
-					int milkingLevel = bucket.bucketType.getMilkingLevel();
+					int milkingLevel = bucket.tierHolder.getMilkingLevel();
 
 					if (bucket != null) {
 						for (int i = 0; i <= milkingLevel; i++) {
@@ -101,25 +106,13 @@ public class MilkingHandler {
 										if (BetterBucketItem.getAmount(stack) < bucket.getMaximumMillibuckets()) {
 											player.playSound(SoundEvents.COW_MILK, 1.0F, 1.0F);
 
-											ItemStack milkBucket = ItemStack.EMPTY;
-											switch (bucket.bucketType) {
-												case DIAMOND:
-													milkBucket = new ItemStack(ToolsItems.DIAMOND_MILK_BUCKET.get());
-													break;
-												case GOLD:
-//												milkBucket = new ItemStack(ToolsItems.golden_milk_bucket);
-													break;
-												case OBSIDIAN:
-//												milkBucket = new ItemStack(ToolsItems.obsidian_milk_bucket);
-													break;
-												case STONE:
-//												milkBucket = new ItemStack(ToolsItems.stone_milk_bucket);
-													break;
-												case WOOD:
-//												milkBucket = new ItemStack(ToolsItems.wooden_milk_bucket);
-													break;
-												case NETHERITE:
-													break;
+											ItemStack milkBucket;
+
+											if (this.cache.containsKey(bucket.getRegistryName())) {
+												milkBucket = this.cache.get(bucket.getRegistryName()).copy();
+											} else {
+												milkBucket = new ItemStack(Registry.ITEM.get(new ResourceLocation(bucket.getRegistryName().toString().replace("_bucket", "_milk_bucket"))));
+												this.cache.put(bucket.getRegistryName(), milkBucket.copy());
 											}
 
 											BetterBucketItem.setFluid(milkBucket, "milk");

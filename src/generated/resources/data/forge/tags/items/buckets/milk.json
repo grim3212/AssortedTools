@@ -4,10 +4,25 @@
     "assortedtools:wood_milk_bucket",
     "assortedtools:stone_milk_bucket",
     "assortedtools:gold_milk_bucket",
-    "assortedtools:copper_milk_bucket",
     "minecraft:milk_bucket",
     "assortedtools:diamond_milk_bucket",
     "assortedtools:netherite_milk_bucket",
-    "assortedtools:obsidian_milk_bucket"
+    "assortedtools:nickel_milk_bucket",
+    "assortedtools:electrum_milk_bucket",
+    "assortedtools:steel_milk_bucket",
+    "assortedtools:aluminum_milk_bucket",
+    "assortedtools:amethyst_milk_bucket",
+    "assortedtools:lead_milk_bucket",
+    "assortedtools:bronze_milk_bucket",
+    "assortedtools:ruby_milk_bucket",
+    "assortedtools:platinum_milk_bucket",
+    "assortedtools:peridot_milk_bucket",
+    "assortedtools:tin_milk_bucket",
+    "assortedtools:topaz_milk_bucket",
+    "assortedtools:copper_milk_bucket",
+    "assortedtools:invar_milk_bucket",
+    "assortedtools:silver_milk_bucket",
+    "assortedtools:emerald_milk_bucket",
+    "assortedtools:sapphire_milk_bucket"
   ]
 }

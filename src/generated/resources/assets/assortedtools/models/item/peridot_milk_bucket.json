@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "assortedtools:item/buckets/obsidian_bucket",
+    "layer0": "assortedtools:item/buckets/peridot_bucket",
     "layer1": "assortedtools:item/buckets/overlay_milk"
   }
 }

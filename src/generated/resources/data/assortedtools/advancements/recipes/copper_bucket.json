@@ -5,6 +5,10 @@
         {
           "part": "betterbuckets",
           "type": "assortedtools:part_enabled"
+        },
+        {
+          "part": "extramaterials",
+          "type": "assortedtools:part_enabled"
         }
       ],
       "advancement": {

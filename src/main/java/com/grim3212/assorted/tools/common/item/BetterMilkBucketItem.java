@@ -141,6 +141,6 @@ public class BetterMilkBucketItem extends Item {
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 		BetterBucketItem parent = this.getParent();
-		return new BucketFluidHandler(stack, parent.bucketType.getDestroyedAfterUse(), parent.empty, parent.getMaximumMillibuckets());
+		return new BucketFluidHandler(stack, parent.getBreakStack(), parent.empty, parent.getMaximumMillibuckets());
 	}
 }

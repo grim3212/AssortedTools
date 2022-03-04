@@ -9,7 +9,6 @@ import com.grim3212.assorted.tools.common.handler.ArmorMaterialHolder;
 import com.grim3212.assorted.tools.common.handler.ModdedItemTierHolder;
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import com.grim3212.assorted.tools.common.item.configurable.ConfigurableArmorItem;
-import com.grim3212.assorted.tools.common.util.BucketType;
 
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -60,21 +59,16 @@ public class ToolsItems {
 	public static final RegistryObject<BetterSpearItem> DIAMOND_SPEAR = register("diamond_spear", () -> new BetterSpearItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), ToolsConfig.COMMON.diamondItemTier));
 	public static final RegistryObject<BetterSpearItem> NETHERITE_SPEAR = register("netherite_spear", () -> new BetterSpearItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), ToolsConfig.COMMON.netheriteItemTier));
 
-	
-	public static final RegistryObject<BetterBucketItem> WOOD_BUCKET = register("wood_bucket", () -> new BetterBucketItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), BucketType.WOOD));
+	public static final RegistryObject<BetterBucketItem> WOOD_BUCKET = register("wood_bucket", () -> new BetterBucketItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), ToolsConfig.COMMON.woodItemTier));
 	public static final RegistryObject<BetterMilkBucketItem> WOOD_MILK_BUCKET = register("wood_milk_bucket", () -> new BetterMilkBucketItem(() -> WOOD_BUCKET.get(), new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
-	public static final RegistryObject<BetterBucketItem> STONE_BUCKET = register("stone_bucket", () -> new BetterBucketItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), BucketType.STONE));
+	public static final RegistryObject<BetterBucketItem> STONE_BUCKET = register("stone_bucket", () -> new BetterBucketItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), ToolsConfig.COMMON.stoneItemTier));
 	public static final RegistryObject<BetterMilkBucketItem> STONE_MILK_BUCKET = register("stone_milk_bucket", () -> new BetterMilkBucketItem(() -> STONE_BUCKET.get(), new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
-	public static final RegistryObject<BetterBucketItem> GOLD_BUCKET = register("gold_bucket", () -> new BetterBucketItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), BucketType.GOLD));
+	public static final RegistryObject<BetterBucketItem> GOLD_BUCKET = register("gold_bucket", () -> new BetterBucketItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), ToolsConfig.COMMON.goldItemTier));
 	public static final RegistryObject<BetterMilkBucketItem> GOLD_MILK_BUCKET = register("gold_milk_bucket", () -> new BetterMilkBucketItem(() -> GOLD_BUCKET.get(), new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
-	public static final RegistryObject<BetterBucketItem> COPPER_BUCKET = register("copper_bucket", () -> new BetterBucketItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), BucketType.COPPER));
-	public static final RegistryObject<BetterMilkBucketItem> COPPER_MILK_BUCKET = register("copper_milk_bucket", () -> new BetterMilkBucketItem(() -> COPPER_BUCKET.get(), new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
-	public static final RegistryObject<BetterBucketItem> DIAMOND_BUCKET = register("diamond_bucket", () -> new BetterBucketItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), BucketType.DIAMOND));
+	public static final RegistryObject<BetterBucketItem> DIAMOND_BUCKET = register("diamond_bucket", () -> new BetterBucketItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), ToolsConfig.COMMON.diamondItemTier));
 	public static final RegistryObject<BetterMilkBucketItem> DIAMOND_MILK_BUCKET = register("diamond_milk_bucket", () -> new BetterMilkBucketItem(() -> DIAMOND_BUCKET.get(), new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
-	public static final RegistryObject<BetterBucketItem> NETHERITE_BUCKET = register("netherite_bucket", () -> new BetterBucketItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), BucketType.NETHERITE));
+	public static final RegistryObject<BetterBucketItem> NETHERITE_BUCKET = register("netherite_bucket", () -> new BetterBucketItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), ToolsConfig.COMMON.netheriteItemTier));
 	public static final RegistryObject<BetterMilkBucketItem> NETHERITE_MILK_BUCKET = register("netherite_milk_bucket", () -> new BetterMilkBucketItem(() -> NETHERITE_BUCKET.get(), new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
-	public static final RegistryObject<BetterBucketItem> OBSIDIAN_BUCKET = register("obsidian_bucket", () -> new BetterBucketItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), BucketType.OBSIDIAN));
-	public static final RegistryObject<BetterMilkBucketItem> OBSIDIAN_MILK_BUCKET = register("obsidian_milk_bucket", () -> new BetterMilkBucketItem(() -> OBSIDIAN_BUCKET.get(), new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
 
 	public static final Map<String, MaterialGroup> MATERIAL_GROUPS = Maps.newHashMap();
 
@@ -101,6 +95,8 @@ public class ToolsItems {
 		public final RegistryObject<ConfigurableArmorItem> CHESTPLATE;
 		public final RegistryObject<ConfigurableArmorItem> LEGGINGS;
 		public final RegistryObject<ConfigurableArmorItem> BOOTS;
+		public final RegistryObject<BetterBucketItem> BUCKET;
+		public final RegistryObject<BetterMilkBucketItem> MILK_BUCKET;
 
 		public final TagKey<Item> material;
 
@@ -114,6 +110,9 @@ public class ToolsItems {
 			this.HAMMER = register(tier.getName() + "_hammer", () -> new HammerItem(tier, new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), true));
 			this.MULTITOOL = register(tier.getName() + "_multitool", () -> new MultiToolItem(tier, new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), true));
 			this.SPEAR = register(tier.getName() + "_spear", () -> new BetterSpearItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), tier, true));
+
+			this.BUCKET = register(tier.getName() + "_bucket", () -> new BetterBucketItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), tier));
+			this.MILK_BUCKET = register(tier.getName() + "_milk_bucket", () -> new BetterMilkBucketItem(() -> this.BUCKET.get(), new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
 
 			if (armor != null) {
 				this.HELMET = register(tier.getName() + "_helmet", () -> new MaterialArmorItem(armor.getMaterial(), EquipmentSlot.HEAD, new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));

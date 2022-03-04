@@ -1,5 +1,6 @@
 package com.grim3212.assorted.tools.common.handler;
 
+import com.grim3212.assorted.tools.common.util.BucketOptions;
 import com.grim3212.assorted.tools.common.util.ToolsItemTier;
 
 import net.minecraft.tags.TagKey;
@@ -17,5 +18,9 @@ public class ModdedItemTierHolder extends ItemTierHolder {
 
 	public TagKey<Item> getMaterial() {
 		return this.moddedTier.repairTag();
+	}
+
+	public BucketOptions getBucketOptions() {
+		return this.moddedTier.getBucketOptions();
 	}
 }
