@@ -1,0 +1,28 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "part": "betterbuckets",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          "I I",
+          " I "
+        ],
+        "key": {
+          "I": {
+            "tag": "minecraft:stone_tool_materials"
+          }
+        },
+        "result": {
+          "item": "assortedtools:stone_bucket"
+        }
+      }
+    }
+  ]
+}

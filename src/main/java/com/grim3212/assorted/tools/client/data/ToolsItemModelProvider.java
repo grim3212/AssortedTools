@@ -69,6 +69,7 @@ public class ToolsItemModelProvider extends ItemModelProvider {
 		bucketItem(ToolsItems.WOOD_BUCKET.get(), ToolsItems.WOOD_MILK_BUCKET.get());
 		bucketItem(ToolsItems.STONE_BUCKET.get(), ToolsItems.STONE_MILK_BUCKET.get());
 		bucketItem(ToolsItems.GOLD_BUCKET.get(), ToolsItems.GOLD_MILK_BUCKET.get());
+		bucketItem(ToolsItems.COPPER_BUCKET.get(), ToolsItems.COPPER_MILK_BUCKET.get());
 		bucketItem(ToolsItems.DIAMOND_BUCKET.get(), ToolsItems.DIAMOND_MILK_BUCKET.get());
 		bucketItem(ToolsItems.NETHERITE_BUCKET.get(), ToolsItems.NETHERITE_MILK_BUCKET.get());
 		bucketItem(ToolsItems.OBSIDIAN_BUCKET.get(), ToolsItems.OBSIDIAN_MILK_BUCKET.get());

@@ -14,6 +14,7 @@ public enum BucketType {
 		return new ItemStack(Blocks.COBBLESTONE, 2);
 	}),
 	GOLD("gold", 4, 0),
+	COPPER("copper", 8, 0),
 	DIAMOND("diamond", 16, 1),
 	OBSIDIAN("obsidian", 32, 2),
 	NETHERITE("netherite", 64, 2, 10000f);

@@ -21,6 +21,7 @@ public class EnabledCondition implements ICondition {
 	public static final String CHICKEN_SUIT_CONDITION = "chickensuit";
 	public static final String SPEARS_CONDITION = "spears";
 	public static final String BETTER_SPEARS_CONDITION = "betterspears";
+	public static final String BETTER_BUCKETS_CONDITION = "betterbuckets";
 	public static final String EXTRA_MATERIAL_CONDITION = "extramaterials";
 
 	public EnabledCondition(String part) {
@@ -53,6 +54,8 @@ public class EnabledCondition implements ICondition {
 				return ToolsConfig.COMMON.spearsEnabled.get();
 			case BETTER_SPEARS_CONDITION:
 				return ToolsConfig.COMMON.betterSpearsEnabled.get();
+			case BETTER_BUCKETS_CONDITION:
+				return ToolsConfig.COMMON.betterBucketsEnabled.get();
 			default:
 				return false;
 		}

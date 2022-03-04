@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "assortedtools:wood_milk_bucket",
+    "assortedtools:stone_milk_bucket",
+    "assortedtools:gold_milk_bucket",
+    "assortedtools:copper_milk_bucket",
+    "minecraft:milk_bucket",
+    "assortedtools:diamond_milk_bucket",
+    "assortedtools:netherite_milk_bucket",
+    "assortedtools:obsidian_milk_bucket"
+  ]
+}
