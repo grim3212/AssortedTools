@@ -1,8 +1,10 @@
 package com.grim3212.assorted.tools.common.entity;
 
+import java.util.List;
+
 import javax.annotation.Nullable;
 
-import com.grim3212.assorted.tools.AssortedTools;
+import com.google.common.collect.Lists;
 import com.grim3212.assorted.tools.common.enchantment.ToolsEnchantments;
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import com.grim3212.assorted.tools.common.item.BetterSpearItem;
@@ -229,9 +231,25 @@ public class BetterSpearEntity extends AbstractArrow implements IEntityAdditiona
 		}
 	}
 
+	private List<Double> conductiveChances() {
+		List<Double> defaultChances = Lists.newArrayList(0.6D, 0.3D, 0.1D);
+		List<Double> chances = ToolsConfig.COMMON.conductivityLightningChances.get();
+
+		if (chances != null && chances instanceof List<?> && chances.size() == 3) {
+			for (double chance : chances) {
+				if (chance >= 1.0D && chance < 0.0D) {
+					return defaultChances;
+				}
+			}
+			return chances;
+		}
+
+		return defaultChances;
+	}
+
 	private void tryConductivity(BlockPos pos) {
 		int conductivity = ToolsEnchantments.getConductivity(this.spearItem);
-		boolean flag = conductivity > 0 && this.random.nextDouble() <= 1.0D - ToolsConfig.COMMON.conductivityLightningChances.get().get(conductivity - 1);
+		boolean flag = conductivity > 0 && this.random.nextDouble() <= 1.0D - conductiveChances().get(conductivity - 1);
 
 		if (this.level instanceof ServerLevel && flag) {
 			if (this.level.canSeeSky(pos)) {

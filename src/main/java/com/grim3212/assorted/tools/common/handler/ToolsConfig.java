@@ -44,6 +44,8 @@ public final class ToolsConfig {
 		public final ForgeConfigSpec.ConfigValue<List<String>> destructiveWandSparedBlocks;
 		public final ForgeConfigSpec.ConfigValue<List<String>> miningWandBlocksForSurfaceMining;
 		public final ForgeConfigSpec.ConfigValue<List<Double>> conductivityLightningChances;
+		
+		public final ForgeConfigSpec.BooleanValue allowPartialBucketAmounts;
 
 		public final ArmorMaterialHolder chickenSuitArmorMaterial;
 
@@ -69,6 +71,7 @@ public final class ToolsConfig {
 		public final ForgeConfigSpec.BooleanValue extraMaterialsEnabled;
 		public final ForgeConfigSpec.BooleanValue spearsEnabled;
 		public final ForgeConfigSpec.BooleanValue betterSpearsEnabled;
+		public final ForgeConfigSpec.BooleanValue betterBucketsEnabled;
 
 		public Common(ForgeConfigSpec.Builder builder) {
 			builder.push("Parts");
@@ -81,6 +84,7 @@ public final class ToolsConfig {
 			extraMaterialsEnabled = builder.comment("Set this to true if you would like to enable support for crafting the extra tools and armor that this supports. For example, Steel, Copper, or Ruby tools and armor.").define("extraMaterialsEnabled", true);
 			spearsEnabled = builder.comment("Set this to true if you would like the spears to be craftable and found in the creative tab.").define("spearsEnabled", true);
 			betterSpearsEnabled = builder.comment("Set this to true if you would like the better spears (the ones that can be enchanted) to be craftable and found in the creative tab as well as the Enchantments for it to be enchanted on books.").define("betterSpearsEnabled", true);
+			betterBucketsEnabled = builder.comment("Set this to true if you would like better buckets to be craftable and found in the creative tab.").define("betterBucketsEnabled", true);
 			builder.pop();
 
 			builder.push("Boomerangs");
@@ -108,22 +112,11 @@ public final class ToolsConfig {
 			builder.pop();
 
 			builder.push("Better Spear");
-			conductivityLightningChances = builder.comment("An array of the chances for lightning to spawn at each level of conductivity. The smaller the number the higher chance. The array for conductivity lightning chances must be exactly 3 elements at all times and all items must be in the range from [0.0D - 1.0D).").define("conductivityLightningChances", Lists.newArrayList(0.6D, 0.3D, 0.1D), (chances) -> {
-				if (chances != null && chances instanceof List<?>) {
-					List<?> l = (List<?>) chances;
-					if (l.size() == 3) {
-						return l.stream().allMatch((c) -> {
-							if (c instanceof Double) {
-								Double chance = (Double) c;
-								return chance < 1.0D && chance >= 0.0D;
-							}
-							return false;
-						});
-					}
-				}
-				AssortedTools.LOGGER.error("The array for conductivity lightning chances must be exactly 3 elements at all times and all items must be in the range from [0.0D - 1.0D). No exceptions!");
-				return false;
-			});
+			conductivityLightningChances = builder.comment("An array of the chances for lightning to spawn at each level of conductivity. The smaller the number the higher chance. The array for conductivity lightning chances must be exactly 3 elements at all times and all items must be in the range from [0.0D - 1.0D).").define("conductivityLightningChances", Lists.newArrayList(0.6D, 0.3D, 0.1D));
+			builder.pop();
+			
+			builder.push("Better Buckets");
+			allowPartialBucketAmounts = builder.comment("Set to true if you would like the better buckets to be able to accept partial bucket amounts. Meaning some can get left over after placing all the full buckets.").define("allowPartialBucketAmounts", false);
 			builder.pop();
 
 			builder.push("Armors");
@@ -152,15 +145,15 @@ public final class ToolsConfig {
 
 			builder.comment("These are used by Hammers and MultiTools to allow you to override the default vanilla values that they use.", "These will not change the values that vanilla tools use.");
 			builder.push("Vanilla Overrides");
-			woodItemTier = new ItemTierHolder(builder, "wood", Tiers.WOOD, 6.0F, -3.2F);
-			stoneItemTier = new ItemTierHolder(builder, "stone", Tiers.STONE, 7.0F, -3.2F);
-			goldItemTier = new ItemTierHolder(builder, "gold", Tiers.GOLD, 6.0F, -3.0F);
-			ironItemTier = new ItemTierHolder(builder, "iron", Tiers.IRON, 6.0F, -3.1F);
-			diamondItemTier = new ItemTierHolder(builder, "diamond", Tiers.DIAMOND, 5.0F, -3.0F);
-			netheriteItemTier = new ItemTierHolder(builder, "netherite", Tiers.NETHERITE, 5.0F, -3.0F);
+			woodItemTier = new ItemTierHolder(builder, "wood", Tiers.WOOD, 6.0F, -3.2F, 1, 0, 1000f, true);
+			stoneItemTier = new ItemTierHolder(builder, "stone", Tiers.STONE, 7.0F, -3.2F, 1, 0, 5000f, true);
+			goldItemTier = new ItemTierHolder(builder, "gold", Tiers.GOLD, 6.0F, -3.0F, 4, 0, 5000f, false);
+			ironItemTier = new ItemTierHolder(builder, "iron", Tiers.IRON, 6.0F, -3.1F, 1, 0, 5000f, false);
+			diamondItemTier = new ItemTierHolder(builder, "diamond", Tiers.DIAMOND, 5.0F, -3.0F, 16, 1, 5000f, false);
+			netheriteItemTier = new ItemTierHolder(builder, "netherite", Tiers.NETHERITE, 5.0F, -3.0F, 64, 2, 10000f, false);
 			builder.pop();
 
-			builder.comment("These are used by Hammers, MultiTools, and the normal tool sets to allow you to override the default values that are used.");
+			builder.comment("These are used by Hammers, MultiTools, Buckets, and the normal tool sets to allow you to override the default values that are used.");
 			builder.push("Modded Overrides");
 			moddedTiers.clear();
 			moddedTiers.put("tin", new ModdedItemTierHolder(builder, "tin", ToolsItemTier.TIN));

@@ -1,0 +1,32 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "part": "betterbuckets",
+          "type": "assortedtools:part_enabled"
+        },
+        {
+          "part": "extramaterials",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          "I I",
+          " I "
+        ],
+        "key": {
+          "I": {
+            "tag": "forge:gems/amethyst"
+          }
+        },
+        "result": {
+          "item": "assortedtools:amethyst_bucket"
+        }
+      }
+    }
+  ]
+}

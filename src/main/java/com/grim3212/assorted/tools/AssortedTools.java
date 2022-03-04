@@ -12,6 +12,7 @@ import com.grim3212.assorted.tools.common.enchantment.ToolsEnchantments;
 import com.grim3212.assorted.tools.common.entity.ToolsEntities;
 import com.grim3212.assorted.tools.common.handler.ChickenSuitConversionHandler;
 import com.grim3212.assorted.tools.common.handler.EnabledCondition;
+import com.grim3212.assorted.tools.common.handler.MilkingHandler;
 import com.grim3212.assorted.tools.common.handler.TagLoadListener;
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
@@ -65,6 +66,7 @@ public class AssortedTools {
 
 		MinecraftForge.EVENT_BUS.register(new TagLoadListener());
 		MinecraftForge.EVENT_BUS.register(new ChickenSuitConversionHandler());
+		MinecraftForge.EVENT_BUS.register(new MilkingHandler());
 
 		ToolsItems.ITEMS.register(modBus);
 		ToolsEntities.ENTITIES.register(modBus);

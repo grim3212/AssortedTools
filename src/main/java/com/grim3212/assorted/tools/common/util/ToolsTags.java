@@ -19,6 +19,8 @@ public class ToolsTags {
 
 	public static class Items {
 		public static final TagKey<Item> FEATHERS = forgeTag("feathers");
+		
+		public static final TagKey<Item> BUCKETS_MILK = forgeTag("buckets/milk");
 
 		public static final TagKey<Item> INGOTS_TIN = forgeTag("ingots/tin");
 		public static final TagKey<Item> INGOTS_COPPER = forgeTag("ingots/copper");

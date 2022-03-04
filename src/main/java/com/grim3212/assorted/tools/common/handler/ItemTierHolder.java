@@ -18,7 +18,13 @@ public class ItemTierHolder {
 	protected final ForgeConfigSpec.DoubleValue axeDamage;
 	protected final ForgeConfigSpec.DoubleValue axeSpeed;
 
-	public ItemTierHolder(ForgeConfigSpec.Builder builder, String name, Tier defaultTier, float defaultAxeDamage, float defaultAxeSpeed) {
+	// Bucket config properties
+	private final ForgeConfigSpec.IntValue maxBuckets;
+	private final ForgeConfigSpec.IntValue milkingLevel;
+	private final ForgeConfigSpec.DoubleValue maxPickupTemp;
+	private final ForgeConfigSpec.BooleanValue breaksAfterUse;
+
+	public ItemTierHolder(ForgeConfigSpec.Builder builder, String name, Tier defaultTier, float defaultAxeDamage, float defaultAxeSpeed, int defaultMaxBuckets, int defaultMilkingLevel, float defaultMaxPickupTemp, boolean defaultBreaksAfterUse) {
 		this.name = name;
 		this.defaultTier = defaultTier;
 
@@ -30,7 +36,12 @@ public class ItemTierHolder {
 		this.damage = builder.comment("The amount of damage this item tier does").defineInRange("damage", this.defaultTier.getAttackDamageBonus(), 0, 100000);
 
 		this.axeDamage = builder.comment("The damage modifier for axes as they are different per material. Will not affect vanilla tools.").defineInRange("axeDamage", defaultAxeDamage, 0, 100000);
-		this.axeSpeed = builder.comment("The speed modifier for axes as they are different per material. Will not affect vanilla tools.").defineInRange("axeSpeed", defaultAxeSpeed, 0, 100000);
+		this.axeSpeed = builder.comment("The speed modifier for axes as they are different per material. Will not affect vanilla tools.").defineInRange("axeSpeed", defaultAxeSpeed, -1000, 100000);
+
+		this.maxBuckets = builder.comment("The maximum number of buckets that this materials bucket can hold.").defineInRange("maxBuckets", defaultMaxBuckets, 1, 1000);
+		this.milkingLevel = builder.comment("The milking level that will be set for this materials bucket. By default only 0-3").defineInRange("milkingLevel", defaultMilkingLevel, 0, 5);
+		this.maxPickupTemp = builder.comment("The maximum temp of a fluid this materials bucket can pickup.").defineInRange("maxPickupTemp", defaultMaxPickupTemp, 0, 1000000);
+		this.breaksAfterUse = builder.comment("Is this material so weak that the bucket will break after placing a fluid.").define("breaksAfterUse", defaultBreaksAfterUse);
 		builder.pop();
 	}
 
@@ -46,7 +57,12 @@ public class ItemTierHolder {
 		this.damage = builder.comment("The amount of damage this item tier does").defineInRange("damage", this.defaultTier.getAttackDamageBonus(), 0, 100000);
 
 		this.axeDamage = builder.comment("The damage modifier for axes as they are different per material. Will not affect vanilla tools.").defineInRange("axeDamage", defaultTier.getAxeDamage(), 0, 100000);
-		this.axeSpeed = builder.comment("The speed modifier for axes as they are different per material. Will not affect vanilla tools.").defineInRange("axeSpeed", defaultTier.getAxeSpeedIn(), 0, 100000);
+		this.axeSpeed = builder.comment("The speed modifier for axes as they are different per material. Will not affect vanilla tools.").defineInRange("axeSpeed", defaultTier.getAxeSpeedIn(), -1000, 100000);
+
+		this.maxBuckets = builder.comment("The maximum number of buckets that this materials bucket can hold.").defineInRange("maxBuckets", defaultTier.getBucketOptions().maxBuckets, 1, 1000);
+		this.milkingLevel = builder.comment("The milking level that will be set for this materials bucket. By default only 0-3").defineInRange("milkingLevel", defaultTier.getBucketOptions().milkingLevel, 0, 5);
+		this.maxPickupTemp = builder.comment("The maximum temp of a fluid this materials bucket can pickup.").defineInRange("maxPickupTemp", defaultTier.getBucketOptions().maxPickupTemp, 0, 1000000);
+		this.breaksAfterUse = builder.comment("Is this material so weak that the bucket will break after placing a fluid.").define("breaksAfterUse", defaultTier.getBucketOptions().destroyedAfterUse);
 		builder.pop();
 	}
 
@@ -90,8 +106,24 @@ public class ItemTierHolder {
 		return this.axeSpeed.get().floatValue();
 	}
 
+	public int getMaxBuckets() {
+		return this.maxBuckets.get();
+	}
+
+	public int getMilkingLevel() {
+		return this.milkingLevel.get();
+	}
+
+	public float getMaxPickupTemp() {
+		return this.maxPickupTemp.get().floatValue();
+	}
+
+	public boolean getBreaksAfterUse() {
+		return this.breaksAfterUse.get();
+	}
+
 	@Override
 	public String toString() {
-		return "[Name:" + getName() + ", HarvestLevel:" + getHarvestLevel() + ", MaxUses:" + getMaxUses() + ", Efficiency:" + getEfficiency() + ", Damage:" + getDamage() + ", Enchantability:" + getEnchantability() + ", AxeDamage:" + getAxeDamage() + ", AxeSpeed:" + getAxeSpeed() + "]";
+		return "[Name:" + getName() + ", HarvestLevel:" + getHarvestLevel() + ", MaxUses:" + getMaxUses() + ", Efficiency:" + getEfficiency() + ", Damage:" + getDamage() + ", Enchantability:" + getEnchantability() + ", AxeDamage:" + getAxeDamage() + ", AxeSpeed:" + getAxeSpeed() + ", MaxBuckets:" + getMaxBuckets() + ", MilkingLevel:" + getMilkingLevel() + ", MaxPickupTemp:" + getMaxPickupTemp() + ", BreaksAfterUse:" + getBreaksAfterUse() + "]";
 	}
 }

@@ -9,9 +9,11 @@ import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelBuilder.Perspective;
+import net.minecraftforge.client.model.generators.loaders.DynamicBucketModelBuilder;
 import net.minecraftforge.client.model.generators.loaders.SeparatePerspectiveModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
@@ -64,6 +66,12 @@ public class ToolsItemModelProvider extends ItemModelProvider {
 		generateSpear(ToolsItems.DIAMOND_SPEAR.get());
 		generateSpear(ToolsItems.NETHERITE_SPEAR.get());
 
+		bucketItem(ToolsItems.WOOD_BUCKET.get(), ToolsItems.WOOD_MILK_BUCKET.get());
+		bucketItem(ToolsItems.STONE_BUCKET.get(), ToolsItems.STONE_MILK_BUCKET.get());
+		bucketItem(ToolsItems.GOLD_BUCKET.get(), ToolsItems.GOLD_MILK_BUCKET.get());
+		bucketItem(ToolsItems.DIAMOND_BUCKET.get(), ToolsItems.DIAMOND_MILK_BUCKET.get());
+		bucketItem(ToolsItems.NETHERITE_BUCKET.get(), ToolsItems.NETHERITE_MILK_BUCKET.get());
+
 		ToolsItems.MATERIAL_GROUPS.forEach((s, group) -> {
 			tool(group.PICKAXE.get());
 			tool(group.SHOVEL.get());
@@ -78,6 +86,8 @@ public class ToolsItemModelProvider extends ItemModelProvider {
 			armor(group.CHESTPLATE.get());
 			armor(group.LEGGINGS.get());
 			armor(group.BOOTS.get());
+
+			bucketItem(group.BUCKET.get(), group.MILK_BUCKET.get());
 		});
 	}
 
@@ -97,6 +107,12 @@ public class ToolsItemModelProvider extends ItemModelProvider {
 
 	private ItemModelBuilder generatedItem(Item i) {
 		return generatedItem(name(i));
+	}
+
+	private void bucketItem(Item bucket, Item milkBucket) {
+		String name = name(bucket);
+		getBuilder(name).parent(getExistingFile(new ResourceLocation("forge:item/default"))).texture("base", prefix("item/buckets/" + name)).texture("fluid", prefix("item/buckets/bucket_fluid")).texture("cover", prefix("item/buckets/" + name + "_covered")).customLoader(DynamicBucketModelBuilder::begin).fluid(Fluids.EMPTY).flipGas(true).applyTint(true).applyFluidLuminosity(true).coverIsMask(true).end();
+		withExistingParent(name(milkBucket), "item/generated").texture("layer0", prefix("item/buckets/" + name)).texture("layer1", prefix("item/buckets/overlay_milk"));
 	}
 
 	private ItemModelBuilder handheldItem(String name) {

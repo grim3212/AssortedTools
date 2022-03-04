@@ -1,0 +1,14 @@
+{
+  "parent": "forge:item/default",
+  "textures": {
+    "base": "assortedtools:item/buckets/bronze_bucket",
+    "fluid": "assortedtools:item/buckets/bucket_fluid",
+    "cover": "assortedtools:item/buckets/bronze_bucket_covered"
+  },
+  "loader": "forge:bucket",
+  "fluid": "minecraft:empty",
+  "flipGas": true,
+  "applyTint": true,
+  "coverIsMask": true,
+  "applyFluidLuminosity": true
+}
