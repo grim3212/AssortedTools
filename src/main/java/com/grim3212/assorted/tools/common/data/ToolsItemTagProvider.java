@@ -9,6 +9,7 @@ import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class ToolsItemTagProvider extends ItemTagsProvider {
@@ -24,6 +25,7 @@ public class ToolsItemTagProvider extends ItemTagsProvider {
 		this.tag(ToolsTags.Items.GEMS_AMETHYST).add(Items.AMETHYST_SHARD);
 
 		this.tag(ToolsTags.Items.BUCKETS_MILK).add(ToolsItems.WOOD_MILK_BUCKET.get(), ToolsItems.STONE_MILK_BUCKET.get(), ToolsItems.GOLD_MILK_BUCKET.get(), Items.MILK_BUCKET, ToolsItems.DIAMOND_MILK_BUCKET.get(), ToolsItems.NETHERITE_MILK_BUCKET.get());
+		this.tag(Tags.Items.SHEARS).add(ToolsItems.WOOD_SHEARS.get(), ToolsItems.STONE_SHEARS.get(), ToolsItems.GOLD_SHEARS.get(), ToolsItems.DIAMOND_SHEARS.get(), ToolsItems.NETHERITE_SHEARS.get());
 
 		ToolsItems.MATERIAL_GROUPS.forEach((s, group) -> {
 			// Add to top level tags
@@ -37,6 +39,7 @@ public class ToolsItemTagProvider extends ItemTagsProvider {
 			this.tag(ToolsTags.Items.LEGGINGS).add(group.LEGGINGS.get());
 			this.tag(ToolsTags.Items.BOOTS).add(group.BOOTS.get());
 			this.tag(ToolsTags.Items.BUCKETS_MILK).add(group.MILK_BUCKET.get());
+			this.tag(Tags.Items.SHEARS).add(group.SHEARS.get());
 
 			// Add to specific material tags
 			this.tag(ToolsTags.Items.forgeTag("swords/" + s)).add(group.SWORD.get());
@@ -124,7 +127,7 @@ public class ToolsItemTagProvider extends ItemTagsProvider {
 		this.tag(ToolsTags.Items.BOOTS_DIAMOND).add(Items.DIAMOND_BOOTS);
 		this.tag(ToolsTags.Items.BOOTS_NETHERITE).add(Items.NETHERITE_BOOTS);
 
-		this.tag(ItemTags.PIGLIN_LOVED).add(ToolsItems.GOLD_HAMMER.get(), ToolsItems.GOLDEN_MULTITOOL.get(), ToolsItems.GOLD_SPEAR.get(), ToolsItems.BUILDING_WAND.get(), ToolsItems.REINFORCED_BUILDING_WAND.get());
+		this.tag(ItemTags.PIGLIN_LOVED).add(ToolsItems.GOLD_HAMMER.get(), ToolsItems.GOLDEN_MULTITOOL.get(), ToolsItems.GOLD_SPEAR.get(), ToolsItems.BUILDING_WAND.get(), ToolsItems.REINFORCED_BUILDING_WAND.get(), ToolsItems.GOLD_BUCKET.get(), ToolsItems.GOLD_MILK_BUCKET.get(), ToolsItems.GOLD_SHEARS.get());
 	}
 
 	@Override

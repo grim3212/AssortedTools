@@ -1,0 +1,22 @@
+{
+  "conditions": [
+    {
+      "condition": "minecraft:match_tool",
+      "predicate": {
+        "enchantments": [
+          {
+            "enchantment": "assortedtools:coral_cutter",
+            "levels": {
+              "min": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "condition": "assortedtools:block_tag",
+      "tag": "forge:corals/all"
+    }
+  ],
+  "type": "assortedtools:coral_cutter"
+}

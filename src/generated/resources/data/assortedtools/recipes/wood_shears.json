@@ -1,0 +1,31 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "part": "moreshears",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          " I",
+          "IL"
+        ],
+        "key": {
+          "I": {
+            "tag": "minecraft:planks"
+          },
+          "L": {
+            "tag": "forge:leather"
+          }
+        },
+        "result": {
+          "item": "assortedtools:wood_shears"
+        }
+      }
+    }
+  ]
+}

@@ -70,6 +70,12 @@ public class ToolsItems {
 	public static final RegistryObject<BetterBucketItem> NETHERITE_BUCKET = register("netherite_bucket", () -> new BetterBucketItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), ToolsConfig.COMMON.netheriteItemTier));
 	public static final RegistryObject<BetterMilkBucketItem> NETHERITE_MILK_BUCKET = register("netherite_milk_bucket", () -> new BetterMilkBucketItem(() -> NETHERITE_BUCKET.get(), new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
 
+	public static final RegistryObject<MaterialShears> WOOD_SHEARS = register("wood_shears", () -> new MaterialShears(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), ToolsConfig.COMMON.woodItemTier));
+	public static final RegistryObject<MaterialShears> STONE_SHEARS = register("stone_shears", () -> new MaterialShears(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), ToolsConfig.COMMON.stoneItemTier));
+	public static final RegistryObject<MaterialShears> GOLD_SHEARS = register("gold_shears", () -> new MaterialShears(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), ToolsConfig.COMMON.goldItemTier));
+	public static final RegistryObject<MaterialShears> DIAMOND_SHEARS = register("diamond_shears", () -> new MaterialShears(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), ToolsConfig.COMMON.diamondItemTier));
+	public static final RegistryObject<MaterialShears> NETHERITE_SHEARS = register("netherite_shears", () -> new MaterialShears(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), ToolsConfig.COMMON.netheriteItemTier));
+
 	public static final Map<String, MaterialGroup> MATERIAL_GROUPS = Maps.newHashMap();
 
 	static {
@@ -97,6 +103,7 @@ public class ToolsItems {
 		public final RegistryObject<ConfigurableArmorItem> BOOTS;
 		public final RegistryObject<BetterBucketItem> BUCKET;
 		public final RegistryObject<BetterMilkBucketItem> MILK_BUCKET;
+		public final RegistryObject<MaterialShears> SHEARS;
 
 		public final TagKey<Item> material;
 
@@ -113,6 +120,7 @@ public class ToolsItems {
 
 			this.BUCKET = register(tier.getName() + "_bucket", () -> new BetterBucketItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), tier));
 			this.MILK_BUCKET = register(tier.getName() + "_milk_bucket", () -> new BetterMilkBucketItem(() -> this.BUCKET.get(), new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
+			this.SHEARS = register(tier.getName() + "_shears", () -> new MaterialShears(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), tier, true));
 
 			if (armor != null) {
 				this.HELMET = register(tier.getName() + "_helmet", () -> new MaterialArmorItem(armor.getMaterial(), EquipmentSlot.HEAD, new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));

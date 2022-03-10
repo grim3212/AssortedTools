@@ -1,0 +1,27 @@
+{
+  "replace": false,
+  "values": [
+    "assortedtools:wood_shears",
+    "assortedtools:stone_shears",
+    "assortedtools:gold_shears",
+    "assortedtools:diamond_shears",
+    "assortedtools:netherite_shears",
+    "assortedtools:nickel_shears",
+    "assortedtools:electrum_shears",
+    "assortedtools:steel_shears",
+    "assortedtools:aluminum_shears",
+    "assortedtools:amethyst_shears",
+    "assortedtools:lead_shears",
+    "assortedtools:bronze_shears",
+    "assortedtools:ruby_shears",
+    "assortedtools:platinum_shears",
+    "assortedtools:peridot_shears",
+    "assortedtools:tin_shears",
+    "assortedtools:topaz_shears",
+    "assortedtools:copper_shears",
+    "assortedtools:invar_shears",
+    "assortedtools:silver_shears",
+    "assortedtools:emerald_shears",
+    "assortedtools:sapphire_shears"
+  ]
+}

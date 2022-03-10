@@ -5,6 +5,9 @@
     "assortedtools:golden_multitool",
     "assortedtools:gold_spear",
     "assortedtools:building_wand",
-    "assortedtools:reinforced_building_wand"
+    "assortedtools:reinforced_building_wand",
+    "assortedtools:gold_bucket",
+    "assortedtools:gold_milk_bucket",
+    "assortedtools:gold_shears"
   ]
 }

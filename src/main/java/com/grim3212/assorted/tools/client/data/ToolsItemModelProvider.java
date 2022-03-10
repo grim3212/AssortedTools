@@ -59,6 +59,12 @@ public class ToolsItemModelProvider extends ItemModelProvider {
 		tool(ToolsItems.DIAMOND_MULTITOOL.get());
 		tool(ToolsItems.NETHERITE_MULTITOOL.get());
 
+		shear(ToolsItems.WOOD_SHEARS.get());
+		shear(ToolsItems.STONE_SHEARS.get());
+		shear(ToolsItems.GOLD_SHEARS.get());
+		shear(ToolsItems.DIAMOND_SHEARS.get());
+		shear(ToolsItems.NETHERITE_SHEARS.get());
+
 		generateSpear(ToolsItems.WOOD_SPEAR.get());
 		generateSpear(ToolsItems.STONE_SPEAR.get());
 		generateSpear(ToolsItems.IRON_SPEAR.get());
@@ -88,7 +94,13 @@ public class ToolsItemModelProvider extends ItemModelProvider {
 			armor(group.BOOTS.get());
 
 			bucketItem(group.BUCKET.get(), group.MILK_BUCKET.get());
+			shear(group.SHEARS.get());
 		});
+	}
+
+	private ItemModelBuilder shear(Item i) {
+		String name = name(i);
+		return withExistingParent(name, "item/handheld").texture("layer0", prefix("item/shears/" + name));
 	}
 
 	private ItemModelBuilder tool(Item i) {

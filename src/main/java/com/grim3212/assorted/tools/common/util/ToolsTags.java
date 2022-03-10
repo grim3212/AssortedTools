@@ -11,6 +11,9 @@ public class ToolsTags {
 
 	public static class Blocks {
 		public static final TagKey<Block> MINEABLE_MULTITOOL = forgeTag("mineable/multitool");
+		
+		public static final TagKey<Block> ALL_CORALS = forgeTag("corals/all");
+		public static final TagKey<Block> DEAD_CORALS = forgeTag("corals/dead");
 
 		public static TagKey<Block> forgeTag(String name) {
 			return BlockTags.create(new ResourceLocation("forge", name));

@@ -2,6 +2,7 @@ package com.grim3212.assorted.tools.common.item;
 
 import java.util.List;
 
+import com.grim3212.assorted.tools.common.handler.DispenseBucketHandler;
 import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import com.grim3212.assorted.tools.common.util.NBTHelper;
@@ -37,7 +38,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fluids.DispenseFluidContainer;
 import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
@@ -69,7 +69,7 @@ public class BetterBucketItem extends Item {
 
 		this.isExtraMaterial = isExtraMaterial;
 
-		DispenserBlock.registerBehavior(this, DispenseFluidContainer.getInstance());
+		DispenserBlock.registerBehavior(this, DispenseBucketHandler.getInstance());
 	}
 
 	@Override

@@ -179,7 +179,7 @@ public class WandMiningItem extends WandItem {
 				}
 			}
 		}
-		if (blocks2Dig >= max) {
+		if (blocks2Dig > max) {
 			this.sendMessage(entityplayer, new TranslatableComponent("error.wand.toomany", blocks2Dig, (this.reinforced || isFree) ? 1024 : 512));
 			return false;
 		}

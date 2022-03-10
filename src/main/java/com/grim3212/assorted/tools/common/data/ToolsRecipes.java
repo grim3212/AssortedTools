@@ -74,6 +74,7 @@ public class ToolsRecipes extends RecipeProvider {
 			armorSet(group.HELMET.get(), group.CHESTPLATE.get(), group.LEGGINGS.get(), group.BOOTS.get(), group.material, consumer, EnabledCondition.EXTRA_MATERIAL_CONDITION);
 			spearPattern(group.SPEAR.get(), group.material, consumer, EnabledCondition.EXTRA_MATERIAL_CONDITION);
 			bucketPattern(group.BUCKET.get(), group.material, consumer, EnabledCondition.EXTRA_MATERIAL_CONDITION);
+			shearPattern(group.SHEARS.get(), group.material, consumer, EnabledCondition.EXTRA_MATERIAL_CONDITION);
 		});
 
 		UpgradeRecipeBuilder.smithing(Ingredient.of(ToolsItems.DIAMOND_MULTITOOL.get()), Ingredient.of(Blocks.NETHERITE_BLOCK), ToolsItems.NETHERITE_MULTITOOL.get()).unlocks("has_netherite_block", has(Blocks.NETHERITE_BLOCK)).save(consumer, ToolsItems.NETHERITE_MULTITOOL.get().getRegistryName() + "_smithing");
@@ -84,14 +85,29 @@ public class ToolsRecipes extends RecipeProvider {
 		bucketPattern(ToolsItems.WOOD_BUCKET.get(), ItemTags.PLANKS, consumer);
 		bucketPattern(ToolsItems.STONE_BUCKET.get(), ItemTags.STONE_TOOL_MATERIALS, consumer);
 		bucketPattern(ToolsItems.GOLD_BUCKET.get(), Tags.Items.INGOTS_GOLD, consumer);
-
 		bucketPattern(ToolsItems.DIAMOND_BUCKET.get(), Tags.Items.GEMS_DIAMOND, consumer);
 		bucketPattern(ToolsItems.NETHERITE_BUCKET.get(), Tags.Items.INGOTS_NETHERITE, consumer);
+
+		shearPattern(ToolsItems.WOOD_SHEARS.get(), ItemTags.PLANKS, consumer);
+		shearPattern(ToolsItems.STONE_SHEARS.get(), ItemTags.STONE_TOOL_MATERIALS, consumer);
+		shearPattern(ToolsItems.GOLD_SHEARS.get(), Tags.Items.INGOTS_GOLD, consumer);
+		shearPattern(ToolsItems.DIAMOND_SHEARS.get(), Tags.Items.GEMS_DIAMOND, consumer);
+		shearPattern(ToolsItems.NETHERITE_SHEARS.get(), Tags.Items.INGOTS_NETHERITE, consumer);
 	}
 
 	@Override
 	public String getName() {
 		return "Assorted Tools recipes";
+	}
+
+	private void shearPattern(ItemLike output, TagKey<Item> input, Consumer<FinishedRecipe> consumer) {
+		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.MORE_SHEARS_CONDITION)).addRecipe(ShapedRecipeBuilder.shaped(output).define('I', input).define('L', Tags.Items.LEATHER).pattern(" I").pattern("IL").unlockedBy("has_leather", has(Tags.Items.LEATHER)).unlockedBy("has_item", has(input))::save).generateAdvancement().build(consumer, output.asItem().getRegistryName());
+		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.MORE_SHEARS_CONDITION)).addRecipe(ShapedRecipeBuilder.shaped(output).define('I', input).define('L', Tags.Items.LEATHER).pattern("LI").pattern("I ").unlockedBy("has_leather", has(Tags.Items.LEATHER)).unlockedBy("has_item", has(input))::save).generateAdvancement().build(consumer, new ResourceLocation(output.asItem().getRegistryName() + "_alt"));
+	}
+
+	private void shearPattern(ItemLike output, TagKey<Item> input, Consumer<FinishedRecipe> consumer, String condition) {
+		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.MORE_SHEARS_CONDITION)).addCondition(new EnabledCondition(condition)).addRecipe(ShapedRecipeBuilder.shaped(output).define('I', input).define('L', Tags.Items.LEATHER).pattern(" I").pattern("IL").unlockedBy("has_leather", has(Tags.Items.LEATHER)).unlockedBy("has_item", has(input))::save).generateAdvancement().build(consumer, output.asItem().getRegistryName());
+		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.MORE_SHEARS_CONDITION)).addCondition(new EnabledCondition(condition)).addRecipe(ShapedRecipeBuilder.shaped(output).define('I', input).define('L', Tags.Items.LEATHER).pattern("LI").pattern("I ").unlockedBy("has_leather", has(Tags.Items.LEATHER)).unlockedBy("has_item", has(input))::save).generateAdvancement().build(consumer, new ResourceLocation(output.asItem().getRegistryName() + "_alt"));
 	}
 
 	private void bucketPattern(ItemLike output, TagKey<Item> input, Consumer<FinishedRecipe> consumer) {

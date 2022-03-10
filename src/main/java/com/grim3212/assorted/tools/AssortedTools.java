@@ -7,6 +7,7 @@ import com.grim3212.assorted.tools.client.data.ToolsItemModelProvider;
 import com.grim3212.assorted.tools.client.proxy.ClientProxy;
 import com.grim3212.assorted.tools.common.data.ToolsBlockTagProvider;
 import com.grim3212.assorted.tools.common.data.ToolsItemTagProvider;
+import com.grim3212.assorted.tools.common.data.ToolsLootModifierProvider;
 import com.grim3212.assorted.tools.common.data.ToolsRecipes;
 import com.grim3212.assorted.tools.common.enchantment.ToolsEnchantments;
 import com.grim3212.assorted.tools.common.entity.ToolsEntities;
@@ -16,6 +17,8 @@ import com.grim3212.assorted.tools.common.handler.MilkingHandler;
 import com.grim3212.assorted.tools.common.handler.TagLoadListener;
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
+import com.grim3212.assorted.tools.common.loot.ToolsLootConditions;
+import com.grim3212.assorted.tools.common.loot.ToolsLootModifiers;
 import com.grim3212.assorted.tools.common.network.PacketHandler;
 import com.grim3212.assorted.tools.common.proxy.IProxy;
 import com.grim3212.assorted.tools.common.util.TierRegistryHandler;
@@ -71,6 +74,7 @@ public class AssortedTools {
 		ToolsItems.ITEMS.register(modBus);
 		ToolsEntities.ENTITIES.register(modBus);
 		ToolsEnchantments.ENCHANTMENTS.register(modBus);
+		ToolsLootModifiers.LOOT_MODIFIERS.register(modBus);
 
 		ModLoadingContext.get().registerConfig(Type.COMMON, ToolsConfig.COMMON_SPEC);
 
@@ -80,17 +84,24 @@ public class AssortedTools {
 	private void setup(final FMLCommonSetupEvent event) {
 		PacketHandler.init();
 		TierRegistryHandler.registerTiers();
+
+		event.enqueueWork(() -> {
+			ToolsLootConditions.register();
+		});
 	}
 
 	private void gatherData(GatherDataEvent event) {
 		DataGenerator datagenerator = event.getGenerator();
 		ExistingFileHelper fileHelper = event.getExistingFileHelper();
+		
+		ToolsLootConditions.register();
 
 		if (event.includeServer()) {
 			ToolsBlockTagProvider blockTagProvider = new ToolsBlockTagProvider(datagenerator, fileHelper);
 			datagenerator.addProvider(blockTagProvider);
 			datagenerator.addProvider(new ToolsItemTagProvider(datagenerator, blockTagProvider, fileHelper));
 			datagenerator.addProvider(new ToolsRecipes(datagenerator));
+			datagenerator.addProvider(new ToolsLootModifierProvider(datagenerator));
 		}
 
 		if (event.includeClient()) {

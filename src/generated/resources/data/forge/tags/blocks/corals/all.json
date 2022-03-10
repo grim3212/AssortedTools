@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#minecraft:coral_blocks",
+    "#minecraft:coral_plants",
+    "#minecraft:wall_corals",
+    "#minecraft:corals",
+    "#forge:corals/dead"
+  ]
+}

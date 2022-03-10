@@ -20,6 +20,7 @@ public class ToolsEnchantments {
 	public static final RegistryObject<ConductiveEnchantment> CONDUCTIVE = register("conductive", () -> new ConductiveEnchantment());
 	public static final RegistryObject<FlammableEnchantment> FLAMMABLE = register("flammable", () -> new FlammableEnchantment());
 	public static final RegistryObject<UnstableEnchantment> UNSTABLE = register("unstable", () -> new UnstableEnchantment());
+	public static final RegistryObject<CoralCutterEnchantment> CORAL_CUTTER = register("coral_cutter", () -> new CoralCutterEnchantment());
 
 	private static <T extends Enchantment> RegistryObject<T> register(final String name, final Supplier<T> sup) {
 		return ENCHANTMENTS.register(name, sup);
@@ -39,5 +40,9 @@ public class ToolsEnchantments {
 
 	public static int getMaxBounces(ItemStack stack) {
 		return EnchantmentHelper.getItemEnchantmentLevel(BOUNCINESS.get(), stack);
+	}
+
+	public static boolean hasCoralCutter(ItemStack stack) {
+		return EnchantmentHelper.getItemEnchantmentLevel(CORAL_CUTTER.get(), stack) > 0;
 	}
 }

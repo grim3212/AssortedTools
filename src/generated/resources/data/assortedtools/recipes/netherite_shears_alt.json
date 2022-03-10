@@ -1,0 +1,31 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "part": "moreshears",
+          "type": "assortedtools:part_enabled"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          "LI",
+          "I "
+        ],
+        "key": {
+          "I": {
+            "tag": "forge:ingots/netherite"
+          },
+          "L": {
+            "tag": "forge:leather"
+          }
+        },
+        "result": {
+          "item": "assortedtools:netherite_shears"
+        }
+      }
+    }
+  ]
+}

@@ -72,6 +72,7 @@ public final class ToolsConfig {
 		public final ForgeConfigSpec.BooleanValue spearsEnabled;
 		public final ForgeConfigSpec.BooleanValue betterSpearsEnabled;
 		public final ForgeConfigSpec.BooleanValue betterBucketsEnabled;
+		public final ForgeConfigSpec.BooleanValue moreShearsEnabled;
 
 		public Common(ForgeConfigSpec.Builder builder) {
 			builder.push("Parts");
@@ -85,6 +86,7 @@ public final class ToolsConfig {
 			spearsEnabled = builder.comment("Set this to true if you would like the spears to be craftable and found in the creative tab.").define("spearsEnabled", true);
 			betterSpearsEnabled = builder.comment("Set this to true if you would like the better spears (the ones that can be enchanted) to be craftable and found in the creative tab as well as the Enchantments for it to be enchanted on books.").define("betterSpearsEnabled", true);
 			betterBucketsEnabled = builder.comment("Set this to true if you would like better buckets to be craftable and found in the creative tab.").define("betterBucketsEnabled", true);
+			moreShearsEnabled = builder.comment("Set this to true if you would like the extra shears to be craftable and found in the creative tab.").define("moreShearsEnabled", true);
 			builder.pop();
 
 			builder.push("Boomerangs");

@@ -32,6 +32,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -63,6 +64,12 @@ public class MultiToolItem extends ConfigurableToolItem {
 		}
 
 		return ToolsConfig.COMMON.multiToolsEnabled.get() ? super.allowdedIn(group) : false;
+	}
+
+	@Override
+	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+		// Support any enchantment that one of the 5 types of tools that make a multitool can
+		return super.canApplyAtEnchantingTable(stack, enchantment) || enchantment.canApplyAtEnchantingTable(new ItemStack(Items.IRON_SWORD)) || enchantment.canApplyAtEnchantingTable(new ItemStack(Items.IRON_SHOVEL)) || enchantment.canApplyAtEnchantingTable(new ItemStack(Items.IRON_PICKAXE)) || enchantment.canApplyAtEnchantingTable(new ItemStack(Items.IRON_HOE)) || enchantment.canApplyAtEnchantingTable(new ItemStack(Items.IRON_AXE));
 	}
 
 	@Override
