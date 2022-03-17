@@ -13,6 +13,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class ConfigurableBlockStates {
 
@@ -68,7 +69,7 @@ public class ConfigurableBlockStates {
 			NonNullList<BlockState> states = NonNullList.create();
 
 			for (ResourceLocation b : this.blocks) {
-				Block block = Registry.BLOCK.get(b);
+				Block block = ForgeRegistries.BLOCKS.getValue(b);
 
 				if (block != Blocks.AIR) {
 					states.add(block.defaultBlockState());

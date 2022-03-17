@@ -10,7 +10,6 @@ import com.google.common.collect.Lists;
 import com.grim3212.assorted.tools.common.item.BetterBucketItem;
 import com.grim3212.assorted.tools.common.item.BetterMilkBucketItem;
 
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
@@ -24,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.FluidAttributes;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class MilkingHandler {
 
@@ -111,7 +111,7 @@ public class MilkingHandler {
 											if (this.cache.containsKey(bucket.getRegistryName())) {
 												milkBucket = this.cache.get(bucket.getRegistryName()).copy();
 											} else {
-												milkBucket = new ItemStack(Registry.ITEM.get(new ResourceLocation(bucket.getRegistryName().toString().replace("_bucket", "_milk_bucket"))));
+												milkBucket = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(bucket.getRegistryName().toString().replace("_bucket", "_milk_bucket"))));
 												this.cache.put(bucket.getRegistryName(), milkBucket.copy());
 											}
 

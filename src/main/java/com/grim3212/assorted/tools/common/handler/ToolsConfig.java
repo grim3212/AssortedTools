@@ -7,7 +7,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.grim3212.assorted.tools.AssortedTools;
 import com.grim3212.assorted.tools.common.util.ConfigurableBlockStates;
 import com.grim3212.assorted.tools.common.util.ToolsArmorMaterials;
 import com.grim3212.assorted.tools.common.util.ToolsItemTier;
@@ -44,7 +43,7 @@ public final class ToolsConfig {
 		public final ForgeConfigSpec.ConfigValue<List<String>> destructiveWandSparedBlocks;
 		public final ForgeConfigSpec.ConfigValue<List<String>> miningWandBlocksForSurfaceMining;
 		public final ForgeConfigSpec.ConfigValue<List<Double>> conductivityLightningChances;
-		
+
 		public final ForgeConfigSpec.BooleanValue allowPartialBucketAmounts;
 
 		public final ArmorMaterialHolder chickenSuitArmorMaterial;
@@ -116,7 +115,7 @@ public final class ToolsConfig {
 			builder.push("Better Spear");
 			conductivityLightningChances = builder.comment("An array of the chances for lightning to spawn at each level of conductivity. The smaller the number the higher chance. The array for conductivity lightning chances must be exactly 3 elements at all times and all items must be in the range from [0.0D - 1.0D).").define("conductivityLightningChances", Lists.newArrayList(0.6D, 0.3D, 0.1D));
 			builder.pop();
-			
+
 			builder.push("Better Buckets");
 			allowPartialBucketAmounts = builder.comment("Set to true if you would like the better buckets to be able to accept partial bucket amounts. Meaning some can get left over after placing all the full buckets.").define("allowPartialBucketAmounts", false);
 			builder.pop();

@@ -5,7 +5,6 @@ import com.grim3212.assorted.tools.common.item.ToolsItems;
 
 import net.minecraft.client.renderer.block.model.BlockModel.GuiLight;
 import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
-import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -16,6 +15,7 @@ import net.minecraftforge.client.model.generators.ModelBuilder.Perspective;
 import net.minecraftforge.client.model.generators.loaders.DynamicBucketModelBuilder;
 import net.minecraftforge.client.model.generators.loaders.SeparatePerspectiveModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class ToolsItemModelProvider extends ItemModelProvider {
 
@@ -136,7 +136,7 @@ public class ToolsItemModelProvider extends ItemModelProvider {
 	}
 
 	private static String name(Item i) {
-		return Registry.ITEM.getKey(i).getPath();
+		return ForgeRegistries.ITEMS.getKey(i).getPath();
 	}
 
 	private ResourceLocation prefix(String name) {

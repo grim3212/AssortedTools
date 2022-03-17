@@ -11,7 +11,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ToolsLootModifiers {
 
-	public static final DeferredRegister<GlobalLootModifierSerializer<?>> LOOT_MODIFIERS = DeferredRegister.create(ForgeRegistries.LOOT_MODIFIER_SERIALIZERS, AssortedTools.MODID);
+	public static final DeferredRegister<GlobalLootModifierSerializer<?>> LOOT_MODIFIERS = DeferredRegister.create(ForgeRegistries.Keys.LOOT_MODIFIER_SERIALIZERS, AssortedTools.MODID);
 
 	public static final RegistryObject<CoralCutterLootModifier.Serializer> CORAL_CUTTER = register("coral_cutter", CoralCutterLootModifier.Serializer::new);
 
