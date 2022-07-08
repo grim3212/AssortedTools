@@ -4,23 +4,23 @@
     {
       "conditions": [
         {
-          "part": "betterspears",
-          "type": "assortedtools:part_enabled"
+          "type": "assortedtools:part_enabled",
+          "part": "betterspears"
         }
       ],
       "recipe": {
         "type": "minecraft:crafting_shaped",
+        "key": {
+          "I": {
+            "tag": "minecraft:planks"
+          },
+          "S": {
+            "tag": "forge:rods/wooden"
+          }
+        },
         "pattern": [
           "SSI"
         ],
-        "key": {
-          "S": {
-            "tag": "forge:rods/wooden"
-          },
-          "I": {
-            "tag": "minecraft:planks"
-          }
-        },
         "result": {
           "item": "assortedtools:wood_spear"
         }

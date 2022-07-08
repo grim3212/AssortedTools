@@ -4,22 +4,22 @@
     {
       "conditions": [
         {
-          "part": "extramaterials",
-          "type": "assortedtools:part_enabled"
+          "type": "assortedtools:part_enabled",
+          "part": "extramaterials"
         }
       ],
       "recipe": {
         "type": "minecraft:crafting_shaped",
-        "pattern": [
-          "XXX",
-          "X X",
-          "X X"
-        ],
         "key": {
           "X": {
             "tag": "forge:ingots/copper"
           }
         },
+        "pattern": [
+          "XXX",
+          "X X",
+          "X X"
+        ],
         "result": {
           "item": "assortedtools:copper_leggings"
         }

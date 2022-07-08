@@ -5,41 +5,48 @@ import java.util.UUID;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Multimap;
+import com.grim3212.assorted.tools.common.util.ToolsArmorMaterials;
 
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 
 public class ConfigurableArmorItem extends ArmorItem {
 
 	private Multimap<Attribute, AttributeModifier> modifiers;
+	private final ToolsArmorMaterials material;
 
-	public ConfigurableArmorItem(ArmorMaterial material, EquipmentSlot slot, Properties builderIn) {
-		super(material, slot, builderIn);
+	public ConfigurableArmorItem(ToolsArmorMaterials material, EquipmentSlot slot, Properties builderIn) {
+		super(material.defaultMaterial(), slot, builderIn);
+		this.material = material;
 	}
 
 	@Override
 	public int getEnchantmentValue() {
-		return this.getMaterial().getEnchantmentValue();
+		return this.material.getEnchantmentValue();
 	}
 
 	@Override
 	public int getDefense() {
-		return this.getMaterial().getDefenseForSlot(this.getSlot());
+		return this.material.getDefenseForSlot(this.getSlot());
 	}
 
 	@Override
 	public float getToughness() {
-		return this.getMaterial().getToughness();
+		return this.material.getToughness();
+	}
+
+	@Override
+	public boolean isDamageable(ItemStack stack) {
+		return true;
 	}
 
 	@Override
 	public int getMaxDamage(ItemStack stack) {
-		return this.getMaterial().getDurabilityForSlot(this.getSlot());
+		return this.material.getDurabilityForSlot(this.getSlot());
 	}
 
 	@Override
@@ -57,7 +64,7 @@ public class ConfigurableArmorItem extends ArmorItem {
 			builder.put(Attributes.ARMOR, new AttributeModifier(uuid, "Armor modifier", (double) getDefense(), AttributeModifier.Operation.ADDITION));
 			builder.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(uuid, "Armor toughness", (double) getToughness(), AttributeModifier.Operation.ADDITION));
 			if (this.knockbackResistance > 0) {
-				builder.put(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(uuid, "Armor knockback resistance", (double) this.getMaterial().getKnockbackResistance(), AttributeModifier.Operation.ADDITION));
+				builder.put(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(uuid, "Armor knockback resistance", (double) this.material.getKnockbackResistance(), AttributeModifier.Operation.ADDITION));
 			}
 
 			this.modifiers = builder.build();

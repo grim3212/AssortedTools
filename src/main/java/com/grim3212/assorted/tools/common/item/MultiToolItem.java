@@ -1,13 +1,10 @@
 package com.grim3212.assorted.tools.common.item;
 
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
@@ -34,14 +31,12 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
-import net.minecraftforge.event.ForgeEventFactory;
 
 public class MultiToolItem extends ConfigurableToolItem {
 
@@ -53,22 +48,23 @@ public class MultiToolItem extends ConfigurableToolItem {
 	}
 
 	public MultiToolItem(ItemTierHolder tier, Item.Properties builderIn, boolean isExtraMaterial) {
-		super(tier, tier.getAxeDamage() > tier.getDamage() ? tier.getAxeDamage() : tier.getDamage(), -2.8f, ToolsTags.Blocks.MINEABLE_MULTITOOL, builderIn);
+		super(tier, () -> tier.getAxeDamage() > tier.getDamage() ? tier.getAxeDamage() : tier.getDamage() + tier.getDamage(), () -> -2.8f, ToolsTags.Blocks.MINEABLE_MULTITOOL, builderIn);
 		this.isExtraMaterial = isExtraMaterial;
 	}
 
 	@Override
-	protected boolean allowdedIn(CreativeModeTab group) {
+	protected boolean allowedIn(CreativeModeTab group) {
 		if (this.isExtraMaterial) {
-			return ToolsConfig.COMMON.multiToolsEnabled.get() && ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.allowdedIn(group) : false;
+			return ToolsConfig.COMMON.multiToolsEnabled.get() && ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.allowedIn(group) : false;
 		}
 
-		return ToolsConfig.COMMON.multiToolsEnabled.get() ? super.allowdedIn(group) : false;
+		return ToolsConfig.COMMON.multiToolsEnabled.get() ? super.allowedIn(group) : false;
 	}
 
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		// Support any enchantment that one of the 5 types of tools that make a multitool can
+		// Support any enchantment that one of the 5 types of tools that make a
+		// multitool can
 		return super.canApplyAtEnchantingTable(stack, enchantment) || enchantment.canApplyAtEnchantingTable(new ItemStack(Items.IRON_SWORD)) || enchantment.canApplyAtEnchantingTable(new ItemStack(Items.IRON_SHOVEL)) || enchantment.canApplyAtEnchantingTable(new ItemStack(Items.IRON_PICKAXE)) || enchantment.canApplyAtEnchantingTable(new ItemStack(Items.IRON_HOE)) || enchantment.canApplyAtEnchantingTable(new ItemStack(Items.IRON_AXE));
 	}
 
@@ -106,9 +102,9 @@ public class MultiToolItem extends ConfigurableToolItem {
 		BlockState blockstate = world.getBlockState(blockpos);
 		Player playerentity = context.getPlayer();
 		ItemStack itemstack = context.getItemInHand();
-		Optional<BlockState> optional = Optional.ofNullable(blockstate.getToolModifiedState(world, blockpos, playerentity, itemstack, ToolActions.AXE_STRIP));
-		Optional<BlockState> optional1 = Optional.ofNullable(blockstate.getToolModifiedState(world, blockpos, playerentity, itemstack, ToolActions.AXE_SCRAPE));
-		Optional<BlockState> optional2 = Optional.ofNullable(blockstate.getToolModifiedState(world, blockpos, playerentity, itemstack, ToolActions.AXE_WAX_OFF));
+		Optional<BlockState> optional = Optional.ofNullable(blockstate.getToolModifiedState(context, ToolActions.AXE_STRIP, false));
+		Optional<BlockState> optional1 = optional.isPresent() ? Optional.empty() : Optional.ofNullable(blockstate.getToolModifiedState(context, ToolActions.AXE_SCRAPE, false));
+		Optional<BlockState> optional2 = optional.isPresent() || optional1.isPresent() ? Optional.empty() : Optional.ofNullable(blockstate.getToolModifiedState(context, ToolActions.AXE_WAX_OFF, false));
 		Optional<BlockState> optional3 = Optional.empty();
 		if (optional.isPresent()) {
 			world.playSound(playerentity, blockpos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -137,7 +133,7 @@ public class MultiToolItem extends ConfigurableToolItem {
 
 			return InteractionResult.sidedSuccess(world.isClientSide);
 		} else {
-			BlockState shovelBlock = blockstate.getToolModifiedState(world, blockpos, playerentity, itemstack, ToolActions.SHOVEL_FLATTEN);
+			BlockState shovelBlock = blockstate.getToolModifiedState(context, ToolActions.SHOVEL_FLATTEN, false);
 			if (shovelBlock != null) {
 				if (context.getClickedFace() == Direction.DOWN) {
 					return InteractionResult.PASS;
@@ -173,20 +169,12 @@ public class MultiToolItem extends ConfigurableToolItem {
 		}
 	}
 
-	// Copied for now from HoeItem... Will remove once I can get a proper
-	// AccessTransformer for the field
-	public static final Map<Block, Pair<Predicate<UseOnContext>, Consumer<UseOnContext>>> TILLABLES = Maps.newHashMap(ImmutableMap.of(Blocks.GRASS_BLOCK, Pair.of(HoeItem::onlyIfAirAbove, HoeItem.changeIntoState(Blocks.FARMLAND.defaultBlockState())), Blocks.DIRT_PATH, Pair.of(HoeItem::onlyIfAirAbove, HoeItem.changeIntoState(Blocks.FARMLAND.defaultBlockState())), Blocks.DIRT, Pair.of(HoeItem::onlyIfAirAbove, HoeItem.changeIntoState(Blocks.FARMLAND.defaultBlockState())), Blocks.COARSE_DIRT,
-			Pair.of(HoeItem::onlyIfAirAbove, HoeItem.changeIntoState(Blocks.DIRT.defaultBlockState())), Blocks.ROOTED_DIRT, Pair.of((p_150861_) -> {
-				return true;
-			}, HoeItem.changeIntoStateAndDropItem(Blocks.DIRT.defaultBlockState(), Items.HANGING_ROOTS))));
-
 	public InteractionResult onHoeUse(UseOnContext context) {
 		Level level = context.getLevel();
 		BlockPos blockpos = context.getClickedPos();
-		Pair<Predicate<UseOnContext>, Consumer<UseOnContext>> pair = TILLABLES.get(level.getBlockState(blockpos).getBlock());
-		int hook = ForgeEventFactory.onHoeUse(context);
-		if (hook != 0)
-			return hook > 0 ? InteractionResult.SUCCESS : InteractionResult.FAIL;
+		BlockState toolModifiedState = level.getBlockState(blockpos).getToolModifiedState(context, ToolActions.HOE_TILL, false);
+		Pair<Predicate<UseOnContext>, Consumer<UseOnContext>> pair = toolModifiedState == null ? null : Pair.of(ctx -> true, HoeItem.changeIntoState(toolModifiedState));
+
 		if (context.getClickedFace() != Direction.DOWN && level.isEmptyBlock(blockpos.above())) {
 			if (pair == null) {
 				return InteractionResult.PASS;

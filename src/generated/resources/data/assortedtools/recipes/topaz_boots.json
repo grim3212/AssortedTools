@@ -4,21 +4,21 @@
     {
       "conditions": [
         {
-          "part": "extramaterials",
-          "type": "assortedtools:part_enabled"
+          "type": "assortedtools:part_enabled",
+          "part": "extramaterials"
         }
       ],
       "recipe": {
         "type": "minecraft:crafting_shaped",
-        "pattern": [
-          "X X",
-          "X X"
-        ],
         "key": {
           "X": {
             "tag": "forge:gems/topaz"
           }
         },
+        "pattern": [
+          "X X",
+          "X X"
+        ],
         "result": {
           "item": "assortedtools:topaz_boots"
         }

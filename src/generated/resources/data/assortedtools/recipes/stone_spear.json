@@ -4,25 +4,25 @@
     {
       "conditions": [
         {
-          "part": "betterspears",
-          "type": "assortedtools:part_enabled"
+          "type": "assortedtools:part_enabled",
+          "part": "betterspears"
         }
       ],
       "recipe": {
         "type": "minecraft:crafting_shaped",
+        "key": {
+          "I": {
+            "tag": "minecraft:stone_tool_materials"
+          },
+          "S": {
+            "tag": "forge:rods/wooden"
+          }
+        },
         "pattern": [
           "I  ",
           " S ",
           "  S"
         ],
-        "key": {
-          "S": {
-            "tag": "forge:rods/wooden"
-          },
-          "I": {
-            "tag": "minecraft:stone_tool_materials"
-          }
-        },
         "result": {
           "item": "assortedtools:stone_spear"
         }

@@ -12,7 +12,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -42,8 +41,8 @@ public abstract class WandItem extends Item implements ISwitchModes {
 	}
 
 	@Override
-	protected boolean allowdedIn(CreativeModeTab group) {
-		return ToolsConfig.COMMON.wandsEnabled.get() ? super.allowdedIn(group) : false;
+	protected boolean allowedIn(CreativeModeTab group) {
+		return ToolsConfig.COMMON.wandsEnabled.get() ? super.allowedIn(group) : false;
 	}
 
 	@Override
@@ -79,13 +78,13 @@ public abstract class WandItem extends Item implements ISwitchModes {
 
 	protected void sendMessage(Player player, Component message) {
 		if (!player.level.isClientSide) {
-			player.sendMessage(message, player.getUUID());
+			player.sendSystemMessage(message);;
 		}
 	}
 
 	protected void error(Player entityplayer, WandCoord3D p, String reason) {
 		entityplayer.level.playSound(entityplayer, p.pos, SoundEvents.LAVA_EXTINGUISH, SoundSource.BLOCKS, (entityplayer.level.random.nextFloat() + 0.7F) / 2.0F, 0.5F + entityplayer.level.random.nextFloat() * 0.3F);
-		sendMessage(entityplayer, new TranslatableComponent("error.wand." + reason));
+		sendMessage(entityplayer, Component.translatable("error.wand." + reason));
 		particles(entityplayer.level, p.pos, 3);
 	}
 

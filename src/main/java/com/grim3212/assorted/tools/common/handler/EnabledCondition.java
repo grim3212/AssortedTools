@@ -36,7 +36,7 @@ public class EnabledCondition implements ICondition {
 	}
 
 	@Override
-	public boolean test() {
+	public boolean test(IContext context) {
 		switch (part) {
 			case WANDS_CONDITION:
 				return ToolsConfig.COMMON.wandsEnabled.get();

@@ -29,12 +29,12 @@ public class HammerItem extends ConfigurableTieredItem {
 	}
 
 	@Override
-	protected boolean allowdedIn(CreativeModeTab group) {
+	protected boolean allowedIn(CreativeModeTab group) {
 		if (this.isExtraMaterial) {
-			return ToolsConfig.COMMON.hammersEnabled.get() && ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.allowdedIn(group) : false;
+			return ToolsConfig.COMMON.hammersEnabled.get() && ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.allowedIn(group) : false;
 		}
 
-		return ToolsConfig.COMMON.hammersEnabled.get() ? super.allowdedIn(group) : false;
+		return ToolsConfig.COMMON.hammersEnabled.get() ? super.allowedIn(group) : false;
 	}
 
 	@Override

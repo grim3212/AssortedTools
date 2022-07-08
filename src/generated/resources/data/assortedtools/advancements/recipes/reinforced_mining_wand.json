@@ -1,35 +1,24 @@
 {
   "advancements": [
     {
-      "conditions": [
-        {
-          "part": "wands",
-          "type": "assortedtools:part_enabled"
-        }
-      ],
       "advancement": {
         "parent": "minecraft:recipes/root",
-        "rewards": {
-          "recipes": [
-            "assortedtools:reinforced_mining_wand"
-          ]
-        },
         "criteria": {
           "has_obsidian": {
-            "trigger": "minecraft:inventory_changed",
             "conditions": {
               "items": [
                 {
                   "tag": "forge:obsidian"
                 }
               ]
-            }
+            },
+            "trigger": "minecraft:inventory_changed"
           },
           "has_the_recipe": {
-            "trigger": "minecraft:recipe_unlocked",
             "conditions": {
               "recipe": "assortedtools:reinforced_mining_wand"
-            }
+            },
+            "trigger": "minecraft:recipe_unlocked"
           }
         },
         "requirements": [
@@ -37,8 +26,19 @@
             "has_obsidian",
             "has_the_recipe"
           ]
-        ]
-      }
+        ],
+        "rewards": {
+          "recipes": [
+            "assortedtools:reinforced_mining_wand"
+          ]
+        }
+      },
+      "conditions": [
+        {
+          "type": "assortedtools:part_enabled",
+          "part": "wands"
+        }
+      ]
     }
   ]
 }

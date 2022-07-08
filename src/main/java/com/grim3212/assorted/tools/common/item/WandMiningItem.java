@@ -13,7 +13,6 @@ import com.grim3212.assorted.tools.common.util.WandCoord3D;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.StringRepresentable;
@@ -45,14 +44,14 @@ public class WandMiningItem extends WandItem {
 		BlockState state = worldIn.getBlockState(pos);
 
 		switch (MiningMode.fromString(NBTHelper.getString(stack, "Mode"))) {
-			case MINE_ALL:
-				return (state.getBlock() != Blocks.BEDROCK || ToolsConfig.COMMON.bedrockBreaking.get()) && (state.getBlock() != Blocks.OBSIDIAN || ToolsConfig.COMMON.easyMiningObsidian.get());
-			case MINE_DIRT:
-				return (state.getBlock() == Blocks.GRASS || state.getBlock() == Blocks.DIRT || state.getBlock() == Blocks.SAND || state.getBlock() == Blocks.GRAVEL || state.getBlock() instanceof LeavesBlock || state.getBlock() == Blocks.FARMLAND || state.getBlock() == Blocks.SNOW || state.getBlock() == Blocks.SOUL_SAND || state.getBlock() == Blocks.VINE || state.getBlock() instanceof FlowerBlock);
-			case MINE_WOOD:
-				return state.getMaterial() == Material.WOOD;
-			case MINE_ORES:
-				return isMiningOre(state) && (state.getBlock() != Blocks.BEDROCK || ToolsConfig.COMMON.bedrockBreaking.get()) && (state.getBlock() != Blocks.OBSIDIAN || ToolsConfig.COMMON.easyMiningObsidian.get());
+		case MINE_ALL:
+			return (state.getBlock() != Blocks.BEDROCK || ToolsConfig.COMMON.bedrockBreaking.get()) && (state.getBlock() != Blocks.OBSIDIAN || ToolsConfig.COMMON.easyMiningObsidian.get());
+		case MINE_DIRT:
+			return (state.getBlock() == Blocks.GRASS || state.getBlock() == Blocks.DIRT || state.getBlock() == Blocks.SAND || state.getBlock() == Blocks.GRAVEL || state.getBlock() instanceof LeavesBlock || state.getBlock() == Blocks.FARMLAND || state.getBlock() == Blocks.SNOW || state.getBlock() == Blocks.SOUL_SAND || state.getBlock() == Blocks.VINE || state.getBlock() instanceof FlowerBlock);
+		case MINE_WOOD:
+			return state.getMaterial() == Material.WOOD;
+		case MINE_ORES:
+			return isMiningOre(state) && (state.getBlock() != Blocks.BEDROCK || ToolsConfig.COMMON.bedrockBreaking.get()) && (state.getBlock() != Blocks.OBSIDIAN || ToolsConfig.COMMON.easyMiningObsidian.get());
 		}
 		return false;
 	}
@@ -60,13 +59,13 @@ public class WandMiningItem extends WandItem {
 	@Override
 	protected boolean isTooFar(int range, int maxDiff, int range2D, ItemStack stack) {
 		switch (MiningMode.fromString(NBTHelper.getString(stack, "Mode"))) {
-			case MINE_ALL:
-			case MINE_DIRT:
-				return range - 250 > maxDiff;
-			case MINE_WOOD:
-				return range2D - 400 > maxDiff;
-			case MINE_ORES:
-				return range2D - 60 > maxDiff;
+		case MINE_ALL:
+		case MINE_DIRT:
+			return range - 250 > maxDiff;
+		case MINE_WOOD:
+			return range2D - 400 > maxDiff;
+		case MINE_ORES:
+			return range2D - 60 > maxDiff;
 		}
 		return true;
 	}
@@ -126,7 +125,7 @@ public class WandMiningItem extends WandItem {
 				}
 			}
 			if (blocks2Dig - max > 10) {// 10 blocks tolerance
-				this.sendMessage(entityplayer, new TranslatableComponent("error.wand.toomany", blocks2Dig, max));
+				this.sendMessage(entityplayer, Component.translatable("error.wand.toomany", blocks2Dig, max));
 				return true;
 			}
 			// harvesting the ores
@@ -161,7 +160,7 @@ public class WandMiningItem extends WandItem {
 			}
 			if (cnt == 0) {
 				if (!world.isClientSide)
-					sendMessage(entityplayer, new TranslatableComponent("result.wand.mine"));
+					sendMessage(entityplayer, Component.translatable("result.wand.mine"));
 				return false;
 			}
 			return true;
@@ -180,7 +179,7 @@ public class WandMiningItem extends WandItem {
 			}
 		}
 		if (blocks2Dig > max) {
-			this.sendMessage(entityplayer, new TranslatableComponent("error.wand.toomany", blocks2Dig, (this.reinforced || isFree) ? 1024 : 512));
+			this.sendMessage(entityplayer, Component.translatable("error.wand.toomany", blocks2Dig, (this.reinforced || isFree) ? 1024 : 512));
 			return false;
 		}
 		// now the mining itself.
@@ -211,13 +210,13 @@ public class WandMiningItem extends WandItem {
 		MiningMode mode = MiningMode.fromString(NBTHelper.getString(stack, "Mode"));
 		MiningMode next = MiningMode.getNext(mode, stack, reinforced);
 		NBTHelper.putString(stack, "Mode", next.getSerializedName());
-		this.sendMessage(player, new TranslatableComponent(AssortedTools.MODID + ".wand.switched", next.getTranslatedString()));
+		this.sendMessage(player, Component.translatable(AssortedTools.MODID + ".wand.switched", next.getTranslatedString()));
 		return stack;
 	}
 
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (this.allowdedIn(group)) {
+		if (this.allowedIn(group)) {
 			ItemStack stack = new ItemStack(this);
 			NBTHelper.putString(stack, "Mode", MiningMode.MINE_ALL.getSerializedName());
 			items.add(stack);
@@ -228,9 +227,9 @@ public class WandMiningItem extends WandItem {
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		MiningMode mode = MiningMode.fromString(NBTHelper.getString(stack, "Mode"));
 		if (mode != null)
-			tooltip.add(new TranslatableComponent(AssortedTools.MODID + ".wand.current", mode.getTranslatedString()));
+			tooltip.add(Component.translatable(AssortedTools.MODID + ".wand.current", mode.getTranslatedString()));
 		else
-			tooltip.add(new TranslatableComponent(AssortedTools.MODID + ".broken"));
+			tooltip.add(Component.translatable(AssortedTools.MODID + ".broken"));
 	}
 
 	@Override
@@ -239,10 +238,7 @@ public class WandMiningItem extends WandItem {
 	}
 
 	private static enum MiningMode implements StringRepresentable {
-		MINE_ALL("mineall", 0),
-		MINE_DIRT("minedirt", 1),
-		MINE_WOOD("minewood", 2),
-		MINE_ORES("mineores", 3, true);
+		MINE_ALL("mineall", 0), MINE_DIRT("minedirt", 1), MINE_WOOD("minewood", 2), MINE_ORES("mineores", 3, true);
 
 		private final String name;
 		private final int order;
@@ -295,8 +291,8 @@ public class WandMiningItem extends WandItem {
 			return this.name;
 		}
 
-		public TranslatableComponent getTranslatedString() {
-			return new TranslatableComponent(AssortedTools.MODID + ".wand.mode." + this.name);
+		public Component getTranslatedString() {
+			return Component.translatable(AssortedTools.MODID + ".wand.mode." + this.name);
 		}
 	}
 }

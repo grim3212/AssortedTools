@@ -4,20 +4,16 @@
     {
       "conditions": [
         {
-          "part": "moreshears",
-          "type": "assortedtools:part_enabled"
+          "type": "assortedtools:part_enabled",
+          "part": "moreshears"
         },
         {
-          "part": "extramaterials",
-          "type": "assortedtools:part_enabled"
+          "type": "assortedtools:part_enabled",
+          "part": "extramaterials"
         }
       ],
       "recipe": {
         "type": "minecraft:crafting_shaped",
-        "pattern": [
-          " I",
-          "IL"
-        ],
         "key": {
           "I": {
             "tag": "forge:ingots/steel"
@@ -26,6 +22,10 @@
             "tag": "forge:leather"
           }
         },
+        "pattern": [
+          " I",
+          "IL"
+        ],
         "result": {
           "item": "assortedtools:steel_shears"
         }

@@ -4,25 +4,25 @@
     {
       "conditions": [
         {
-          "part": "hammers",
-          "type": "assortedtools:part_enabled"
+          "type": "assortedtools:part_enabled",
+          "part": "hammers"
         }
       ],
       "recipe": {
         "type": "minecraft:crafting_shaped",
+        "key": {
+          "I": {
+            "tag": "minecraft:planks"
+          },
+          "S": {
+            "tag": "forge:rods/wooden"
+          }
+        },
         "pattern": [
           "III",
           "ISI",
           " S "
         ],
-        "key": {
-          "S": {
-            "tag": "forge:rods/wooden"
-          },
-          "I": {
-            "tag": "minecraft:planks"
-          }
-        },
         "result": {
           "item": "assortedtools:wood_hammer"
         }

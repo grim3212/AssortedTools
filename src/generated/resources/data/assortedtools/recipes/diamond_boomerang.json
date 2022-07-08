@@ -4,17 +4,12 @@
     {
       "conditions": [
         {
-          "part": "boomerangs",
-          "type": "assortedtools:part_enabled"
+          "type": "assortedtools:part_enabled",
+          "part": "boomerangs"
         }
       ],
       "recipe": {
         "type": "minecraft:crafting_shaped",
-        "pattern": [
-          "XX",
-          "XY",
-          "XX"
-        ],
         "key": {
           "X": {
             "tag": "forge:gems/diamond"
@@ -23,6 +18,11 @@
             "item": "assortedtools:wood_boomerang"
           }
         },
+        "pattern": [
+          "XX",
+          "XY",
+          "XX"
+        ],
         "result": {
           "item": "assortedtools:diamond_boomerang"
         }

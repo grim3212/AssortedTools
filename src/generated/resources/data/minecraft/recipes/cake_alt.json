@@ -4,17 +4,12 @@
     {
       "conditions": [
         {
-          "part": "betterbuckets",
-          "type": "assortedtools:part_enabled"
+          "type": "assortedtools:part_enabled",
+          "part": "betterbuckets"
         }
       ],
       "recipe": {
         "type": "minecraft:crafting_shaped",
-        "pattern": [
-          "AAA",
-          "BEB",
-          "CCC"
-        ],
         "key": {
           "A": {
             "tag": "forge:buckets/milk"
@@ -29,6 +24,11 @@
             "tag": "forge:eggs"
           }
         },
+        "pattern": [
+          "AAA",
+          "BEB",
+          "CCC"
+        ],
         "result": {
           "item": "minecraft:cake"
         }

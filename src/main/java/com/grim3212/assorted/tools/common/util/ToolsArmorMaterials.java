@@ -89,5 +89,49 @@ public enum ToolsArmorMaterials implements ArmorMaterial {
 	public float getKnockbackResistance() {
 		return this.getMaterial().getKnockbackResistance();
 	}
+	
+	public ArmorMaterial defaultMaterial() {
+		return new ArmorMaterial() {
+			@Override
+			public SoundEvent getEquipSound() {
+				return equipSound.get();
+			}
+
+			@Override
+			public Ingredient getRepairIngredient() {
+				return Ingredient.of(repairMaterial.get());
+			}
+
+			@Override
+			public String getName() {
+				return getMaterial().getName();
+			}
+			
+			@Override
+			public int getDurabilityForSlot(EquipmentSlot p_40410_) {
+				return 0;
+			}
+
+			@Override
+			public int getDefenseForSlot(EquipmentSlot p_40411_) {
+				return 0;
+			}
+
+			@Override
+			public int getEnchantmentValue() {
+				return 0;
+			}
+			
+			@Override
+			public float getToughness() {
+				return 0;
+			}
+
+			@Override
+			public float getKnockbackResistance() {
+				return 0;
+			}
+		};
+	}
 
 }

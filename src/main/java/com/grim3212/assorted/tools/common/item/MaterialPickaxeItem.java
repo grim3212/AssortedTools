@@ -13,7 +13,7 @@ public class MaterialPickaxeItem extends ConfigurablePickaxeItem {
 	}
 
 	@Override
-	protected boolean allowdedIn(CreativeModeTab group) {
-		return ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.allowdedIn(group) : false;
+	protected boolean allowedIn(CreativeModeTab group) {
+		return ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.allowedIn(group) : false;
 	}
 }

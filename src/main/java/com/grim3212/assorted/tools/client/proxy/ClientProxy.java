@@ -19,8 +19,8 @@ import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -37,6 +37,7 @@ public class ClientProxy implements IProxy {
 		modBus.addListener(this::setupClient);
 		modBus.addListener(this::registerLayers);
 		modBus.addListener(this::registerRenderers);
+		modBus.addListener(this::registerKeys);
 
 		MinecraftForge.EVENT_BUS.register(new KeyBindHandler());
 		MinecraftForge.EVENT_BUS.register(new ChickenJumpHandler());
@@ -53,12 +54,14 @@ public class ClientProxy implements IProxy {
 		event.registerLayerDefinition(ToolsModelLayers.SPEAR, SpearModel::createLayer);
 	}
 
+	private void registerKeys(final RegisterKeyMappingsEvent event) {
+		TOOL_SWITCH_MODES = new KeyMapping("key.assortedtools.tool_switch_modes", KeyConflictContext.IN_GAME, InputConstants.getKey(GLFW.GLFW_KEY_Z, 0), AssortedTools.MODNAME);
+		event.register(TOOL_SWITCH_MODES);
+	}
+
 	private void setupClient(final FMLClientSetupEvent event) {
 		event.enqueueWork(() -> {
-			TOOL_SWITCH_MODES = new KeyMapping("key.assortedtools.tool_switch_modes", KeyConflictContext.IN_GAME, InputConstants.getKey(GLFW.GLFW_KEY_Z, 0), AssortedTools.MODNAME);
-			ClientRegistry.registerKeyBinding(TOOL_SWITCH_MODES);
 			ItemPropertyFunction override = (stack, world, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F;
-
 			ItemProperties.register(ToolsItems.WOOD_SPEAR.get(), new ResourceLocation(AssortedTools.MODID, "throwing"), override);
 			ItemProperties.register(ToolsItems.STONE_SPEAR.get(), new ResourceLocation(AssortedTools.MODID, "throwing"), override);
 			ItemProperties.register(ToolsItems.IRON_SPEAR.get(), new ResourceLocation(AssortedTools.MODID, "throwing"), override);

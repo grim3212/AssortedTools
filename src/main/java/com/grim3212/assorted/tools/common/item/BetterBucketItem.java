@@ -12,7 +12,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -39,16 +38,16 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidActionResult;
-import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class BetterBucketItem extends Item {
 
-	public ItemStack empty = ItemStack.EMPTY;
 	private boolean milkPause = false;
 	public final ItemTierHolder tierHolder;
 	private final boolean isExtraMaterial;
@@ -62,14 +61,16 @@ public class BetterBucketItem extends Item {
 
 		this.tierHolder = tierHolder;
 
-		ItemStack stack = new ItemStack(this);
-		setFluid(stack, "empty");
-		setAmount(stack, 0);
-		this.empty = stack;
-
 		this.isExtraMaterial = isExtraMaterial;
 
 		DispenserBlock.registerBehavior(this, DispenseBucketHandler.getInstance());
+	}
+
+	public ItemStack getEmptyStack() {
+		ItemStack stack = new ItemStack(this);
+		setFluid(stack, "empty");
+		setAmount(stack, 0);
+		return stack;
 	}
 
 	@Override
@@ -79,12 +80,12 @@ public class BetterBucketItem extends Item {
 	}
 
 	@Override
-	protected boolean allowdedIn(CreativeModeTab group) {
+	protected boolean allowedIn(CreativeModeTab group) {
 		if (this.isExtraMaterial) {
-			return ToolsConfig.COMMON.betterBucketsEnabled.get() && ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.allowdedIn(group) : false;
+			return ToolsConfig.COMMON.betterBucketsEnabled.get() && ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.allowedIn(group) : false;
 		}
 
-		return ToolsConfig.COMMON.betterBucketsEnabled.get() ? super.allowdedIn(group) : false;
+		return ToolsConfig.COMMON.betterBucketsEnabled.get() ? super.allowedIn(group) : false;
 	}
 
 	public void pauseForMilk() {
@@ -92,15 +93,15 @@ public class BetterBucketItem extends Item {
 	}
 
 	public int getMaximumMillibuckets() {
-		return this.tierHolder.getMaxBuckets() * FluidAttributes.BUCKET_VOLUME;
+		return this.tierHolder.getMaxBuckets() * FluidType.BUCKET_VOLUME;
 	}
 
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		if (getAmount(stack) <= 0) {
-			tooltip.add(new TranslatableComponent("tooltip.buckets.empty"));
+			tooltip.add(Component.translatable("tooltip.buckets.empty"));
 		} else {
-			tooltip.add(new TranslatableComponent("tooltip.buckets.contains", getAmount(stack), getMaximumMillibuckets()));
+			tooltip.add(Component.translatable("tooltip.buckets.contains", getAmount(stack), getMaximumMillibuckets()));
 		}
 	}
 
@@ -117,7 +118,7 @@ public class BetterBucketItem extends Item {
 		FluidStack fluidStack = getFluidStack(stack);
 
 		if (!fluidStack.isEmpty()) {
-			return new TranslatableComponent("item.assortedtools." + stack.getItem().getRegistryName().getPath() + "_filled", fluidStack.getDisplayName());
+			return Component.translatable("item.assortedtools." + ForgeRegistries.ITEMS.getKey(stack.getItem()).getPath() + "_filled", fluidStack.getDisplayName());
 		}
 
 		return super.getName(stack);
@@ -164,7 +165,7 @@ public class BetterBucketItem extends Item {
 					if (!ToolsConfig.COMMON.allowPartialBucketAmounts.get()) {
 						int filledAmount = getAmount(filledResult.getResult());
 
-						int leftover = filledAmount % FluidAttributes.BUCKET_VOLUME;
+						int leftover = filledAmount % FluidType.BUCKET_VOLUME;
 
 						if (leftover != 0) {
 							// Remove the leftovers so we have a perfect bucket amount again
@@ -196,7 +197,7 @@ public class BetterBucketItem extends Item {
 					// can the player place there?
 					if (playerIn.mayUseItemAt(clickPosOffset, direction, itemStackIn)) {
 						int amount = getAmount(itemStackIn);
-						if (amount >= FluidAttributes.BUCKET_VOLUME) {
+						if (amount >= FluidType.BUCKET_VOLUME) {
 							FluidStack fluidStack = getFluidStack(itemStackIn);
 
 							// try placing liquid
@@ -204,7 +205,7 @@ public class BetterBucketItem extends Item {
 								if (this.tryPlaceFluid(playerIn, fluidStack, worldIn, clickPosOffset, itemStackIn, hand) && !playerIn.isCreative()) {
 									// success!
 									playerIn.awardStat(Stats.ITEM_USED.get(this));
-									setAmount(itemStackIn, amount - FluidAttributes.BUCKET_VOLUME);
+									setAmount(itemStackIn, amount - FluidType.BUCKET_VOLUME);
 									return InteractionResultHolder.success(this.tryBreakBucket(itemStackIn));
 								}
 							}
@@ -294,13 +295,13 @@ public class BetterBucketItem extends Item {
 
 	@Override
 	public boolean hasContainerItem(ItemStack stack) {
-		return getAmount(stack) >= FluidAttributes.BUCKET_VOLUME;
+		return getAmount(stack) >= FluidType.BUCKET_VOLUME;
 	}
 
 	@Override
 	public ItemStack getContainerItem(ItemStack itemStack) {
 		int amount = getAmount(itemStack);
-		setAmount(itemStack, amount - FluidAttributes.BUCKET_VOLUME);
+		setAmount(itemStack, amount - FluidType.BUCKET_VOLUME);
 
 		return this.tryBreakBucket(itemStack);
 	}
@@ -340,8 +341,8 @@ public class BetterBucketItem extends Item {
 		if (getAmount(stack) <= 0) {
 			if (this.tierHolder.getBreaksAfterUse()) {
 				return this.getBreakStack();
-			} else if (!this.empty.isEmpty()) {
-				return this.empty.copy();
+			} else if (!this.getEmptyStack().isEmpty()) {
+				return this.getEmptyStack().copy();
 			} else {
 				// Return empty if both are empty anyway
 				return ItemStack.EMPTY;
@@ -377,7 +378,7 @@ public class BetterBucketItem extends Item {
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-		return new BucketFluidHandler(stack, this.getBreakStack(), empty, getMaximumMillibuckets());
+		return new BucketFluidHandler(stack, this.getBreakStack(), this.getEmptyStack(), getMaximumMillibuckets());
 	}
 
 	public static class BucketFluidHandler extends FluidHandlerItemStack {
@@ -417,7 +418,7 @@ public class BetterBucketItem extends Item {
 			FluidStack contained = getFluid();
 			if (contained.isEmpty()) {
 				int fillAmount = Math.min(capacity, resource.getAmount());
-				int leftover = fillAmount % FluidAttributes.BUCKET_VOLUME;
+				int leftover = fillAmount % FluidType.BUCKET_VOLUME;
 
 				if (leftover != 0) {
 					// Account for offset and only fill in bucket increments
@@ -434,7 +435,7 @@ public class BetterBucketItem extends Item {
 			} else {
 				if (contained.isFluidEqual(resource)) {
 					int fillAmount = Math.min(capacity - contained.getAmount(), resource.getAmount());
-					int leftover = fillAmount % FluidAttributes.BUCKET_VOLUME;
+					int leftover = fillAmount % FluidType.BUCKET_VOLUME;
 
 					if (leftover != 0) {
 						// Account for offset and only fill in bucket increments
@@ -468,7 +469,7 @@ public class BetterBucketItem extends Item {
 				}
 
 				int drainAmount = Math.min(contained.getAmount(), maxDrain);
-				int leftover = drainAmount % FluidAttributes.BUCKET_VOLUME;
+				int leftover = drainAmount % FluidType.BUCKET_VOLUME;
 
 				if (leftover != 0) {
 					// Account for offset and only drain in bucket increments

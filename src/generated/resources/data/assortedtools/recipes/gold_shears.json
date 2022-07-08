@@ -4,16 +4,12 @@
     {
       "conditions": [
         {
-          "part": "moreshears",
-          "type": "assortedtools:part_enabled"
+          "type": "assortedtools:part_enabled",
+          "part": "moreshears"
         }
       ],
       "recipe": {
         "type": "minecraft:crafting_shaped",
-        "pattern": [
-          " I",
-          "IL"
-        ],
         "key": {
           "I": {
             "tag": "forge:ingots/gold"
@@ -22,6 +18,10 @@
             "tag": "forge:leather"
           }
         },
+        "pattern": [
+          " I",
+          "IL"
+        ],
         "result": {
           "item": "assortedtools:gold_shears"
         }

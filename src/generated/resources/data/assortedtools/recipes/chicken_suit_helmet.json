@@ -4,21 +4,21 @@
     {
       "conditions": [
         {
-          "part": "chickensuit",
-          "type": "assortedtools:part_enabled"
+          "type": "assortedtools:part_enabled",
+          "part": "chickensuit"
         }
       ],
       "recipe": {
         "type": "minecraft:crafting_shaped",
-        "pattern": [
-          "XXX",
-          "X X"
-        ],
         "key": {
           "X": {
             "tag": "forge:feathers"
           }
         },
+        "pattern": [
+          "XXX",
+          "X X"
+        ],
         "result": {
           "item": "assortedtools:chicken_suit_helmet"
         }

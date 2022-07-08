@@ -29,46 +29,41 @@ import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 public class BetterSpearItem extends TridentItem {
 
 	private final ItemTierHolder tierHolder;
 	private final boolean isExtraMaterial;
-	private final Multimap<Attribute, AttributeModifier> defaultModifiers;
 
 	public BetterSpearItem(Properties props, ItemTierHolder tierHolder) {
 		this(props, tierHolder, false);
 	}
 
 	public BetterSpearItem(Properties props, ItemTierHolder tierHolder, boolean extraMaterial) {
-		super(props.defaultDurability(tierHolder.getMaxUses()));
+		super(props);
 		this.isExtraMaterial = extraMaterial;
 		this.tierHolder = tierHolder;
 
-		Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", (double) 2.0D + tierHolder.getDamage(), AttributeModifier.Operation.ADDITION));
-		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", (double) -2.4f, AttributeModifier.Operation.ADDITION));
-		this.defaultModifiers = builder.build();
 	}
 
 	@Override
-	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-		consumer.accept(new IItemRenderProperties() {
+	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+		consumer.accept(new IClientItemExtensions() {
 			@Override
-			public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
+			public BlockEntityWithoutLevelRenderer getCustomRenderer() {
 				return SpearBEWLR.SPEAR_ITEM_RENDERER;
 			}
 		});
 	}
 
 	@Override
-	protected boolean allowdedIn(CreativeModeTab group) {
+	protected boolean allowedIn(CreativeModeTab group) {
 		if (this.isExtraMaterial) {
-			return ToolsConfig.COMMON.betterSpearsEnabled.get() && ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.allowdedIn(group) : false;
+			return ToolsConfig.COMMON.betterSpearsEnabled.get() && ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.allowedIn(group) : false;
 		}
 
-		return ToolsConfig.COMMON.betterSpearsEnabled.get() ? super.allowdedIn(group) : false;
+		return ToolsConfig.COMMON.betterSpearsEnabled.get() ? super.allowedIn(group) : false;
 	}
 
 	@Override
@@ -119,13 +114,27 @@ public class BetterSpearItem extends TridentItem {
 		return false;
 	}
 
+	private Multimap<Attribute, AttributeModifier> attribs = null;
+
 	@Override
 	public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
-		return slot == EquipmentSlot.MAINHAND ? this.defaultModifiers : ImmutableMultimap.of();
+		if (attribs == null) {
+			Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
+			builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", (double) 2.0D + tierHolder.getDamage(), AttributeModifier.Operation.ADDITION));
+			builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", (double) -2.4f, AttributeModifier.Operation.ADDITION));
+			this.attribs = builder.build();
+		}
+
+		return slot == EquipmentSlot.MAINHAND ? this.attribs : ImmutableMultimap.of();
 	}
 
 	public ItemTierHolder getTierHolder() {
 		return tierHolder;
+	}
+	
+	@Override
+	public boolean isDamageable(ItemStack stack) {
+		return true;
 	}
 
 	@Override

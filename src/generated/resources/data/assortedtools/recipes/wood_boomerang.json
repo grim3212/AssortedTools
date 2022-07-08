@@ -4,22 +4,22 @@
     {
       "conditions": [
         {
-          "part": "boomerangs",
-          "type": "assortedtools:part_enabled"
+          "type": "assortedtools:part_enabled",
+          "part": "boomerangs"
         }
       ],
       "recipe": {
         "type": "minecraft:crafting_shaped",
-        "pattern": [
-          "XX",
-          "X ",
-          "XX"
-        ],
         "key": {
           "X": {
             "tag": "minecraft:planks"
           }
         },
+        "pattern": [
+          "XX",
+          "X ",
+          "XX"
+        ],
         "result": {
           "item": "assortedtools:wood_boomerang"
         }

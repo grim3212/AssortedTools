@@ -1,35 +1,24 @@
 {
   "advancements": [
     {
-      "conditions": [
-        {
-          "part": "extramaterials",
-          "type": "assortedtools:part_enabled"
-        }
-      ],
       "advancement": {
         "parent": "minecraft:recipes/root",
-        "rewards": {
-          "recipes": [
-            "assortedtools:silver_helmet"
-          ]
-        },
         "criteria": {
           "has_item": {
-            "trigger": "minecraft:inventory_changed",
             "conditions": {
               "items": [
                 {
                   "tag": "forge:ingots/silver"
                 }
               ]
-            }
+            },
+            "trigger": "minecraft:inventory_changed"
           },
           "has_the_recipe": {
-            "trigger": "minecraft:recipe_unlocked",
             "conditions": {
               "recipe": "assortedtools:silver_helmet"
-            }
+            },
+            "trigger": "minecraft:recipe_unlocked"
           }
         },
         "requirements": [
@@ -37,8 +26,19 @@
             "has_item",
             "has_the_recipe"
           ]
-        ]
-      }
+        ],
+        "rewards": {
+          "recipes": [
+            "assortedtools:silver_helmet"
+          ]
+        }
+      },
+      "conditions": [
+        {
+          "type": "assortedtools:part_enabled",
+          "part": "extramaterials"
+        }
+      ]
     }
   ]
 }

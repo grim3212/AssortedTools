@@ -10,12 +10,17 @@ public class ConfigurableTieredItem extends Item {
 	private final ItemTierHolder tierHolder;
 
 	public ConfigurableTieredItem(ItemTierHolder tierHolder, Properties builder) {
-		super(builder.defaultDurability(tierHolder.getMaxUses()));
+		super(builder);
 		this.tierHolder = tierHolder;
 	}
 
 	public ItemTierHolder getTierHolder() {
 		return tierHolder;
+	}
+
+	@Override
+	public boolean isDamageable(ItemStack stack) {
+		return true;
 	}
 
 	@Override

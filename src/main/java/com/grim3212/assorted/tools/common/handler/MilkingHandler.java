@@ -22,7 +22,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fluids.FluidAttributes;
+import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class MilkingHandler {
@@ -85,7 +85,7 @@ public class MilkingHandler {
 
 										int amount = BetterBucketItem.getAmount(stack);
 										BetterBucketItem.setFluid(stack, "milk");
-										BetterBucketItem.setAmount(stack, amount + FluidAttributes.BUCKET_VOLUME);
+										BetterBucketItem.setAmount(stack, amount + FluidType.BUCKET_VOLUME);
 
 										bucket.pauseForMilk();
 									}
@@ -95,6 +95,7 @@ public class MilkingHandler {
 					}
 				} else if (stack.getItem() instanceof BetterBucketItem) {
 					BetterBucketItem bucket = (BetterBucketItem) stack.getItem();
+					ResourceLocation bucketKey = ForgeRegistries.ITEMS.getKey(bucket);
 					int milkingLevel = bucket.tierHolder.getMilkingLevel();
 
 					if (bucket != null) {
@@ -108,15 +109,15 @@ public class MilkingHandler {
 
 											ItemStack milkBucket;
 
-											if (this.cache.containsKey(bucket.getRegistryName())) {
-												milkBucket = this.cache.get(bucket.getRegistryName()).copy();
+											if (this.cache.containsKey(bucketKey)) {
+												milkBucket = this.cache.get(bucketKey).copy();
 											} else {
-												milkBucket = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(bucket.getRegistryName().toString().replace("_bucket", "_milk_bucket"))));
-												this.cache.put(bucket.getRegistryName(), milkBucket.copy());
+												milkBucket = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(bucketKey.toString().replace("_bucket", "_milk_bucket"))));
+												this.cache.put(bucketKey, milkBucket.copy());
 											}
 
 											BetterBucketItem.setFluid(milkBucket, "milk");
-											BetterBucketItem.setAmount(milkBucket, FluidAttributes.BUCKET_VOLUME);
+											BetterBucketItem.setAmount(milkBucket, FluidType.BUCKET_VOLUME);
 
 											if (event.getHand() == InteractionHand.MAIN_HAND)
 												player.getInventory().setItem(player.getInventory().selected, milkBucket);

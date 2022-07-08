@@ -4,25 +4,25 @@
     {
       "conditions": [
         {
-          "part": "wands",
-          "type": "assortedtools:part_enabled"
+          "type": "assortedtools:part_enabled",
+          "part": "wands"
         }
       ],
       "recipe": {
         "type": "minecraft:crafting_shaped",
+        "key": {
+          "G": {
+            "tag": "forge:gems/diamond"
+          },
+          "X": {
+            "tag": "minecraft:planks"
+          }
+        },
         "pattern": [
           "XGX",
           "XGX",
           "XGX"
         ],
-        "key": {
-          "X": {
-            "tag": "minecraft:planks"
-          },
-          "G": {
-            "tag": "forge:gems/diamond"
-          }
-        },
         "result": {
           "item": "assortedtools:mining_wand"
         }

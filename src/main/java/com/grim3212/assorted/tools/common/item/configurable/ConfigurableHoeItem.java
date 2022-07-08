@@ -1,71 +1,68 @@
 package com.grim3212.assorted.tools.common.item.configurable;
 
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.ImmutableMultimap.Builder;
+import com.google.common.collect.Multimap;
 import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
-import com.grim3212.assorted.tools.common.item.MultiToolItem;
-import com.mojang.datafixers.util.Pair;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.common.ToolAction;
-import net.minecraftforge.common.ToolActions;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraft.world.level.block.state.BlockState;
 
-public class ConfigurableHoeItem extends ConfigurableToolItem {
+public class ConfigurableHoeItem extends HoeItem {
+
+	private static final float HOE_SPEED = -0.0F;
+
+	private final ItemTierHolder tierHolder;
 
 	public ConfigurableHoeItem(ItemTierHolder tierHolder, Item.Properties properties) {
-		super(tierHolder, -tierHolder.getHarvestLevel(), 0.0F, BlockTags.MINEABLE_WITH_HOE, properties);
+		super(tierHolder.getDefaultTier(), -tierHolder.getDefaultTier().getLevel(), HOE_SPEED, properties);
+		this.tierHolder = tierHolder;
 	}
 
-	@Override
-	public InteractionResult useOn(UseOnContext context) {
-		Level level = context.getLevel();
-		BlockPos blockpos = context.getClickedPos();
-		Pair<Predicate<UseOnContext>, Consumer<UseOnContext>> pair = MultiToolItem.TILLABLES.get(level.getBlockState(blockpos).getBlock());
-		int hook = ForgeEventFactory.onHoeUse(context);
-		if (hook != 0)
-			return hook > 0 ? InteractionResult.SUCCESS : InteractionResult.FAIL;
-		if (context.getClickedFace() != Direction.DOWN && level.isEmptyBlock(blockpos.above())) {
-			if (pair == null) {
-				return InteractionResult.PASS;
-			} else {
-				Predicate<UseOnContext> predicate = pair.getFirst();
-				Consumer<UseOnContext> consumer = pair.getSecond();
-				if (predicate.test(context)) {
-					Player player = context.getPlayer();
-					level.playSound(player, blockpos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
-					if (!level.isClientSide) {
-						consumer.accept(context);
-						if (player != null) {
-							context.getItemInHand().hurtAndBreak(1, player, (p_150845_) -> {
-								p_150845_.broadcastBreakEvent(context.getHand());
-							});
-						}
-					}
+	private Multimap<Attribute, AttributeModifier> attribs = null;
 
-					return InteractionResult.sidedSuccess(level.isClientSide);
-				} else {
-					return InteractionResult.PASS;
-				}
-			}
+	@Override
+	public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
+		if (attribs == null) {
+			Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
+			builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", (double) this.getAttackDamage(), AttributeModifier.Operation.ADDITION));
+			builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", (double) HOE_SPEED, AttributeModifier.Operation.ADDITION));
+			this.attribs = builder.build();
 		}
 
-		return InteractionResult.PASS;
+		return slot == EquipmentSlot.MAINHAND ? this.attribs : super.getDefaultAttributeModifiers(slot);
+	}
+
+	public ItemTierHolder getTierHolder() {
+		return tierHolder;
+	}
+
+	public float getAttackDamage() {
+		return this.tierHolder.getHarvestLevel() + this.tierHolder.getDamage();
 	}
 
 	@Override
-	public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
-		return ToolActions.DEFAULT_HOE_ACTIONS.contains(toolAction);
+	public int getMaxDamage(ItemStack stack) {
+		return this.tierHolder.getMaxUses();
+	}
+
+	@Override
+	public int getItemEnchantability(ItemStack stack) {
+		return this.tierHolder.getEnchantability();
+	}
+
+	@Override
+	public float getDestroySpeed(ItemStack stack, BlockState state) {
+		return state.is(this.blocks) ? this.tierHolder.getEfficiency() : 1.0F;
+	}
+
+	public int getTierHarvestLevel() {
+		return this.tierHolder.getHarvestLevel();
 	}
 }

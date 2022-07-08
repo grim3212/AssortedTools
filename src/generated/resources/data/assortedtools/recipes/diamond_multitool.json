@@ -4,8 +4,8 @@
     {
       "conditions": [
         {
-          "part": "multitools",
-          "type": "assortedtools:part_enabled"
+          "type": "assortedtools:part_enabled",
+          "part": "multitools"
         }
       ],
       "recipe": {

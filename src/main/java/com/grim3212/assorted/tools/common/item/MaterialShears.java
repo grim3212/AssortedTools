@@ -24,11 +24,16 @@ public class MaterialShears extends ShearsItem {
 	}
 
 	public MaterialShears(Properties props, ItemTierHolder tierHolder, boolean extraMaterial) {
-		super(props.defaultDurability((int) Math.rint(tierHolder.getMaxUses() * 0.952F)));
+		super(props);
 		this.tierHolder = tierHolder;
 		this.isExtraMaterial = extraMaterial;
 
 		DispenserBlock.registerBehavior(this, new ShearsDispenseItemBehavior());
+	}
+
+	@Override
+	public boolean isDamageable(ItemStack stack) {
+		return true;
 	}
 
 	@Override
@@ -66,11 +71,11 @@ public class MaterialShears extends ShearsItem {
 	}
 
 	@Override
-	protected boolean allowdedIn(CreativeModeTab group) {
+	protected boolean allowedIn(CreativeModeTab group) {
 		if (this.isExtraMaterial) {
-			return ToolsConfig.COMMON.moreShearsEnabled.get() && ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.allowdedIn(group) : false;
+			return ToolsConfig.COMMON.moreShearsEnabled.get() && ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.allowedIn(group) : false;
 		}
 
-		return ToolsConfig.COMMON.betterSpearsEnabled.get() ? super.allowdedIn(group) : false;
+		return ToolsConfig.COMMON.betterSpearsEnabled.get() ? super.allowedIn(group) : false;
 	}
 }

@@ -1,14 +1,15 @@
 {
   "parent": "forge:item/default",
+  "apply_fluid_luminosity": true,
+  "apply_tint": true,
+  "cover_is_mask": true,
+  "flip_gas": true,
+  "fluid": "minecraft:empty",
+  "loader": "forge:bucket",
   "textures": {
     "base": "assortedtools:item/buckets/ruby_bucket",
+    "cover": "assortedtools:item/buckets/ruby_bucket_covered",
     "fluid": "assortedtools:item/buckets/bucket_fluid",
-    "cover": "assortedtools:item/buckets/ruby_bucket_covered"
-  },
-  "loader": "forge:bucket",
-  "fluid": "minecraft:empty",
-  "flipGas": true,
-  "applyTint": true,
-  "coverIsMask": true,
-  "applyFluidLuminosity": true
+    "particle": "assortedtools:item/buckets/ruby_bucket"
+  }
 }

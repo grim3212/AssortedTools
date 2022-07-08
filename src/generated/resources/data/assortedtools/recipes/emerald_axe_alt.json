@@ -4,25 +4,25 @@
     {
       "conditions": [
         {
-          "part": "extramaterials",
-          "type": "assortedtools:part_enabled"
+          "type": "assortedtools:part_enabled",
+          "part": "extramaterials"
         }
       ],
       "recipe": {
         "type": "minecraft:crafting_shaped",
+        "key": {
+          "S": {
+            "tag": "forge:rods/wooden"
+          },
+          "X": {
+            "tag": "forge:gems/emerald"
+          }
+        },
         "pattern": [
           "XX",
           "SX",
           "S "
         ],
-        "key": {
-          "X": {
-            "tag": "forge:gems/emerald"
-          },
-          "S": {
-            "tag": "forge:rods/wooden"
-          }
-        },
         "result": {
           "item": "assortedtools:emerald_axe"
         }

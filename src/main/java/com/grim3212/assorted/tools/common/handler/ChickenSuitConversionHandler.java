@@ -7,12 +7,12 @@ import org.apache.commons.lang3.StringUtils;
 import com.grim3212.assorted.tools.common.enchantment.ToolsEnchantments;
 import com.grim3212.assorted.tools.common.item.ChickenSuitArmor;
 
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -39,7 +39,7 @@ public class ChickenSuitConversionHandler {
 					if (!StringUtils.isBlank(event.getName()) && !event.getName().equals(output.getHoverName().toString())) {
 						cost++;
 
-						output.setHoverName(new TextComponent(event.getName()));
+						output.setHoverName(Component.literal(event.getName()));
 					}
 
 					event.setOutput(output);

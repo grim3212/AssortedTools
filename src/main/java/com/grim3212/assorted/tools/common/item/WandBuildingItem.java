@@ -13,7 +13,6 @@ import com.grim3212.assorted.tools.common.util.WandCoord3D;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.StringRepresentable;
@@ -50,31 +49,31 @@ public class WandBuildingItem extends WandItem {
 			return true;
 
 		switch (BuildingMode.fromString(NBTHelper.getString(stack, "Mode"))) {
-			case BUILD_BOX:
-			case BUILD_ROOM:
-			case BUILD_FRAME:
-			case BUILD_CAVES:
-				return (state.getBlock() instanceof LiquidBlock);
-			case BUILD_WATER:
-			case BUILD_LAVA:
-				return (state.getBlock() == Blocks.TORCH || state.getBlock() instanceof LiquidBlock);
-			default:
-				return false;
+		case BUILD_BOX:
+		case BUILD_ROOM:
+		case BUILD_FRAME:
+		case BUILD_CAVES:
+			return (state.getBlock() instanceof LiquidBlock);
+		case BUILD_WATER:
+		case BUILD_LAVA:
+			return (state.getBlock() == Blocks.TORCH || state.getBlock() instanceof LiquidBlock);
+		default:
+			return false;
 		}
 	}
 
 	@Override
 	protected boolean isTooFar(int range, int maxDiff, int range2D, ItemStack stack) {
 		switch (BuildingMode.fromString(NBTHelper.getString(stack, "Mode"))) {
-			case BUILD_BOX:
-			case BUILD_FRAME:
-			case BUILD_ROOM:
-			case BUILD_WATER:
-			case BUILD_LAVA:
-			case BUILD_TORCHES:
-				return range - 400 > maxDiff;
-			case BUILD_CAVES:
-				return range2D - 1600 > maxDiff;
+		case BUILD_BOX:
+		case BUILD_FRAME:
+		case BUILD_ROOM:
+		case BUILD_WATER:
+		case BUILD_LAVA:
+		case BUILD_TORCHES:
+			return range - 400 > maxDiff;
+		case BUILD_CAVES:
+			return range2D - 1600 > maxDiff;
 		}
 		return true;
 	}
@@ -120,7 +119,7 @@ public class WandBuildingItem extends WandItem {
 			}
 		}
 		if (neededItems > invItems) {
-			sendMessage(entityplayer, new TranslatableComponent("error.wand.toofewitems", neededItems, invItems));
+			sendMessage(entityplayer, Component.translatable("error.wand.toofewitems", neededItems, invItems));
 			return false; // abort
 		}
 		// remove blocks from inventory, highest positions first (quickbar last)
@@ -205,31 +204,149 @@ public class WandBuildingItem extends WandItem {
 		int neededItems = 0;
 		int affected = 0;
 		switch (mode) {
-			case BUILD_BOX:
-				neededItems = 0;
+		case BUILD_BOX:
+			neededItems = 0;
 
+			for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
+				for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
+					for (Y = start.pos.getY(); Y <= end.pos.getY(); Y++) {
+						if (canPlace(world, new BlockPos(X, Y, Z), state, entityplayer, hand)) {
+							neededItems += multiplier;
+						}
+					}
+				}
+
+			}
+
+			if (neededItems == 0) {
+				if (!world.isClientSide)
+					error(entityplayer, end, "nowork");
+				return false;
+			}
+
+			if (consumeItems(neededStack, entityplayer, neededItems, end)) {
 				for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
 					for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
 						for (Y = start.pos.getY(); Y <= end.pos.getY(); Y++) {
-							if (canPlace(world, new BlockPos(X, Y, Z), state, entityplayer, hand)) {
-								neededItems += multiplier;
+							BlockPos newPos = new BlockPos(X, Y, Z);
+
+							if (canPlace(world, newPos, state, entityplayer, hand)) {
+								world.setBlock(newPos, state, 3);
+								if (this.rand.nextInt(neededItems / 50 + 1) == 0)
+									particles(world, newPos, 0);
+								affected++;
 							}
 						}
 					}
-
 				}
 
-				if (neededItems == 0) {
-					if (!world.isClientSide)
-						error(entityplayer, end, "nowork");
-					return false;
-				}
-
-				if (consumeItems(neededStack, entityplayer, neededItems, end)) {
-					for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
-						for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
-							for (Y = start.pos.getY(); Y <= end.pos.getY(); Y++) {
+				if ((this.stateOrig.getBlock() == Blocks.GRASS) && (affected > 0)) {
+					for (int run = 0; run <= 1; run++) {
+						if (run == 0)
+							Y = start.pos.getY();
+						if (run == 1) {
+							Y = end.pos.getY();
+						}
+						for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
+							for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
 								BlockPos newPos = new BlockPos(X, Y, Z);
+
+								if ((world.getBlockState(newPos).getBlock() == Blocks.DIRT) && ((world.getBlockState(newPos.above()).getBlock() == null) || (!world.getBlockState(newPos.above()).isSolidRender(world, newPos.above())))) {
+									world.setBlockAndUpdate(newPos, Blocks.GRASS.defaultBlockState());
+								}
+							}
+						}
+					}
+				}
+
+				return affected > 0;
+			}
+			return false;
+		case BUILD_ROOM:
+			neededItems = 0;
+
+			for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
+				for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
+					for (Y = start.pos.getY(); Y <= end.pos.getY(); Y++) {
+						if (((X == start.pos.getX()) || (Y == start.pos.getY()) || (Z == start.pos.getZ()) || (X == end.pos.getX()) || (Y == end.pos.getY()) || (Z == end.pos.getZ())) && (canPlace(world, new BlockPos(X, Y, Z), state, entityplayer, hand))) {
+							neededItems += multiplier;
+						}
+					}
+				}
+
+			}
+
+			if (neededItems == 0) {
+				if (!world.isClientSide)
+					error(entityplayer, end, "nowork");
+				return false;
+			}
+
+			if (consumeItems(neededStack, entityplayer, neededItems, end)) {
+				for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
+					for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
+						for (Y = start.pos.getY(); Y <= end.pos.getY(); Y++) {
+							BlockPos newPos = new BlockPos(X, Y, Z);
+							if (((X == start.pos.getX()) || (Y == start.pos.getY()) || (Z == start.pos.getZ()) || (X == end.pos.getX()) || (Y == end.pos.getY()) || (Z == end.pos.getZ())) && (canPlace(world, newPos, state, entityplayer, hand))) {
+								world.setBlock(newPos, state, 3);
+								if (this.rand.nextInt(neededItems / 50 + 1) == 0)
+									particles(world, newPos, 0);
+								affected++;
+							}
+						}
+					}
+				}
+
+				if ((this.stateOrig.getBlock() == Blocks.GRASS) && (affected > 0)) {
+					for (int run = 0; run <= 1; run++) {
+						if (run == 0)
+							Y = start.pos.getY();
+						if (run == 1) {
+							Y = end.pos.getY();
+						}
+						for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
+							for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
+								BlockPos newPos = new BlockPos(X, Y, Z);
+
+								if ((world.getBlockState(newPos).getBlock() == Blocks.DIRT) && ((world.getBlockState(newPos.above()).getBlock() == null) || (!world.getBlockState(newPos.above()).isSolidRender(world, newPos.above())))) {
+									world.setBlockAndUpdate(newPos, Blocks.GRASS.defaultBlockState());
+								}
+							}
+						}
+					}
+				}
+				return affected > 0;
+			}
+			return false;
+		case BUILD_FRAME:
+			neededItems = 0;
+
+			for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
+				for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
+					for (Y = start.pos.getY(); Y <= end.pos.getY(); Y++) {
+						if (((X == start.pos.getX()) && (Y == start.pos.getY())) || ((Y == start.pos.getY()) && (Z == start.pos.getZ())) || ((Z == start.pos.getZ()) && (X == start.pos.getX())) || ((X == start.pos.getX()) && (Y == end.pos.getY())) || ((X == end.pos.getX()) && (Y == start.pos.getY())) || ((Y == start.pos.getY()) && (Z == end.pos.getZ())) || ((Y == end.pos.getY()) && (Z == start.pos.getZ())) || ((Z == start.pos.getZ()) && (X == end.pos.getX()))
+								|| ((Z == end.pos.getZ()) && (X == start.pos.getX())) || ((X == end.pos.getX()) && (Y == end.pos.getY())) || ((Y == end.pos.getY()) && (Z == end.pos.getZ())) || ((Z == end.pos.getZ()) && (X == end.pos.getX()) && (canPlace(world, new BlockPos(X, Y, Z), state, entityplayer, hand)))) {
+							neededItems += multiplier;
+						}
+					}
+				}
+
+			}
+
+			if (neededItems == 0) {
+				if (!world.isClientSide)
+					error(entityplayer, end, "nowork");
+				return false;
+			}
+
+			if (consumeItems(neededStack, entityplayer, neededItems, end)) {
+				for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
+					for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
+						for (Y = start.pos.getY(); Y <= end.pos.getY(); Y++) {
+							if (((X == start.pos.getX()) && (Y == start.pos.getY())) || ((Y == start.pos.getY()) && (Z == start.pos.getZ())) || ((Z == start.pos.getZ()) && (X == start.pos.getX())) || ((X == start.pos.getX()) && (Y == end.pos.getY())) || ((X == end.pos.getX()) && (Y == start.pos.getY())) || ((Y == start.pos.getY()) && (Z == end.pos.getZ())) || ((Y == end.pos.getY()) && (Z == start.pos.getZ())) || ((Z == start.pos.getZ()) && (X == end.pos.getX()))
+									|| ((Z == end.pos.getZ()) && (X == start.pos.getX())) || ((X == end.pos.getX()) && (Y == end.pos.getY())) || ((Y == end.pos.getY()) && (Z == end.pos.getZ())) || ((Z == end.pos.getZ()) && (X == end.pos.getX()))) {
+								BlockPos newPos = new BlockPos(X, Y, Z);
+								stateAt = world.getBlockState(newPos);
 
 								if (canPlace(world, newPos, state, entityplayer, hand)) {
 									world.setBlock(newPos, state, 3);
@@ -240,152 +357,54 @@ public class WandBuildingItem extends WandItem {
 							}
 						}
 					}
+				}
 
-					if ((this.stateOrig.getBlock() == Blocks.GRASS) && (affected > 0)) {
-						for (int run = 0; run <= 1; run++) {
-							if (run == 0)
-								Y = start.pos.getY();
-							if (run == 1) {
-								Y = end.pos.getY();
-							}
-							for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
-								for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
-									BlockPos newPos = new BlockPos(X, Y, Z);
-
-									if ((world.getBlockState(newPos).getBlock() == Blocks.DIRT) && ((world.getBlockState(newPos.above()).getBlock() == null) || (!world.getBlockState(newPos.above()).isSolidRender(world, newPos.above())))) {
-										world.setBlockAndUpdate(newPos, Blocks.GRASS.defaultBlockState());
-									}
-								}
-							}
+				if ((this.stateOrig.getBlock() == Blocks.GRASS) && (affected > 0)) {
+					for (int run = 0; run <= 1; run++) {
+						if (run == 0)
+							Y = start.pos.getY();
+						if (run == 1) {
+							Y = end.pos.getY();
 						}
-					}
-
-					return affected > 0;
-				}
-				return false;
-			case BUILD_ROOM:
-				neededItems = 0;
-
-				for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
-					for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
-						for (Y = start.pos.getY(); Y <= end.pos.getY(); Y++) {
-							if (((X == start.pos.getX()) || (Y == start.pos.getY()) || (Z == start.pos.getZ()) || (X == end.pos.getX()) || (Y == end.pos.getY()) || (Z == end.pos.getZ())) && (canPlace(world, new BlockPos(X, Y, Z), state, entityplayer, hand))) {
-								neededItems += multiplier;
-							}
-						}
-					}
-
-				}
-
-				if (neededItems == 0) {
-					if (!world.isClientSide)
-						error(entityplayer, end, "nowork");
-					return false;
-				}
-
-				if (consumeItems(neededStack, entityplayer, neededItems, end)) {
-					for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
-						for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
-							for (Y = start.pos.getY(); Y <= end.pos.getY(); Y++) {
+						for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
+							for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
 								BlockPos newPos = new BlockPos(X, Y, Z);
-								if (((X == start.pos.getX()) || (Y == start.pos.getY()) || (Z == start.pos.getZ()) || (X == end.pos.getX()) || (Y == end.pos.getY()) || (Z == end.pos.getZ())) && (canPlace(world, newPos, state, entityplayer, hand))) {
-									world.setBlock(newPos, state, 3);
-									if (this.rand.nextInt(neededItems / 50 + 1) == 0)
-										particles(world, newPos, 0);
-									affected++;
-								}
-							}
-						}
-					}
-
-					if ((this.stateOrig.getBlock() == Blocks.GRASS) && (affected > 0)) {
-						for (int run = 0; run <= 1; run++) {
-							if (run == 0)
-								Y = start.pos.getY();
-							if (run == 1) {
-								Y = end.pos.getY();
-							}
-							for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
-								for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
-									BlockPos newPos = new BlockPos(X, Y, Z);
-
-									if ((world.getBlockState(newPos).getBlock() == Blocks.DIRT) && ((world.getBlockState(newPos.above()).getBlock() == null) || (!world.getBlockState(newPos.above()).isSolidRender(world, newPos.above())))) {
-										world.setBlockAndUpdate(newPos, Blocks.GRASS.defaultBlockState());
-									}
-								}
-							}
-						}
-					}
-					return affected > 0;
-				}
-				return false;
-			case BUILD_FRAME:
-				neededItems = 0;
-
-				for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
-					for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
-						for (Y = start.pos.getY(); Y <= end.pos.getY(); Y++) {
-							if (((X == start.pos.getX()) && (Y == start.pos.getY())) || ((Y == start.pos.getY()) && (Z == start.pos.getZ())) || ((Z == start.pos.getZ()) && (X == start.pos.getX())) || ((X == start.pos.getX()) && (Y == end.pos.getY())) || ((X == end.pos.getX()) && (Y == start.pos.getY())) || ((Y == start.pos.getY()) && (Z == end.pos.getZ())) || ((Y == end.pos.getY()) && (Z == start.pos.getZ())) || ((Z == start.pos.getZ()) && (X == end.pos.getX()))
-									|| ((Z == end.pos.getZ()) && (X == start.pos.getX())) || ((X == end.pos.getX()) && (Y == end.pos.getY())) || ((Y == end.pos.getY()) && (Z == end.pos.getZ())) || ((Z == end.pos.getZ()) && (X == end.pos.getX()) && (canPlace(world, new BlockPos(X, Y, Z), state, entityplayer, hand)))) {
-								neededItems += multiplier;
-							}
-						}
-					}
-
-				}
-
-				if (neededItems == 0) {
-					if (!world.isClientSide)
-						error(entityplayer, end, "nowork");
-					return false;
-				}
-
-				if (consumeItems(neededStack, entityplayer, neededItems, end)) {
-					for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
-						for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
-							for (Y = start.pos.getY(); Y <= end.pos.getY(); Y++) {
 								if (((X == start.pos.getX()) && (Y == start.pos.getY())) || ((Y == start.pos.getY()) && (Z == start.pos.getZ())) || ((Z == start.pos.getZ()) && (X == start.pos.getX())) || ((X == start.pos.getX()) && (Y == end.pos.getY())) || ((X == end.pos.getX()) && (Y == start.pos.getY())) || ((Y == start.pos.getY()) && (Z == end.pos.getZ())) || ((Y == end.pos.getY()) && (Z == start.pos.getZ())) || ((Z == start.pos.getZ()) && (X == end.pos.getX()))
-										|| ((Z == end.pos.getZ()) && (X == start.pos.getX())) || ((X == end.pos.getX()) && (Y == end.pos.getY())) || ((Y == end.pos.getY()) && (Z == end.pos.getZ())) || ((Z == end.pos.getZ()) && (X == end.pos.getX()))) {
-									BlockPos newPos = new BlockPos(X, Y, Z);
-									stateAt = world.getBlockState(newPos);
-
-									if (canPlace(world, newPos, state, entityplayer, hand)) {
-										world.setBlock(newPos, state, 3);
-										if (this.rand.nextInt(neededItems / 50 + 1) == 0)
-											particles(world, newPos, 0);
-										affected++;
-									}
+										|| ((Z == end.pos.getZ()) && (X == start.pos.getX())) || ((X == end.pos.getX()) && (Y == end.pos.getY())) || ((Y == end.pos.getY()) && (Z == end.pos.getZ())) || ((Z == end.pos.getZ()) && (X == end.pos.getX()) && (world.getBlockState(newPos).getBlock() == Blocks.DIRT) && ((world.getBlockState(newPos.above()).getBlock() == null) || (!world.getBlockState(newPos.above()).isSolidRender(world, newPos.above()))))) {
+									world.setBlockAndUpdate(newPos, Blocks.GRASS.defaultBlockState());
 								}
 							}
 						}
 					}
 
-					if ((this.stateOrig.getBlock() == Blocks.GRASS) && (affected > 0)) {
-						for (int run = 0; run <= 1; run++) {
-							if (run == 0)
-								Y = start.pos.getY();
-							if (run == 1) {
-								Y = end.pos.getY();
-							}
-							for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
-								for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
-									BlockPos newPos = new BlockPos(X, Y, Z);
-									if (((X == start.pos.getX()) && (Y == start.pos.getY())) || ((Y == start.pos.getY()) && (Z == start.pos.getZ())) || ((Z == start.pos.getZ()) && (X == start.pos.getX())) || ((X == start.pos.getX()) && (Y == end.pos.getY())) || ((X == end.pos.getX()) && (Y == start.pos.getY())) || ((Y == start.pos.getY()) && (Z == end.pos.getZ())) || ((Y == end.pos.getY()) && (Z == start.pos.getZ())) || ((Z == start.pos.getZ()) && (X == end.pos.getX()))
-											|| ((Z == end.pos.getZ()) && (X == start.pos.getX())) || ((X == end.pos.getX()) && (Y == end.pos.getY())) || ((Y == end.pos.getY()) && (Z == end.pos.getZ())) || ((Z == end.pos.getZ()) && (X == end.pos.getX()) && (world.getBlockState(newPos).getBlock() == Blocks.DIRT) && ((world.getBlockState(newPos.above()).getBlock() == null) || (!world.getBlockState(newPos.above()).isSolidRender(world, newPos.above()))))) {
-										world.setBlockAndUpdate(newPos, Blocks.GRASS.defaultBlockState());
-									}
-								}
-							}
-						}
-
-					}
-
-					return affected > 0;
 				}
-				return false;
-			case BUILD_TORCHES:
-				neededItems = 0;
 
+				return affected > 0;
+			}
+			return false;
+		case BUILD_TORCHES:
+			neededItems = 0;
+
+			for (X = start.pos.getX(); X <= end.pos.getX(); X += 5) {
+				for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z += 5) {
+					for (Y = start.pos.getY(); Y <= end.pos.getY(); Y++) {
+						BlockPos newPos = new BlockPos(X, Y, Z);
+						stateAt = world.getBlockState(newPos);
+
+						if (canPlace(world, newPos, state, entityplayer, hand)) {
+							neededItems += multiplier;
+						}
+					}
+				}
+			}
+
+			if (neededItems == 0) {
+				if (!world.isClientSide)
+					error(entityplayer, end, "nowork");
+				return false;
+			}
+
+			if (consumeItems(neededStack, entityplayer, neededItems, end)) {
 				for (X = start.pos.getX(); X <= end.pos.getX(); X += 5) {
 					for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z += 5) {
 						for (Y = start.pos.getY(); Y <= end.pos.getY(); Y++) {
@@ -393,7 +412,33 @@ public class WandBuildingItem extends WandItem {
 							stateAt = world.getBlockState(newPos);
 
 							if (canPlace(world, newPos, state, entityplayer, hand)) {
-								neededItems += multiplier;
+								world.setBlock(newPos, state, 3);
+								particles(world, newPos, 0);
+								affected++;
+							}
+						}
+					}
+				}
+				return affected > 0;
+			}
+			return false;
+		case BUILD_WATER:
+			if ((!this.reinforced) && (!ToolsConfig.COMMON.freeBuildMode.get())) {
+				error(entityplayer, end, "cantfillwater");
+				return false;
+			}
+
+			if (!ToolsConfig.COMMON.freeBuildMode.get()) {
+				neededItems = 0;
+
+				for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
+					for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
+						for (Y = start.pos.getY(); Y <= end.pos.getY(); Y++) {
+							BlockPos newPos = new BlockPos(X, Y, Z);
+							stateAt = world.getBlockState(newPos);
+
+							if (canBreak(world, newPos, entityplayer.getItemInHand(hand))) {
+								neededItems++;
 							}
 						}
 					}
@@ -404,189 +449,143 @@ public class WandBuildingItem extends WandItem {
 						error(entityplayer, end, "nowork");
 					return false;
 				}
+			}
 
-				if (consumeItems(neededStack, entityplayer, neededItems, end)) {
-					for (X = start.pos.getX(); X <= end.pos.getX(); X += 5) {
-						for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z += 5) {
-							for (Y = start.pos.getY(); Y <= end.pos.getY(); Y++) {
-								BlockPos newPos = new BlockPos(X, Y, Z);
-								stateAt = world.getBlockState(newPos);
-
-								if (canPlace(world, newPos, state, entityplayer, hand)) {
-									world.setBlock(newPos, state, 3);
-									particles(world, newPos, 0);
-									affected++;
-								}
-							}
-						}
-					}
-					return affected > 0;
-				}
-				return false;
-			case BUILD_WATER:
-				if ((!this.reinforced) && (!ToolsConfig.COMMON.freeBuildMode.get())) {
-					error(entityplayer, end, "cantfillwater");
-					return false;
-				}
-
-				if (!ToolsConfig.COMMON.freeBuildMode.get()) {
-					neededItems = 0;
-
-					for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
-						for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
-							for (Y = start.pos.getY(); Y <= end.pos.getY(); Y++) {
-								BlockPos newPos = new BlockPos(X, Y, Z);
-								stateAt = world.getBlockState(newPos);
-
-								if (canBreak(world, newPos, entityplayer.getItemInHand(hand))) {
-									neededItems++;
-								}
-							}
-						}
-					}
-
-					if (neededItems == 0) {
-						if (!world.isClientSide)
-							error(entityplayer, end, "nowork");
-						return false;
-					}
-				}
-
-				if (emptyBuckets(entityplayer, 2, false)) {
-					for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
-						for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
-							for (Y = start.pos.getY(); Y <= end.pos.getY(); Y++) {
-								BlockPos newPos = new BlockPos(X, Y, Z);
-								stateAt = world.getBlockState(newPos);
-
-								if (canBreak(world, newPos, entityplayer.getItemInHand(hand))) {
-									world.setBlockAndUpdate(newPos, Blocks.WATER.defaultBlockState());
-									affected++;
-								}
-							}
-						}
-					}
-
-					if (affected == 0) {
-						return false;
-					}
-					for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
-						for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
-							for (Y = start.pos.getY(); Y <= end.pos.getY(); Y++) {
-								BlockPos newPos = new BlockPos(X, Y, Z);
-								stateAt = world.getBlockState(newPos);
-
-								if (stateAt.getBlock() == Blocks.WATER) {
-									world.updateNeighborsAt(newPos, Blocks.WATER);
-									if (world.getBlockState(newPos.above()).getBlock() == Blocks.AIR)
-										particles(world, newPos, 2);
-								}
-							}
-						}
-					}
-					return true;
-				}
-				error(entityplayer, end, "toofewwater");
-
-				return false;
-			case BUILD_LAVA:
-				if ((!this.reinforced) && (!ToolsConfig.COMMON.freeBuildMode.get())) {
-					error(entityplayer, end, "cantfilllava");
-					return false;
-				}
-
-				neededItems = 0;
-
-				if (!ToolsConfig.COMMON.freeBuildMode.get()) {
-					for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
-						for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
-							for (Y = start.pos.getY(); Y <= end.pos.getY(); Y++) {
-								BlockPos newPos = new BlockPos(X, Y, Z);
-								stateAt = world.getBlockState(newPos);
-
-								if (canBreak(world, newPos, entityplayer.getItemInHand(hand))) {
-									neededItems++;
-								}
-							}
-						}
-					}
-					if (neededItems == 0) {
-						if (!world.isClientSide)
-							error(entityplayer, end, "nowork");
-						return false;
-					}
-				}
-
-				if (emptyBuckets(entityplayer, neededItems, true)) {
-					for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
-						for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
-							for (Y = start.pos.getY(); Y <= end.pos.getY(); Y++) {
-								BlockPos newPos = new BlockPos(X, Y, Z);
-								stateAt = world.getBlockState(newPos);
-								if (canBreak(world, newPos, entityplayer.getItemInHand(hand))) {
-									world.setBlockAndUpdate(newPos, Blocks.LAVA.defaultBlockState());
-									affected++;
-								}
-							}
-						}
-					}
-
-					if (affected == 0) {
-						return false;
-					}
-					for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
-						for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
-							for (Y = start.pos.getY(); Y <= end.pos.getY(); Y++) {
-								BlockPos newPos = new BlockPos(X, Y, Z);
-								stateAt = world.getBlockState(newPos);
-								if (stateAt.getBlock() == Blocks.LAVA) {
-									world.updateNeighborsAt(newPos, Blocks.LAVA);
-								}
-							}
-						}
-					}
-					return true;
-				}
-				error(entityplayer, end, "toofewlava");
-
-				return false;
-			case BUILD_CAVES:
-				if ((!this.reinforced) && (!ToolsConfig.COMMON.freeBuildMode.get())) {
-					error(entityplayer, end, "cantfillcave");
-					return false;
-				}
-
-				boolean underground = false;
-				long cnt = 0L;
+			if (emptyBuckets(entityplayer, 2, false)) {
 				for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
 					for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
-						underground = false;
-						for (Y = 127; Y > 1; Y--) {
+						for (Y = start.pos.getY(); Y <= end.pos.getY(); Y++) {
 							BlockPos newPos = new BlockPos(X, Y, Z);
 							stateAt = world.getBlockState(newPos);
 
-							boolean surfaceBlock = isSurface(stateAt);
-
-							if ((!underground) && (surfaceBlock)) {
-								underground = true;
-							} else if (underground) {
-								if (canBreak(world, newPos, entityplayer.getItemInHand(hand))) {
-									world.setBlockAndUpdate(newPos, Blocks.STONE.defaultBlockState());
-									cnt += 1L;
-								}
+							if (canBreak(world, newPos, entityplayer.getItemInHand(hand))) {
+								world.setBlockAndUpdate(newPos, Blocks.WATER.defaultBlockState());
+								affected++;
 							}
 						}
 					}
 				}
-				if (cnt > 0L) {
-					if (!world.isClientSide)
-						sendMessage(entityplayer, new TranslatableComponent("result.wand.fill", cnt));
-					return true;
-				} else {
-					if (!world.isClientSide)
-						error(entityplayer, end, "nocave");
+
+				if (affected == 0) {
 					return false;
 				}
+				for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
+					for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
+						for (Y = start.pos.getY(); Y <= end.pos.getY(); Y++) {
+							BlockPos newPos = new BlockPos(X, Y, Z);
+							stateAt = world.getBlockState(newPos);
+
+							if (stateAt.getBlock() == Blocks.WATER) {
+								world.updateNeighborsAt(newPos, Blocks.WATER);
+								if (world.getBlockState(newPos.above()).getBlock() == Blocks.AIR)
+									particles(world, newPos, 2);
+							}
+						}
+					}
+				}
+				return true;
+			}
+			error(entityplayer, end, "toofewwater");
+
+			return false;
+		case BUILD_LAVA:
+			if ((!this.reinforced) && (!ToolsConfig.COMMON.freeBuildMode.get())) {
+				error(entityplayer, end, "cantfilllava");
+				return false;
+			}
+
+			neededItems = 0;
+
+			if (!ToolsConfig.COMMON.freeBuildMode.get()) {
+				for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
+					for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
+						for (Y = start.pos.getY(); Y <= end.pos.getY(); Y++) {
+							BlockPos newPos = new BlockPos(X, Y, Z);
+							stateAt = world.getBlockState(newPos);
+
+							if (canBreak(world, newPos, entityplayer.getItemInHand(hand))) {
+								neededItems++;
+							}
+						}
+					}
+				}
+				if (neededItems == 0) {
+					if (!world.isClientSide)
+						error(entityplayer, end, "nowork");
+					return false;
+				}
+			}
+
+			if (emptyBuckets(entityplayer, neededItems, true)) {
+				for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
+					for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
+						for (Y = start.pos.getY(); Y <= end.pos.getY(); Y++) {
+							BlockPos newPos = new BlockPos(X, Y, Z);
+							stateAt = world.getBlockState(newPos);
+							if (canBreak(world, newPos, entityplayer.getItemInHand(hand))) {
+								world.setBlockAndUpdate(newPos, Blocks.LAVA.defaultBlockState());
+								affected++;
+							}
+						}
+					}
+				}
+
+				if (affected == 0) {
+					return false;
+				}
+				for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
+					for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
+						for (Y = start.pos.getY(); Y <= end.pos.getY(); Y++) {
+							BlockPos newPos = new BlockPos(X, Y, Z);
+							stateAt = world.getBlockState(newPos);
+							if (stateAt.getBlock() == Blocks.LAVA) {
+								world.updateNeighborsAt(newPos, Blocks.LAVA);
+							}
+						}
+					}
+				}
+				return true;
+			}
+			error(entityplayer, end, "toofewlava");
+
+			return false;
+		case BUILD_CAVES:
+			if ((!this.reinforced) && (!ToolsConfig.COMMON.freeBuildMode.get())) {
+				error(entityplayer, end, "cantfillcave");
+				return false;
+			}
+
+			boolean underground = false;
+			long cnt = 0L;
+			for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
+				for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
+					underground = false;
+					for (Y = 127; Y > 1; Y--) {
+						BlockPos newPos = new BlockPos(X, Y, Z);
+						stateAt = world.getBlockState(newPos);
+
+						boolean surfaceBlock = isSurface(stateAt);
+
+						if ((!underground) && (surfaceBlock)) {
+							underground = true;
+						} else if (underground) {
+							if (canBreak(world, newPos, entityplayer.getItemInHand(hand))) {
+								world.setBlockAndUpdate(newPos, Blocks.STONE.defaultBlockState());
+								cnt += 1L;
+							}
+						}
+					}
+				}
+			}
+			if (cnt > 0L) {
+				if (!world.isClientSide)
+					sendMessage(entityplayer, Component.translatable("result.wand.fill", cnt));
+				return true;
+			} else {
+				if (!world.isClientSide)
+					error(entityplayer, end, "nocave");
+				return false;
+			}
 		}
 
 		return false;
@@ -597,7 +596,7 @@ public class WandBuildingItem extends WandItem {
 		BuildingMode mode = BuildingMode.fromString(NBTHelper.getString(stack, "Mode"));
 		BuildingMode next = BuildingMode.getNext(mode, stack, reinforced);
 		NBTHelper.putString(stack, "Mode", next.getSerializedName());
-		this.sendMessage(player, new TranslatableComponent(AssortedTools.MODID + ".wand.switched", next.getTranslatedString()));
+		this.sendMessage(player, Component.translatable(AssortedTools.MODID + ".wand.switched", next.getTranslatedString()));
 		return stack;
 	}
 
@@ -605,14 +604,14 @@ public class WandBuildingItem extends WandItem {
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		BuildingMode mode = BuildingMode.fromString(NBTHelper.getString(stack, "Mode"));
 		if (mode != null)
-			tooltip.add(new TranslatableComponent(AssortedTools.MODID + ".wand.current", mode.getTranslatedString()));
+			tooltip.add(Component.translatable(AssortedTools.MODID + ".wand.current", mode.getTranslatedString()));
 		else
-			tooltip.add(new TranslatableComponent(AssortedTools.MODID + ".wand.broken"));
+			tooltip.add(Component.translatable(AssortedTools.MODID + ".wand.broken"));
 	}
 
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (this.allowdedIn(group)) {
+		if (this.allowedIn(group)) {
 			ItemStack stack = new ItemStack(this);
 			NBTHelper.putString(stack, "Mode", BuildingMode.BUILD_BOX.getSerializedName());
 			items.add(stack);
@@ -625,13 +624,7 @@ public class WandBuildingItem extends WandItem {
 	}
 
 	private static enum BuildingMode implements StringRepresentable {
-		BUILD_BOX("buildbox", 0),
-		BUILD_ROOM("buildroom", 1),
-		BUILD_FRAME("buildframe", 2),
-		BUILD_TORCHES("buildtorches", 3),
-		BUILD_WATER("buildwater", 4, true),
-		BUILD_LAVA("buildlava", 5, true),
-		BUILD_CAVES("buildcaves", 6, true);
+		BUILD_BOX("buildbox", 0), BUILD_ROOM("buildroom", 1), BUILD_FRAME("buildframe", 2), BUILD_TORCHES("buildtorches", 3), BUILD_WATER("buildwater", 4, true), BUILD_LAVA("buildlava", 5, true), BUILD_CAVES("buildcaves", 6, true);
 
 		private final String name;
 		private final int order;
@@ -684,8 +677,8 @@ public class WandBuildingItem extends WandItem {
 			return this.name;
 		}
 
-		public TranslatableComponent getTranslatedString() {
-			return new TranslatableComponent(AssortedTools.MODID + ".wand.mode." + this.name);
+		public Component getTranslatedString() {
+			return Component.translatable(AssortedTools.MODID + ".wand.mode." + this.name);
 		}
 	}
 }

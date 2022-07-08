@@ -5,12 +5,12 @@ import com.grim3212.assorted.tools.common.entity.DiamondBoomerangEntity;
 import com.grim3212.assorted.tools.common.entity.WoodBoomerangEntity;
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class BoomerangItem extends Item {
@@ -23,8 +23,8 @@ public class BoomerangItem extends Item {
 	}
 
 	@Override
-	protected boolean allowdedIn(CreativeModeTab group) {
-		return ToolsConfig.COMMON.boomerangsEnabled.get() ? super.allowdedIn(group) : false;
+	protected boolean allowedIn(CreativeModeTab group) {
+		return ToolsConfig.COMMON.boomerangsEnabled.get() ? super.allowedIn(group) : false;
 	}
 
 	@Override

@@ -1,9 +1,8 @@
 package com.grim3212.assorted.tools.common.loot;
 
-import java.util.List;
-
 import com.google.gson.JsonObject;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -23,7 +22,7 @@ public class CoralCutterLootModifier extends LootModifier {
 	}
 
 	@Override
-	protected List<ItemStack> doApply(List<ItemStack> generatedLoot, LootContext context) {
+	protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
 		ItemStack ctxTool = context.getParamOrNull(LootContextParams.TOOL);
 		if (EnchantmentHelper.getEnchantments(ctxTool).containsKey(Enchantments.SILK_TOUCH))
 			return generatedLoot;

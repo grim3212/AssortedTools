@@ -20,6 +20,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.ForgeRegistries;
 
 @OnlyIn(Dist.CLIENT)
 public class SpearModel extends Model {
@@ -50,16 +51,21 @@ public class SpearModel extends Model {
 	protected final Map<ResourceLocation, ResourceLocation> cache = new HashMap<ResourceLocation, ResourceLocation>();
 
 	public ResourceLocation getTexture(Item item) {
-		if (!this.cache.containsKey(item.getRegistryName())) {
+		ResourceLocation key = key(item);
+		if (!this.cache.containsKey(key)) {
 			if (item instanceof BetterSpearItem) {
 				BetterSpearItem spear = (BetterSpearItem) item;
-				this.cache.put(spear.getRegistryName(), new ResourceLocation(AssortedTools.MODID, "textures/entity/projectiles/" + spear.getTierHolder().getName() + "_spear.png"));
+				this.cache.put(key(spear), new ResourceLocation(AssortedTools.MODID, "textures/entity/projectiles/" + spear.getTierHolder().getName() + "_spear.png"));
 			} else {
 				AssortedTools.LOGGER.error("Tried to get spear texture for non-spear item");
 				return WOOD_SPEAR;
 			}
 		}
 
-		return this.cache.get(item.getRegistryName());
+		return this.cache.get(key);
+	}
+
+	private ResourceLocation key(Item item) {
+		return ForgeRegistries.ITEMS.getKey(item);
 	}
 }

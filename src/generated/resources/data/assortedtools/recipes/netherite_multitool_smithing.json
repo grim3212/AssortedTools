@@ -1,10 +1,10 @@
 {
   "type": "minecraft:smithing",
-  "base": {
-    "item": "assortedtools:diamond_multitool"
-  },
   "addition": {
     "item": "minecraft:netherite_block"
+  },
+  "base": {
+    "item": "assortedtools:diamond_multitool"
   },
   "result": {
     "item": "assortedtools:netherite_multitool"

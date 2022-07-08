@@ -4,12 +4,12 @@
     {
       "conditions": [
         {
-          "part": "multitools",
-          "type": "assortedtools:part_enabled"
+          "type": "assortedtools:part_enabled",
+          "part": "multitools"
         },
         {
-          "part": "extramaterials",
-          "type": "assortedtools:part_enabled"
+          "type": "assortedtools:part_enabled",
+          "part": "extramaterials"
         }
       ],
       "recipe": {

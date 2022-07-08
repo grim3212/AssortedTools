@@ -93,19 +93,15 @@ public class AssortedTools {
 	private void gatherData(GatherDataEvent event) {
 		DataGenerator datagenerator = event.getGenerator();
 		ExistingFileHelper fileHelper = event.getExistingFileHelper();
-		
+
 		ToolsLootConditions.register();
 
-		if (event.includeServer()) {
-			ToolsBlockTagProvider blockTagProvider = new ToolsBlockTagProvider(datagenerator, fileHelper);
-			datagenerator.addProvider(blockTagProvider);
-			datagenerator.addProvider(new ToolsItemTagProvider(datagenerator, blockTagProvider, fileHelper));
-			datagenerator.addProvider(new ToolsRecipes(datagenerator));
-			datagenerator.addProvider(new ToolsLootModifierProvider(datagenerator));
-		}
+		ToolsBlockTagProvider blockTagProvider = new ToolsBlockTagProvider(datagenerator, fileHelper);
+		datagenerator.addProvider(event.includeServer(), blockTagProvider);
+		datagenerator.addProvider(event.includeServer(), new ToolsItemTagProvider(datagenerator, blockTagProvider, fileHelper));
+		datagenerator.addProvider(event.includeServer(), new ToolsRecipes(datagenerator));
+		datagenerator.addProvider(event.includeServer(), new ToolsLootModifierProvider(datagenerator));
 
-		if (event.includeClient()) {
-			datagenerator.addProvider(new ToolsItemModelProvider(datagenerator, fileHelper));
-		}
+		datagenerator.addProvider(event.includeClient(), new ToolsItemModelProvider(datagenerator, fileHelper));
 	}
 }

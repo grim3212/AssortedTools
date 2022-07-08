@@ -4,25 +4,25 @@
     {
       "conditions": [
         {
-          "part": "extramaterials",
-          "type": "assortedtools:part_enabled"
+          "type": "assortedtools:part_enabled",
+          "part": "extramaterials"
         }
       ],
       "recipe": {
         "type": "minecraft:crafting_shaped",
+        "key": {
+          "S": {
+            "tag": "forge:rods/wooden"
+          },
+          "X": {
+            "tag": "forge:gems/topaz"
+          }
+        },
         "pattern": [
           "XXX",
           " S ",
           " S "
         ],
-        "key": {
-          "X": {
-            "tag": "forge:gems/topaz"
-          },
-          "S": {
-            "tag": "forge:rods/wooden"
-          }
-        },
         "result": {
           "item": "assortedtools:topaz_pickaxe"
         }

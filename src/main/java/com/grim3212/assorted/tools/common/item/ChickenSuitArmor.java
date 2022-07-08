@@ -17,8 +17,8 @@ public class ChickenSuitArmor extends ConfigurableArmorItem {
 	}
 
 	@Override
-	protected boolean allowdedIn(CreativeModeTab group) {
-		return ToolsConfig.COMMON.chickenSuitEnabled.get() ? super.allowdedIn(group) : false;
+	protected boolean allowedIn(CreativeModeTab group) {
+		return ToolsConfig.COMMON.chickenSuitEnabled.get() ? super.allowedIn(group) : false;
 	}
 
 	@Override

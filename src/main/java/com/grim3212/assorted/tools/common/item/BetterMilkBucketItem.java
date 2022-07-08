@@ -9,7 +9,6 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
@@ -25,7 +24,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.fluids.FluidAttributes;
+import net.minecraftforge.fluids.FluidType;
 
 public class BetterMilkBucketItem extends Item {
 
@@ -48,15 +47,15 @@ public class BetterMilkBucketItem extends Item {
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		if (BetterBucketItem.getAmount(stack) <= 0) {
-			tooltip.add(new TranslatableComponent("tooltip.buckets.empty"));
+			tooltip.add(Component.translatable("tooltip.buckets.empty"));
 		} else {
-			tooltip.add(new TranslatableComponent("tooltip.buckets.contains", BetterBucketItem.getAmount(stack), this.getParent().getMaximumMillibuckets()));
+			tooltip.add(Component.translatable("tooltip.buckets.contains", BetterBucketItem.getAmount(stack), this.getParent().getMaximumMillibuckets()));
 		}
 	}
 
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> stacks) {
-		if (this.allowdedIn(tab)) {
+		if (this.allowedIn(tab)) {
 			ItemStack stack = new ItemStack(this);
 			BetterBucketItem.setFluid(stack, "milk");
 			BetterBucketItem.setAmount(stack, this.parent.get().getMaximumMillibuckets());
@@ -77,7 +76,7 @@ public class BetterMilkBucketItem extends Item {
 
 		if (entityLiving instanceof Player && !((Player) entityLiving).getAbilities().instabuild) {
 			int amount = BetterBucketItem.getAmount(stack);
-			BetterBucketItem.setAmount(stack, amount - FluidAttributes.BUCKET_VOLUME);
+			BetterBucketItem.setAmount(stack, amount - FluidType.BUCKET_VOLUME);
 		}
 
 		return this.getParent().tryBreakBucket(stack);
@@ -86,14 +85,14 @@ public class BetterMilkBucketItem extends Item {
 	@Override
 	public ItemStack getContainerItem(ItemStack itemStack) {
 		int amount = BetterBucketItem.getAmount(itemStack);
-		BetterBucketItem.setAmount(itemStack, amount - FluidAttributes.BUCKET_VOLUME);
+		BetterBucketItem.setAmount(itemStack, amount - FluidType.BUCKET_VOLUME);
 
 		return this.getParent().tryBreakBucket(itemStack);
 	}
 
 	@Override
 	public boolean hasContainerItem(ItemStack stack) {
-		return BetterBucketItem.getAmount(stack) >= FluidAttributes.BUCKET_VOLUME;
+		return BetterBucketItem.getAmount(stack) >= FluidType.BUCKET_VOLUME;
 	}
 
 	@Override
@@ -141,6 +140,6 @@ public class BetterMilkBucketItem extends Item {
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 		BetterBucketItem parent = this.getParent();
-		return new BucketFluidHandler(stack, parent.getBreakStack(), parent.empty, parent.getMaximumMillibuckets());
+		return new BucketFluidHandler(stack, parent.getBreakStack(), parent.getEmptyStack(), parent.getMaximumMillibuckets());
 	}
 }

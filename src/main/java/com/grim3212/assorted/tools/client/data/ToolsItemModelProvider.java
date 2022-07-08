@@ -11,9 +11,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.client.model.generators.ModelBuilder.Perspective;
-import net.minecraftforge.client.model.generators.loaders.DynamicBucketModelBuilder;
-import net.minecraftforge.client.model.generators.loaders.SeparatePerspectiveModelBuilder;
+import net.minecraftforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
+import net.minecraftforge.client.model.generators.loaders.SeparateTransformsModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -123,7 +122,7 @@ public class ToolsItemModelProvider extends ItemModelProvider {
 
 	private void bucketItem(Item bucket, Item milkBucket) {
 		String name = name(bucket);
-		getBuilder(name).parent(getExistingFile(new ResourceLocation("forge:item/default"))).texture("base", prefix("item/buckets/" + name)).texture("fluid", prefix("item/buckets/bucket_fluid")).texture("cover", prefix("item/buckets/" + name + "_covered")).customLoader(DynamicBucketModelBuilder::begin).fluid(Fluids.EMPTY).flipGas(true).applyTint(true).applyFluidLuminosity(true).coverIsMask(true).end();
+		getBuilder(name).parent(getExistingFile(new ResourceLocation("forge:item/default"))).texture("particle", prefix("item/buckets/" + name)).texture("base", prefix("item/buckets/" + name)).texture("fluid", prefix("item/buckets/bucket_fluid")).texture("cover", prefix("item/buckets/" + name + "_covered")).customLoader(DynamicFluidContainerModelBuilder::begin).fluid(Fluids.EMPTY).flipGas(true).applyTint(true).applyFluidLuminosity(true).coverIsMask(true).end();
 		withExistingParent(name(milkBucket), "item/generated").texture("layer0", prefix("item/buckets/" + name)).texture("layer1", prefix("item/buckets/overlay_milk"));
 	}
 
@@ -146,7 +145,7 @@ public class ToolsItemModelProvider extends ItemModelProvider {
 	private void generateSpear(Item item) {
 		String name = name(item);
 		ItemModelBuilder guiModel = nested().parent(withExistingParent(name + "_gui", "item/generated").texture("layer0", prefix("item/tools/" + name)));
-		ItemModelBuilder throwingModel = getBuilder(name + "_throwing").guiLight(GuiLight.FRONT).texture("particle", prefix("item/tools/" + name)).customLoader(SeparatePerspectiveModelBuilder::begin)
+		ItemModelBuilder throwingModel = getBuilder(name + "_throwing").guiLight(GuiLight.FRONT).texture("particle", prefix("item/tools/" + name)).customLoader(SeparateTransformsModelBuilder::begin)
 				// Throwing model is "base" so that we can have our transforms
 				.base(nested().parent(getExistingFile(mcLoc("trident_throwing"))).texture("particle", prefix("item/tools/" + name)))
 				// Gui, ground, and fixed all use the normal "item model"
@@ -155,11 +154,11 @@ public class ToolsItemModelProvider extends ItemModelProvider {
 		getBuilder(name).guiLight(GuiLight.FRONT).texture("particle", prefix("item/tools/" + name))
 				// Override when throwing to the throwing model to ensure we have the correct
 				// transforms
-				.override().predicate(prefix("throwing"), 1).model(throwingModel).end().customLoader(SeparatePerspectiveModelBuilder::begin)
+				.override().predicate(prefix("throwing"), 1).model(throwingModel).end().customLoader(SeparateTransformsModelBuilder::begin)
 				// In hand model is base
 				.base(nested().parent(getExistingFile(mcLoc("trident_in_hand"))).texture("particle", prefix("item/tools/" + name))
 						// Add head transformation
-						.transforms().transform(Perspective.HEAD).rotation(0, 180, 120).translation(8, 10, -11).scale(1.5F).end().end())
+						.transforms().transform(TransformType.HEAD).rotation(0, 180, 120).translation(8, 10, -11).scale(1.5F).end().end())
 				// Gui, ground, and fixed all use the normal "item model"
 				.perspective(TransformType.GUI, guiModel).perspective(TransformType.GROUND, guiModel).perspective(TransformType.FIXED, guiModel);
 	}

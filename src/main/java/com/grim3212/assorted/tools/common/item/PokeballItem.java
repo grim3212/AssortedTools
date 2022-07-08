@@ -11,7 +11,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -30,8 +29,8 @@ public class PokeballItem extends Item {
 	}
 
 	@Override
-	protected boolean allowdedIn(CreativeModeTab group) {
-		return ToolsConfig.COMMON.pokeballEnabled.get() ? super.allowdedIn(group) : false;
+	protected boolean allowedIn(CreativeModeTab group) {
+		return ToolsConfig.COMMON.pokeballEnabled.get() ? super.allowedIn(group) : false;
 	}
 
 	@Override
@@ -69,16 +68,16 @@ public class PokeballItem extends Item {
 				try {
 					MutableComponent customName = Component.Serializer.fromJson(stored.getString("CustomName"));
 					customName.withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC);
-					tooltip.add(new TranslatableComponent("tooltip.pokeball.stored_custom_name", customName, new TranslatableComponent(entityName).withStyle(ChatFormatting.AQUA)));
+					tooltip.add(Component.translatable("tooltip.pokeball.stored_custom_name", customName, Component.translatable(entityName).withStyle(ChatFormatting.AQUA)));
 				} catch (Exception exception) {
 					AssortedTools.LOGGER.warn("Failed to parse entity custom name {}", s, exception);
-					tooltip.add(new TranslatableComponent("tooltip.pokeball.stored", new TranslatableComponent(entityName).withStyle(ChatFormatting.AQUA)));
+					tooltip.add(Component.translatable("tooltip.pokeball.stored", Component.translatable(entityName).withStyle(ChatFormatting.AQUA)));
 				}
 			} else {
-				tooltip.add(new TranslatableComponent("tooltip.pokeball.stored", new TranslatableComponent(entityName).withStyle(ChatFormatting.AQUA)));
+				tooltip.add(Component.translatable("tooltip.pokeball.stored", Component.translatable(entityName).withStyle(ChatFormatting.AQUA)));
 			}
 		} else {
-			tooltip.add(new TranslatableComponent("tooltip.pokeball.empty").withStyle(ChatFormatting.GRAY));
+			tooltip.add(Component.translatable("tooltip.pokeball.empty").withStyle(ChatFormatting.GRAY));
 		}
 	}
 

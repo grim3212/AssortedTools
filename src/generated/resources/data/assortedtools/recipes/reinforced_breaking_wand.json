@@ -4,25 +4,25 @@
     {
       "conditions": [
         {
-          "part": "wands",
-          "type": "assortedtools:part_enabled"
+          "type": "assortedtools:part_enabled",
+          "part": "wands"
         }
       ],
       "recipe": {
         "type": "minecraft:crafting_shaped",
+        "key": {
+          "G": {
+            "tag": "forge:storage_blocks/iron"
+          },
+          "X": {
+            "tag": "forge:obsidian"
+          }
+        },
         "pattern": [
           "XGX",
           "XGX",
           "XGX"
         ],
-        "key": {
-          "X": {
-            "tag": "forge:obsidian"
-          },
-          "G": {
-            "tag": "forge:storage_blocks/iron"
-          }
-        },
         "result": {
           "item": "assortedtools:reinforced_breaking_wand"
         }

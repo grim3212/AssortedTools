@@ -4,25 +4,25 @@
     {
       "conditions": [
         {
-          "part": "wands",
-          "type": "assortedtools:part_enabled"
+          "type": "assortedtools:part_enabled",
+          "part": "wands"
         }
       ],
       "recipe": {
         "type": "minecraft:crafting_shaped",
+        "key": {
+          "G": {
+            "tag": "forge:ingots/iron"
+          },
+          "X": {
+            "tag": "minecraft:planks"
+          }
+        },
         "pattern": [
           "XGX",
           "XGX",
           "XGX"
         ],
-        "key": {
-          "X": {
-            "tag": "minecraft:planks"
-          },
-          "G": {
-            "tag": "forge:ingots/iron"
-          }
-        },
         "result": {
           "item": "assortedtools:breaking_wand"
         }
