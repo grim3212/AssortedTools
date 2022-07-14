@@ -53,7 +53,7 @@ public class ConfigurableHoeItem extends HoeItem {
 	}
 
 	@Override
-	public int getItemEnchantability(ItemStack stack) {
+	public int getEnchantmentValue(ItemStack stack) {
 		return this.tierHolder.getEnchantability();
 	}
 

@@ -8,7 +8,7 @@
   "loader": "forge:fluid_container",
   "textures": {
     "base": "assortedtools:item/buckets/netherite_bucket",
-    "cover": "assortedtools:item/buckets/netherite_bucket_covered",
+    "cover": "assortedtools:item/buckets/bucket_covered",
     "fluid": "assortedtools:item/buckets/bucket_fluid",
     "particle": "assortedtools:item/buckets/netherite_bucket"
   }

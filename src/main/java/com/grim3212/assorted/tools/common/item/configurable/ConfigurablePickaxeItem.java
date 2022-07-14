@@ -54,7 +54,7 @@ public class ConfigurablePickaxeItem extends PickaxeItem {
 	}
 
 	@Override
-	public int getItemEnchantability(ItemStack stack) {
+	public int getEnchantmentValue(ItemStack stack) {
 		return this.tierHolder.getEnchantability();
 	}
 

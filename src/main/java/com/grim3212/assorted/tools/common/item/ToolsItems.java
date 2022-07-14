@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import com.google.common.collect.Maps;
+import com.google.common.collect.ObjectArrays;
 import com.grim3212.assorted.tools.AssortedTools;
 import com.grim3212.assorted.tools.common.handler.ArmorMaterialHolder;
 import com.grim3212.assorted.tools.common.handler.ModdedItemTierHolder;
@@ -79,9 +80,13 @@ public class ToolsItems {
 	public static final Map<String, MaterialGroup> MATERIAL_GROUPS = Maps.newHashMap();
 
 	static {
-
 		ToolsConfig.COMMON.moddedTiers.forEach((s, tier) -> MATERIAL_GROUPS.put(s, new MaterialGroup(tier, ToolsConfig.COMMON.moddedArmors.get(s))));
+	}
 
+	public static Item[] buckets() {
+		BetterBucketItem[] vanillaMaterialBuckets = new BetterBucketItem[] { WOOD_BUCKET.get(), STONE_BUCKET.get(), GOLD_BUCKET.get(), DIAMOND_BUCKET.get(), NETHERITE_BUCKET.get() };
+		BetterBucketItem[] materialBuckets = MATERIAL_GROUPS.values().stream().map((mg) -> mg.BUCKET.get()).toArray(BetterBucketItem[]::new);
+		return ObjectArrays.concat(vanillaMaterialBuckets, materialBuckets, BetterBucketItem.class);
 	}
 
 	private static <T extends Item> RegistryObject<T> register(final String name, final Supplier<T> sup) {

@@ -51,7 +51,7 @@ public class ConfigurableAxeItem extends AxeItem {
 	}
 
 	@Override
-	public int getItemEnchantability(ItemStack stack) {
+	public int getEnchantmentValue(ItemStack stack) {
 		return this.tierHolder.getEnchantability();
 	}
 

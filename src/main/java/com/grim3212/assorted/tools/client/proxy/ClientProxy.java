@@ -20,7 +20,9 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.client.model.DynamicFluidContainerModel;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -38,6 +40,7 @@ public class ClientProxy implements IProxy {
 		modBus.addListener(this::registerLayers);
 		modBus.addListener(this::registerRenderers);
 		modBus.addListener(this::registerKeys);
+		modBus.addListener(this::registerItemColorHandles);
 
 		MinecraftForge.EVENT_BUS.register(new KeyBindHandler());
 		MinecraftForge.EVENT_BUS.register(new ChickenJumpHandler());
@@ -73,5 +76,9 @@ public class ClientProxy implements IProxy {
 				ItemProperties.register(group.SPEAR.get(), new ResourceLocation(AssortedTools.MODID, "throwing"), override);
 			});
 		});
+	}
+
+	public void registerItemColorHandles(final RegisterColorHandlersEvent.Item event) {
+		event.register(new DynamicFluidContainerModel.Colors(), ToolsItems.buckets());
 	}
 }

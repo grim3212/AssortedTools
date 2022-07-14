@@ -57,7 +57,7 @@ public class MilkingHandler {
 
 	@SubscribeEvent
 	public void interact(EntityInteract event) {
-		Player player = event.getPlayer();
+		Player player = event.getEntity();
 		ItemStack stack = player.getItemInHand(event.getHand());
 
 		if (!stack.isEmpty() && (stack.getItem() instanceof BetterBucketItem || stack.getItem() instanceof BetterMilkBucketItem)) {
@@ -67,7 +67,7 @@ public class MilkingHandler {
 
 	private void tryMilk(ItemStack stack, EntityInteract event) {
 		Entity entity = event.getTarget();
-		Player player = event.getPlayer();
+		Player player = event.getEntity();
 
 		if (entity instanceof LivingEntity && !entity.level.isClientSide()) {
 			if (!player.isCreative() && !((LivingEntity) entity).isBaby()) {

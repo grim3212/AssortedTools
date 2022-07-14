@@ -294,12 +294,12 @@ public class BetterBucketItem extends Item {
 	}
 
 	@Override
-	public boolean hasContainerItem(ItemStack stack) {
+	public boolean hasCraftingRemainingItem(ItemStack stack) {
 		return getAmount(stack) >= FluidType.BUCKET_VOLUME;
 	}
 
 	@Override
-	public ItemStack getContainerItem(ItemStack itemStack) {
+	public ItemStack getCraftingRemainingItem(ItemStack itemStack) {
 		int amount = getAmount(itemStack);
 		setAmount(itemStack, amount - FluidType.BUCKET_VOLUME);
 

@@ -5,10 +5,10 @@
   "cover_is_mask": true,
   "flip_gas": true,
   "fluid": "minecraft:empty",
-  "loader": "forge:bucket",
+  "loader": "forge:fluid_container",
   "textures": {
     "base": "assortedtools:item/buckets/copper_bucket",
-    "cover": "assortedtools:item/buckets/copper_bucket_covered",
+    "cover": "assortedtools:item/buckets/bucket_covered",
     "fluid": "assortedtools:item/buckets/bucket_fluid",
     "particle": "assortedtools:item/buckets/copper_bucket"
   }
