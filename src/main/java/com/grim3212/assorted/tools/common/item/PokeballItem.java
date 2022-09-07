@@ -45,7 +45,7 @@ public class PokeballItem extends Item {
 
 		worldIn.playSound(playerIn, playerIn.blockPosition(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 0.5F, 0.4F / (worldIn.getRandom().nextFloat() * 0.4F + 0.8F));
 
-		if (!playerIn.isCreative() || NBTHelper.hasTag(itemStackIn, "StoredEntity")) {
+		if (!playerIn.isCreative() || this.getEntityCompound(itemStackIn) != null) {
 			return InteractionResultHolder.success(ItemStack.EMPTY);
 		}
 
@@ -54,19 +54,19 @@ public class PokeballItem extends Item {
 
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-		if (NBTHelper.hasTag(stack, "StoredEntity")) {
-			CompoundTag stored = NBTHelper.getTag(stack, "StoredEntity");
+		CompoundTag entityTag = this.getEntityCompound(stack);
 
-			String entityName = stored.getString("id");
-			if (stored.contains("pokeball_name")) {
-				entityName = stored.getString("pokeball_name");
+		if (entityTag != null) {
+			String entityName = entityTag.getString("id");
+			if (entityTag.contains("pokeball_name")) {
+				entityName = entityTag.getString("pokeball_name");
 			}
 
-			if (stored.contains("CustomName")) {
-				String s = stored.getString("CustomName");
+			if (entityTag.contains("CustomName")) {
+				String s = entityTag.getString("CustomName");
 
 				try {
-					MutableComponent customName = Component.Serializer.fromJson(stored.getString("CustomName"));
+					MutableComponent customName = Component.Serializer.fromJson(entityTag.getString("CustomName"));
 					customName.withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC);
 					tooltip.add(Component.translatable("tooltip.pokeball.stored_custom_name", customName, Component.translatable(entityName).withStyle(ChatFormatting.AQUA)));
 				} catch (Exception exception) {
@@ -81,4 +81,7 @@ public class PokeballItem extends Item {
 		}
 	}
 
+	public CompoundTag getEntityCompound(ItemStack stack) {
+		return NBTHelper.hasTag(stack, "StoredEntity") ? NBTHelper.getTag(stack, "StoredEntity") : null;
+	}
 }

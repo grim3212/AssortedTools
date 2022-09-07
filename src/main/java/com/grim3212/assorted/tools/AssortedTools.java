@@ -3,6 +3,7 @@ package com.grim3212.assorted.tools;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.google.common.collect.Lists;
 import com.grim3212.assorted.tools.client.data.ToolsItemModelProvider;
 import com.grim3212.assorted.tools.client.proxy.ClientProxy;
 import com.grim3212.assorted.tools.common.data.ToolsBlockTagProvider;
@@ -24,6 +25,8 @@ import com.grim3212.assorted.tools.common.proxy.IProxy;
 import com.grim3212.assorted.tools.common.util.TierRegistryHandler;
 
 import net.minecraft.data.DataGenerator;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -34,10 +37,12 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig.Type;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(AssortedTools.MODID)
@@ -66,6 +71,7 @@ public class AssortedTools {
 
 		modBus.addListener(this::setup);
 		modBus.addListener(this::gatherData);
+		modBus.addListener(this::sendIMC);
 
 		MinecraftForge.EVENT_BUS.register(new TagLoadListener());
 		MinecraftForge.EVENT_BUS.register(new ChickenSuitConversionHandler());
@@ -87,6 +93,14 @@ public class AssortedTools {
 
 		event.enqueueWork(() -> {
 			ToolsLootConditions.register();
+		});
+	}
+	
+	private void sendIMC(final InterModEnqueueEvent event) {
+		event.enqueueWork(() -> {
+			InterModComms.sendTo("assorteddecor", "addCageItem", () -> {
+				return Lists.newArrayList(new Tuple<ResourceLocation, String>(ToolsItems.POKEBALL.getId(), "StoredEntity"));
+			});
 		});
 	}
 
