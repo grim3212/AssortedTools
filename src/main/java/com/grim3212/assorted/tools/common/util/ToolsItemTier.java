@@ -78,7 +78,7 @@ public enum ToolsItemTier implements Tier {
 		return ToolsTags.Items.GEMS_PERIDOT;
 	}, 5.0F, -3.0F, () -> new BucketOptions(8, 0)),
 	
-	ULTIMATE(7, 1561, 64F, 1500F, 0, () -> {
+	ULTIMATE(7, 1561, 64F, 64F, 0, () -> {
 		return null;
 	}, 0F, 0F, () -> new BucketOptions(0, 0));
 
