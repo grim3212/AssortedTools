@@ -1,5 +1,7 @@
 package com.grim3212.assorted.tools.common.util;
 
+import com.grim3212.assorted.tools.AssortedTools;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
@@ -11,7 +13,7 @@ public class ToolsTags {
 
 	public static class Blocks {
 		public static final TagKey<Block> MINEABLE_MULTITOOL = forgeTag("mineable/multitool");
-		
+
 		public static final TagKey<Block> ALL_CORALS = forgeTag("corals/all");
 		public static final TagKey<Block> DEAD_CORALS = forgeTag("corals/dead");
 
@@ -22,7 +24,7 @@ public class ToolsTags {
 
 	public static class Items {
 		public static final TagKey<Item> FEATHERS = forgeTag("feathers");
-		
+
 		public static final TagKey<Item> BUCKETS_MILK = forgeTag("buckets/milk");
 
 		public static final TagKey<Item> INGOTS_TIN = forgeTag("ingots/tin");
@@ -268,8 +270,14 @@ public class ToolsTags {
 		public static final TagKey<Item> BOOTS_DIAMOND = forgeTag("boots/diamond");
 		public static final TagKey<Item> BOOTS_NETHERITE = forgeTag("boots/netherite");
 
+		public static final TagKey<Item> ULTIMATE_FRAGMENTS = toolsTag("ultimate_fragments");
+
 		public static TagKey<Item> forgeTag(String name) {
 			return ItemTags.create(new ResourceLocation("forge", name));
+		}
+
+		public static TagKey<Item> toolsTag(String name) {
+			return ItemTags.create(new ResourceLocation(AssortedTools.MODID, name));
 		}
 	}
 

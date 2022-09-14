@@ -9,6 +9,7 @@ import com.grim3212.assorted.tools.client.proxy.ClientProxy;
 import com.grim3212.assorted.tools.common.data.ToolsBlockTagProvider;
 import com.grim3212.assorted.tools.common.data.ToolsItemTagProvider;
 import com.grim3212.assorted.tools.common.data.ToolsLootModifierProvider;
+import com.grim3212.assorted.tools.common.data.ToolsLootTableProvider;
 import com.grim3212.assorted.tools.common.data.ToolsRecipes;
 import com.grim3212.assorted.tools.common.enchantment.ToolsEnchantments;
 import com.grim3212.assorted.tools.common.entity.ToolsEntities;
@@ -95,7 +96,7 @@ public class AssortedTools {
 			ToolsLootConditions.register();
 		});
 	}
-	
+
 	private void sendIMC(final InterModEnqueueEvent event) {
 		event.enqueueWork(() -> {
 			InterModComms.sendTo("assorteddecor", "addCageItem", () -> {
@@ -115,6 +116,7 @@ public class AssortedTools {
 		datagenerator.addProvider(event.includeServer(), new ToolsItemTagProvider(datagenerator, blockTagProvider, fileHelper));
 		datagenerator.addProvider(event.includeServer(), new ToolsRecipes(datagenerator));
 		datagenerator.addProvider(event.includeServer(), new ToolsLootModifierProvider(datagenerator));
+		datagenerator.addProvider(event.includeServer(), new ToolsLootTableProvider(datagenerator));
 
 		datagenerator.addProvider(event.includeClient(), new ToolsItemModelProvider(datagenerator, fileHelper));
 	}

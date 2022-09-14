@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.Tags;
@@ -75,7 +76,11 @@ public enum ToolsItemTier implements Tier {
 
 	PERIDOT(2, 1456, 7.7F, 2.7F, 9, () -> {
 		return ToolsTags.Items.GEMS_PERIDOT;
-	}, 5.0F, -3.0F, () -> new BucketOptions(8, 0));
+	}, 5.0F, -3.0F, () -> new BucketOptions(8, 0)),
+	
+	ULTIMATE(7, 1561, 64F, 1500F, 0, () -> {
+		return null;
+	}, 0F, 0F, () -> new BucketOptions(0, 0));
 
 	private final int harvestLevel;
 	private final int maxUses;

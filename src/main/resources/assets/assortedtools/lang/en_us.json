@@ -24,6 +24,17 @@
 	"entity.assortedtools.spear": "Spear",
 	"entity.assortedtools.better_spear": "Spear",
 	
+	"item.assortedtools.u_fragment": "§1U§r Fragment",
+	"item.assortedtools.l_fragment": "§2L§r Fragment",
+	"item.assortedtools.t_fragment": "§4T§r Fragment",
+	"item.assortedtools.i_fragment": "§5I§r Fragment",
+	"item.assortedtools.m_fragment": "§6M§r Fragment",
+	"item.assortedtools.a_fragment": "§8A§r Fragment",
+	"item.assortedtools.missing_fragment": "§k???§r Fragment",
+	"item.assortedtools.e_fragment": "§dE§r Fragment",
+	
+	"item.assortedtools.ultimate_fist": "Ultimate Fist",
+	
 	"item.assortedtools.wood_hammer": "Wooden Hammer",
 	"item.assortedtools.stone_hammer": "Stone Hammer",
 	"item.assortedtools.gold_hammer": "Golden Hammer",
@@ -78,6 +89,7 @@
 	"item.assortedtools.netherite_bucket_filled": "Netherite %s Bucket",
 	"item.assortedtools.netherite_milk_bucket": "Netherite Milk Bucket",
 	
+	"tooltip.ultimate.fragment": "A fragment of a powerful tool from an ancient civilization",
 	"tooltip.pokeball.stored": "Stored: %s",
 	"tooltip.pokeball.stored_custom_name": "Stored: %s (%s)",
 	"tooltip.pokeball.empty": "Empty",

@@ -3,8 +3,8 @@ package com.grim3212.assorted.tools.common.handler;
 import com.google.gson.JsonObject;
 import com.grim3212.assorted.tools.AssortedTools;
 
-import net.minecraft.util.GsonHelper;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.IConditionSerializer;
 
@@ -23,8 +23,8 @@ public class EnabledCondition implements ICondition {
 	public static final String BETTER_SPEARS_CONDITION = "betterspears";
 	public static final String BETTER_BUCKETS_CONDITION = "betterbuckets";
 	public static final String MORE_SHEARS_CONDITION = "moreshears";
+	public static final String ULTIMATE_FIST_CONDITION = "ultimatefist";
 	public static final String EXTRA_MATERIAL_CONDITION = "extramaterials";
-	
 
 	public EnabledCondition(String part) {
 		this.part = part;
@@ -58,6 +58,8 @@ public class EnabledCondition implements ICondition {
 				return ToolsConfig.COMMON.betterSpearsEnabled.get();
 			case BETTER_BUCKETS_CONDITION:
 				return ToolsConfig.COMMON.betterBucketsEnabled.get();
+			case ULTIMATE_FIST_CONDITION:
+				return ToolsConfig.COMMON.ultimateFistEnabled.get();
 			case MORE_SHEARS_CONDITION:
 				return ToolsConfig.COMMON.moreShearsEnabled.get();
 			default:

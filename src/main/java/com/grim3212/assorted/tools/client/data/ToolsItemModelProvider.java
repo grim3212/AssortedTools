@@ -39,6 +39,16 @@ public class ToolsItemModelProvider extends ItemModelProvider {
 		handheldItem(ToolsItems.DIAMOND_BOOMERANG.get());
 		generatedItem(ToolsItems.POKEBALL.get());
 
+		handheldItem(ToolsItems.ULTIMATE_FIST.get());
+		generatedItem(ToolsItems.U_FRAGMENT.get());
+		generatedItem(ToolsItems.L_FRAGMENT.get());
+		generatedItem(ToolsItems.T_FRAGMENT.get());
+		generatedItem(ToolsItems.I_FRAGMENT.get());
+		generatedItem(ToolsItems.M_FRAGMENT.get());
+		generatedItem(ToolsItems.A_FRAGMENT.get());
+		generatedItem(ToolsItems.MISSING_FRAGMENT.get());
+		generatedItem(ToolsItems.E_FRAGMENT.get());
+
 		handheldItem(ToolsItems.BUILDING_WAND.get());
 		handheldItem(ToolsItems.REINFORCED_BUILDING_WAND.get());
 		handheldItem(ToolsItems.BREAKING_WAND.get());

@@ -96,6 +96,9 @@ public class ToolsRecipes extends RecipeProvider {
 		shearPattern(ToolsItems.GOLD_SHEARS.get(), Tags.Items.INGOTS_GOLD, consumer);
 		shearPattern(ToolsItems.DIAMOND_SHEARS.get(), Tags.Items.GEMS_DIAMOND, consumer);
 		shearPattern(ToolsItems.NETHERITE_SHEARS.get(), Tags.Items.INGOTS_NETHERITE, consumer);
+
+		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.ULTIMATE_FIST_CONDITION)).addRecipe(ShapelessRecipeBuilder.shapeless(ToolsItems.ULTIMATE_FIST.get()).requires(ToolsItems.U_FRAGMENT.get()).requires(ToolsItems.L_FRAGMENT.get()).requires(ToolsItems.T_FRAGMENT.get()).requires(ToolsItems.I_FRAGMENT.get()).requires(ToolsItems.M_FRAGMENT.get()).requires(ToolsItems.A_FRAGMENT.get()).requires(ToolsItems.MISSING_FRAGMENT.get()).requires(ToolsItems.E_FRAGMENT.get())
+				.requires(Tags.Items.NETHER_STARS).unlockedBy("has_nether_star", has(Tags.Items.NETHER_STARS)).unlockedBy("has_fragment", has(ToolsTags.Items.ULTIMATE_FRAGMENTS))::save).generateAdvancement().build(consumer, ToolsItems.ULTIMATE_FIST.getId());
 	}
 
 	@Override

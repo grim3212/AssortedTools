@@ -54,6 +54,8 @@ public final class ToolsConfig {
 		public final ItemTierHolder ironItemTier;
 		public final ItemTierHolder diamondItemTier;
 		public final ItemTierHolder netheriteItemTier;
+		
+		public final ItemTierHolder ultimateItemTier;
 
 		public final Map<String, ModdedItemTierHolder> moddedTiers = Maps.newHashMap();
 		public final Map<String, ArmorMaterialHolder> moddedArmors = Maps.newHashMap();
@@ -72,6 +74,7 @@ public final class ToolsConfig {
 		public final ForgeConfigSpec.BooleanValue betterSpearsEnabled;
 		public final ForgeConfigSpec.BooleanValue betterBucketsEnabled;
 		public final ForgeConfigSpec.BooleanValue moreShearsEnabled;
+		public final ForgeConfigSpec.BooleanValue ultimateFistEnabled;
 
 		public Common(ForgeConfigSpec.Builder builder) {
 			builder.push("Parts");
@@ -86,6 +89,7 @@ public final class ToolsConfig {
 			betterSpearsEnabled = builder.comment("Set this to true if you would like the better spears (the ones that can be enchanted) to be craftable and found in the creative tab as well as the Enchantments for it to be enchanted on books.").define("betterSpearsEnabled", true);
 			betterBucketsEnabled = builder.comment("Set this to true if you would like better buckets to be craftable and found in the creative tab.").define("betterBucketsEnabled", true);
 			moreShearsEnabled = builder.comment("Set this to true if you would like the extra shears to be craftable and found in the creative tab.").define("moreShearsEnabled", true);
+			ultimateFistEnabled = builder.comment("Set this to true if you would like the ultimate fist to be craftable and found in the creative tab as well as the fragements generate in loot.").define("ultimateFistEnabled", true);
 			builder.pop();
 
 			builder.push("Boomerangs");
@@ -110,6 +114,10 @@ public final class ToolsConfig {
 
 			destructiveWandSparedBlocks = builder.comment("A list of blocks that the wand breaking wand will not break. Usually used for ores.").define("destructiveWandSparedBlocks", Lists.newArrayList("tag|forge:ores", "tag|forge:chests", "block|minecraft:spawner"));
 			miningWandBlocksForSurfaceMining = builder.comment("A list of blocks that the mining wand can break from the surface.").define("miningWandBlocksForSurfaceMining", Lists.newArrayList("tag|forge:ores"));
+			builder.pop();
+			
+			builder.push("Ultimate Fist");
+			ultimateItemTier = new ModdedItemTierHolder(builder, "ultimate", ToolsItemTier.ULTIMATE);
 			builder.pop();
 
 			builder.push("Better Spear");

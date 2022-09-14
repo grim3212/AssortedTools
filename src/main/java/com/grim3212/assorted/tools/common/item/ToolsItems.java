@@ -14,6 +14,7 @@ import com.grim3212.assorted.tools.common.item.configurable.ConfigurableArmorIte
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -76,6 +77,17 @@ public class ToolsItems {
 	public static final RegistryObject<MaterialShears> GOLD_SHEARS = register("gold_shears", () -> new MaterialShears(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), ToolsConfig.COMMON.goldItemTier));
 	public static final RegistryObject<MaterialShears> DIAMOND_SHEARS = register("diamond_shears", () -> new MaterialShears(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), ToolsConfig.COMMON.diamondItemTier));
 	public static final RegistryObject<MaterialShears> NETHERITE_SHEARS = register("netherite_shears", () -> new MaterialShears(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), ToolsConfig.COMMON.netheriteItemTier));
+
+	public static final RegistryObject<FragmentItem> U_FRAGMENT = register("u_fragment", () -> new FragmentItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP).rarity(Rarity.RARE)));
+	public static final RegistryObject<FragmentItem> L_FRAGMENT = register("l_fragment", () -> new FragmentItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP).rarity(Rarity.RARE)));
+	public static final RegistryObject<FragmentItem> T_FRAGMENT = register("t_fragment", () -> new FragmentItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP).rarity(Rarity.RARE)));
+	public static final RegistryObject<FragmentItem> I_FRAGMENT = register("i_fragment", () -> new FragmentItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP).rarity(Rarity.RARE)));
+	public static final RegistryObject<FragmentItem> M_FRAGMENT = register("m_fragment", () -> new FragmentItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP).rarity(Rarity.RARE)));
+	public static final RegistryObject<FragmentItem> A_FRAGMENT = register("a_fragment", () -> new FragmentItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP).rarity(Rarity.RARE)));
+	public static final RegistryObject<FragmentItem> MISSING_FRAGMENT = register("missing_fragment", () -> new FragmentItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP).rarity(Rarity.RARE)));
+	public static final RegistryObject<FragmentItem> E_FRAGMENT = register("e_fragment", () -> new FragmentItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP).rarity(Rarity.RARE)));
+
+	public static final RegistryObject<UltimateFistItem> ULTIMATE_FIST = register("ultimate_fist", () -> new UltimateFistItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP).rarity(Rarity.EPIC)));
 
 	public static final Map<String, MaterialGroup> MATERIAL_GROUPS = Maps.newHashMap();
 
