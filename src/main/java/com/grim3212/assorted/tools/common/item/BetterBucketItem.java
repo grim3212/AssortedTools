@@ -6,6 +6,7 @@ import com.grim3212.assorted.tools.common.handler.DispenseBucketHandler;
 import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import com.grim3212.assorted.tools.common.util.NBTHelper;
+import com.grim3212.assorted.tools.common.util.ToolsItemTier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -34,6 +35,7 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -41,7 +43,6 @@ import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -73,6 +74,14 @@ public class BetterBucketItem extends Item {
 		return stack;
 	}
 
+	public boolean isExtraMaterial() {
+		return isExtraMaterial;
+	}
+
+	public ItemTierHolder getTierHolder() {
+		return tierHolder;
+	}
+
 	@Override
 	public void onCraftedBy(ItemStack stack, Level worldIn, Player playerIn) {
 		setFluid(stack, "empty");
@@ -81,11 +90,22 @@ public class BetterBucketItem extends Item {
 
 	@Override
 	protected boolean allowedIn(CreativeModeTab group) {
-		if (this.isExtraMaterial) {
-			return ToolsConfig.COMMON.betterBucketsEnabled.get() && ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.allowedIn(group) : false;
-		}
+		if (ToolsConfig.COMMON.betterBucketsEnabled.get()) {
+			
+			if (this.isExtraMaterial) {
+				if (!ToolsConfig.COMMON.extraMaterialsEnabled.get()) {
+					return false;
+				}
 
-		return ToolsConfig.COMMON.betterBucketsEnabled.get() ? super.allowedIn(group) : false;
+				ToolsItemTier tier = (ToolsItemTier) tierHolder.getDefaultTier();
+				if (ToolsConfig.COMMON.hideUncraftableItems.get() && ForgeRegistries.ITEMS.tags().getTag(tier.repairTag()).size() <= 0) {
+					return false;
+				}
+			}
+
+			return super.allowedIn(group);
+		}
+		return false;
 	}
 
 	public void pauseForMilk() {
@@ -505,7 +525,7 @@ public class BetterBucketItem extends Item {
 
 		@Override
 		public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing) {
-			return CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY.orEmpty(capability, holder);
+			return ForgeCapabilities.FLUID_HANDLER_ITEM.orEmpty(capability, holder);
 		}
 	}
 }

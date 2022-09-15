@@ -9,6 +9,7 @@ import com.grim3212.assorted.tools.client.render.item.SpearBEWLR;
 import com.grim3212.assorted.tools.common.entity.BetterSpearEntity;
 import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
+import com.grim3212.assorted.tools.common.util.ToolsItemTier;
 
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.sounds.SoundEvents;
@@ -30,6 +31,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class BetterSpearItem extends TridentItem {
 
@@ -59,11 +61,22 @@ public class BetterSpearItem extends TridentItem {
 
 	@Override
 	protected boolean allowedIn(CreativeModeTab group) {
-		if (this.isExtraMaterial) {
-			return ToolsConfig.COMMON.betterSpearsEnabled.get() && ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.allowedIn(group) : false;
-		}
+		if (ToolsConfig.COMMON.betterSpearsEnabled.get()) {
+			
+			if (this.isExtraMaterial) {
+				if (!ToolsConfig.COMMON.extraMaterialsEnabled.get()) {
+					return false;
+				}
 
-		return ToolsConfig.COMMON.betterSpearsEnabled.get() ? super.allowedIn(group) : false;
+				ToolsItemTier tier = (ToolsItemTier) tierHolder.getDefaultTier();
+				if (ToolsConfig.COMMON.hideUncraftableItems.get() && ForgeRegistries.ITEMS.tags().getTag(tier.repairTag()).size() <= 0) {
+					return false;
+				}
+			}
+
+			return super.allowedIn(group);
+		}
+		return false;
 	}
 
 	@Override

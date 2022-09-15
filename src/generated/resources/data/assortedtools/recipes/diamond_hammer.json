@@ -6,6 +6,13 @@
         {
           "type": "assortedtools:part_enabled",
           "part": "hammers"
+        },
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:tag_empty",
+            "tag": "forge:gems/diamond"
+          }
         }
       ],
       "recipe": {

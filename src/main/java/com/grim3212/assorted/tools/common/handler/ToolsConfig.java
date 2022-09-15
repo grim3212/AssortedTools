@@ -37,6 +37,8 @@ public final class ToolsConfig {
 		public final ForgeConfigSpec.IntValue diamondBoomerangDamage;
 		public final ForgeConfigSpec.BooleanValue diamondBoomerangFollows;
 
+		public final ForgeConfigSpec.BooleanValue hideUncraftableItems;
+		
 		public final ForgeConfigSpec.BooleanValue freeBuildMode;
 		public final ForgeConfigSpec.BooleanValue bedrockBreaking;
 		public final ForgeConfigSpec.BooleanValue easyMiningObsidian;
@@ -92,6 +94,10 @@ public final class ToolsConfig {
 			ultimateFistEnabled = builder.comment("Set this to true if you would like the ultimate fist to be craftable and found in the creative tab as well as the fragements generate in loot.").define("ultimateFistEnabled", true);
 			builder.pop();
 
+			builder.push("General");
+			hideUncraftableItems = builder.comment("For any item that is unobtainable (like missing materials from other mods) hide it from the creative menu / JEI.").define("hideUncraftableItems", false);
+			builder.pop();
+			
 			builder.push("Boomerangs");
 			turnAroundItem = builder.comment("Set this to true if you would like boomerangs to turn around after they have picked up items.").define("turnAroundItem", false);
 			turnAroundMob = builder.comment("Set this to true if you would like boomerangs to turn around after they have hit a mob.").define("turnAroundMob", false);

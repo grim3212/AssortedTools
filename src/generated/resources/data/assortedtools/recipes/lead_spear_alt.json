@@ -8,6 +8,13 @@
           "part": "betterspears"
         },
         {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:tag_empty",
+            "tag": "forge:ingots/lead"
+          }
+        },
+        {
           "type": "assortedtools:part_enabled",
           "part": "extramaterials"
         }

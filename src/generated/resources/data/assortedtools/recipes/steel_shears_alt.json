@@ -8,6 +8,13 @@
           "part": "moreshears"
         },
         {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:tag_empty",
+            "tag": "forge:ingots/steel"
+          }
+        },
+        {
           "type": "assortedtools:part_enabled",
           "part": "extramaterials"
         }

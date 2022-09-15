@@ -8,7 +8,6 @@ import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
-import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ArmorMaterials;
@@ -38,12 +37,12 @@ public enum ToolsArmorMaterials implements ArmorMaterial {
 
 	private final Supplier<ArmorMaterialHolder> material;
 	private final Supplier<SoundEvent> equipSound;
-	private final LazyLoadedValue<TagKey<Item>> repairMaterial;
+	private final Supplier<TagKey<Item>> repairMaterial;
 
 	ToolsArmorMaterials(Supplier<ArmorMaterialHolder> material, Supplier<SoundEvent> equipSound, Supplier<TagKey<Item>> repairTagIn) {
 		this.material = material;
 		this.equipSound = equipSound;
-		this.repairMaterial = new LazyLoadedValue<TagKey<Item>>(repairTagIn);
+		this.repairMaterial = repairTagIn;
 	}
 
 	private ArmorMaterialHolder getMaterial() {
@@ -75,6 +74,10 @@ public enum ToolsArmorMaterials implements ArmorMaterial {
 		return Ingredient.of(repairMaterial.get());
 	}
 
+	public TagKey<Item> getRepairMaterial() {
+		return repairMaterial.get();
+	}
+
 	@Override
 	public String getName() {
 		return this.getMaterial().getName();
@@ -89,7 +92,7 @@ public enum ToolsArmorMaterials implements ArmorMaterial {
 	public float getKnockbackResistance() {
 		return this.getMaterial().getKnockbackResistance();
 	}
-	
+
 	public ArmorMaterial defaultMaterial() {
 		return new ArmorMaterial() {
 			@Override
@@ -106,7 +109,7 @@ public enum ToolsArmorMaterials implements ArmorMaterial {
 			public String getName() {
 				return getMaterial().getName();
 			}
-			
+
 			@Override
 			public int getDurabilityForSlot(EquipmentSlot p_40410_) {
 				return 0;
@@ -121,7 +124,7 @@ public enum ToolsArmorMaterials implements ArmorMaterial {
 			public int getEnchantmentValue() {
 				return 0;
 			}
-			
+
 			@Override
 			public float getToughness() {
 				return 0;

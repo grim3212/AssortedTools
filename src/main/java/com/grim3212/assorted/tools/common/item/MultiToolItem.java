@@ -9,6 +9,7 @@ import com.google.common.collect.Sets;
 import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import com.grim3212.assorted.tools.common.item.configurable.ConfigurableToolItem;
+import com.grim3212.assorted.tools.common.util.ToolsItemTier;
 import com.grim3212.assorted.tools.common.util.ToolsTags;
 import com.mojang.datafixers.util.Pair;
 
@@ -37,6 +38,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class MultiToolItem extends ConfigurableToolItem {
 
@@ -54,11 +56,22 @@ public class MultiToolItem extends ConfigurableToolItem {
 
 	@Override
 	protected boolean allowedIn(CreativeModeTab group) {
-		if (this.isExtraMaterial) {
-			return ToolsConfig.COMMON.multiToolsEnabled.get() && ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.allowedIn(group) : false;
-		}
+		if (ToolsConfig.COMMON.multiToolsEnabled.get()) {
 
-		return ToolsConfig.COMMON.multiToolsEnabled.get() ? super.allowedIn(group) : false;
+			if (this.isExtraMaterial) {
+				if (!ToolsConfig.COMMON.extraMaterialsEnabled.get()) {
+					return false;
+				}
+
+				ToolsItemTier tier = (ToolsItemTier) this.getTierHolder().getDefaultTier();
+				if (ToolsConfig.COMMON.hideUncraftableItems.get() && ForgeRegistries.ITEMS.tags().getTag(tier.repairTag()).size() <= 0) {
+					return false;
+				}
+			}
+
+			return super.allowedIn(group);
+		}
+		return false;
 	}
 
 	@Override

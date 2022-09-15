@@ -135,7 +135,7 @@ public class ToolsItems {
 			this.MULTITOOL = register(tier.getName() + "_multitool", () -> new MultiToolItem(tier, new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), true));
 			this.SPEAR = register(tier.getName() + "_spear", () -> new BetterSpearItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), tier, true));
 
-			this.BUCKET = register(tier.getName() + "_bucket", () -> new BetterBucketItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), tier));
+			this.BUCKET = register(tier.getName() + "_bucket", () -> new BetterBucketItem(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), tier, true));
 			this.MILK_BUCKET = register(tier.getName() + "_milk_bucket", () -> new BetterMilkBucketItem(() -> this.BUCKET.get(), new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP)));
 			this.SHEARS = register(tier.getName() + "_shears", () -> new MaterialShears(new Item.Properties().tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP), tier, true));
 

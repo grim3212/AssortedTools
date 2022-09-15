@@ -39,6 +39,13 @@
           "part": "betterbuckets"
         },
         {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:tag_empty",
+            "tag": "forge:ingots/bronze"
+          }
+        },
+        {
           "type": "assortedtools:part_enabled",
           "part": "extramaterials"
         }

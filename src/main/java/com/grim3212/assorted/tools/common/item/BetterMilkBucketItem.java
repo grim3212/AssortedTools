@@ -65,6 +65,11 @@ public class BetterMilkBucketItem extends Item {
 	}
 
 	@Override
+	protected boolean allowedIn(CreativeModeTab group) {
+		return this.getParent().allowedIn(group);
+	}
+
+	@Override
 	public ItemStack finishUsingItem(ItemStack stack, Level worldIn, LivingEntity entityLiving) {
 		if (!worldIn.isClientSide)
 			entityLiving.curePotionEffects(new ItemStack(Items.MILK_BUCKET));

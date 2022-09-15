@@ -3,6 +3,7 @@ package com.grim3212.assorted.tools.common.item;
 import com.grim3212.assorted.tools.common.enchantment.ToolsEnchantments;
 import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
+import com.grim3212.assorted.tools.common.util.ToolsItemTier;
 import com.grim3212.assorted.tools.common.util.ToolsTags;
 
 import net.minecraft.core.dispenser.ShearsDispenseItemBehavior;
@@ -13,6 +14,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class MaterialShears extends ShearsItem {
 
@@ -72,10 +74,21 @@ public class MaterialShears extends ShearsItem {
 
 	@Override
 	protected boolean allowedIn(CreativeModeTab group) {
-		if (this.isExtraMaterial) {
-			return ToolsConfig.COMMON.moreShearsEnabled.get() && ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.allowedIn(group) : false;
-		}
+		if (ToolsConfig.COMMON.moreShearsEnabled.get()) {
 
-		return ToolsConfig.COMMON.betterSpearsEnabled.get() ? super.allowedIn(group) : false;
+			if (this.isExtraMaterial) {
+				if (!ToolsConfig.COMMON.extraMaterialsEnabled.get()) {
+					return false;
+				}
+
+				ToolsItemTier tier = (ToolsItemTier) this.tierHolder.getDefaultTier();
+				if (ToolsConfig.COMMON.hideUncraftableItems.get() && ForgeRegistries.ITEMS.tags().getTag(tier.repairTag()).size() <= 0) {
+					return false;
+				}
+			}
+
+			return super.allowedIn(group);
+		}
+		return false;
 	}
 }

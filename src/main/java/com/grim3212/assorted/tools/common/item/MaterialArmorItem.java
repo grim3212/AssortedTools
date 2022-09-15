@@ -9,6 +9,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class MaterialArmorItem extends ConfigurableArmorItem {
 
@@ -21,7 +22,15 @@ public class MaterialArmorItem extends ConfigurableArmorItem {
 
 	@Override
 	protected boolean allowedIn(CreativeModeTab group) {
-		return ToolsConfig.COMMON.extraMaterialsEnabled.get() ? super.allowedIn(group) : false;
+		if (!ToolsConfig.COMMON.extraMaterialsEnabled.get()) {
+			return false;
+		}
+
+		if (ToolsConfig.COMMON.hideUncraftableItems.get() && ForgeRegistries.ITEMS.tags().getTag(this.material.getRepairMaterial()).size() <= 0) {
+			return false;
+		}
+
+		return super.allowedIn(group);
 	}
 
 	@Override

@@ -50,6 +50,13 @@
           "part": "moreshears"
         },
         {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:tag_empty",
+            "tag": "forge:gems/peridot"
+          }
+        },
+        {
           "type": "assortedtools:part_enabled",
           "part": "extramaterials"
         }

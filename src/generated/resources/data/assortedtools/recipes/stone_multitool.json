@@ -6,6 +6,13 @@
         {
           "type": "assortedtools:part_enabled",
           "part": "multitools"
+        },
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:tag_empty",
+            "tag": "minecraft:stone_tool_materials"
+          }
         }
       ],
       "recipe": {

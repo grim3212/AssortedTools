@@ -23,16 +23,20 @@ public class ConfigurableSwordItem extends SwordItem {
 		this.tierHolder = tierHolder;
 	}
 
+	public ItemTierHolder getTierHolder() {
+		return tierHolder;
+	}
+
 	@Override
 	public float getDamage() {
 		return swordDamage + this.tierHolder.getDamage();
 	}
-	
+
 	@Override
 	public int getEnchantmentValue() {
 		return this.tierHolder.getEnchantability();
 	}
-	
+
 	@Override
 	public int getMaxDamage(ItemStack stack) {
 		return this.tierHolder.getMaxUses();
