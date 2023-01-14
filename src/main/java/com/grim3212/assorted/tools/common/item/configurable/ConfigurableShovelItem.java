@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Multimap;
 import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
+import com.grim3212.assorted.tools.common.item.ITiered;
 
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -14,7 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class ConfigurableShovelItem extends ShovelItem {
+public class ConfigurableShovelItem extends ShovelItem implements ITiered {
 
 	private static final float SHOVEL_DAMAGE = 1.5F;
 	private static final float SHOVEL_SPEED = -3.0F;
@@ -40,6 +41,7 @@ public class ConfigurableShovelItem extends ShovelItem {
 		return slot == EquipmentSlot.MAINHAND ? this.attribs : super.getDefaultAttributeModifiers(slot);
 	}
 
+	@Override
 	public ItemTierHolder getTierHolder() {
 		return tierHolder;
 	}

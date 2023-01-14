@@ -5,7 +5,7 @@ import com.grim3212.assorted.tools.common.item.ToolsItems;
 
 import net.minecraft.client.renderer.block.model.BlockModel.GuiLight;
 import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.material.Fluids;
@@ -18,8 +18,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class ToolsItemModelProvider extends ItemModelProvider {
 
-	public ToolsItemModelProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-		super(generator, AssortedTools.MODID, existingFileHelper);
+	public ToolsItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
+		super(output, AssortedTools.MODID, existingFileHelper);
 	}
 
 	@Override

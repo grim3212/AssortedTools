@@ -7,7 +7,7 @@ import com.grim3212.assorted.tools.AssortedTools;
 
 import net.minecraft.core.HolderSet.Named;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
@@ -79,7 +79,7 @@ public class ConfigurableBlockStates {
 			}
 
 			for (ResourceLocation t : this.tags) {
-				Optional<Named<Block>> foundTag = Registry.BLOCK.getTag(BlockTags.create(t));
+				Optional<Named<Block>> foundTag = BuiltInRegistries.BLOCK.getTag(BlockTags.create(t));
 				if (foundTag != null && foundTag.isPresent()) {
 					foundTag.stream().flatMap((o) -> o.stream().map((bls) -> bls.value().defaultBlockState())).forEach(state -> states.add(state));
 				} else {

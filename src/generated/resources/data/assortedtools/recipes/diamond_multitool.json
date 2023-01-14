@@ -17,6 +17,7 @@
       ],
       "recipe": {
         "type": "minecraft:crafting_shapeless",
+        "category": "equipment",
         "ingredients": [
           {
             "tag": "forge:swords/diamond"

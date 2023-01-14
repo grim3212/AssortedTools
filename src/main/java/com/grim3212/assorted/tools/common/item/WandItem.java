@@ -2,7 +2,6 @@ package com.grim3212.assorted.tools.common.item;
 
 import java.util.Random;
 
-import com.grim3212.assorted.tools.AssortedTools;
 import com.grim3212.assorted.tools.api.item.ISwitchModes;
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import com.grim3212.assorted.tools.common.util.NBTHelper;
@@ -17,7 +16,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
@@ -35,14 +33,9 @@ public abstract class WandItem extends Item implements ISwitchModes {
 	protected BlockState stateClicked = Blocks.AIR.defaultBlockState();
 
 	public WandItem(boolean reinforced, Properties properties) {
-		super(properties.tab(AssortedTools.ASSORTED_TOOLS_ITEM_GROUP));
+		super(properties);
 		this.reinforced = reinforced;
 		this.rand = new Random();
-	}
-
-	@Override
-	protected boolean allowedIn(CreativeModeTab group) {
-		return ToolsConfig.COMMON.wandsEnabled.get() ? super.allowedIn(group) : false;
 	}
 
 	@Override
@@ -78,7 +71,8 @@ public abstract class WandItem extends Item implements ISwitchModes {
 
 	protected void sendMessage(Player player, Component message) {
 		if (!player.level.isClientSide) {
-			player.sendSystemMessage(message);;
+			player.sendSystemMessage(message);
+			;
 		}
 	}
 
@@ -170,7 +164,7 @@ public abstract class WandItem extends Item implements ISwitchModes {
 		}
 
 		ItemStack stack = playerIn.getItemInHand(hand);
-		WandCoord3D start = WandCoord3D.getFromNBT(stack.getTag(), "Start");
+		WandCoord3D start = WandCoord3D.getFromNBT(worldIn, stack.getTag(), "Start");
 
 		if (start == null) {
 			worldIn.playSound((Player) null, pos, state.getBlock().getSoundType(state, worldIn, pos, null).getBreakSound(), SoundSource.BLOCKS, (state.getBlock().getSoundType(state, worldIn, pos, null).getVolume() + 1.0F) / 2.0F, state.getBlock().getSoundType(state, worldIn, pos, null).getPitch() * 0.8F);

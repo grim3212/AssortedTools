@@ -14,7 +14,7 @@ import com.grim3212.assorted.tools.common.util.ToolsTags;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
@@ -23,8 +23,8 @@ import net.minecraftforge.common.loot.LootTableIdCondition;
 
 public class ToolsLootModifierProvider extends GlobalLootModifierProvider {
 
-	public ToolsLootModifierProvider(DataGenerator gen) {
-		super(gen, AssortedTools.MODID);
+	public ToolsLootModifierProvider(PackOutput output) {
+		super(output, AssortedTools.MODID);
 	}
 
 	@Override

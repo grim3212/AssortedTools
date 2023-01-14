@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Multimap;
 import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
+import com.grim3212.assorted.tools.common.item.ITiered;
 
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -12,7 +13,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 
-public class ConfigurableSwordItem extends SwordItem {
+public class ConfigurableSwordItem extends SwordItem implements ITiered {
 
 	private final static int swordDamage = 3;
 	private final static float swordSpeed = -2.4F;
@@ -23,6 +24,7 @@ public class ConfigurableSwordItem extends SwordItem {
 		this.tierHolder = tierHolder;
 	}
 
+	@Override
 	public ItemTierHolder getTierHolder() {
 		return tierHolder;
 	}

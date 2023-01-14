@@ -1,25 +1,30 @@
 package com.grim3212.assorted.tools.common.data;
 
+import java.util.concurrent.CompletableFuture;
+
 import com.grim3212.assorted.tools.AssortedTools;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
 import com.grim3212.assorted.tools.common.util.ToolsTags;
 
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderLookup.Provider;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class ToolsItemTagProvider extends ItemTagsProvider {
 
-	public ToolsItemTagProvider(DataGenerator dataGenerator, BlockTagsProvider blockTagProvider, ExistingFileHelper existingFileHelper) {
-		super(dataGenerator, blockTagProvider, AssortedTools.MODID, existingFileHelper);
+	public ToolsItemTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup, TagsProvider<Block> blockTags, ExistingFileHelper existingFileHelper) {
+		super(output, lookup, blockTags, AssortedTools.MODID, existingFileHelper);
 	}
 
 	@Override
-	protected void addTags() {
+	protected void addTags(Provider provider) {
 		this.tag(ToolsTags.Items.FEATHERS).add(Items.FEATHER);
 		this.tag(ToolsTags.Items.INGOTS_COPPER).add(Items.COPPER_INGOT);
 		this.tag(ToolsTags.Items.GEMS_AMETHYST).add(Items.AMETHYST_SHARD);

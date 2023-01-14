@@ -7,7 +7,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
@@ -28,7 +28,7 @@ public class LootItemBlockTagCondition implements LootItemCondition {
 	}
 
 	public LootItemConditionType getType() {
-		return ToolsLootConditions.BLOCK_TAG;
+		return ToolsLootConditions.BLOCK_TAG.get();
 	}
 
 	public Set<LootContextParam<?>> getReferencedContextParams() {
@@ -63,7 +63,7 @@ public class LootItemBlockTagCondition implements LootItemCondition {
 
 		public LootItemBlockTagCondition deserialize(JsonObject json, JsonDeserializationContext context) {
 			ResourceLocation resourcelocation = new ResourceLocation(GsonHelper.getAsString(json, "tag"));
-			return new LootItemBlockTagCondition(TagKey.create(Registry.BLOCK_REGISTRY, resourcelocation));
+			return new LootItemBlockTagCondition(TagKey.create(Registries.BLOCK, resourcelocation));
 		}
 	}
 

@@ -7,9 +7,7 @@ import java.util.function.Predicate;
 
 import com.google.common.collect.Sets;
 import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
-import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import com.grim3212.assorted.tools.common.item.configurable.ConfigurableToolItem;
-import com.grim3212.assorted.tools.common.util.ToolsItemTier;
 import com.grim3212.assorted.tools.common.util.ToolsTags;
 import com.mojang.datafixers.util.Pair;
 
@@ -24,7 +22,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -38,40 +35,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class MultiToolItem extends ConfigurableToolItem {
 
 	private static final Set<Material> EFFECTIVE_ON_MATERIALS = Sets.newHashSet(Material.WOOD, Material.NETHER_WOOD, Material.PLANT, Material.REPLACEABLE_PLANT, Material.BAMBOO, Material.VEGETABLE, Material.METAL, Material.HEAVY_METAL, Material.STONE);
-	private final boolean isExtraMaterial;
 
 	public MultiToolItem(ItemTierHolder tier, Item.Properties builderIn) {
-		this(tier, builderIn, false);
-	}
-
-	public MultiToolItem(ItemTierHolder tier, Item.Properties builderIn, boolean isExtraMaterial) {
 		super(tier, () -> tier.getAxeDamage() > tier.getDamage() ? tier.getAxeDamage() : tier.getDamage() + tier.getDamage(), () -> -2.8f, ToolsTags.Blocks.MINEABLE_MULTITOOL, builderIn);
-		this.isExtraMaterial = isExtraMaterial;
-	}
-
-	@Override
-	protected boolean allowedIn(CreativeModeTab group) {
-		if (ToolsConfig.COMMON.multiToolsEnabled.get()) {
-
-			if (this.isExtraMaterial) {
-				if (!ToolsConfig.COMMON.extraMaterialsEnabled.get()) {
-					return false;
-				}
-
-				ToolsItemTier tier = (ToolsItemTier) this.getTierHolder().getDefaultTier();
-				if (ToolsConfig.COMMON.hideUncraftableItems.get() && ForgeRegistries.ITEMS.tags().getTag(tier.repairTag()).size() <= 0) {
-					return false;
-				}
-			}
-
-			return super.allowedIn(group);
-		}
-		return false;
 	}
 
 	@Override

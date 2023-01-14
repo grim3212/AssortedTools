@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.grim3212.assorted.tools.AssortedTools;
 import com.grim3212.assorted.tools.common.entity.PokeballEntity;
-import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import com.grim3212.assorted.tools.common.util.NBTHelper;
 
 import net.minecraft.ChatFormatting;
@@ -16,7 +15,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -26,11 +24,6 @@ public class PokeballItem extends Item {
 
 	public PokeballItem(Properties properties) {
 		super(properties.durability(10));
-	}
-
-	@Override
-	protected boolean allowedIn(CreativeModeTab group) {
-		return ToolsConfig.COMMON.pokeballEnabled.get() ? super.allowedIn(group) : false;
 	}
 
 	@Override

@@ -1,24 +1,17 @@
 package com.grim3212.assorted.tools.common.item;
 
 import com.grim3212.assorted.tools.AssortedTools;
-import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import com.grim3212.assorted.tools.common.item.configurable.ConfigurableArmorItem;
 import com.grim3212.assorted.tools.common.util.ToolsArmorMaterials;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
 public class ChickenSuitArmor extends ConfigurableArmorItem {
 
 	public ChickenSuitArmor(EquipmentSlot slot, Properties builderIn) {
 		super(ToolsArmorMaterials.CHICKEN_SUIT, slot, builderIn);
-	}
-
-	@Override
-	protected boolean allowedIn(CreativeModeTab group) {
-		return ToolsConfig.COMMON.chickenSuitEnabled.get() ? super.allowedIn(group) : false;
 	}
 
 	@Override

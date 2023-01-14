@@ -16,6 +16,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -35,7 +36,6 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.phys.BlockHitResult;
@@ -267,7 +267,7 @@ public class BetterSpearEntity extends AbstractArrow implements IEntityAdditiona
 
 		if (instability > 0) {
 			if (!level.isClientSide) {
-				level.explode(null, this.getX(), this.getY(), this.getZ(), instability * 2F, Explosion.BlockInteraction.BREAK);
+				level.explode(null, this.getX(), this.getY(), this.getZ(), instability * 2F, Level.ExplosionInteraction.BLOCK);
 			}
 		}
 	}
@@ -343,7 +343,7 @@ public class BetterSpearEntity extends AbstractArrow implements IEntityAdditiona
 	}
 
 	@Override
-	public Packet<?> getAddEntityPacket() {
+	public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 

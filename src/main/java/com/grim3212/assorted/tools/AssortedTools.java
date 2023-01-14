@@ -1,12 +1,18 @@
 package com.grim3212.assorted.tools;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.Lists;
 import com.grim3212.assorted.tools.client.data.ToolsItemModelProvider;
 import com.grim3212.assorted.tools.client.proxy.ClientProxy;
+import com.grim3212.assorted.tools.common.creative.ToolsCreativeTab;
 import com.grim3212.assorted.tools.common.data.ToolsBlockTagProvider;
+import com.grim3212.assorted.tools.common.data.ToolsChestLoot;
 import com.grim3212.assorted.tools.common.data.ToolsItemTagProvider;
 import com.grim3212.assorted.tools.common.data.ToolsLootModifierProvider;
 import com.grim3212.assorted.tools.common.data.ToolsLootTableProvider;
@@ -25,13 +31,14 @@ import com.grim3212.assorted.tools.common.network.PacketHandler;
 import com.grim3212.assorted.tools.common.proxy.IProxy;
 import com.grim3212.assorted.tools.common.util.TierRegistryHandler;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Tuple;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -56,14 +63,6 @@ public class AssortedTools {
 
 	public static final Logger LOGGER = LogManager.getLogger(MODID);
 
-	public static final CreativeModeTab ASSORTED_TOOLS_ITEM_GROUP = (new CreativeModeTab("assortedtools") {
-		@Override
-		@OnlyIn(Dist.CLIENT)
-		public ItemStack makeIcon() {
-			return new ItemStack(ToolsItems.IRON_HAMMER.get());
-		}
-	});
-
 	public AssortedTools() {
 		DistExecutor.unsafeCallWhenOn(Dist.CLIENT, () -> () -> proxy = new ClientProxy());
 		proxy.starting();
@@ -73,6 +72,7 @@ public class AssortedTools {
 		modBus.addListener(this::setup);
 		modBus.addListener(this::gatherData);
 		modBus.addListener(this::sendIMC);
+		modBus.addListener(ToolsCreativeTab::registerTabs);
 
 		MinecraftForge.EVENT_BUS.register(new TagLoadListener());
 		MinecraftForge.EVENT_BUS.register(new ChickenSuitConversionHandler());
@@ -82,6 +82,7 @@ public class AssortedTools {
 		ToolsEntities.ENTITIES.register(modBus);
 		ToolsEnchantments.ENCHANTMENTS.register(modBus);
 		ToolsLootModifiers.LOOT_MODIFIERS.register(modBus);
+		ToolsLootConditions.LOOT_ITEM_CONDITIONS.register(modBus);
 
 		ModLoadingContext.get().registerConfig(Type.COMMON, ToolsConfig.COMMON_SPEC);
 
@@ -91,10 +92,6 @@ public class AssortedTools {
 	private void setup(final FMLCommonSetupEvent event) {
 		PacketHandler.init();
 		TierRegistryHandler.registerTiers();
-
-		event.enqueueWork(() -> {
-			ToolsLootConditions.register();
-		});
 	}
 
 	private void sendIMC(final InterModEnqueueEvent event) {
@@ -107,17 +104,17 @@ public class AssortedTools {
 
 	private void gatherData(GatherDataEvent event) {
 		DataGenerator datagenerator = event.getGenerator();
+		PackOutput packOutput = datagenerator.getPackOutput();
 		ExistingFileHelper fileHelper = event.getExistingFileHelper();
+		CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
-		ToolsLootConditions.register();
-
-		ToolsBlockTagProvider blockTagProvider = new ToolsBlockTagProvider(datagenerator, fileHelper);
+		ToolsBlockTagProvider blockTagProvider = new ToolsBlockTagProvider(packOutput, lookupProvider, fileHelper);
 		datagenerator.addProvider(event.includeServer(), blockTagProvider);
-		datagenerator.addProvider(event.includeServer(), new ToolsItemTagProvider(datagenerator, blockTagProvider, fileHelper));
-		datagenerator.addProvider(event.includeServer(), new ToolsRecipes(datagenerator));
-		datagenerator.addProvider(event.includeServer(), new ToolsLootModifierProvider(datagenerator));
-		datagenerator.addProvider(event.includeServer(), new ToolsLootTableProvider(datagenerator));
+		datagenerator.addProvider(event.includeServer(), new ToolsItemTagProvider(packOutput, lookupProvider, blockTagProvider, fileHelper));
+		datagenerator.addProvider(event.includeServer(), new ToolsRecipes(packOutput));
+		datagenerator.addProvider(event.includeServer(), new ToolsLootModifierProvider(packOutput));
+		datagenerator.addProvider(event.includeServer(), new ToolsLootTableProvider(packOutput, Collections.emptySet(), List.of(new LootTableProvider.SubProviderEntry(ToolsChestLoot::new, LootContextParamSets.CHEST))));
 
-		datagenerator.addProvider(event.includeClient(), new ToolsItemModelProvider(datagenerator, fileHelper));
+		datagenerator.addProvider(event.includeClient(), new ToolsItemModelProvider(packOutput, fileHelper));
 	}
 }

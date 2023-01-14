@@ -3,9 +3,10 @@ package com.grim3212.assorted.tools.client.render.entity;
 import com.grim3212.assorted.tools.client.render.model.SpearModel;
 import com.grim3212.assorted.tools.client.render.model.ToolsModelLayers;
 import com.grim3212.assorted.tools.common.entity.BetterSpearEntity;
+import com.grim3212.assorted.tools.common.util.Vector3fHelper;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -26,8 +27,9 @@ public class BetterSpearRenderer extends EntityRenderer<BetterSpearEntity> {
 
 	public void render(BetterSpearEntity entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource renderType, int light) {
 		stack.pushPose();
-		stack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - 90.0F));
-		stack.mulPose(Vector3f.ZP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot()) + 90.0F));
+
+		stack.mulPose(Axis.of(Vector3fHelper.YP).rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - 90.0F));
+		stack.mulPose(Axis.of(Vector3fHelper.ZP).rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot()) + 90.0F));
 		VertexConsumer ivertexbuilder = ItemRenderer.getFoilBufferDirect(renderType, this.spearModel.renderType(this.getTextureLocation(entity)), false, entity.isFoil());
 		this.spearModel.renderToBuffer(stack, ivertexbuilder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		stack.popPose();

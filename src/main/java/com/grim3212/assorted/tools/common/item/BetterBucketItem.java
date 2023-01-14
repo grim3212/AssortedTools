@@ -6,7 +6,6 @@ import com.grim3212.assorted.tools.common.handler.DispenseBucketHandler;
 import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
 import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import com.grim3212.assorted.tools.common.util.NBTHelper;
-import com.grim3212.assorted.tools.common.util.ToolsItemTier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,7 +19,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -47,22 +45,15 @@ import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class BetterBucketItem extends Item {
+public class BetterBucketItem extends Item implements ITiered {
 
 	private boolean milkPause = false;
 	public final ItemTierHolder tierHolder;
-	private final boolean isExtraMaterial;
 
 	public BetterBucketItem(Properties props, ItemTierHolder tierHolder) {
-		this(props, tierHolder, false);
-	}
-
-	public BetterBucketItem(Properties props, ItemTierHolder tierHolder, boolean isExtraMaterial) {
 		super(props.stacksTo(1));
 
 		this.tierHolder = tierHolder;
-
-		this.isExtraMaterial = isExtraMaterial;
 
 		DispenserBlock.registerBehavior(this, DispenseBucketHandler.getInstance());
 	}
@@ -74,10 +65,7 @@ public class BetterBucketItem extends Item {
 		return stack;
 	}
 
-	public boolean isExtraMaterial() {
-		return isExtraMaterial;
-	}
-
+	@Override
 	public ItemTierHolder getTierHolder() {
 		return tierHolder;
 	}
@@ -86,26 +74,6 @@ public class BetterBucketItem extends Item {
 	public void onCraftedBy(ItemStack stack, Level worldIn, Player playerIn) {
 		setFluid(stack, "empty");
 		setAmount(stack, 0);
-	}
-
-	@Override
-	protected boolean allowedIn(CreativeModeTab group) {
-		if (ToolsConfig.COMMON.betterBucketsEnabled.get()) {
-			
-			if (this.isExtraMaterial) {
-				if (!ToolsConfig.COMMON.extraMaterialsEnabled.get()) {
-					return false;
-				}
-
-				ToolsItemTier tier = (ToolsItemTier) tierHolder.getDefaultTier();
-				if (ToolsConfig.COMMON.hideUncraftableItems.get() && ForgeRegistries.ITEMS.tags().getTag(tier.repairTag()).size() <= 0) {
-					return false;
-				}
-			}
-
-			return super.allowedIn(group);
-		}
-		return false;
 	}
 
 	public void pauseForMilk() {

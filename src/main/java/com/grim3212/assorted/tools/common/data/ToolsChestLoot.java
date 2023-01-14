@@ -5,7 +5,7 @@ import java.util.function.BiConsumer;
 import com.grim3212.assorted.tools.AssortedTools;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
 
-import net.minecraft.data.loot.ChestLoot;
+import net.minecraft.data.loot.packs.VanillaChestLoot;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
@@ -21,10 +21,10 @@ import net.minecraft.world.level.storage.loot.functions.SetNbtFunction;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
-public class ToolsChestLoot extends ChestLoot {
+public class ToolsChestLoot extends VanillaChestLoot {
 
 	@Override
-	public void accept(BiConsumer<ResourceLocation, Builder> builder) {
+	public void generate(BiConsumer<ResourceLocation, Builder> builder) {
 		LootPool.Builder ultimateFragmentOverworldLootPool = LootPool.lootPool();
 		ultimateFragmentOverworldLootPool.setRolls(ConstantValue.exactly(1)).add(addItem(ToolsItems.U_FRAGMENT.get(), 1, 1, 1)).add(addItem(ToolsItems.L_FRAGMENT.get(), 1, 1, 1)).add(addItem(ToolsItems.T_FRAGMENT.get(), 1, 1, 1)).add(EmptyLootItem.emptyItem().setWeight(10));
 		LootTable.Builder ultimateFragmentOverworldLootTable = LootTable.lootTable();

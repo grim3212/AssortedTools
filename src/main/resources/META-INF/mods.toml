@@ -1,7 +1,7 @@
 # Find more information on toml format here:  https://github.com/toml-lang/toml
 
 modLoader="javafml"
-loaderVersion="[43,)"
+loaderVersion="[44,)"
 license="GPL-3.0 License"
 issueTrackerURL="https://github.com/grim3212/AssortedTools"
 
@@ -20,12 +20,12 @@ An assortment of various helpful tools to add to your Minecraft world.
 [[dependencies.assortedtools]]
     modId="forge"
     mandatory=true
-    versionRange="[43,)"
+    versionRange="[44,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.assortedtools]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.19.2]"
+    versionRange="[1.19.3]"
     ordering="NONE"
     side="BOTH"

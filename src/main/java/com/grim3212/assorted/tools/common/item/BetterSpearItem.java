@@ -8,8 +8,6 @@ import com.google.common.collect.Multimap;
 import com.grim3212.assorted.tools.client.render.item.SpearBEWLR;
 import com.grim3212.assorted.tools.common.entity.BetterSpearEntity;
 import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
-import com.grim3212.assorted.tools.common.handler.ToolsConfig;
-import com.grim3212.assorted.tools.common.util.ToolsItemTier;
 
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.sounds.SoundEvents;
@@ -24,29 +22,20 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import net.minecraftforge.registries.ForgeRegistries;
 
-public class BetterSpearItem extends TridentItem {
+public class BetterSpearItem extends TridentItem implements ITiered {
 
 	private final ItemTierHolder tierHolder;
-	private final boolean isExtraMaterial;
 
 	public BetterSpearItem(Properties props, ItemTierHolder tierHolder) {
-		this(props, tierHolder, false);
-	}
-
-	public BetterSpearItem(Properties props, ItemTierHolder tierHolder, boolean extraMaterial) {
 		super(props);
-		this.isExtraMaterial = extraMaterial;
 		this.tierHolder = tierHolder;
-
 	}
 
 	@Override
@@ -57,26 +46,6 @@ public class BetterSpearItem extends TridentItem {
 				return SpearBEWLR.SPEAR_ITEM_RENDERER;
 			}
 		});
-	}
-
-	@Override
-	protected boolean allowedIn(CreativeModeTab group) {
-		if (ToolsConfig.COMMON.betterSpearsEnabled.get()) {
-			
-			if (this.isExtraMaterial) {
-				if (!ToolsConfig.COMMON.extraMaterialsEnabled.get()) {
-					return false;
-				}
-
-				ToolsItemTier tier = (ToolsItemTier) tierHolder.getDefaultTier();
-				if (ToolsConfig.COMMON.hideUncraftableItems.get() && ForgeRegistries.ITEMS.tags().getTag(tier.repairTag()).size() <= 0) {
-					return false;
-				}
-			}
-
-			return super.allowedIn(group);
-		}
-		return false;
 	}
 
 	@Override
@@ -141,10 +110,11 @@ public class BetterSpearItem extends TridentItem {
 		return slot == EquipmentSlot.MAINHAND ? this.attribs : ImmutableMultimap.of();
 	}
 
+	@Override
 	public ItemTierHolder getTierHolder() {
 		return tierHolder;
 	}
-	
+
 	@Override
 	public boolean isDamageable(ItemStack stack) {
 		return true;

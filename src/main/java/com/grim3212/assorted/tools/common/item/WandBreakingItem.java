@@ -11,14 +11,12 @@ import com.grim3212.assorted.tools.common.util.NBTHelper;
 import com.grim3212.assorted.tools.common.util.WandCoord3D;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -41,12 +39,12 @@ public class WandBreakingItem extends WandItem {
 		BlockState state = worldIn.getBlockState(pos);
 
 		switch (BreakingMode.fromString(NBTHelper.getString(stack, "Mode"))) {
-		case BREAK_WEAK:
-			return (state.getMaterial().isReplaceable() || state.getMaterial().getPushReaction() == PushReaction.DESTROY || state.getMaterial().isLiquid());
-		case BREAK_ALL:
-			return (state.getBlock() != Blocks.BEDROCK || ToolsConfig.COMMON.bedrockBreaking.get());
-		case BREAK_XORES:
-			return (state.getBlock() != Blocks.BEDROCK || ToolsConfig.COMMON.bedrockBreaking.get()) && !isOre(state);
+			case BREAK_WEAK:
+				return (state.getMaterial().isReplaceable() || state.getMaterial().getPushReaction() == PushReaction.DESTROY || state.getMaterial().isLiquid());
+			case BREAK_ALL:
+				return (state.getBlock() != Blocks.BEDROCK || ToolsConfig.COMMON.bedrockBreaking.get());
+			case BREAK_XORES:
+				return (state.getBlock() != Blocks.BEDROCK || ToolsConfig.COMMON.bedrockBreaking.get()) && !isOre(state);
 		}
 		return false;
 	}
@@ -120,15 +118,6 @@ public class WandBreakingItem extends WandItem {
 	}
 
 	@Override
-	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (this.allowedIn(group)) {
-			ItemStack stack = new ItemStack(this);
-			NBTHelper.putString(stack, "Mode", BreakingMode.BREAK_WEAK.getSerializedName());
-			items.add(stack);
-		}
-	}
-
-	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		BreakingMode mode = BreakingMode.fromString(NBTHelper.getString(stack, "Mode"));
 		if (mode != null)
@@ -142,8 +131,10 @@ public class WandBreakingItem extends WandItem {
 		NBTHelper.putString(stack, "Mode", BreakingMode.BREAK_WEAK.getSerializedName());
 	}
 
-	private static enum BreakingMode implements StringRepresentable {
-		BREAK_WEAK("breakweak", 0), BREAK_ALL("breakall", 1), BREAK_XORES("breakxores", 2);
+	public static enum BreakingMode implements StringRepresentable {
+		BREAK_WEAK("breakweak", 0),
+		BREAK_ALL("breakall", 1),
+		BREAK_XORES("breakxores", 2);
 
 		private final String name;
 		private final int order;

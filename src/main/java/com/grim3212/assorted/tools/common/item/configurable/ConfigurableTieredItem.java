@@ -1,11 +1,12 @@
 package com.grim3212.assorted.tools.common.item.configurable;
 
 import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
+import com.grim3212.assorted.tools.common.item.ITiered;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-public class ConfigurableTieredItem extends Item {
+public class ConfigurableTieredItem extends Item implements ITiered {
 
 	private final ItemTierHolder tierHolder;
 
@@ -14,6 +15,7 @@ public class ConfigurableTieredItem extends Item {
 		this.tierHolder = tierHolder;
 	}
 
+	@Override
 	public ItemTierHolder getTierHolder() {
 		return tierHolder;
 	}
