@@ -3,7 +3,6 @@ package com.grim3212.assorted.tools.client.render.entity;
 import com.grim3212.assorted.tools.common.entity.BoomerangEntity;
 import com.grim3212.assorted.tools.common.entity.ToolsEntities;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
-import com.grim3212.assorted.tools.common.util.Vector3fHelper;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
@@ -32,10 +31,10 @@ public class BoomerangRenderer extends EntityRenderer<BoomerangEntity> {
 	@Override
 	public void render(BoomerangEntity entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
 		matrixStackIn.pushPose();
-		matrixStackIn.mulPose(Axis.of(Vector3fHelper.YP).rotationDegrees(-entityYaw + 90.0f));
-		matrixStackIn.mulPose(Axis.of(Vector3fHelper.ZP).rotationDegrees(Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot()) + 90.0F));
-		matrixStackIn.mulPose(Axis.of(Vector3fHelper.YN).rotationDegrees(90.0f));
-		matrixStackIn.mulPose(Axis.of(Vector3fHelper.ZN).rotationDegrees(entityIn.getBoomerangRotation()));
+		matrixStackIn.mulPose(Axis.YP.rotationDegrees(-entityYaw + 90.0f));
+		matrixStackIn.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot()) + 90.0F));
+		matrixStackIn.mulPose(Axis.YN.rotationDegrees(90.0f));
+		matrixStackIn.mulPose(Axis.ZN.rotationDegrees(entityIn.getBoomerangRotation()));
 		this.itemRenderer.renderStatic(getItemStackForRender(entityIn), ItemTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, 0);
 		matrixStackIn.popPose();
 
