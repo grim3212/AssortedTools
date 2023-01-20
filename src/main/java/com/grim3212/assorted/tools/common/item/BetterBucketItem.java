@@ -32,6 +32,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -388,14 +389,13 @@ public class BetterBucketItem extends Item implements ITiered {
 			if (ToolsConfig.COMMON.allowPartialBucketAmounts.get()) {
 				return super.fill(resource, action);
 			} else {
-				/*
-				 * if (container.getItem() instanceof ItemBetterMilkBucket) { if
-				 * (resource.getUnlocalizedName().equals("fluid.milk")) { return
-				 * fillIncremental(resource, doFill); } else { return 0; } } else { return
-				 * fillIncremental(resource, doFill); }
-				 */
 				return fillIncremental(resource, action);
 			}
+		}
+
+		@Override
+		public boolean canFillFluidType(FluidStack fluid) {
+			return this.container.getItem() instanceof BetterMilkBucketItem ? ForgeMod.MILK.isPresent() && fluid.getFluid() == ForgeMod.MILK.get() : fluid.getFluid() != Fluids.EMPTY;
 		}
 
 		private int fillIncremental(FluidStack resource, FluidAction action) {

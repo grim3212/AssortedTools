@@ -88,6 +88,7 @@ public class ToolsRecipes extends RecipeProvider implements IConditionBuilder {
 
 		ConditionalRecipe.builder().addCondition(new EnabledCondition(EnabledCondition.BETTER_BUCKETS_CONDITION)).addRecipe(ShapedRecipeBuilder.shaped(RecipeCategory.FOOD, Blocks.CAKE).define('A', ToolsTags.Items.BUCKETS_MILK).define('B', Items.SUGAR).define('C', Tags.Items.CROPS_WHEAT).define('E', Tags.Items.EGGS).pattern("AAA").pattern("BEB").pattern("CCC").unlockedBy("has_egg", has(Tags.Items.EGGS))::save).generateAdvancement().build(consumer,
 				new ResourceLocation(key(Blocks.CAKE.asItem()) + "_alt"));
+
 		bucketPattern(ToolsItems.WOOD_BUCKET.get(), ItemTags.PLANKS, consumer);
 		bucketPattern(ToolsItems.STONE_BUCKET.get(), ItemTags.STONE_TOOL_MATERIALS, consumer);
 		bucketPattern(ToolsItems.GOLD_BUCKET.get(), Tags.Items.INGOTS_GOLD, consumer);

@@ -1,0 +1,29 @@
+{
+  "values": [
+    "minecraft:bucket",
+    "minecraft:water_bucket",
+    "minecraft:lava_bucket",
+    "assortedtools:wood_bucket",
+    "assortedtools:stone_bucket",
+    "assortedtools:gold_bucket",
+    "assortedtools:diamond_bucket",
+    "assortedtools:netherite_bucket",
+    "assortedtools:nickel_bucket",
+    "assortedtools:electrum_bucket",
+    "assortedtools:steel_bucket",
+    "assortedtools:aluminum_bucket",
+    "assortedtools:amethyst_bucket",
+    "assortedtools:lead_bucket",
+    "assortedtools:bronze_bucket",
+    "assortedtools:ruby_bucket",
+    "assortedtools:platinum_bucket",
+    "assortedtools:peridot_bucket",
+    "assortedtools:tin_bucket",
+    "assortedtools:topaz_bucket",
+    "assortedtools:copper_bucket",
+    "assortedtools:invar_bucket",
+    "assortedtools:silver_bucket",
+    "assortedtools:emerald_bucket",
+    "assortedtools:sapphire_bucket"
+  ]
+}

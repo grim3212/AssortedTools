@@ -13,6 +13,7 @@ import com.grim3212.assorted.tools.common.util.ToolsItemTier;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -60,16 +61,11 @@ public class ToolsCreativeTab {
 			}
 
 			if (ToolsConfig.COMMON.betterBucketsEnabled.get()) {
-				populator.accept(ToolsItems.WOOD_BUCKET.get());
-				populator.accept(genMilkBucket(ToolsItems.WOOD_MILK_BUCKET.get()));
-				populator.accept(ToolsItems.STONE_BUCKET.get());
-				populator.accept(genMilkBucket(ToolsItems.STONE_MILK_BUCKET.get()));
-				populator.accept(ToolsItems.GOLD_BUCKET.get());
-				populator.accept(genMilkBucket(ToolsItems.GOLD_MILK_BUCKET.get()));
-				populator.accept(ToolsItems.DIAMOND_BUCKET.get());
-				populator.accept(genMilkBucket(ToolsItems.DIAMOND_MILK_BUCKET.get()));
-				populator.accept(ToolsItems.NETHERITE_BUCKET.get());
-				populator.accept(genMilkBucket(ToolsItems.NETHERITE_MILK_BUCKET.get()));
+				registerBucket(populator, ToolsItems.WOOD_BUCKET.get(), ToolsItems.WOOD_MILK_BUCKET.get());
+				registerBucket(populator, ToolsItems.STONE_BUCKET.get(), ToolsItems.STONE_MILK_BUCKET.get());
+				registerBucket(populator, ToolsItems.GOLD_BUCKET.get(), ToolsItems.GOLD_MILK_BUCKET.get());
+				registerBucket(populator, ToolsItems.DIAMOND_BUCKET.get(), ToolsItems.DIAMOND_MILK_BUCKET.get());
+				registerBucket(populator, ToolsItems.NETHERITE_BUCKET.get(), ToolsItems.NETHERITE_MILK_BUCKET.get());
 			}
 
 			if (ToolsConfig.COMMON.betterSpearsEnabled.get()) {
@@ -141,8 +137,7 @@ public class ToolsCreativeTab {
 					}
 
 					if (ToolsConfig.COMMON.betterBucketsEnabled.get()) {
-						populator.accept(group.BUCKET.get());
-						populator.accept(genMilkBucket(group.MILK_BUCKET.get()));
+						registerBucket(populator, group.BUCKET.get(), group.MILK_BUCKET.get());
 					}
 
 				});
@@ -157,4 +152,8 @@ public class ToolsCreativeTab {
 		return stack;
 	}
 
+	private static void registerBucket(CreativeModeTab.Output output, BetterBucketItem bucket, BetterMilkBucketItem milkBucket) {
+		output.accept(bucket);
+		output.accept(genMilkBucket(milkBucket));
+	}
 }
