@@ -3,8 +3,8 @@ package com.grim3212.assorted.decor.common.item;
 import com.google.common.collect.Lists;
 import com.grim3212.assorted.decor.Constants;
 import com.grim3212.assorted.decor.api.util.WandCoord3D;
+import com.grim3212.assorted.decor.config.ToolsConfig;
 import com.grim3212.assorted.lib.util.NBTHelper;
-import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -95,7 +95,7 @@ public class WandBuildingItem extends WandItem {
     }
 
     protected boolean consumeItems(ItemStack neededStack, Player entityplayer, int neededItems, WandCoord3D end) {
-        if (ToolsConfig.COMMON.freeBuildMode.get() || entityplayer.isCreative()) {
+        if (ToolsConfig.Common.freeBuildMode.getValue() || entityplayer.isCreative()) {
             return true;
         }
         int invItems = 0;
@@ -133,7 +133,7 @@ public class WandBuildingItem extends WandItem {
     private boolean emptyBuckets(Player entityplayer, int neededItems, boolean lava) {
         Item vanillaBucket = lava ? Items.LAVA_BUCKET : Items.WATER_BUCKET;
 
-        if (ToolsConfig.COMMON.freeBuildMode.get() || entityplayer.isCreative()) {
+        if (ToolsConfig.Common.freeBuildMode.getValue() || entityplayer.isCreative()) {
             return true;
         }
         int itemsInInventory = 0;
@@ -413,12 +413,12 @@ public class WandBuildingItem extends WandItem {
                 }
                 return false;
             case BUILD_WATER:
-                if ((!this.reinforced) && (!ToolsConfig.COMMON.freeBuildMode.get())) {
+                if ((!this.reinforced) && (!ToolsConfig.Common.freeBuildMode.getValue())) {
                     error(entityplayer, end, "cantfillwater");
                     return false;
                 }
 
-                if (!ToolsConfig.COMMON.freeBuildMode.get()) {
+                if (!ToolsConfig.Common.freeBuildMode.getValue()) {
                     neededItems = 0;
 
                     for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
@@ -479,14 +479,14 @@ public class WandBuildingItem extends WandItem {
 
                 return false;
             case BUILD_LAVA:
-                if ((!this.reinforced) && (!ToolsConfig.COMMON.freeBuildMode.get())) {
+                if ((!this.reinforced) && (!ToolsConfig.Common.freeBuildMode.getValue())) {
                     error(entityplayer, end, "cantfilllava");
                     return false;
                 }
 
                 neededItems = 0;
 
-                if (!ToolsConfig.COMMON.freeBuildMode.get()) {
+                if (!ToolsConfig.Common.freeBuildMode.getValue()) {
                     for (X = start.pos.getX(); X <= end.pos.getX(); X++) {
                         for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
                             for (Y = start.pos.getY(); Y <= end.pos.getY(); Y++) {
@@ -540,7 +540,7 @@ public class WandBuildingItem extends WandItem {
 
                 return false;
             case BUILD_CAVES:
-                if ((!this.reinforced) && (!ToolsConfig.COMMON.freeBuildMode.get())) {
+                if ((!this.reinforced) && (!ToolsConfig.Common.freeBuildMode.getValue())) {
                     error(entityplayer, end, "cantfillcave");
                     return false;
                 }

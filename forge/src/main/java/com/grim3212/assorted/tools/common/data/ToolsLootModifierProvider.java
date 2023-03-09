@@ -2,7 +2,7 @@ package com.grim3212.assorted.tools.common.data;
 
 import com.grim3212.assorted.decor.Constants;
 import com.grim3212.assorted.decor.api.ToolsTags;
-import com.grim3212.assorted.tools.common.enchantment.ToolsEnchantments;
+import com.grim3212.assorted.decor.common.enchantment.ToolsEnchantments;
 import com.grim3212.assorted.tools.common.loot.CoralCutterLootModifier;
 import com.grim3212.assorted.tools.common.loot.LootItemBlockTagCondition;
 import com.grim3212.assorted.tools.common.loot.UltimateFragmentLootModifier.EndUltimateFragmentLootModifier;

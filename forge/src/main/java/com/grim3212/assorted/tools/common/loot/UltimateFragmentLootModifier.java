@@ -2,7 +2,7 @@ package com.grim3212.assorted.tools.common.loot;
 
 import com.google.common.base.Suppliers;
 import com.grim3212.assorted.decor.Constants;
-import com.grim3212.assorted.tools.common.handler.ToolsConfig;
+import com.grim3212.assorted.decor.config.ToolsConfig;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -30,7 +30,7 @@ public abstract class UltimateFragmentLootModifier extends LootModifier {
 
     @Override
     protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
-        if (ToolsConfig.COMMON.ultimateFistEnabled.get()) {
+        if (ToolsConfig.Common.ultimateFistEnabled.getValue()) {
             List<ItemStack> stacks = Lists.newArrayList();
             LootPool.lootPool().add(LootTableReference.lootTableReference(extraLootTable).setWeight(1)).name(extraLootTable.getPath()).build().addRandomItems(stacks::add, context);
 

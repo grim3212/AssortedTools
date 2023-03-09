@@ -4,6 +4,9 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Multimap;
 import com.grim3212.assorted.decor.api.item.ToolsArmorMaterials;
+import com.grim3212.assorted.lib.core.item.ExtraPropertyHelper;
+import com.grim3212.assorted.lib.core.item.IItemExtraProperties;
+import com.grim3212.assorted.lib.mixin.item.ArmorItemAccessor;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -13,7 +16,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.UUID;
 
-public class ConfigurableArmorItem extends ArmorItem {
+public class ConfigurableArmorItem extends ArmorItem implements IItemExtraProperties {
 
     private Multimap<Attribute, AttributeModifier> modifiers;
     private final ToolsArmorMaterials material;
@@ -39,13 +42,23 @@ public class ConfigurableArmorItem extends ArmorItem {
     }
 
     @Override
-    public boolean isDamageable(ItemStack stack) {
-        return true;
+    public int getMaxDamage(ItemStack stack) {
+        return this.material.getDurabilityForSlot(this.getSlot());
     }
 
     @Override
-    public int getMaxDamage(ItemStack stack) {
-        return this.material.getDurabilityForSlot(this.getSlot());
+    public boolean isDamaged(ItemStack stack) {
+        return ExtraPropertyHelper.isDamaged(stack);
+    }
+
+    @Override
+    public void setDamage(ItemStack stack, int damage) {
+        ExtraPropertyHelper.setDamage(stack, damage);
+    }
+
+    @Override
+    public int getDamage(ItemStack stack) {
+        return ExtraPropertyHelper.getDamage(stack);
     }
 
     @Override
@@ -59,7 +72,7 @@ public class ConfigurableArmorItem extends ArmorItem {
     public Multimap<Attribute, AttributeModifier> getModifiers(EquipmentSlot equipmentSlot) {
         if (this.modifiers == null || this.modifiers.isEmpty()) {
             Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-            UUID uuid = ARMOR_MODIFIER_UUID_PER_SLOT[slot.getIndex()];
+            UUID uuid = ArmorItemAccessor.assortedlib_getArmorModPerSlot()[slot.getIndex()];
             builder.put(Attributes.ARMOR, new AttributeModifier(uuid, "Armor modifier", (double) getDefense(), AttributeModifier.Operation.ADDITION));
             builder.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(uuid, "Armor toughness", (double) getToughness(), AttributeModifier.Operation.ADDITION));
             if (this.knockbackResistance > 0) {

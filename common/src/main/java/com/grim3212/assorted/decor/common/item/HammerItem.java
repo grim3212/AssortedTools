@@ -1,7 +1,7 @@
 package com.grim3212.assorted.decor.common.item;
 
 import com.grim3212.assorted.decor.common.item.configurable.ConfigurableTieredItem;
-import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
+import com.grim3212.assorted.decor.config.ItemTierConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class HammerItem extends ConfigurableTieredItem {
 
-    public HammerItem(ItemTierHolder tierHolder, Properties properties) {
+    public HammerItem(ItemTierConfig tierHolder, Properties properties) {
         super(tierHolder, properties);
     }
 
@@ -24,30 +24,28 @@ public class HammerItem extends ConfigurableTieredItem {
     }
 
     @Override
-    public boolean isCorrectToolForDrops(ItemStack stack, BlockState state) {
+    public boolean isCorrectToolForDrops(BlockState state) {
         return true;
     }
 
     @Override
-    public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, Player player) {
-        Level worldIn = player.level;
-
-        if (!player.isCreative() && player.mayUseItemAt(pos, player.getDirection(), itemstack)) {
-            if (!worldIn.isClientSide) {
-                player.awardStat(Stats.BLOCK_MINED.get(worldIn.getBlockState(pos).getBlock()));
+    public boolean canAttackBlock(BlockState state, Level level, BlockPos pos, Player player) {
+        ItemStack mainHandItem = player.getMainHandItem();
+        if (!player.isCreative() && player.mayUseItemAt(pos, player.getDirection(), mainHandItem)) {
+            if (!level.isClientSide) {
+                player.awardStat(Stats.BLOCK_MINED.get(level.getBlockState(pos).getBlock()));
                 player.causeFoodExhaustion(0.005F);
 
-                worldIn.levelEvent(2001, pos, Block.getId(worldIn.getBlockState(pos)));
-                worldIn.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+                level.levelEvent(2001, pos, Block.getId(level.getBlockState(pos)));
+                level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 
-                itemstack.hurtAndBreak(1, player, (pEnt) -> {
+                mainHandItem.hurtAndBreak(1, player, (pEnt) -> {
                     pEnt.broadcastBreakEvent(EquipmentSlot.MAINHAND);
                 });
             }
-            return true;
-        } else {
             return false;
+        } else {
+            return true;
         }
     }
-
 }

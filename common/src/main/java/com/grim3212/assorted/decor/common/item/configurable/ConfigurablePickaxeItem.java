@@ -4,7 +4,10 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Multimap;
 import com.grim3212.assorted.decor.api.item.ITiered;
-import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
+import com.grim3212.assorted.decor.config.ItemTierConfig;
+import com.grim3212.assorted.lib.core.item.ExtraPropertyHelper;
+import com.grim3212.assorted.lib.core.item.IItemExtraProperties;
+import com.grim3212.assorted.lib.mixin.item.DiggerItemAccessor;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -14,14 +17,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class ConfigurablePickaxeItem extends PickaxeItem implements ITiered {
+public class ConfigurablePickaxeItem extends PickaxeItem implements ITiered, IItemExtraProperties {
 
     private static final float PICKAXE_DAMAGE = 3.0F;
     private static final float PICKAXE_SPEED = -2.4F;
 
-    private final ItemTierHolder tierHolder;
+    private final ItemTierConfig tierHolder;
 
-    public ConfigurablePickaxeItem(ItemTierHolder tierHolder, Item.Properties builder) {
+    public ConfigurablePickaxeItem(ItemTierConfig tierHolder, Item.Properties builder) {
         super(tierHolder.getDefaultTier(), (int) PICKAXE_DAMAGE, PICKAXE_SPEED, builder);
         this.tierHolder = tierHolder;
     }
@@ -41,7 +44,7 @@ public class ConfigurablePickaxeItem extends PickaxeItem implements ITiered {
     }
 
     @Override
-    public ItemTierHolder getTierHolder() {
+    public ItemTierConfig getTierHolder() {
         return tierHolder;
     }
 
@@ -55,13 +58,28 @@ public class ConfigurablePickaxeItem extends PickaxeItem implements ITiered {
     }
 
     @Override
-    public int getEnchantmentValue(ItemStack stack) {
+    public boolean isDamaged(ItemStack stack) {
+        return ExtraPropertyHelper.isDamaged(stack);
+    }
+
+    @Override
+    public void setDamage(ItemStack stack, int damage) {
+        ExtraPropertyHelper.setDamage(stack, damage);
+    }
+
+    @Override
+    public int getDamage(ItemStack stack) {
+        return ExtraPropertyHelper.getDamage(stack);
+    }
+
+    @Override
+    public int getEnchantmentValue() {
         return this.tierHolder.getEnchantability();
     }
 
     @Override
     public float getDestroySpeed(ItemStack stack, BlockState state) {
-        return state.is(this.blocks) ? this.tierHolder.getEfficiency() : 1.0F;
+        return state.is(((DiggerItemAccessor) this).getBlocks()) ? this.tierHolder.getEfficiency() : 1.0F;
     }
 
     public int getTierHarvestLevel() {

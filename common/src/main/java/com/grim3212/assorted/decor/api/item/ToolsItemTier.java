@@ -15,7 +15,7 @@ public enum ToolsItemTier implements Tier {
     }, 6.0F, -3.2F, () -> new BucketOptions(4, 0)),
 
     COPPER(2, 150, 4.3F, 1.0F, 14, () -> {
-        return ToolsTags.Items.INGOTS_COPPER;
+        return LibCommonTags.Items.INGOTS_COPPER;
     }, 7.0F, -3.2F, () -> new BucketOptions(8, 0)),
 
     SILVER(3, 1456, 8.0F, 2.8F, 14, () -> {
@@ -59,7 +59,7 @@ public enum ToolsItemTier implements Tier {
     }, 6.0F, -3.2F, () -> new BucketOptions(8, 1)),
 
     AMETHYST(2, 1532, 7.9F, 2.9F, 12, () -> {
-        return ToolsTags.Items.GEMS_AMETHYST;
+        return LibCommonTags.Items.GEMS_AMETHYST;
     }, 5.2F, -3.1F, () -> new BucketOptions(8, 0)),
 
     SAPPHIRE(2, 1524, 7.8F, 2.8F, 12, () -> {
@@ -79,7 +79,7 @@ public enum ToolsItemTier implements Tier {
     }, 5.0F, -3.0F, () -> new BucketOptions(8, 0)),
 
     ULTIMATE(7, 1561, 64F, 64F, 0, () -> {
-        return null;
+        return LibCommonTags.Items.NETHER_STARS;
     }, 0F, 0F, () -> new BucketOptions(0, 0));
 
     private final int harvestLevel;

@@ -16,6 +16,9 @@ public class ToolsTags {
         public static final TagKey<Block> ALL_CORALS = commonTag("corals/all");
         public static final TagKey<Block> DEAD_CORALS = commonTag("corals/dead");
 
+        public static final TagKey<Block> DESTRUCTIVE_SPARED_BLOCKS = toolsTag("wands/destructive_spared_blocks");
+        public static final TagKey<Block> MINING_SURFACE_BLOCKS = toolsTag("wands/mining_surface_blocks");
+
         private static TagKey<Block> toolsTag(String name) {
             return TagKey.create(Registries.BLOCK, new ResourceLocation(Constants.MOD_ID, name));
         }
@@ -26,12 +29,7 @@ public class ToolsTags {
     }
 
     public static class Items {
-
-        // TODO: Add this to assorted lib
-        public static final TagKey<Item> BUCKETS_MILK = commonTag("buckets/milk");
-
         public static final TagKey<Item> INGOTS_TIN = commonTag("ingots/tin");
-        public static final TagKey<Item> INGOTS_COPPER = commonTag("ingots/copper");
         public static final TagKey<Item> INGOTS_SILVER = commonTag("ingots/silver");
         public static final TagKey<Item> INGOTS_ALUMINUM = commonTag("ingots/aluminum");
         public static final TagKey<Item> INGOTS_NICKEL = commonTag("ingots/nickel");
@@ -42,7 +40,6 @@ public class ToolsTags {
         public static final TagKey<Item> INGOTS_INVAR = commonTag("ingots/invar");
         public static final TagKey<Item> INGOTS_STEEL = commonTag("ingots/steel");
         public static final TagKey<Item> GEMS_RUBY = commonTag("gems/ruby");
-        public static final TagKey<Item> GEMS_AMETHYST = commonTag("gems/amethyst");
         public static final TagKey<Item> GEMS_SAPPHIRE = commonTag("gems/sapphire");
         public static final TagKey<Item> GEMS_TOPAZ = commonTag("gems/topaz");
         public static final TagKey<Item> GEMS_PERIDOT = commonTag("gems/peridot");

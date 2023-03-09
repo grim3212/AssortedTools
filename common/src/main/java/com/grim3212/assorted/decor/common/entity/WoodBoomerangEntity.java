@@ -1,6 +1,6 @@
 package com.grim3212.assorted.decor.common.entity;
 
-import com.grim3212.assorted.tools.common.handler.ToolsConfig;
+import com.grim3212.assorted.decor.config.ToolsConfig;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
@@ -14,18 +14,18 @@ public class WoodBoomerangEntity extends BoomerangEntity {
 
     public WoodBoomerangEntity(EntityType<BoomerangEntity> type, Level world) {
         super(type, world);
-        this.timeBeforeTurnAround = ToolsConfig.COMMON.woodBoomerangRange.get() <= 0 ? 20 : ToolsConfig.COMMON.woodBoomerangRange.get();
+        this.timeBeforeTurnAround = ToolsConfig.Common.woodBoomerangRange.getValue() <= 0 ? 20 : ToolsConfig.Common.woodBoomerangRange.getValue();
     }
 
     public WoodBoomerangEntity(Level worldIn, Player entity, ItemStack itemstack, InteractionHand hand) {
         super(ToolsEntities.WOOD_BOOMERANG.get(), worldIn, entity, itemstack, hand);
-        this.timeBeforeTurnAround = ToolsConfig.COMMON.woodBoomerangRange.get() <= 0 ? 20 : ToolsConfig.COMMON.woodBoomerangRange.get();
+        this.timeBeforeTurnAround = ToolsConfig.Common.woodBoomerangRange.getValue() <= 0 ? 20 : ToolsConfig.Common.woodBoomerangRange.getValue();
     }
 
     @Override
     protected int getDamage(Entity hitEntity, Player player) {
-        if (ToolsConfig.COMMON.woodBoomerangDamage.get() > 0) {
-            return ToolsConfig.COMMON.woodBoomerangDamage.get();
+        if (ToolsConfig.Common.woodBoomerangDamage.getValue() > 0) {
+            return ToolsConfig.Common.woodBoomerangDamage.getValue();
         }
 
         return 0;

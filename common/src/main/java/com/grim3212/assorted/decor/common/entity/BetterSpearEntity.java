@@ -1,15 +1,14 @@
 package com.grim3212.assorted.decor.common.entity;
 
 import com.google.common.collect.Lists;
+import com.grim3212.assorted.decor.api.util.ToolsDamageSources;
+import com.grim3212.assorted.decor.common.enchantment.ToolsEnchantments;
 import com.grim3212.assorted.decor.common.item.BetterSpearItem;
 import com.grim3212.assorted.decor.common.item.ToolsItems;
-import com.grim3212.assorted.tools.common.enchantment.ToolsEnchantments;
-import com.grim3212.assorted.tools.common.handler.ToolsConfig;
-import com.grim3212.assorted.tools.common.util.ToolsDamageSources;
+import com.grim3212.assorted.decor.config.ToolsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -36,12 +35,11 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BetterSpearEntity extends AbstractArrow implements IEntityAdditionalSpawnData {
+public class BetterSpearEntity extends AbstractArrow {
     private static final EntityDataAccessor<Byte> ID_LOYALTY = SynchedEntityData.defineId(BetterSpearEntity.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Boolean> ID_FOIL = SynchedEntityData.defineId(BetterSpearEntity.class, EntityDataSerializers.BOOLEAN);
     private ItemStack spearItem = new ItemStack(ToolsItems.WOOD_SPEAR.get());
@@ -226,13 +224,13 @@ public class BetterSpearEntity extends AbstractArrow implements IEntityAdditiona
         }
     }
 
-    private List<Double> conductiveChances() {
-        List<Double> defaultChances = Lists.newArrayList(0.6D, 0.3D, 0.1D);
-        List<Double> chances = ToolsConfig.COMMON.conductivityLightningChances.get();
+    private List<Float> conductiveChances() {
+        List<Float> defaultChances = Lists.newArrayList(0.6F, 0.3F, 0.1F);
+        List<Float> chances = ToolsConfig.Common.getConductivityChances();
 
         if (chances != null && chances instanceof List<?> && chances.size() == 3) {
             for (double chance : chances) {
-                if (chance >= 1.0D && chance < 0.0D) {
+                if (chance >= 1.0F && chance < 0.0F) {
                     return defaultChances;
                 }
             }
@@ -319,22 +317,6 @@ public class BetterSpearEntity extends AbstractArrow implements IEntityAdditiona
         this.effectTriggered = nbt.getBoolean("EffectTriggered");
         this.entityData.set(ID_LOYALTY, (byte) EnchantmentHelper.getLoyalty(this.spearItem));
         this.bounceCount = nbt.getInt("BounceCount");
-    }
-
-    @Override
-    public void writeSpawnData(FriendlyByteBuf buffer) {
-        buffer.writeInt(bounceCount);
-        buffer.writeBoolean(dealtDamage);
-        buffer.writeBoolean(effectTriggered);
-        buffer.writeItem(spearItem);
-    }
-
-    @Override
-    public void readSpawnData(FriendlyByteBuf additionalData) {
-        this.bounceCount = additionalData.readInt();
-        this.dealtDamage = additionalData.readBoolean();
-        this.effectTriggered = additionalData.readBoolean();
-        this.spearItem = additionalData.readItem();
     }
 
 

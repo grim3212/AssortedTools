@@ -1,7 +1,7 @@
 package com.grim3212.assorted.tools.common.util;
 
 import com.grim3212.assorted.decor.Constants;
-import com.grim3212.assorted.tools.common.handler.ToolsConfig;
+import com.grim3212.assorted.decor.config.ToolsConfig;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Tiers;
@@ -12,7 +12,7 @@ import java.util.List;
 public class TierRegistryHandler {
 
     public static void registerTiers() {
-        ToolsConfig.COMMON.moddedTiers.forEach((s, tier) -> {
+        ToolsConfig.Common.moddedTiers.forEach((s, tier) -> {
             Tier equivalent = getEquivalentTier(tier.getHarvestLevel());
             ResourceLocation tierLoc = new ResourceLocation(Constants.MOD_ID, s);
             if (equivalent != null && TierSortingRegistry.byName(tierLoc) == null) {

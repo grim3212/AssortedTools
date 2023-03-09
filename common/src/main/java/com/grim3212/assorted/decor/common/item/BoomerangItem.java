@@ -1,8 +1,8 @@
 package com.grim3212.assorted.decor.common.item;
 
-import com.grim3212.assorted.tools.common.entity.BoomerangEntity;
-import com.grim3212.assorted.tools.common.entity.DiamondBoomerangEntity;
-import com.grim3212.assorted.tools.common.entity.WoodBoomerangEntity;
+import com.grim3212.assorted.decor.common.entity.BoomerangEntity;
+import com.grim3212.assorted.decor.common.entity.DiamondBoomerangEntity;
+import com.grim3212.assorted.decor.common.entity.WoodBoomerangEntity;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;

@@ -21,4 +21,7 @@ public class ToolsEntities {
     private static <T extends Entity> IRegistryObject<EntityType<T>> register(final String name, final EntityType.Builder<T> builder) {
         return ENTITIES.register(name, () -> builder.build(new ResourceLocation(Constants.MOD_ID, name).toString()));
     }
+
+    public static void init() {
+    }
 }

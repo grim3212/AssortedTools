@@ -4,10 +4,11 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Multimap;
 import com.grim3212.assorted.decor.api.item.ITiered;
-import com.grim3212.assorted.tools.client.render.item.SpearBEWLR;
-import com.grim3212.assorted.tools.common.entity.BetterSpearEntity;
-import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import com.grim3212.assorted.decor.common.entity.BetterSpearEntity;
+import com.grim3212.assorted.decor.config.ItemTierConfig;
+import com.grim3212.assorted.lib.core.item.ExtraPropertyHelper;
+import com.grim3212.assorted.lib.core.item.IItemEnchantmentCondition;
+import com.grim3212.assorted.lib.core.item.IItemExtraProperties;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -25,27 +26,14 @@ import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
-import java.util.function.Consumer;
+public class BetterSpearItem extends TridentItem implements ITiered, IItemExtraProperties, IItemEnchantmentCondition {
 
-public class BetterSpearItem extends TridentItem implements ITiered {
+    private final ItemTierConfig tierHolder;
 
-    private final ItemTierHolder tierHolder;
-
-    public BetterSpearItem(Properties props, ItemTierHolder tierHolder) {
-        super(props);
+    public BetterSpearItem(Properties props, ItemTierConfig tierHolder) {
+        super(props.defaultDurability(tierHolder.getDefaultTier().getUses()));
         this.tierHolder = tierHolder;
-    }
-
-    @Override
-    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        consumer.accept(new IClientItemExtensions() {
-            @Override
-            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                return SpearBEWLR.SPEAR_ITEM_RENDERER;
-            }
-        });
     }
 
     @Override
@@ -90,7 +78,7 @@ public class BetterSpearItem extends TridentItem implements ITiered {
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
         if (enchantment != Enchantments.CHANNELING && enchantment != Enchantments.RIPTIDE) {
-            return super.canApplyAtEnchantingTable(stack, enchantment);
+            return ExtraPropertyHelper.canApplyAtEnchantingTable(stack, enchantment);
         }
 
         return false;
@@ -111,18 +99,28 @@ public class BetterSpearItem extends TridentItem implements ITiered {
     }
 
     @Override
-    public ItemTierHolder getTierHolder() {
+    public ItemTierConfig getTierHolder() {
         return tierHolder;
-    }
-
-    @Override
-    public boolean isDamageable(ItemStack stack) {
-        return true;
     }
 
     @Override
     public int getMaxDamage(ItemStack stack) {
         return this.tierHolder.getMaxUses();
+    }
+
+    @Override
+    public boolean isDamaged(ItemStack stack) {
+        return ExtraPropertyHelper.isDamaged(stack);
+    }
+
+    @Override
+    public void setDamage(ItemStack stack, int damage) {
+        ExtraPropertyHelper.setDamage(stack, damage);
+    }
+
+    @Override
+    public int getDamage(ItemStack stack) {
+        return ExtraPropertyHelper.getDamage(stack);
     }
 
     @Override

@@ -2,9 +2,10 @@ package com.grim3212.assorted.decor.common.item;
 
 import com.google.common.collect.Lists;
 import com.grim3212.assorted.decor.Constants;
+import com.grim3212.assorted.decor.api.ToolsTags;
 import com.grim3212.assorted.decor.api.util.WandCoord3D;
+import com.grim3212.assorted.decor.config.ToolsConfig;
 import com.grim3212.assorted.lib.util.NBTHelper;
-import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -30,7 +31,7 @@ public class WandBreakingItem extends WandItem {
     }
 
     protected static boolean isOre(BlockState state) {
-        return ToolsConfig.COMMON.destructiveSparedBlocks.getLoadedStates().contains(state);
+        return state.is(ToolsTags.Blocks.DESTRUCTIVE_SPARED_BLOCKS);
     }
 
     @Override
@@ -41,9 +42,9 @@ public class WandBreakingItem extends WandItem {
             case BREAK_WEAK:
                 return (state.getMaterial().isReplaceable() || state.getMaterial().getPushReaction() == PushReaction.DESTROY || state.getMaterial().isLiquid());
             case BREAK_ALL:
-                return (state.getBlock() != Blocks.BEDROCK || ToolsConfig.COMMON.bedrockBreaking.get());
+                return (state.getBlock() != Blocks.BEDROCK || ToolsConfig.Common.bedrockBreaking.getValue());
             case BREAK_XORES:
-                return (state.getBlock() != Blocks.BEDROCK || ToolsConfig.COMMON.bedrockBreaking.get()) && !isOre(state);
+                return (state.getBlock() != Blocks.BEDROCK || ToolsConfig.Common.bedrockBreaking.getValue()) && !isOre(state);
         }
         return false;
     }

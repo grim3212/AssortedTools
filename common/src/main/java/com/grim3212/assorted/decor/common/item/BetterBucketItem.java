@@ -1,13 +1,18 @@
 package com.grim3212.assorted.decor.common.item;
 
 import com.grim3212.assorted.decor.api.item.ITiered;
+import com.grim3212.assorted.decor.common.fluid.FluidHelper;
+import com.grim3212.assorted.decor.common.handlers.DispenseBucketHandler;
+import com.grim3212.assorted.decor.config.ItemTierConfig;
+import com.grim3212.assorted.decor.config.ToolsConfig;
+import com.grim3212.assorted.lib.annotations.LoaderImplement;
+import com.grim3212.assorted.lib.core.fluid.FluidInformation;
+import com.grim3212.assorted.lib.platform.Services;
 import com.grim3212.assorted.lib.util.NBTHelper;
-import com.grim3212.assorted.tools.common.handler.DispenseBucketHandler;
-import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
-import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -30,28 +35,16 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fluids.FluidActionResult;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
+import java.util.Optional;
 
 public class BetterBucketItem extends Item implements ITiered {
 
     private boolean milkPause = false;
-    public final ItemTierHolder tierHolder;
+    public final ItemTierConfig tierHolder;
 
-    public BetterBucketItem(Properties props, ItemTierHolder tierHolder) {
+    public BetterBucketItem(Properties props, ItemTierConfig tierHolder) {
         super(props.stacksTo(1));
 
         this.tierHolder = tierHolder;
@@ -67,7 +60,7 @@ public class BetterBucketItem extends Item implements ITiered {
     }
 
     @Override
-    public ItemTierHolder getTierHolder() {
+    public ItemTierConfig getTierHolder() {
         return tierHolder;
     }
 
@@ -82,7 +75,7 @@ public class BetterBucketItem extends Item implements ITiered {
     }
 
     public int getMaximumMillibuckets() {
-        return this.tierHolder.getMaxBuckets() * FluidType.BUCKET_VOLUME;
+        return this.tierHolder.getMaxBuckets() * getBucketAmount();
     }
 
     @Override
@@ -94,20 +87,13 @@ public class BetterBucketItem extends Item implements ITiered {
         }
     }
 
-    public FluidStack getFluidStack(ItemStack container) {
-        CompoundTag tagCompound = container.getOrCreateTag();
-        if (tagCompound == null) {
-            return FluidStack.EMPTY;
-        }
-        return FluidStack.loadFluidStackFromNBT(NBTHelper.getTag(tagCompound, FluidHandlerItemStack.FLUID_NBT_KEY));
-    }
-
     @Override
     public Component getName(ItemStack stack) {
-        FluidStack fluidStack = getFluidStack(stack);
+        Optional<FluidInformation> fluid = Services.FLUIDS.get(stack);
+        if (!fluid.isEmpty() && fluid.get().fluid() != Fluids.EMPTY) {
+            Component fluidName = Services.FLUIDS.getDisplayName(fluid.get().fluid());
 
-        if (!fluidStack.isEmpty()) {
-            return Component.translatable("item.assortedtools." + ForgeRegistries.ITEMS.getKey(stack.getItem()).getPath() + "_filled", fluidStack.getDisplayName());
+            return Component.translatable("item.assortedtools." + Services.PLATFORM.getRegistry(Registries.ITEM).getRegistryName(stack.getItem()).getPath() + "_filled", fluidName);
         }
 
         return super.getName(stack);
@@ -123,14 +109,9 @@ public class BetterBucketItem extends Item implements ITiered {
             return InteractionResultHolder.success(itemStackIn);
         }
 
-        // IFluidHandler fluidHandler = Utils.getFluidHandler(itemStackIn);
-
         // clicked on a block?
         BlockHitResult blockhitresult = getPlayerPOVHitResult(worldIn, playerIn, canContainMore ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE);
-        InteractionResultHolder<ItemStack> ret = ForgeEventFactory.onBucketUse(playerIn, worldIn, itemStackIn, blockhitresult);
 
-        if (ret != null)
-            return ret;
         if (blockhitresult.getType() == HitResult.Type.MISS) {
             return InteractionResultHolder.pass(itemStackIn);
         } else if (blockhitresult.getType() != HitResult.Type.BLOCK) {
@@ -141,29 +122,26 @@ public class BetterBucketItem extends Item implements ITiered {
             BlockPos clickPosOffset = clickPos.relative(direction);
 
             if (canContainMore) {
-                FluidActionResult filledResult = FluidUtil.tryPickUpFluid(itemStackIn, playerIn, worldIn, clickPos, direction);
-
-                if (filledResult.isSuccess()) {
-
+                Optional<FluidInformation> filledResult = FluidHelper.tryPickupFluid(playerIn, hand, worldIn, blockhitresult);
+                if (!filledResult.isEmpty()) {
                     // Don't change if in creative
                     // Also if it isn't a complete bucket then don't add it either
                     if (playerIn.isCreative()) {
                         return InteractionResultHolder.success(itemStackIn);
                     }
 
-                    if (!ToolsConfig.COMMON.allowPartialBucketAmounts.get()) {
-                        int filledAmount = getAmount(filledResult.getResult());
 
-                        int leftover = filledAmount % FluidType.BUCKET_VOLUME;
+                    int filledAmount = getAmount(itemStackIn) + (int) filledResult.get().amount();
 
-                        if (leftover != 0) {
-                            // Remove the leftovers so we have a perfect bucket amount again
-                            setAmount(itemStackIn, filledAmount - leftover);
-                            return InteractionResultHolder.success(itemStackIn);
-                        }
+                    if (filledAmount > this.getMaximumMillibuckets()) {
+                        filledAmount = this.getMaximumMillibuckets();
                     }
 
-                    return InteractionResultHolder.success(filledResult.result);
+                    int leftover = filledAmount % getBucketAmount();
+                    int newFillAmount = ToolsConfig.Common.allowPartialBucketAmounts.getValue() ? filledAmount : filledAmount - leftover;
+                    setAmount(itemStackIn, newFillAmount);
+
+                    return InteractionResultHolder.success(itemStackIn);
                 }
             }
 
@@ -186,15 +164,15 @@ public class BetterBucketItem extends Item implements ITiered {
                     // can the player place there?
                     if (playerIn.mayUseItemAt(clickPosOffset, direction, itemStackIn)) {
                         int amount = getAmount(itemStackIn);
-                        if (amount >= FluidType.BUCKET_VOLUME) {
-                            FluidStack fluidStack = getFluidStack(itemStackIn);
+                        if (amount >= getBucketAmount()) {
+                            Optional<FluidInformation> fluidInformation = Services.FLUIDS.get(itemStackIn);
 
                             // try placing liquid
-                            if (!fluidStack.isEmpty()) {
-                                if (this.tryPlaceFluid(playerIn, fluidStack, worldIn, clickPosOffset, itemStackIn, hand) && !playerIn.isCreative()) {
+                            if (!fluidInformation.isEmpty() && fluidInformation.get().fluid() != Fluids.EMPTY) {
+                                if (this.tryPlaceFluid(playerIn, fluidInformation.get(), worldIn, clickPosOffset, blockhitresult) && !playerIn.isCreative()) {
                                     // success!
                                     playerIn.awardStat(Stats.ITEM_USED.get(this));
-                                    setAmount(itemStackIn, amount - FluidType.BUCKET_VOLUME);
+                                    setAmount(itemStackIn, amount - getBucketAmount());
                                     return InteractionResultHolder.success(this.tryBreakBucket(itemStackIn));
                                 }
                             }
@@ -206,6 +184,11 @@ public class BetterBucketItem extends Item implements ITiered {
         // couldn't place liquid there2
         return InteractionResultHolder.pass(itemStackIn);
 
+    }
+
+    public int getBucketAmount() {
+        //Currently set to an int might change to a long
+        return (int) Services.FLUIDS.getBucketAmount();
     }
 
     /**
@@ -242,19 +225,19 @@ public class BetterBucketItem extends Item implements ITiered {
         return true;
     }
 
-    public boolean tryPlaceFluid(Player player, FluidStack block, Level worldIn, BlockPos pos, ItemStack stack, InteractionHand hand) {
-        if (!block.isEmpty()) {
+    public boolean tryPlaceFluid(Player player, FluidInformation fluid, Level worldIn, BlockPos pos, BlockHitResult hitResult) {
+        if (fluid.fluid() != Fluids.EMPTY) {
             // Handle vanilla differently
-            if (block.getFluid() == Fluids.WATER || block.getFluid() == Fluids.LAVA) {
+            if (fluid.fluid() == Fluids.WATER || fluid.fluid() == Fluids.LAVA) {
                 BlockState iblockstate = worldIn.getBlockState(pos);
                 Material material = iblockstate.getMaterial();
                 boolean flag = !material.isSolid();
-                boolean flag1 = iblockstate.canBeReplaced(block.getFluid());
+                boolean flag1 = iblockstate.canBeReplaced(fluid.fluid());
 
                 if (!worldIn.isEmptyBlock(pos) && !flag && !flag1) {
                     return false;
                 } else {
-                    if (worldIn.dimensionType().ultraWarm() && block.getFluid() == Fluids.WATER) {
+                    if (worldIn.dimensionType().ultraWarm() && fluid.fluid() == Fluids.WATER) {
                         int l = pos.getX();
                         int i = pos.getY();
                         int j = pos.getZ();
@@ -268,31 +251,40 @@ public class BetterBucketItem extends Item implements ITiered {
                             worldIn.destroyBlock(pos, true);
                         }
 
-                        worldIn.playSound(player, pos, block.getFluid() == Fluids.WATER ? SoundEvents.BUCKET_EMPTY : SoundEvents.BUCKET_EMPTY_LAVA, SoundSource.BLOCKS, 1.0F, 1.0F);
+                        worldIn.playSound(player, pos, fluid.fluid() == Fluids.WATER ? SoundEvents.BUCKET_EMPTY : SoundEvents.BUCKET_EMPTY_LAVA, SoundSource.BLOCKS, 1.0F, 1.0F);
                         // Specify exactly which blocks to place
-                        worldIn.setBlockAndUpdate(pos, block.getFluid() == Fluids.WATER ? Blocks.WATER.defaultBlockState() : Blocks.LAVA.defaultBlockState());
+                        worldIn.setBlockAndUpdate(pos, fluid.fluid() == Fluids.WATER ? Blocks.WATER.defaultBlockState() : Blocks.LAVA.defaultBlockState());
                     }
 
                     return true;
                 }
             } else {
-                return FluidUtil.tryPlaceFluid(player, worldIn, hand, pos, stack, block).isSuccess();
+                return FluidHelper.tryPlaceFluid(player, worldIn, pos, hitResult, fluid);
             }
         }
         return false;
     }
 
-    @Override
-    public boolean hasCraftingRemainingItem(ItemStack stack) {
-        return getAmount(stack) >= FluidType.BUCKET_VOLUME;
-    }
-
-    @Override
+    @LoaderImplement(loader = LoaderImplement.Loader.FORGE, value = "IForgeItem")
     public ItemStack getCraftingRemainingItem(ItemStack itemStack) {
         int amount = getAmount(itemStack);
-        setAmount(itemStack, amount - FluidType.BUCKET_VOLUME);
+        setAmount(itemStack, amount - getBucketAmount());
 
         return this.tryBreakBucket(itemStack);
+    }
+
+    @LoaderImplement(loader = LoaderImplement.Loader.FORGE, value = "IForgeItem")
+    public boolean hasCraftingRemainingItem(ItemStack stack) {
+        return getAmount(stack) >= getBucketAmount();
+    }
+
+    @LoaderImplement(loader = LoaderImplement.Loader.FABRIC, value = "FabricItem")
+    public ItemStack getRecipeRemainder(ItemStack stack) {
+        if (this.hasCraftingRemainingItem(stack)) {
+            return this.getCraftingRemainingItem(stack);
+        }
+
+        return ItemStack.EMPTY;
     }
 
     @Override
@@ -341,159 +333,27 @@ public class BetterBucketItem extends Item implements ITiered {
     }
 
     public static String getFluid(ItemStack stack) {
-        CompoundTag tag = NBTHelper.getTag(stack, FluidHandlerItemStack.FLUID_NBT_KEY);
+        CompoundTag tag = NBTHelper.getTag(stack, Services.FLUIDS.fluidStackTag());
         return NBTHelper.getString(tag, "FluidName");
     }
 
     public static void setFluid(ItemStack stack, String fluidName) {
-        CompoundTag tag = NBTHelper.getTag(stack, FluidHandlerItemStack.FLUID_NBT_KEY);
+        CompoundTag tag = NBTHelper.getTag(stack, Services.FLUIDS.fluidStackTag());
         NBTHelper.putString(tag, "FluidName", fluidName);
     }
 
     public static int getAmount(ItemStack stack) {
-        CompoundTag tag = NBTHelper.getTag(stack, FluidHandlerItemStack.FLUID_NBT_KEY);
+        CompoundTag tag = NBTHelper.getTag(stack, Services.FLUIDS.fluidStackTag());
         return NBTHelper.getInt(tag, "Amount");
     }
 
     public static void setAmount(ItemStack stack, int amount) {
-        CompoundTag tag = NBTHelper.getTag(stack, FluidHandlerItemStack.FLUID_NBT_KEY);
+        CompoundTag tag = NBTHelper.getTag(stack, Services.FLUIDS.fluidStackTag());
         NBTHelper.putInt(tag, "Amount", amount);
 
         if (amount <= 0) {
             NBTHelper.putString(tag, "FluidName", "empty");
             NBTHelper.putInt(tag, "Amount", 0);
-        }
-    }
-
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-        return new BucketFluidHandler(stack, this.getBreakStack(), this.getEmptyStack(), getMaximumMillibuckets());
-    }
-
-    public static class BucketFluidHandler extends FluidHandlerItemStack {
-
-        private final LazyOptional<IFluidHandlerItem> holder = LazyOptional.of(() -> this);
-
-        private ItemStack empty = ItemStack.EMPTY;
-        private ItemStack onBroken = ItemStack.EMPTY;
-
-        public BucketFluidHandler(ItemStack container, ItemStack onBroken, ItemStack empty, int capacity) {
-            super(container, capacity);
-
-            this.empty = empty;
-            this.onBroken = onBroken;
-        }
-
-        @Override
-        public int fill(FluidStack resource, FluidAction action) {
-            if (ToolsConfig.COMMON.allowPartialBucketAmounts.get()) {
-                return super.fill(resource, action);
-            } else {
-                return fillIncremental(resource, action);
-            }
-        }
-
-        @Override
-        public boolean canFillFluidType(FluidStack fluid) {
-            return this.container.getItem() instanceof BetterMilkBucketItem ? ForgeMod.MILK.isPresent() && fluid.getFluid() == ForgeMod.MILK.get() : fluid.getFluid() != Fluids.EMPTY;
-        }
-
-        private int fillIncremental(FluidStack resource, FluidAction action) {
-            if (container.getCount() != 1 || resource.isEmpty() || !canFillFluidType(resource)) {
-                return 0;
-            }
-
-            FluidStack contained = getFluid();
-            if (contained.isEmpty()) {
-                int fillAmount = Math.min(capacity, resource.getAmount());
-                int leftover = fillAmount % FluidType.BUCKET_VOLUME;
-
-                if (leftover != 0) {
-                    // Account for offset and only fill in bucket increments
-                    fillAmount -= leftover;
-                }
-
-                if (action == FluidAction.EXECUTE) {
-                    FluidStack filled = resource.copy();
-                    filled.setAmount(fillAmount);
-                    setFluid(filled);
-                }
-
-                return fillAmount;
-            } else {
-                if (contained.isFluidEqual(resource)) {
-                    int fillAmount = Math.min(capacity - contained.getAmount(), resource.getAmount());
-                    int leftover = fillAmount % FluidType.BUCKET_VOLUME;
-
-                    if (leftover != 0) {
-                        // Account for offset and only fill in bucket increments
-                        fillAmount -= leftover;
-                    }
-
-                    if (action == FluidAction.EXECUTE && fillAmount > 0) {
-                        contained.setAmount(contained.getAmount() + fillAmount);
-                        setFluid(contained);
-                    }
-
-                    return fillAmount;
-                }
-
-                return 0;
-            }
-        }
-
-        @Override
-        public FluidStack drain(int maxDrain, FluidAction action) {
-            if (ToolsConfig.COMMON.allowPartialBucketAmounts.get()) {
-                return super.drain(maxDrain, action);
-            } else {
-                if (container.getCount() != 1 || maxDrain <= 0) {
-                    return FluidStack.EMPTY;
-                }
-
-                FluidStack contained = getFluid();
-                if (contained.isEmpty() || !canDrainFluidType(contained)) {
-                    return FluidStack.EMPTY;
-                }
-
-                int drainAmount = Math.min(contained.getAmount(), maxDrain);
-                int leftover = drainAmount % FluidType.BUCKET_VOLUME;
-
-                if (leftover != 0) {
-                    // Account for offset and only drain in bucket increments
-                    drainAmount -= leftover;
-                }
-
-                FluidStack drained = contained.copy();
-                drained.setAmount(drainAmount);
-
-                if (action == FluidAction.EXECUTE) {
-                    contained.setAmount(contained.getAmount() - drainAmount);
-                    if (contained.getAmount() == 0) {
-                        setContainerToEmpty();
-                    } else {
-                        setFluid(contained);
-                    }
-                }
-
-                return drained;
-            }
-        }
-
-        @Override
-        protected void setContainerToEmpty() {
-            super.setContainerToEmpty();
-
-            if (!this.onBroken.isEmpty()) {
-                container = this.onBroken.copy();
-            } else {
-                container = this.empty.copy();
-            }
-        }
-
-        @Override
-        public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing) {
-            return ForgeCapabilities.FLUID_HANDLER_ITEM.orEmpty(capability, holder);
         }
     }
 }

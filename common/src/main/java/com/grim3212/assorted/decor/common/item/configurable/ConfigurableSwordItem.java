@@ -4,7 +4,9 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Multimap;
 import com.grim3212.assorted.decor.api.item.ITiered;
-import com.grim3212.assorted.tools.common.handler.ItemTierHolder;
+import com.grim3212.assorted.decor.config.ItemTierConfig;
+import com.grim3212.assorted.lib.core.item.ExtraPropertyHelper;
+import com.grim3212.assorted.lib.core.item.IItemExtraProperties;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -12,19 +14,19 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 
-public class ConfigurableSwordItem extends SwordItem implements ITiered {
+public class ConfigurableSwordItem extends SwordItem implements ITiered, IItemExtraProperties {
 
     private final static int swordDamage = 3;
     private final static float swordSpeed = -2.4F;
-    private final ItemTierHolder tierHolder;
+    private final ItemTierConfig tierHolder;
 
-    public ConfigurableSwordItem(ItemTierHolder tierHolder, Properties builder) {
+    public ConfigurableSwordItem(ItemTierConfig tierHolder, Properties builder) {
         super(tierHolder.getDefaultTier(), swordDamage, swordSpeed, builder);
         this.tierHolder = tierHolder;
     }
 
     @Override
-    public ItemTierHolder getTierHolder() {
+    public ItemTierConfig getTierHolder() {
         return tierHolder;
     }
 
@@ -41,6 +43,21 @@ public class ConfigurableSwordItem extends SwordItem implements ITiered {
     @Override
     public int getMaxDamage(ItemStack stack) {
         return this.tierHolder.getMaxUses();
+    }
+
+    @Override
+    public boolean isDamaged(ItemStack stack) {
+        return ExtraPropertyHelper.isDamaged(stack);
+    }
+
+    @Override
+    public void setDamage(ItemStack stack, int damage) {
+        ExtraPropertyHelper.setDamage(stack, damage);
+    }
+
+    @Override
+    public int getDamage(ItemStack stack) {
+        return ExtraPropertyHelper.getDamage(stack);
     }
 
     protected Multimap<Attribute, AttributeModifier> attribs;

@@ -2,8 +2,9 @@ package com.grim3212.assorted.decor.common.item;
 
 import com.grim3212.assorted.decor.api.item.ISwitchModes;
 import com.grim3212.assorted.decor.api.util.WandCoord3D;
+import com.grim3212.assorted.decor.config.ToolsConfig;
+import com.grim3212.assorted.lib.platform.Services;
 import com.grim3212.assorted.lib.util.NBTHelper;
-import com.grim3212.assorted.tools.common.handler.ToolsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -19,6 +20,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Random;
@@ -43,7 +45,7 @@ public abstract class WandItem extends Item implements ISwitchModes {
     protected abstract boolean canBreak(Level worldIn, BlockPos pos, ItemStack stack);
 
     public ItemStack getNeededItem(Level world, BlockState state, Player player) {
-        return state.getBlock().getCloneItemStack(state, null, world, BlockPos.ZERO, player);
+        return Services.LEVEL_PROPERTIES.getCloneItemStack(state, null, world, BlockPos.ZERO, player);
     }
 
     public int getNeededCount(BlockState state) {
@@ -60,7 +62,7 @@ public abstract class WandItem extends Item implements ISwitchModes {
     protected abstract boolean isTooFar(int range, int maxDiff, int range2D, ItemStack stack);
 
     public boolean isTooFar(WandCoord3D a, WandCoord3D b, ItemStack stack) {
-        if (ToolsConfig.COMMON.freeBuildMode.get()) {
+        if (ToolsConfig.Common.freeBuildMode.getValue()) {
             return a.getDistance(b) > 1500.0D;
         }
         return this.isTooFar((int) a.getDistance(b), 10, (int) a.getDistanceFlat(b), stack);
@@ -145,7 +147,7 @@ public abstract class WandItem extends Item implements ISwitchModes {
         Level worldIn = context.getLevel();
         Player playerIn = context.getPlayer();
         InteractionHand hand = context.getHand();
-        boolean isFree = ToolsConfig.COMMON.freeBuildMode.get() || playerIn.isCreative();
+        boolean isFree = ToolsConfig.Common.freeBuildMode.getValue() || playerIn.isCreative();
 
         this.stateOrig = worldIn.getBlockState(pos);
         BlockState state = this.stateOrig;
@@ -165,7 +167,8 @@ public abstract class WandItem extends Item implements ISwitchModes {
         WandCoord3D start = WandCoord3D.getFromNBT(worldIn, stack.getTag(), "Start");
 
         if (start == null) {
-            worldIn.playSound((Player) null, pos, state.getBlock().getSoundType(state, worldIn, pos, null).getBreakSound(), SoundSource.BLOCKS, (state.getBlock().getSoundType(state, worldIn, pos, null).getVolume() + 1.0F) / 2.0F, state.getBlock().getSoundType(state, worldIn, pos, null).getPitch() * 0.8F);
+            SoundType soundType = Services.LEVEL_PROPERTIES.getSoundType(worldIn, pos, null);
+            worldIn.playSound((Player) null, pos, soundType.getBreakSound(), SoundSource.BLOCKS, (soundType.getVolume() + 1.0F) / 2.0F, soundType.getPitch() * 0.8F);
 
             this.stateClicked = state;
             clicked_current.writeToNBT(stack.getTag(), "Start");
