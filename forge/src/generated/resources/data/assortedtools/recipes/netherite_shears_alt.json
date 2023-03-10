@@ -1,39 +1,34 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
+      "type": "forge:and",
+      "values": [
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "moreshears"
         },
         {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:ingots/netherite"
-          }
+          "type": "assortedlib:item_tag_populated",
+          "tag": "forge:ingots/netherite"
         }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "category": "equipment",
-        "key": {
-          "I": {
-            "tag": "forge:ingots/netherite"
-          },
-          "L": {
-            "tag": "forge:leather"
-          }
-        },
-        "pattern": [
-          "LI",
-          "I "
-        ],
-        "result": {
-          "item": "assortedtools:netherite_shears"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "key": {
+    "I": {
+      "tag": "forge:ingots/netherite"
+    },
+    "L": {
+      "tag": "forge:leather"
+    }
+  },
+  "pattern": [
+    "LI",
+    "I "
+  ],
+  "result": {
+    "item": "assortedtools:netherite_shears"
+  }
 }

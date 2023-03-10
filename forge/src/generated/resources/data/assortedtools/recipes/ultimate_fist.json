@@ -1,49 +1,42 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
-        {
-          "type": "assortedtools:part_enabled",
-          "part": "ultimatefist"
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shapeless",
-        "category": "equipment",
-        "ingredients": [
-          {
-            "item": "assortedtools:u_fragment"
-          },
-          {
-            "item": "assortedtools:l_fragment"
-          },
-          {
-            "item": "assortedtools:t_fragment"
-          },
-          {
-            "item": "assortedtools:i_fragment"
-          },
-          {
-            "item": "assortedtools:m_fragment"
-          },
-          {
-            "item": "assortedtools:a_fragment"
-          },
-          {
-            "item": "assortedtools:missing_fragment"
-          },
-          {
-            "item": "assortedtools:e_fragment"
-          },
-          {
-            "tag": "forge:nether_stars"
-          }
-        ],
-        "result": {
-          "item": "assortedtools:ultimate_fist"
-        }
-      }
+      "type": "assortedlib:part_enabled",
+      "part": "ultimatefist"
     }
-  ]
+  ],
+  "ingredients": [
+    {
+      "item": "assortedtools:u_fragment"
+    },
+    {
+      "item": "assortedtools:l_fragment"
+    },
+    {
+      "item": "assortedtools:t_fragment"
+    },
+    {
+      "item": "assortedtools:i_fragment"
+    },
+    {
+      "item": "assortedtools:m_fragment"
+    },
+    {
+      "item": "assortedtools:a_fragment"
+    },
+    {
+      "item": "assortedtools:missing_fragment"
+    },
+    {
+      "item": "assortedtools:e_fragment"
+    },
+    {
+      "tag": "forge:nether_stars"
+    }
+  ],
+  "result": {
+    "item": "assortedtools:ultimate_fist"
+  }
 }

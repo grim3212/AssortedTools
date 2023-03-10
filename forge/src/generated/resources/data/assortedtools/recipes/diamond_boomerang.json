@@ -1,33 +1,26 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
-        {
-          "type": "assortedtools:part_enabled",
-          "part": "boomerangs"
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "category": "equipment",
-        "key": {
-          "X": {
-            "tag": "forge:gems/diamond"
-          },
-          "Y": {
-            "item": "assortedtools:wood_boomerang"
-          }
-        },
-        "pattern": [
-          "XX",
-          "XY",
-          "XX"
-        ],
-        "result": {
-          "item": "assortedtools:diamond_boomerang"
-        }
-      }
+      "type": "assortedlib:part_enabled",
+      "part": "boomerangs"
     }
-  ]
+  ],
+  "key": {
+    "X": {
+      "tag": "forge:gems/diamond"
+    },
+    "Y": {
+      "item": "assortedtools:wood_boomerang"
+    }
+  },
+  "pattern": [
+    "XX",
+    "XY",
+    "XX"
+  ],
+  "result": {
+    "item": "assortedtools:diamond_boomerang"
+  }
 }

@@ -1,60 +1,55 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
+      "type": "forge:and",
+      "values": [
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "multitools"
         },
         {
-          "type": "assortedtools:part_enabled",
-          "part": "extramaterials"
+          "type": "assortedlib:item_tag_populated",
+          "tag": "forge:ingots/invar"
         },
         {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:ingots/invar"
-          }
+          "type": "assortedlib:part_enabled",
+          "part": "extramaterials"
         }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shapeless",
-        "category": "equipment",
-        "ingredients": [
-          {
-            "tag": "forge:swords/invar"
-          },
-          {
-            "tag": "forge:pickaxes/invar"
-          },
-          {
-            "tag": "forge:shovels/invar"
-          },
-          {
-            "tag": "forge:hoes/invar"
-          },
-          {
-            "tag": "forge:axes/invar"
-          },
-          {
-            "tag": "forge:ingots/invar"
-          },
-          {
-            "tag": "forge:ingots/invar"
-          },
-          {
-            "tag": "forge:ingots/invar"
-          },
-          {
-            "tag": "forge:ingots/invar"
-          }
-        ],
-        "result": {
-          "item": "assortedtools:invar_multitool"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "ingredients": [
+    {
+      "item": "assortedtools:invar_pickaxe"
+    },
+    {
+      "item": "assortedtools:invar_shovel"
+    },
+    {
+      "item": "assortedtools:invar_axe"
+    },
+    {
+      "item": "assortedtools:invar_hoe"
+    },
+    {
+      "item": "assortedtools:invar_sword"
+    },
+    {
+      "tag": "forge:ingots/invar"
+    },
+    {
+      "tag": "forge:ingots/invar"
+    },
+    {
+      "tag": "forge:ingots/invar"
+    },
+    {
+      "tag": "forge:ingots/invar"
+    }
+  ],
+  "result": {
+    "item": "assortedtools:invar_multitool"
+  }
 }

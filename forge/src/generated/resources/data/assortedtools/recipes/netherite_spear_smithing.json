@@ -6,6 +6,12 @@
   "base": {
     "item": "assortedtools:diamond_spear"
   },
+  "conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "betterspears"
+    }
+  ],
   "result": {
     "item": "assortedtools:netherite_spear"
   }

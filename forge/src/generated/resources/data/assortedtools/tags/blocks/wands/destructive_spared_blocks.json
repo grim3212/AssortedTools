@@ -1,0 +1,10 @@
+{
+  "values": [
+    "#forge:ores",
+    "#forge:chests",
+    "minecraft:spawner",
+    "#forge:ores",
+    "#forge:chests",
+    "minecraft:spawner"
+  ]
+}

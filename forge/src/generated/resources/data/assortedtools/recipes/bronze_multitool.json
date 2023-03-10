@@ -1,60 +1,55 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
+      "type": "forge:and",
+      "values": [
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "multitools"
         },
         {
-          "type": "assortedtools:part_enabled",
-          "part": "extramaterials"
+          "type": "assortedlib:item_tag_populated",
+          "tag": "forge:ingots/bronze"
         },
         {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:ingots/bronze"
-          }
+          "type": "assortedlib:part_enabled",
+          "part": "extramaterials"
         }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shapeless",
-        "category": "equipment",
-        "ingredients": [
-          {
-            "tag": "forge:swords/bronze"
-          },
-          {
-            "tag": "forge:pickaxes/bronze"
-          },
-          {
-            "tag": "forge:shovels/bronze"
-          },
-          {
-            "tag": "forge:hoes/bronze"
-          },
-          {
-            "tag": "forge:axes/bronze"
-          },
-          {
-            "tag": "forge:ingots/bronze"
-          },
-          {
-            "tag": "forge:ingots/bronze"
-          },
-          {
-            "tag": "forge:ingots/bronze"
-          },
-          {
-            "tag": "forge:ingots/bronze"
-          }
-        ],
-        "result": {
-          "item": "assortedtools:bronze_multitool"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "ingredients": [
+    {
+      "item": "assortedtools:bronze_pickaxe"
+    },
+    {
+      "item": "assortedtools:bronze_shovel"
+    },
+    {
+      "item": "assortedtools:bronze_axe"
+    },
+    {
+      "item": "assortedtools:bronze_hoe"
+    },
+    {
+      "item": "assortedtools:bronze_sword"
+    },
+    {
+      "tag": "forge:ingots/bronze"
+    },
+    {
+      "tag": "forge:ingots/bronze"
+    },
+    {
+      "tag": "forge:ingots/bronze"
+    },
+    {
+      "tag": "forge:ingots/bronze"
+    }
+  ],
+  "result": {
+    "item": "assortedtools:bronze_multitool"
+  }
 }

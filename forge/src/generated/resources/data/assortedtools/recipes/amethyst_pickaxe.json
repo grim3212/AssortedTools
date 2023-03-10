@@ -1,40 +1,35 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
+      "type": "forge:and",
+      "values": [
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "extramaterials"
         },
         {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:gems/amethyst"
-          }
+          "type": "assortedlib:item_tag_populated",
+          "tag": "forge:gems/amethyst"
         }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "category": "equipment",
-        "key": {
-          "S": {
-            "tag": "forge:rods/wooden"
-          },
-          "X": {
-            "tag": "forge:gems/amethyst"
-          }
-        },
-        "pattern": [
-          "XXX",
-          " S ",
-          " S "
-        ],
-        "result": {
-          "item": "assortedtools:amethyst_pickaxe"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "key": {
+    "S": {
+      "tag": "forge:rods/wooden"
+    },
+    "X": {
+      "tag": "forge:gems/amethyst"
+    }
+  },
+  "pattern": [
+    "XXX",
+    " S ",
+    " S "
+  ],
+  "result": {
+    "item": "assortedtools:amethyst_pickaxe"
+  }
 }

@@ -1,6 +1,6 @@
 package com.grim3212.assorted.tools.common.loot;
 
-import com.grim3212.assorted.decor.Constants;
+import com.grim3212.assorted.tools.Constants;
 import com.grim3212.assorted.tools.common.loot.UltimateFragmentLootModifier.EndUltimateFragmentLootModifier;
 import com.grim3212.assorted.tools.common.loot.UltimateFragmentLootModifier.NetherUltimateFragmentLootModifier;
 import com.grim3212.assorted.tools.common.loot.UltimateFragmentLootModifier.OverworldUltimateFragmentLootModifier;

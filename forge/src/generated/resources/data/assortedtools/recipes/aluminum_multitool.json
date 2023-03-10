@@ -1,60 +1,55 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
+      "type": "forge:and",
+      "values": [
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "multitools"
         },
         {
-          "type": "assortedtools:part_enabled",
-          "part": "extramaterials"
+          "type": "assortedlib:item_tag_populated",
+          "tag": "forge:ingots/aluminum"
         },
         {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:ingots/aluminum"
-          }
+          "type": "assortedlib:part_enabled",
+          "part": "extramaterials"
         }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shapeless",
-        "category": "equipment",
-        "ingredients": [
-          {
-            "tag": "forge:swords/aluminum"
-          },
-          {
-            "tag": "forge:pickaxes/aluminum"
-          },
-          {
-            "tag": "forge:shovels/aluminum"
-          },
-          {
-            "tag": "forge:hoes/aluminum"
-          },
-          {
-            "tag": "forge:axes/aluminum"
-          },
-          {
-            "tag": "forge:ingots/aluminum"
-          },
-          {
-            "tag": "forge:ingots/aluminum"
-          },
-          {
-            "tag": "forge:ingots/aluminum"
-          },
-          {
-            "tag": "forge:ingots/aluminum"
-          }
-        ],
-        "result": {
-          "item": "assortedtools:aluminum_multitool"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "ingredients": [
+    {
+      "item": "assortedtools:aluminum_pickaxe"
+    },
+    {
+      "item": "assortedtools:aluminum_shovel"
+    },
+    {
+      "item": "assortedtools:aluminum_axe"
+    },
+    {
+      "item": "assortedtools:aluminum_hoe"
+    },
+    {
+      "item": "assortedtools:aluminum_sword"
+    },
+    {
+      "tag": "forge:ingots/aluminum"
+    },
+    {
+      "tag": "forge:ingots/aluminum"
+    },
+    {
+      "tag": "forge:ingots/aluminum"
+    },
+    {
+      "tag": "forge:ingots/aluminum"
+    }
+  ],
+  "result": {
+    "item": "assortedtools:aluminum_multitool"
+  }
 }

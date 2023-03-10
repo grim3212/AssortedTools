@@ -1,60 +1,55 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
+      "type": "forge:and",
+      "values": [
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "multitools"
         },
         {
-          "type": "assortedtools:part_enabled",
-          "part": "extramaterials"
+          "type": "assortedlib:item_tag_populated",
+          "tag": "forge:gems/topaz"
         },
         {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:gems/topaz"
-          }
+          "type": "assortedlib:part_enabled",
+          "part": "extramaterials"
         }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shapeless",
-        "category": "equipment",
-        "ingredients": [
-          {
-            "tag": "forge:swords/topaz"
-          },
-          {
-            "tag": "forge:pickaxes/topaz"
-          },
-          {
-            "tag": "forge:shovels/topaz"
-          },
-          {
-            "tag": "forge:hoes/topaz"
-          },
-          {
-            "tag": "forge:axes/topaz"
-          },
-          {
-            "tag": "forge:gems/topaz"
-          },
-          {
-            "tag": "forge:gems/topaz"
-          },
-          {
-            "tag": "forge:gems/topaz"
-          },
-          {
-            "tag": "forge:gems/topaz"
-          }
-        ],
-        "result": {
-          "item": "assortedtools:topaz_multitool"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "ingredients": [
+    {
+      "item": "assortedtools:topaz_pickaxe"
+    },
+    {
+      "item": "assortedtools:topaz_shovel"
+    },
+    {
+      "item": "assortedtools:topaz_axe"
+    },
+    {
+      "item": "assortedtools:topaz_hoe"
+    },
+    {
+      "item": "assortedtools:topaz_sword"
+    },
+    {
+      "tag": "forge:gems/topaz"
+    },
+    {
+      "tag": "forge:gems/topaz"
+    },
+    {
+      "tag": "forge:gems/topaz"
+    },
+    {
+      "tag": "forge:gems/topaz"
+    }
+  ],
+  "result": {
+    "item": "assortedtools:topaz_multitool"
+  }
 }

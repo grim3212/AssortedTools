@@ -1,39 +1,34 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
+      "type": "forge:and",
+      "values": [
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "moreshears"
         },
         {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:gems/diamond"
-          }
+          "type": "assortedlib:item_tag_populated",
+          "tag": "forge:gems/diamond"
         }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "category": "equipment",
-        "key": {
-          "I": {
-            "tag": "forge:gems/diamond"
-          },
-          "L": {
-            "tag": "forge:leather"
-          }
-        },
-        "pattern": [
-          " I",
-          "IL"
-        ],
-        "result": {
-          "item": "assortedtools:diamond_shears"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "key": {
+    "I": {
+      "tag": "forge:gems/diamond"
+    },
+    "L": {
+      "tag": "forge:leather"
+    }
+  },
+  "pattern": [
+    " I",
+    "IL"
+  ],
+  "result": {
+    "item": "assortedtools:diamond_shears"
+  }
 }

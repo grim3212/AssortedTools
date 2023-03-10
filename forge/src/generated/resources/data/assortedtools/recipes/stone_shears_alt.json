@@ -1,39 +1,34 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
+      "type": "forge:and",
+      "values": [
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "moreshears"
         },
         {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "minecraft:stone_tool_materials"
-          }
+          "type": "assortedlib:item_tag_populated",
+          "tag": "minecraft:stone_tool_materials"
         }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "category": "equipment",
-        "key": {
-          "I": {
-            "tag": "minecraft:stone_tool_materials"
-          },
-          "L": {
-            "tag": "forge:leather"
-          }
-        },
-        "pattern": [
-          "LI",
-          "I "
-        ],
-        "result": {
-          "item": "assortedtools:stone_shears"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "key": {
+    "I": {
+      "tag": "minecraft:stone_tool_materials"
+    },
+    "L": {
+      "tag": "forge:leather"
+    }
+  },
+  "pattern": [
+    "LI",
+    "I "
+  ],
+  "result": {
+    "item": "assortedtools:stone_shears"
+  }
 }

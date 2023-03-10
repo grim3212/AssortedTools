@@ -1,40 +1,35 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
+      "type": "forge:and",
+      "values": [
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "extramaterials"
         },
         {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:ingots/electrum"
-          }
+          "type": "assortedlib:item_tag_populated",
+          "tag": "forge:ingots/electrum"
         }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "category": "equipment",
-        "key": {
-          "S": {
-            "tag": "forge:rods/wooden"
-          },
-          "X": {
-            "tag": "forge:ingots/electrum"
-          }
-        },
-        "pattern": [
-          "X",
-          "X",
-          "S"
-        ],
-        "result": {
-          "item": "assortedtools:electrum_sword"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "key": {
+    "S": {
+      "tag": "forge:rods/wooden"
+    },
+    "X": {
+      "tag": "forge:ingots/electrum"
+    }
+  },
+  "pattern": [
+    "X",
+    "X",
+    "S"
+  ],
+  "result": {
+    "item": "assortedtools:electrum_sword"
+  }
 }

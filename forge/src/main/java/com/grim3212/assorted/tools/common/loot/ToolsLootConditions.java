@@ -1,6 +1,6 @@
 package com.grim3212.assorted.tools.common.loot;
 
-import com.grim3212.assorted.decor.Constants;
+import com.grim3212.assorted.tools.Constants;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraftforge.registries.DeferredRegister;

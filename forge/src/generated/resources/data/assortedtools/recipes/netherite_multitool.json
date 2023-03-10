@@ -1,56 +1,51 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
+      "type": "forge:and",
+      "values": [
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "multitools"
         },
         {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:ingots/netherite"
-          }
+          "type": "assortedlib:item_tag_populated",
+          "tag": "forge:ingots/netherite"
         }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shapeless",
-        "category": "equipment",
-        "ingredients": [
-          {
-            "tag": "forge:swords/netherite"
-          },
-          {
-            "tag": "forge:pickaxes/netherite"
-          },
-          {
-            "tag": "forge:shovels/netherite"
-          },
-          {
-            "tag": "forge:hoes/netherite"
-          },
-          {
-            "tag": "forge:axes/netherite"
-          },
-          {
-            "tag": "forge:ingots/netherite"
-          },
-          {
-            "tag": "forge:ingots/netherite"
-          },
-          {
-            "tag": "forge:ingots/netherite"
-          },
-          {
-            "tag": "forge:ingots/netherite"
-          }
-        ],
-        "result": {
-          "item": "assortedtools:netherite_multitool"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:netherite_pickaxe"
+    },
+    {
+      "item": "minecraft:netherite_shovel"
+    },
+    {
+      "item": "minecraft:netherite_axe"
+    },
+    {
+      "item": "minecraft:netherite_hoe"
+    },
+    {
+      "item": "minecraft:netherite_sword"
+    },
+    {
+      "tag": "forge:ingots/netherite"
+    },
+    {
+      "tag": "forge:ingots/netherite"
+    },
+    {
+      "tag": "forge:ingots/netherite"
+    },
+    {
+      "tag": "forge:ingots/netherite"
+    }
+  ],
+  "result": {
+    "item": "assortedtools:netherite_multitool"
+  }
 }

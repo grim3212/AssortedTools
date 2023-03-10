@@ -1,44 +1,39 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
+      "type": "forge:and",
+      "values": [
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "hammers"
         },
         {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:gems/sapphire"
-          }
+          "type": "assortedlib:item_tag_populated",
+          "tag": "forge:gems/sapphire"
         },
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "extramaterials"
         }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "category": "equipment",
-        "key": {
-          "I": {
-            "tag": "forge:gems/sapphire"
-          },
-          "S": {
-            "tag": "forge:rods/wooden"
-          }
-        },
-        "pattern": [
-          "III",
-          "ISI",
-          " S "
-        ],
-        "result": {
-          "item": "assortedtools:sapphire_hammer"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "key": {
+    "I": {
+      "tag": "forge:gems/sapphire"
+    },
+    "S": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "pattern": [
+    "III",
+    "ISI",
+    " S "
+  ],
+  "result": {
+    "item": "assortedtools:sapphire_hammer"
+  }
 }

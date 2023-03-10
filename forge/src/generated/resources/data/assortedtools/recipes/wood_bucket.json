@@ -1,36 +1,31 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
+      "type": "forge:and",
+      "values": [
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "betterbuckets"
         },
         {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "minecraft:planks"
-          }
+          "type": "assortedlib:item_tag_populated",
+          "tag": "minecraft:planks"
         }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "category": "equipment",
-        "key": {
-          "I": {
-            "tag": "minecraft:planks"
-          }
-        },
-        "pattern": [
-          "I I",
-          " I "
-        ],
-        "result": {
-          "item": "assortedtools:wood_bucket"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "key": {
+    "I": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "pattern": [
+    "I I",
+    " I "
+  ],
+  "result": {
+    "item": "assortedtools:wood_bucket"
+  }
 }

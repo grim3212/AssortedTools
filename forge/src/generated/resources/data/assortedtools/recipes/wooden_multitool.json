@@ -1,56 +1,51 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
+      "type": "forge:and",
+      "values": [
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "multitools"
         },
         {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "minecraft:planks"
-          }
+          "type": "assortedlib:item_tag_populated",
+          "tag": "minecraft:planks"
         }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shapeless",
-        "category": "equipment",
-        "ingredients": [
-          {
-            "tag": "forge:swords/wooden"
-          },
-          {
-            "tag": "forge:pickaxes/wooden"
-          },
-          {
-            "tag": "forge:shovels/wooden"
-          },
-          {
-            "tag": "forge:hoes/wooden"
-          },
-          {
-            "tag": "forge:axes/wooden"
-          },
-          {
-            "tag": "minecraft:planks"
-          },
-          {
-            "tag": "minecraft:planks"
-          },
-          {
-            "tag": "minecraft:planks"
-          },
-          {
-            "tag": "minecraft:planks"
-          }
-        ],
-        "result": {
-          "item": "assortedtools:wooden_multitool"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:wooden_pickaxe"
+    },
+    {
+      "item": "minecraft:wooden_shovel"
+    },
+    {
+      "item": "minecraft:wooden_axe"
+    },
+    {
+      "item": "minecraft:wooden_hoe"
+    },
+    {
+      "item": "minecraft:wooden_sword"
+    },
+    {
+      "tag": "minecraft:planks"
+    },
+    {
+      "tag": "minecraft:planks"
+    },
+    {
+      "tag": "minecraft:planks"
+    },
+    {
+      "tag": "minecraft:planks"
+    }
+  ],
+  "result": {
+    "item": "assortedtools:wooden_multitool"
+  }
 }

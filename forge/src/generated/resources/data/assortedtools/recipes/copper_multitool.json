@@ -1,60 +1,55 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
+      "type": "forge:and",
+      "values": [
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "multitools"
         },
         {
-          "type": "assortedtools:part_enabled",
-          "part": "extramaterials"
+          "type": "assortedlib:item_tag_populated",
+          "tag": "forge:ingots/copper"
         },
         {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:ingots/copper"
-          }
+          "type": "assortedlib:part_enabled",
+          "part": "extramaterials"
         }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shapeless",
-        "category": "equipment",
-        "ingredients": [
-          {
-            "tag": "forge:swords/copper"
-          },
-          {
-            "tag": "forge:pickaxes/copper"
-          },
-          {
-            "tag": "forge:shovels/copper"
-          },
-          {
-            "tag": "forge:hoes/copper"
-          },
-          {
-            "tag": "forge:axes/copper"
-          },
-          {
-            "tag": "forge:ingots/copper"
-          },
-          {
-            "tag": "forge:ingots/copper"
-          },
-          {
-            "tag": "forge:ingots/copper"
-          },
-          {
-            "tag": "forge:ingots/copper"
-          }
-        ],
-        "result": {
-          "item": "assortedtools:copper_multitool"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "ingredients": [
+    {
+      "item": "assortedtools:copper_pickaxe"
+    },
+    {
+      "item": "assortedtools:copper_shovel"
+    },
+    {
+      "item": "assortedtools:copper_axe"
+    },
+    {
+      "item": "assortedtools:copper_hoe"
+    },
+    {
+      "item": "assortedtools:copper_sword"
+    },
+    {
+      "tag": "forge:ingots/copper"
+    },
+    {
+      "tag": "forge:ingots/copper"
+    },
+    {
+      "tag": "forge:ingots/copper"
+    },
+    {
+      "tag": "forge:ingots/copper"
+    }
+  ],
+  "result": {
+    "item": "assortedtools:copper_multitool"
+  }
 }

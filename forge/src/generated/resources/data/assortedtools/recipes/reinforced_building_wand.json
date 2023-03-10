@@ -1,33 +1,26 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
-        {
-          "type": "assortedtools:part_enabled",
-          "part": "wands"
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "category": "equipment",
-        "key": {
-          "G": {
-            "tag": "forge:storage_blocks/gold"
-          },
-          "X": {
-            "tag": "forge:obsidian"
-          }
-        },
-        "pattern": [
-          "XGX",
-          "XGX",
-          "XGX"
-        ],
-        "result": {
-          "item": "assortedtools:reinforced_building_wand"
-        }
-      }
+      "type": "assortedlib:part_enabled",
+      "part": "wands"
     }
-  ]
+  ],
+  "key": {
+    "G": {
+      "tag": "forge:storage_blocks/gold"
+    },
+    "X": {
+      "tag": "forge:obsidian"
+    }
+  },
+  "pattern": [
+    "XGX",
+    "XGX",
+    "XGX"
+  ],
+  "result": {
+    "item": "assortedtools:reinforced_building_wand"
+  }
 }

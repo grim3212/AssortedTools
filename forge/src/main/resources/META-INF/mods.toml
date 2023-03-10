@@ -1,31 +1,32 @@
-# Find more information on toml format here:  https://github.com/toml-lang/toml
-
-modLoader="javafml"
-loaderVersion="[44,)"
-license="GPL-3.0 License"
-issueTrackerURL="https://github.com/grim3212/AssortedTools"
-
+modLoader = "javafml"
+loaderVersion = "[44,)"
+license = "${license}"
+logoBlur = false
+issueTrackerURL = "${issue_tracker}"
+logoFile = "icon.png"
 [[mods]]
-modId="assortedtools"
-version="${file.jarVersion}"
-displayName="Assorted Tools"
-#updateJSONURL=""
-displayURL="https://assortedmods.com/tools"
-logoFile="logo.png"
-authors="Grim3212"
-description='''
-An assortment of various helpful tools to add to your Minecraft world.
+modId = "${mod_id}"
+version = "${version}"
+displayName = "${mod_name}"
+authors = "${mod_author}"
+description = '''
+${mod_description}
 '''
-
 [[dependencies.assortedtools]]
-    modId="forge"
-    mandatory=true
-    versionRange="[44,)"
-    ordering="NONE"
-    side="BOTH"
+modId = "forge"
+mandatory = true
+versionRange = "${forge_version_range}"
+ordering = "NONE"
+side = "BOTH"
 [[dependencies.assortedtools]]
-    modId="minecraft"
-    mandatory=true
-    versionRange="[1.19.3]"
-    ordering="NONE"
-    side="BOTH"
+modId = "minecraft"
+mandatory = true
+versionRange = "${forge_mc_version_range}"
+ordering = "NONE"
+side = "BOTH"
+[[dependencies.assortedtools]]
+modId = "assortedlib"
+mandatory = true
+versionRange = "[1.0.1,)"
+ordering = "NONE"
+side = "BOTH"

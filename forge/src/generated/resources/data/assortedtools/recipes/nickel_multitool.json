@@ -1,60 +1,55 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
+      "type": "forge:and",
+      "values": [
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "multitools"
         },
         {
-          "type": "assortedtools:part_enabled",
-          "part": "extramaterials"
+          "type": "assortedlib:item_tag_populated",
+          "tag": "forge:ingots/nickel"
         },
         {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:ingots/nickel"
-          }
+          "type": "assortedlib:part_enabled",
+          "part": "extramaterials"
         }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shapeless",
-        "category": "equipment",
-        "ingredients": [
-          {
-            "tag": "forge:swords/nickel"
-          },
-          {
-            "tag": "forge:pickaxes/nickel"
-          },
-          {
-            "tag": "forge:shovels/nickel"
-          },
-          {
-            "tag": "forge:hoes/nickel"
-          },
-          {
-            "tag": "forge:axes/nickel"
-          },
-          {
-            "tag": "forge:ingots/nickel"
-          },
-          {
-            "tag": "forge:ingots/nickel"
-          },
-          {
-            "tag": "forge:ingots/nickel"
-          },
-          {
-            "tag": "forge:ingots/nickel"
-          }
-        ],
-        "result": {
-          "item": "assortedtools:nickel_multitool"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "ingredients": [
+    {
+      "item": "assortedtools:nickel_pickaxe"
+    },
+    {
+      "item": "assortedtools:nickel_shovel"
+    },
+    {
+      "item": "assortedtools:nickel_axe"
+    },
+    {
+      "item": "assortedtools:nickel_hoe"
+    },
+    {
+      "item": "assortedtools:nickel_sword"
+    },
+    {
+      "tag": "forge:ingots/nickel"
+    },
+    {
+      "tag": "forge:ingots/nickel"
+    },
+    {
+      "tag": "forge:ingots/nickel"
+    },
+    {
+      "tag": "forge:ingots/nickel"
+    }
+  ],
+  "result": {
+    "item": "assortedtools:nickel_multitool"
+  }
 }

@@ -1,7 +1,7 @@
 package com.grim3212.assorted.tools.common.data;
 
-import com.grim3212.assorted.decor.Constants;
-import com.grim3212.assorted.decor.common.item.ToolsItems;
+import com.grim3212.assorted.tools.Constants;
+import com.grim3212.assorted.tools.common.item.ToolsItems;
 import net.minecraft.data.loot.packs.VanillaChestLoot;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;

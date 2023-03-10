@@ -1,39 +1,32 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
-        {
-          "type": "assortedtools:part_enabled",
-          "part": "pokeball"
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "category": "equipment",
-        "key": {
-          "B": {
-            "item": "minecraft:stone_button"
-          },
-          "C": {
-            "tag": "minecraft:coals"
-          },
-          "I": {
-            "tag": "forge:ingots/iron"
-          },
-          "R": {
-            "tag": "forge:dusts/redstone"
-          }
-        },
-        "pattern": [
-          "RRR",
-          "CBC",
-          "III"
-        ],
-        "result": {
-          "item": "assortedtools:pokeball"
-        }
-      }
+      "type": "assortedlib:part_enabled",
+      "part": "pokeball"
     }
-  ]
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:stone_button"
+    },
+    "C": {
+      "tag": "minecraft:coals"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    }
+  },
+  "pattern": [
+    "RRR",
+    "CBC",
+    "III"
+  ],
+  "result": {
+    "item": "assortedtools:pokeball"
+  }
 }

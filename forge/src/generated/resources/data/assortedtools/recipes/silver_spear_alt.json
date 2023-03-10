@@ -1,42 +1,37 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
+      "type": "forge:and",
+      "values": [
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "betterspears"
         },
         {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:ingots/silver"
-          }
+          "type": "assortedlib:item_tag_populated",
+          "tag": "forge:ingots/silver"
         },
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "extramaterials"
         }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "category": "equipment",
-        "key": {
-          "I": {
-            "tag": "forge:ingots/silver"
-          },
-          "S": {
-            "tag": "forge:rods/wooden"
-          }
-        },
-        "pattern": [
-          "SSI"
-        ],
-        "result": {
-          "item": "assortedtools:silver_spear"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "key": {
+    "I": {
+      "tag": "forge:ingots/silver"
+    },
+    "S": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "pattern": [
+    "SSI"
+  ],
+  "result": {
+    "item": "assortedtools:silver_spear"
+  }
 }

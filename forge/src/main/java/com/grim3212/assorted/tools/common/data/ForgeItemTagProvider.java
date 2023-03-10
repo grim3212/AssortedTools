@@ -1,7 +1,7 @@
 package com.grim3212.assorted.tools.common.data;
 
-import com.grim3212.assorted.decor.Constants;
-import com.grim3212.assorted.decor.data.ToolsCommonTagProvider;
+import com.grim3212.assorted.tools.Constants;
+import com.grim3212.assorted.tools.data.ToolsCommonTagProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.PackOutput;

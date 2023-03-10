@@ -1,56 +1,51 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
+      "type": "forge:and",
+      "values": [
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "multitools"
         },
         {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:ingots/iron"
-          }
+          "type": "assortedlib:item_tag_populated",
+          "tag": "forge:ingots/iron"
         }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shapeless",
-        "category": "equipment",
-        "ingredients": [
-          {
-            "tag": "forge:swords/iron"
-          },
-          {
-            "tag": "forge:pickaxes/iron"
-          },
-          {
-            "tag": "forge:shovels/iron"
-          },
-          {
-            "tag": "forge:hoes/iron"
-          },
-          {
-            "tag": "forge:axes/iron"
-          },
-          {
-            "tag": "forge:ingots/iron"
-          },
-          {
-            "tag": "forge:ingots/iron"
-          },
-          {
-            "tag": "forge:ingots/iron"
-          },
-          {
-            "tag": "forge:ingots/iron"
-          }
-        ],
-        "result": {
-          "item": "assortedtools:iron_multitool"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:iron_pickaxe"
+    },
+    {
+      "item": "minecraft:iron_shovel"
+    },
+    {
+      "item": "minecraft:iron_axe"
+    },
+    {
+      "item": "minecraft:iron_hoe"
+    },
+    {
+      "item": "minecraft:iron_sword"
+    },
+    {
+      "tag": "forge:ingots/iron"
+    },
+    {
+      "tag": "forge:ingots/iron"
+    },
+    {
+      "tag": "forge:ingots/iron"
+    },
+    {
+      "tag": "forge:ingots/iron"
+    }
+  ],
+  "result": {
+    "item": "assortedtools:iron_multitool"
+  }
 }

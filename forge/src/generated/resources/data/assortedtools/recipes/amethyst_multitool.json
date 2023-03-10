@@ -1,60 +1,55 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
+      "type": "forge:and",
+      "values": [
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "multitools"
         },
         {
-          "type": "assortedtools:part_enabled",
-          "part": "extramaterials"
+          "type": "assortedlib:item_tag_populated",
+          "tag": "forge:gems/amethyst"
         },
         {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:gems/amethyst"
-          }
+          "type": "assortedlib:part_enabled",
+          "part": "extramaterials"
         }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shapeless",
-        "category": "equipment",
-        "ingredients": [
-          {
-            "tag": "forge:swords/amethyst"
-          },
-          {
-            "tag": "forge:pickaxes/amethyst"
-          },
-          {
-            "tag": "forge:shovels/amethyst"
-          },
-          {
-            "tag": "forge:hoes/amethyst"
-          },
-          {
-            "tag": "forge:axes/amethyst"
-          },
-          {
-            "tag": "forge:gems/amethyst"
-          },
-          {
-            "tag": "forge:gems/amethyst"
-          },
-          {
-            "tag": "forge:gems/amethyst"
-          },
-          {
-            "tag": "forge:gems/amethyst"
-          }
-        ],
-        "result": {
-          "item": "assortedtools:amethyst_multitool"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "ingredients": [
+    {
+      "item": "assortedtools:amethyst_pickaxe"
+    },
+    {
+      "item": "assortedtools:amethyst_shovel"
+    },
+    {
+      "item": "assortedtools:amethyst_axe"
+    },
+    {
+      "item": "assortedtools:amethyst_hoe"
+    },
+    {
+      "item": "assortedtools:amethyst_sword"
+    },
+    {
+      "tag": "forge:gems/amethyst"
+    },
+    {
+      "tag": "forge:gems/amethyst"
+    },
+    {
+      "tag": "forge:gems/amethyst"
+    },
+    {
+      "tag": "forge:gems/amethyst"
+    }
+  ],
+  "result": {
+    "item": "assortedtools:amethyst_multitool"
+  }
 }

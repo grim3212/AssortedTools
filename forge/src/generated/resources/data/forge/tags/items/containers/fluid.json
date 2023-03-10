@@ -1,8 +1,5 @@
 {
   "values": [
-    "minecraft:bucket",
-    "minecraft:water_bucket",
-    "minecraft:lava_bucket",
     "assortedtools:wood_bucket",
     "assortedtools:stone_bucket",
     "assortedtools:gold_bucket",

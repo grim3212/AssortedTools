@@ -1,60 +1,55 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
+      "type": "forge:and",
+      "values": [
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "multitools"
         },
         {
-          "type": "assortedtools:part_enabled",
-          "part": "extramaterials"
+          "type": "assortedlib:item_tag_populated",
+          "tag": "forge:ingots/tin"
         },
         {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:ingots/tin"
-          }
+          "type": "assortedlib:part_enabled",
+          "part": "extramaterials"
         }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shapeless",
-        "category": "equipment",
-        "ingredients": [
-          {
-            "tag": "forge:swords/tin"
-          },
-          {
-            "tag": "forge:pickaxes/tin"
-          },
-          {
-            "tag": "forge:shovels/tin"
-          },
-          {
-            "tag": "forge:hoes/tin"
-          },
-          {
-            "tag": "forge:axes/tin"
-          },
-          {
-            "tag": "forge:ingots/tin"
-          },
-          {
-            "tag": "forge:ingots/tin"
-          },
-          {
-            "tag": "forge:ingots/tin"
-          },
-          {
-            "tag": "forge:ingots/tin"
-          }
-        ],
-        "result": {
-          "item": "assortedtools:tin_multitool"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "ingredients": [
+    {
+      "item": "assortedtools:tin_pickaxe"
+    },
+    {
+      "item": "assortedtools:tin_shovel"
+    },
+    {
+      "item": "assortedtools:tin_axe"
+    },
+    {
+      "item": "assortedtools:tin_hoe"
+    },
+    {
+      "item": "assortedtools:tin_sword"
+    },
+    {
+      "tag": "forge:ingots/tin"
+    },
+    {
+      "tag": "forge:ingots/tin"
+    },
+    {
+      "tag": "forge:ingots/tin"
+    },
+    {
+      "tag": "forge:ingots/tin"
+    }
+  ],
+  "result": {
+    "item": "assortedtools:tin_multitool"
+  }
 }

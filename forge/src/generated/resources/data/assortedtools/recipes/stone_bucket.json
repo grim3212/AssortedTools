@@ -1,36 +1,31 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
+      "type": "forge:and",
+      "values": [
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "betterbuckets"
         },
         {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "minecraft:stone_tool_materials"
-          }
+          "type": "assortedlib:item_tag_populated",
+          "tag": "minecraft:stone_tool_materials"
         }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "category": "equipment",
-        "key": {
-          "I": {
-            "tag": "minecraft:stone_tool_materials"
-          }
-        },
-        "pattern": [
-          "I I",
-          " I "
-        ],
-        "result": {
-          "item": "assortedtools:stone_bucket"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "key": {
+    "I": {
+      "tag": "minecraft:stone_tool_materials"
+    }
+  },
+  "pattern": [
+    "I I",
+    " I "
+  ],
+  "result": {
+    "item": "assortedtools:stone_bucket"
+  }
 }

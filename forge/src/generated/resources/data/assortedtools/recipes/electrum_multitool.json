@@ -1,60 +1,55 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
+      "type": "forge:and",
+      "values": [
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "multitools"
         },
         {
-          "type": "assortedtools:part_enabled",
-          "part": "extramaterials"
+          "type": "assortedlib:item_tag_populated",
+          "tag": "forge:ingots/electrum"
         },
         {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:ingots/electrum"
-          }
+          "type": "assortedlib:part_enabled",
+          "part": "extramaterials"
         }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shapeless",
-        "category": "equipment",
-        "ingredients": [
-          {
-            "tag": "forge:swords/electrum"
-          },
-          {
-            "tag": "forge:pickaxes/electrum"
-          },
-          {
-            "tag": "forge:shovels/electrum"
-          },
-          {
-            "tag": "forge:hoes/electrum"
-          },
-          {
-            "tag": "forge:axes/electrum"
-          },
-          {
-            "tag": "forge:ingots/electrum"
-          },
-          {
-            "tag": "forge:ingots/electrum"
-          },
-          {
-            "tag": "forge:ingots/electrum"
-          },
-          {
-            "tag": "forge:ingots/electrum"
-          }
-        ],
-        "result": {
-          "item": "assortedtools:electrum_multitool"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "ingredients": [
+    {
+      "item": "assortedtools:electrum_pickaxe"
+    },
+    {
+      "item": "assortedtools:electrum_shovel"
+    },
+    {
+      "item": "assortedtools:electrum_axe"
+    },
+    {
+      "item": "assortedtools:electrum_hoe"
+    },
+    {
+      "item": "assortedtools:electrum_sword"
+    },
+    {
+      "tag": "forge:ingots/electrum"
+    },
+    {
+      "tag": "forge:ingots/electrum"
+    },
+    {
+      "tag": "forge:ingots/electrum"
+    },
+    {
+      "tag": "forge:ingots/electrum"
+    }
+  ],
+  "result": {
+    "item": "assortedtools:electrum_multitool"
+  }
 }

@@ -1,60 +1,55 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
+      "type": "forge:and",
+      "values": [
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "multitools"
         },
         {
-          "type": "assortedtools:part_enabled",
-          "part": "extramaterials"
+          "type": "assortedlib:item_tag_populated",
+          "tag": "forge:gems/ruby"
         },
         {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:gems/ruby"
-          }
+          "type": "assortedlib:part_enabled",
+          "part": "extramaterials"
         }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shapeless",
-        "category": "equipment",
-        "ingredients": [
-          {
-            "tag": "forge:swords/ruby"
-          },
-          {
-            "tag": "forge:pickaxes/ruby"
-          },
-          {
-            "tag": "forge:shovels/ruby"
-          },
-          {
-            "tag": "forge:hoes/ruby"
-          },
-          {
-            "tag": "forge:axes/ruby"
-          },
-          {
-            "tag": "forge:gems/ruby"
-          },
-          {
-            "tag": "forge:gems/ruby"
-          },
-          {
-            "tag": "forge:gems/ruby"
-          },
-          {
-            "tag": "forge:gems/ruby"
-          }
-        ],
-        "result": {
-          "item": "assortedtools:ruby_multitool"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "ingredients": [
+    {
+      "item": "assortedtools:ruby_pickaxe"
+    },
+    {
+      "item": "assortedtools:ruby_shovel"
+    },
+    {
+      "item": "assortedtools:ruby_axe"
+    },
+    {
+      "item": "assortedtools:ruby_hoe"
+    },
+    {
+      "item": "assortedtools:ruby_sword"
+    },
+    {
+      "tag": "forge:gems/ruby"
+    },
+    {
+      "tag": "forge:gems/ruby"
+    },
+    {
+      "tag": "forge:gems/ruby"
+    },
+    {
+      "tag": "forge:gems/ruby"
+    }
+  ],
+  "result": {
+    "item": "assortedtools:ruby_multitool"
+  }
 }

@@ -1,37 +1,32 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
+      "type": "forge:and",
+      "values": [
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "extramaterials"
         },
         {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:ingots/invar"
-          }
+          "type": "assortedlib:item_tag_populated",
+          "tag": "forge:ingots/invar"
         }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "category": "equipment",
-        "key": {
-          "X": {
-            "tag": "forge:ingots/invar"
-          }
-        },
-        "pattern": [
-          "X X",
-          "XXX",
-          "XXX"
-        ],
-        "result": {
-          "item": "assortedtools:invar_chestplate"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "key": {
+    "X": {
+      "tag": "forge:ingots/invar"
+    }
+  },
+  "pattern": [
+    "X X",
+    "XXX",
+    "XXX"
+  ],
+  "result": {
+    "item": "assortedtools:invar_chestplate"
+  }
 }

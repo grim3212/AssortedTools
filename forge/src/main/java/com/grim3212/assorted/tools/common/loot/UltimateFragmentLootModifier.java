@@ -1,8 +1,8 @@
 package com.grim3212.assorted.tools.common.loot;
 
 import com.google.common.base.Suppliers;
-import com.grim3212.assorted.decor.Constants;
-import com.grim3212.assorted.decor.config.ToolsConfig;
+import com.grim3212.assorted.tools.Constants;
+import com.grim3212.assorted.tools.config.ToolsConfig;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;

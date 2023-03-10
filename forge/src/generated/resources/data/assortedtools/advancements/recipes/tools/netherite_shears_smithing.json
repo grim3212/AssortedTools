@@ -1,5 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
+  "conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "moreshears"
+    }
+  ],
   "criteria": {
     "has_netherite_ingot": {
       "conditions": {

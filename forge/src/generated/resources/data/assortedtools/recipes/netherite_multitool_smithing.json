@@ -6,6 +6,12 @@
   "base": {
     "item": "assortedtools:diamond_multitool"
   },
+  "conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "multitools"
+    }
+  ],
   "result": {
     "item": "assortedtools:netherite_multitool"
   }

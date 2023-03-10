@@ -6,6 +6,12 @@
   "base": {
     "item": "assortedtools:diamond_bucket"
   },
+  "conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "betterbuckets"
+    }
+  ],
   "result": {
     "item": "assortedtools:netherite_bucket"
   }

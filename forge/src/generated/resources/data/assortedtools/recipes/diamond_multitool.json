@@ -1,56 +1,51 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
+      "type": "forge:and",
+      "values": [
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "multitools"
         },
         {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:gems/diamond"
-          }
+          "type": "assortedlib:item_tag_populated",
+          "tag": "forge:gems/diamond"
         }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shapeless",
-        "category": "equipment",
-        "ingredients": [
-          {
-            "tag": "forge:swords/diamond"
-          },
-          {
-            "tag": "forge:pickaxes/diamond"
-          },
-          {
-            "tag": "forge:shovels/diamond"
-          },
-          {
-            "tag": "forge:hoes/diamond"
-          },
-          {
-            "tag": "forge:axes/diamond"
-          },
-          {
-            "tag": "forge:gems/diamond"
-          },
-          {
-            "tag": "forge:gems/diamond"
-          },
-          {
-            "tag": "forge:gems/diamond"
-          },
-          {
-            "tag": "forge:gems/diamond"
-          }
-        ],
-        "result": {
-          "item": "assortedtools:diamond_multitool"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:diamond_pickaxe"
+    },
+    {
+      "item": "minecraft:diamond_shovel"
+    },
+    {
+      "item": "minecraft:diamond_axe"
+    },
+    {
+      "item": "minecraft:diamond_hoe"
+    },
+    {
+      "item": "minecraft:diamond_sword"
+    },
+    {
+      "tag": "forge:gems/diamond"
+    },
+    {
+      "tag": "forge:gems/diamond"
+    },
+    {
+      "tag": "forge:gems/diamond"
+    },
+    {
+      "tag": "forge:gems/diamond"
+    }
+  ],
+  "result": {
+    "item": "assortedtools:diamond_multitool"
+  }
 }

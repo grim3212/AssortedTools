@@ -6,6 +6,12 @@
   "base": {
     "item": "assortedtools:diamond_shears"
   },
+  "conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "moreshears"
+    }
+  ],
   "result": {
     "item": "assortedtools:netherite_shears"
   }

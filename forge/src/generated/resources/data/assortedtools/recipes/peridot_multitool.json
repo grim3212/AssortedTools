@@ -1,60 +1,55 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
+      "type": "forge:and",
+      "values": [
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "multitools"
         },
         {
-          "type": "assortedtools:part_enabled",
-          "part": "extramaterials"
+          "type": "assortedlib:item_tag_populated",
+          "tag": "forge:gems/peridot"
         },
         {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:gems/peridot"
-          }
+          "type": "assortedlib:part_enabled",
+          "part": "extramaterials"
         }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shapeless",
-        "category": "equipment",
-        "ingredients": [
-          {
-            "tag": "forge:swords/peridot"
-          },
-          {
-            "tag": "forge:pickaxes/peridot"
-          },
-          {
-            "tag": "forge:shovels/peridot"
-          },
-          {
-            "tag": "forge:hoes/peridot"
-          },
-          {
-            "tag": "forge:axes/peridot"
-          },
-          {
-            "tag": "forge:gems/peridot"
-          },
-          {
-            "tag": "forge:gems/peridot"
-          },
-          {
-            "tag": "forge:gems/peridot"
-          },
-          {
-            "tag": "forge:gems/peridot"
-          }
-        ],
-        "result": {
-          "item": "assortedtools:peridot_multitool"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "ingredients": [
+    {
+      "item": "assortedtools:peridot_pickaxe"
+    },
+    {
+      "item": "assortedtools:peridot_shovel"
+    },
+    {
+      "item": "assortedtools:peridot_axe"
+    },
+    {
+      "item": "assortedtools:peridot_hoe"
+    },
+    {
+      "item": "assortedtools:peridot_sword"
+    },
+    {
+      "tag": "forge:gems/peridot"
+    },
+    {
+      "tag": "forge:gems/peridot"
+    },
+    {
+      "tag": "forge:gems/peridot"
+    },
+    {
+      "tag": "forge:gems/peridot"
+    }
+  ],
+  "result": {
+    "item": "assortedtools:peridot_multitool"
+  }
 }

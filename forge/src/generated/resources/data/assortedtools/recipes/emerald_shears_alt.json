@@ -1,43 +1,38 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
+      "type": "forge:and",
+      "values": [
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "moreshears"
         },
         {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:gems/emerald"
-          }
+          "type": "assortedlib:item_tag_populated",
+          "tag": "forge:gems/emerald"
         },
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "extramaterials"
         }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "category": "equipment",
-        "key": {
-          "I": {
-            "tag": "forge:gems/emerald"
-          },
-          "L": {
-            "tag": "forge:leather"
-          }
-        },
-        "pattern": [
-          "LI",
-          "I "
-        ],
-        "result": {
-          "item": "assortedtools:emerald_shears"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "key": {
+    "I": {
+      "tag": "forge:gems/emerald"
+    },
+    "L": {
+      "tag": "forge:leather"
+    }
+  },
+  "pattern": [
+    "LI",
+    "I "
+  ],
+  "result": {
+    "item": "assortedtools:emerald_shears"
+  }
 }

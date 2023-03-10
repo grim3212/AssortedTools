@@ -1,6 +1,6 @@
 package com.grim3212.assorted.tools.common.data;
 
-import com.grim3212.assorted.decor.data.ToolsCommonRecipeProvider;
+import com.grim3212.assorted.tools.data.ToolsCommonRecipeProvider;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 

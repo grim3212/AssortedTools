@@ -1,7 +1,6 @@
 package com.grim3212.assorted.tools.common.item;
 
-import com.grim3212.assorted.decor.common.item.MultiToolItem;
-import com.grim3212.assorted.decor.config.ItemTierConfig;
+import com.grim3212.assorted.tools.config.ItemTierConfig;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;

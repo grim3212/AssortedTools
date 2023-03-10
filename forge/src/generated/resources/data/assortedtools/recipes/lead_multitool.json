@@ -1,60 +1,55 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
+      "type": "forge:and",
+      "values": [
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "multitools"
         },
         {
-          "type": "assortedtools:part_enabled",
-          "part": "extramaterials"
+          "type": "assortedlib:item_tag_populated",
+          "tag": "forge:ingots/lead"
         },
         {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:ingots/lead"
-          }
+          "type": "assortedlib:part_enabled",
+          "part": "extramaterials"
         }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shapeless",
-        "category": "equipment",
-        "ingredients": [
-          {
-            "tag": "forge:swords/lead"
-          },
-          {
-            "tag": "forge:pickaxes/lead"
-          },
-          {
-            "tag": "forge:shovels/lead"
-          },
-          {
-            "tag": "forge:hoes/lead"
-          },
-          {
-            "tag": "forge:axes/lead"
-          },
-          {
-            "tag": "forge:ingots/lead"
-          },
-          {
-            "tag": "forge:ingots/lead"
-          },
-          {
-            "tag": "forge:ingots/lead"
-          },
-          {
-            "tag": "forge:ingots/lead"
-          }
-        ],
-        "result": {
-          "item": "assortedtools:lead_multitool"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "ingredients": [
+    {
+      "item": "assortedtools:lead_pickaxe"
+    },
+    {
+      "item": "assortedtools:lead_shovel"
+    },
+    {
+      "item": "assortedtools:lead_axe"
+    },
+    {
+      "item": "assortedtools:lead_hoe"
+    },
+    {
+      "item": "assortedtools:lead_sword"
+    },
+    {
+      "tag": "forge:ingots/lead"
+    },
+    {
+      "tag": "forge:ingots/lead"
+    },
+    {
+      "tag": "forge:ingots/lead"
+    },
+    {
+      "tag": "forge:ingots/lead"
+    }
+  ],
+  "result": {
+    "item": "assortedtools:lead_multitool"
+  }
 }

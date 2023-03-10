@@ -1,40 +1,35 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
+      "type": "forge:and",
+      "values": [
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "betterbuckets"
         },
         {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:gems/ruby"
-          }
+          "type": "assortedlib:item_tag_populated",
+          "tag": "forge:gems/ruby"
         },
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "extramaterials"
         }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "category": "equipment",
-        "key": {
-          "I": {
-            "tag": "forge:gems/ruby"
-          }
-        },
-        "pattern": [
-          "I I",
-          " I "
-        ],
-        "result": {
-          "item": "assortedtools:ruby_bucket"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "key": {
+    "I": {
+      "tag": "forge:gems/ruby"
+    }
+  },
+  "pattern": [
+    "I I",
+    " I "
+  ],
+  "result": {
+    "item": "assortedtools:ruby_bucket"
+  }
 }

@@ -1,7 +1,7 @@
 package com.grim3212.assorted.tools.common.util;
 
-import com.grim3212.assorted.decor.Constants;
-import com.grim3212.assorted.decor.config.ToolsConfig;
+import com.grim3212.assorted.tools.Constants;
+import com.grim3212.assorted.tools.config.ToolsConfig;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Tiers;

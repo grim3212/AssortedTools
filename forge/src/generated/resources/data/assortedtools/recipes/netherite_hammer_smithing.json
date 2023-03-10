@@ -6,6 +6,12 @@
   "base": {
     "item": "assortedtools:diamond_hammer"
   },
+  "conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "hammers"
+    }
+  ],
   "result": {
     "item": "assortedtools:netherite_hammer"
   }

@@ -1,60 +1,55 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
+      "type": "forge:and",
+      "values": [
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "multitools"
         },
         {
-          "type": "assortedtools:part_enabled",
-          "part": "extramaterials"
+          "type": "assortedlib:item_tag_populated",
+          "tag": "forge:gems/emerald"
         },
         {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:gems/emerald"
-          }
+          "type": "assortedlib:part_enabled",
+          "part": "extramaterials"
         }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shapeless",
-        "category": "equipment",
-        "ingredients": [
-          {
-            "tag": "forge:swords/emerald"
-          },
-          {
-            "tag": "forge:pickaxes/emerald"
-          },
-          {
-            "tag": "forge:shovels/emerald"
-          },
-          {
-            "tag": "forge:hoes/emerald"
-          },
-          {
-            "tag": "forge:axes/emerald"
-          },
-          {
-            "tag": "forge:gems/emerald"
-          },
-          {
-            "tag": "forge:gems/emerald"
-          },
-          {
-            "tag": "forge:gems/emerald"
-          },
-          {
-            "tag": "forge:gems/emerald"
-          }
-        ],
-        "result": {
-          "item": "assortedtools:emerald_multitool"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "ingredients": [
+    {
+      "item": "assortedtools:emerald_pickaxe"
+    },
+    {
+      "item": "assortedtools:emerald_shovel"
+    },
+    {
+      "item": "assortedtools:emerald_axe"
+    },
+    {
+      "item": "assortedtools:emerald_hoe"
+    },
+    {
+      "item": "assortedtools:emerald_sword"
+    },
+    {
+      "tag": "forge:gems/emerald"
+    },
+    {
+      "tag": "forge:gems/emerald"
+    },
+    {
+      "tag": "forge:gems/emerald"
+    },
+    {
+      "tag": "forge:gems/emerald"
+    }
+  ],
+  "result": {
+    "item": "assortedtools:emerald_multitool"
+  }
 }

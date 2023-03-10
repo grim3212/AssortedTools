@@ -1,7 +1,7 @@
 package com.grim3212.assorted.tools.client.data;
 
-import com.grim3212.assorted.decor.Constants;
-import com.grim3212.assorted.decor.common.item.ToolsItems;
+import com.grim3212.assorted.tools.Constants;
+import com.grim3212.assorted.tools.common.item.ToolsItems;
 import net.minecraft.client.renderer.block.model.BlockModel.GuiLight;
 import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.data.PackOutput;

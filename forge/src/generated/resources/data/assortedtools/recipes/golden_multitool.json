@@ -1,56 +1,51 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "conditions": [
     {
-      "conditions": [
+      "type": "forge:and",
+      "values": [
         {
-          "type": "assortedtools:part_enabled",
+          "type": "assortedlib:part_enabled",
           "part": "multitools"
         },
         {
-          "type": "forge:not",
-          "value": {
-            "type": "forge:tag_empty",
-            "tag": "forge:ingots/gold"
-          }
+          "type": "assortedlib:item_tag_populated",
+          "tag": "forge:ingots/gold"
         }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shapeless",
-        "category": "equipment",
-        "ingredients": [
-          {
-            "tag": "forge:swords/golden"
-          },
-          {
-            "tag": "forge:pickaxes/golden"
-          },
-          {
-            "tag": "forge:shovels/golden"
-          },
-          {
-            "tag": "forge:hoes/golden"
-          },
-          {
-            "tag": "forge:axes/golden"
-          },
-          {
-            "tag": "forge:ingots/gold"
-          },
-          {
-            "tag": "forge:ingots/gold"
-          },
-          {
-            "tag": "forge:ingots/gold"
-          },
-          {
-            "tag": "forge:ingots/gold"
-          }
-        ],
-        "result": {
-          "item": "assortedtools:golden_multitool"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:golden_pickaxe"
+    },
+    {
+      "item": "minecraft:golden_shovel"
+    },
+    {
+      "item": "minecraft:golden_axe"
+    },
+    {
+      "item": "minecraft:golden_hoe"
+    },
+    {
+      "item": "minecraft:golden_sword"
+    },
+    {
+      "tag": "forge:ingots/gold"
+    },
+    {
+      "tag": "forge:ingots/gold"
+    },
+    {
+      "tag": "forge:ingots/gold"
+    },
+    {
+      "tag": "forge:ingots/gold"
+    }
+  ],
+  "result": {
+    "item": "assortedtools:golden_multitool"
+  }
 }

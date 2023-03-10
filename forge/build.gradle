@@ -78,6 +78,7 @@ minecraft {
         data {
             workingDirectory project.file('run')
             ideaModule "${rootProject.name}.${project.name}.main"
+            // Client side data can all be considered common so generate in common package
             args '--mod', mod_id, '--client', '--output', file('../common/src/generated/resources/'), '--existing', file('../common/src/main/resources/')
             taskName 'Data'
             property 'mixin.env.remapRefMap', 'true'
@@ -101,7 +102,7 @@ sourceSets.main.resources {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-	implementation fg.deobf("mezz.jei:jei-${jei_minecraft_version}-forge:${jei_version}")
+    implementation fg.deobf("mezz.jei:jei-${jei_minecraft_version}-forge:${jei_version}")
     implementation fg.deobf(group: 'com.grim3212.assorted.lib', name: 'assortedlib-forge', version: "$assortedlib_version+$minecraft_version")
 
     compileOnly project(":common")
