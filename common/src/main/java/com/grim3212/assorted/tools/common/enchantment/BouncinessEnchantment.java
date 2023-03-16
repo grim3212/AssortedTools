@@ -1,5 +1,6 @@
 package com.grim3212.assorted.tools.common.enchantment;
 
+import com.grim3212.assorted.lib.core.enchantment.LibEnchantment;
 import com.grim3212.assorted.tools.ToolsCommonMod;
 import com.grim3212.assorted.tools.common.item.BetterSpearItem;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -8,7 +9,9 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
-public class BouncinessEnchantment extends Enchantment {
+import java.util.Optional;
+
+public class BouncinessEnchantment extends LibEnchantment {
 
     protected BouncinessEnchantment() {
         super(Rarity.UNCOMMON, EnchantmentCategory.WEAPON, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
@@ -17,6 +20,11 @@ public class BouncinessEnchantment extends Enchantment {
     @Override
     public boolean canEnchant(ItemStack stack) {
         return ToolsCommonMod.COMMON_CONFIG.betterSpearsEnabled.get() ? stack.getItem() instanceof BetterSpearItem || stack.getItem() == Items.BOOK : false;
+    }
+
+    @Override
+    public Optional<Boolean> assortedlib_canApplyAtEnchantingTable(ItemStack stack) {
+        return Optional.of(this.canEnchant(stack));
     }
 
     @Override

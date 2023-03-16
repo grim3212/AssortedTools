@@ -1,23 +1,5 @@
 {
-  "base": {
-    "parent": "minecraft:item/trident_throwing",
-    "textures": {
-      "particle": "assortedtools:item/tools/silver_spear"
-    }
-  },
-  "gui_light": "front",
-  "loader": "forge:separate_transforms",
-  "perspectives": {
-    "fixed": {
-      "parent": "assortedtools:item/silver_spear_gui"
-    },
-    "ground": {
-      "parent": "assortedtools:item/silver_spear_gui"
-    },
-    "gui": {
-      "parent": "assortedtools:item/silver_spear_gui"
-    }
-  },
+  "parent": "minecraft:item/trident_throwing",
   "textures": {
     "particle": "assortedtools:item/tools/silver_spear"
   }

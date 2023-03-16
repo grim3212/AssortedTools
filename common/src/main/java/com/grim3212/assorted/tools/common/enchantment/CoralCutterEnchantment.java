@@ -18,13 +18,12 @@ public class CoralCutterEnchantment extends LibEnchantment {
 
     @Override
     public boolean canEnchant(ItemStack stack) {
-        // TODO: Fix Can still get on tools
         return ToolsCommonMod.COMMON_CONFIG.moreShearsEnabled.get() ? stack.getItem() instanceof ShearsItem || stack.getItem() == Items.BOOK : false;
     }
 
     @Override
     public Optional<Boolean> assortedlib_canApplyAtEnchantingTable(ItemStack stack) {
-        return Optional.of(ToolsCommonMod.COMMON_CONFIG.moreShearsEnabled.get() ? stack.getItem() instanceof ShearsItem || stack.getItem() == Items.BOOK : false);
+        return Optional.of(this.canEnchant(stack));
     }
 
     @Override

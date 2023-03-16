@@ -2,7 +2,6 @@ package com.grim3212.assorted.tools.client.data;
 
 import com.grim3212.assorted.tools.Constants;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
-import net.minecraft.client.renderer.block.model.BlockModel.GuiLight;
 import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -11,7 +10,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
-import net.minecraftforge.client.model.generators.loaders.SeparateTransformsModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -153,22 +151,14 @@ public class ToolsItemModelProvider extends ItemModelProvider {
 
     private void generateSpear(Item item) {
         String name = name(item);
-        ItemModelBuilder guiModel = nested().parent(withExistingParent(name + "_gui", "item/generated").texture("layer0", prefix("item/tools/" + name)));
-        ItemModelBuilder throwingModel = getBuilder(name + "_throwing").guiLight(GuiLight.FRONT).texture("particle", prefix("item/tools/" + name)).customLoader(SeparateTransformsModelBuilder::begin)
-                // Throwing model is "base" so that we can have our transforms
-                .base(nested().parent(getExistingFile(mcLoc("trident_throwing"))).texture("particle", prefix("item/tools/" + name)))
-                // Gui, ground, and fixed all use the normal "item model"
-                .perspective(TransformType.GUI, guiModel).perspective(TransformType.GROUND, guiModel).perspective(TransformType.FIXED, guiModel).end();
+        withExistingParent(name + "_gui", "item/generated").texture("layer0", prefix("item/tools/" + name));
+        ItemModelBuilder throwingModel = withExistingParent(name + "_throwing", "item/trident_throwing")
+                .texture("particle", prefix("item/tools/" + name));
 
-        getBuilder(name).guiLight(GuiLight.FRONT).texture("particle", prefix("item/tools/" + name))
-                // Override when throwing to the throwing model to ensure we have the correct
-                // transforms
-                .override().predicate(prefix("throwing"), 1).model(throwingModel).end().customLoader(SeparateTransformsModelBuilder::begin)
-                // In hand model is base
-                .base(nested().parent(getExistingFile(mcLoc("trident_in_hand"))).texture("particle", prefix("item/tools/" + name))
-                        // Add head transformation
-                        .transforms().transform(TransformType.HEAD).rotation(0, 180, 120).translation(8, 10, -11).scale(1.5F).end().end())
-                // Gui, ground, and fixed all use the normal "item model"
-                .perspective(TransformType.GUI, guiModel).perspective(TransformType.GROUND, guiModel).perspective(TransformType.FIXED, guiModel);
+        withExistingParent(name, "item/trident_in_hand")
+                .texture("particle", prefix("item/tools/" + name))
+                // Add head transformation
+                .transforms().transform(TransformType.HEAD).rotation(0, 180, 120).translation(8, 10, -11).scale(1.5F).end().end()
+                .override().predicate(prefix("throwing"), 1).model(throwingModel).end();
     }
 }

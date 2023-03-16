@@ -35,7 +35,7 @@ public class BetterSpearRenderer extends EntityRenderer<BetterSpearEntity> {
     }
 
     public ResourceLocation getTextureLocation(BetterSpearEntity entity) {
-        return spearModel.getTexture(entity.getSpearItem().getItem());
+        return spearModel.getTexture(entity.getSpearStack().getItem());
     }
 
 }

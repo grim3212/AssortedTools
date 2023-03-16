@@ -5,7 +5,6 @@ import com.grim3212.assorted.tools.ToolsCommonMod;
 import com.grim3212.assorted.tools.api.util.ToolsDamageSources;
 import com.grim3212.assorted.tools.common.enchantment.ToolsEnchantments;
 import com.grim3212.assorted.tools.common.item.BetterSpearItem;
-import com.grim3212.assorted.tools.common.item.ToolsItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -40,26 +39,21 @@ import java.util.List;
 public class BetterSpearEntity extends AbstractArrow {
     private static final EntityDataAccessor<Byte> ID_LOYALTY = SynchedEntityData.defineId(BetterSpearEntity.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Boolean> ID_FOIL = SynchedEntityData.defineId(BetterSpearEntity.class, EntityDataSerializers.BOOLEAN);
-    private ItemStack spearItem = new ItemStack(ToolsItems.WOOD_SPEAR.get());
+    private static final EntityDataAccessor<ItemStack> SPEAR_STACK = SynchedEntityData.defineId(BetterSpearEntity.class, EntityDataSerializers.ITEM_STACK);
     public int clientSideReturnSpearTickCount;
     private int bounceCount;
     private boolean effectTriggered;
     private boolean dealtDamage;
 
-    public BetterSpearEntity(EntityType<? extends AbstractArrow> type, Level level) {
+    public BetterSpearEntity(EntityType<? extends BetterSpearEntity> type, Level level) {
         super(type, level);
     }
 
     public BetterSpearEntity(Level level, LivingEntity entity, ItemStack stack) {
         super(ToolsEntities.BETTER_SPEAR.get(), entity, level);
-        this.spearItem = stack.copy();
+        this.entityData.set(SPEAR_STACK, stack.copy());
         this.entityData.set(ID_LOYALTY, (byte) EnchantmentHelper.getLoyalty(stack));
         this.entityData.set(ID_FOIL, stack.hasFoil());
-    }
-
-    public BetterSpearEntity(Level level, double x, double y, double z, ItemStack stack) {
-        super(ToolsEntities.BETTER_SPEAR.get(), x, y, z, level);
-        this.spearItem = stack.copy();
     }
 
     private float getDamage(ItemStack stack) {
@@ -75,15 +69,16 @@ public class BetterSpearEntity extends AbstractArrow {
         super.defineSynchedData();
         this.entityData.define(ID_LOYALTY, (byte) 0);
         this.entityData.define(ID_FOIL, false);
+        this.entityData.define(SPEAR_STACK, ItemStack.EMPTY);
+    }
+
+    public ItemStack getSpearStack() {
+        return this.entityData.get(SPEAR_STACK);
     }
 
     @Override
     protected ItemStack getPickupItem() {
-        return spearItem.copy();
-    }
-
-    public ItemStack getSpearItem() {
-        return spearItem.copy();
+        return this.getSpearStack().copy();
     }
 
     public boolean isFoil() {
@@ -144,7 +139,7 @@ public class BetterSpearEntity extends AbstractArrow {
     @Override
     protected void onHitBlock(BlockHitResult rayTrace) {
         if (!this.effectTriggered) {
-            int maxBounces = ToolsEnchantments.getMaxBounces(this.spearItem);
+            int maxBounces = ToolsEnchantments.getMaxBounces(this.getSpearStack());
 
             if (this.bounceCount < maxBounces) {
                 bounceCount++;
@@ -172,10 +167,10 @@ public class BetterSpearEntity extends AbstractArrow {
     @Override
     protected void onHitEntity(EntityHitResult rayTrace) {
         Entity hitEntity = rayTrace.getEntity();
-        float f = this.getDamage(this.spearItem);
+        float f = this.getDamage(this.getSpearStack());
         if (hitEntity instanceof LivingEntity) {
             LivingEntity livingentity = (LivingEntity) hitEntity;
-            f += EnchantmentHelper.getDamageBonus(this.spearItem, livingentity.getMobType());
+            f += EnchantmentHelper.getDamageBonus(this.getSpearStack(), livingentity.getMobType());
         }
 
         Entity owner = this.getOwner();
@@ -237,7 +232,7 @@ public class BetterSpearEntity extends AbstractArrow {
     }
 
     private void tryConductivity(BlockPos pos) {
-        int conductivity = ToolsEnchantments.getConductivity(this.spearItem);
+        int conductivity = ToolsEnchantments.getConductivity(this.getSpearStack());
         boolean flag = conductivity > 0 && this.random.nextDouble() <= 1.0D - conductiveChances(conductivity - 1);
 
         if (this.level instanceof ServerLevel && flag) {
@@ -252,7 +247,7 @@ public class BetterSpearEntity extends AbstractArrow {
     }
 
     private void tryUnstable(BlockPos pos) {
-        int instability = ToolsEnchantments.getInstability(this.spearItem);
+        int instability = ToolsEnchantments.getInstability(this.getSpearStack());
 
         if (instability > 0) {
             if (!level.isClientSide) {
@@ -262,7 +257,7 @@ public class BetterSpearEntity extends AbstractArrow {
     }
 
     private void tryFlammable(BlockPos pos) {
-        boolean flammable = ToolsEnchantments.hasFlammable(this.spearItem);
+        boolean flammable = ToolsEnchantments.hasFlammable(this.getSpearStack());
 
         if (flammable) {
             for (int fire = 0; fire < 6; ++fire) {
@@ -277,7 +272,7 @@ public class BetterSpearEntity extends AbstractArrow {
 
     @Override
     public boolean fireImmune() {
-        return ToolsEnchantments.hasFlammable(this.spearItem) || ToolsEnchantments.getConductivity(this.spearItem) > 0 || super.fireImmune();
+        return ToolsEnchantments.hasFlammable(this.getSpearStack()) || ToolsEnchantments.getConductivity(this.getSpearStack()) > 0 || super.fireImmune();
     }
 
     @Override
@@ -296,7 +291,7 @@ public class BetterSpearEntity extends AbstractArrow {
     @Override
     public void addAdditionalSaveData(CompoundTag nbt) {
         super.addAdditionalSaveData(nbt);
-        nbt.put("Spear", this.spearItem.save(new CompoundTag()));
+        nbt.put("Spear", this.getSpearStack().save(new CompoundTag()));
         nbt.putBoolean("DealtDamage", this.dealtDamage);
         nbt.putBoolean("EffectTriggered", this.effectTriggered);
         nbt.putInt("BounceCount", this.bounceCount);
@@ -306,15 +301,15 @@ public class BetterSpearEntity extends AbstractArrow {
     public void readAdditionalSaveData(CompoundTag nbt) {
         super.readAdditionalSaveData(nbt);
         if (nbt.contains("Spear", 10)) {
-            this.spearItem = ItemStack.of(nbt.getCompound("Spear"));
+            this.entityData.set(SPEAR_STACK, ItemStack.of(nbt.getCompound("Spear")));
         }
 
         this.dealtDamage = nbt.getBoolean("DealtDamage");
         this.effectTriggered = nbt.getBoolean("EffectTriggered");
-        this.entityData.set(ID_LOYALTY, (byte) EnchantmentHelper.getLoyalty(this.spearItem));
         this.bounceCount = nbt.getInt("BounceCount");
+        this.entityData.set(ID_LOYALTY, (byte) EnchantmentHelper.getLoyalty(this.getSpearStack()));
+        this.entityData.set(ID_FOIL, this.getSpearStack().hasFoil());
     }
-
 
     @Override
     public void tickDespawn() {

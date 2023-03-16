@@ -1,31 +1,24 @@
 {
-  "base": {
-    "parent": "minecraft:item/trident_in_hand",
-    "display": {
-      "head": {
-        "rotation": [
-          0,
-          180,
-          120
-        ],
-        "scale": [
-          1.5,
-          1.5,
-          1.5
-        ],
-        "translation": [
-          8,
-          10,
-          -11
-        ]
-      }
-    },
-    "textures": {
-      "particle": "assortedtools:item/tools/nickel_spear"
+  "parent": "minecraft:item/trident_in_hand",
+  "display": {
+    "head": {
+      "rotation": [
+        0,
+        180,
+        120
+      ],
+      "scale": [
+        1.5,
+        1.5,
+        1.5
+      ],
+      "translation": [
+        8,
+        10,
+        -11
+      ]
     }
   },
-  "gui_light": "front",
-  "loader": "forge:separate_transforms",
   "overrides": [
     {
       "model": "assortedtools:item/nickel_spear_throwing",
@@ -34,17 +27,6 @@
       }
     }
   ],
-  "perspectives": {
-    "fixed": {
-      "parent": "assortedtools:item/nickel_spear_gui"
-    },
-    "ground": {
-      "parent": "assortedtools:item/nickel_spear_gui"
-    },
-    "gui": {
-      "parent": "assortedtools:item/nickel_spear_gui"
-    }
-  },
   "textures": {
     "particle": "assortedtools:item/tools/nickel_spear"
   }
