@@ -27,6 +27,8 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 
+import java.util.Optional;
+
 public class BetterSpearItem extends TridentItem implements ITiered, IItemExtraProperties, IItemEnchantmentCondition {
 
     private final ItemTierConfig tierHolder;
@@ -76,12 +78,11 @@ public class BetterSpearItem extends TridentItem implements ITiered, IItemExtraP
     }
 
     @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+    public Optional<Boolean> assortedlib_canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
         if (enchantment != Enchantments.CHANNELING && enchantment != Enchantments.RIPTIDE) {
-            return ExtraPropertyHelper.canApplyAtEnchantingTable(stack, enchantment);
+            return Optional.of(true);
         }
-
-        return false;
+        return Optional.of(false);
     }
 
     private Multimap<Attribute, AttributeModifier> attribs = null;

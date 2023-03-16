@@ -1,0 +1,22 @@
+{
+  "replace": false,
+  "values": [
+    "assortedtools:nickel_sword",
+    "assortedtools:electrum_sword",
+    "assortedtools:steel_sword",
+    "assortedtools:aluminum_sword",
+    "assortedtools:amethyst_sword",
+    "assortedtools:lead_sword",
+    "assortedtools:bronze_sword",
+    "assortedtools:ruby_sword",
+    "assortedtools:platinum_sword",
+    "assortedtools:peridot_sword",
+    "assortedtools:tin_sword",
+    "assortedtools:topaz_sword",
+    "assortedtools:copper_sword",
+    "assortedtools:invar_sword",
+    "assortedtools:silver_sword",
+    "assortedtools:emerald_sword",
+    "assortedtools:sapphire_sword"
+  ]
+}

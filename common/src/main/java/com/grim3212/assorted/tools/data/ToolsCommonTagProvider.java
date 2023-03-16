@@ -41,13 +41,27 @@ public class ToolsCommonTagProvider {
         }
 
         public void addCommonTags(Function<TagKey<Block>, IntrinsicTagAppender<Block>> tagger) {
-            tagger.apply(ToolsTags.Blocks.MINEABLE_MULTITOOL).addTag(BlockTags.MINEABLE_WITH_AXE).addTag(BlockTags.MINEABLE_WITH_HOE).addTag(BlockTags.MINEABLE_WITH_PICKAXE).addTag(BlockTags.MINEABLE_WITH_SHOVEL);
+            tagger.apply(ToolsTags.Blocks.MINEABLE_MULTITOOL)
+                    .addOptionalTag(BlockTags.MINEABLE_WITH_AXE.location())
+                    .addOptionalTag(BlockTags.MINEABLE_WITH_HOE.location())
+                    .addOptionalTag(BlockTags.MINEABLE_WITH_PICKAXE.location())
+                    .addOptionalTag(BlockTags.MINEABLE_WITH_SHOVEL.location());
 
-            tagger.apply(ToolsTags.Blocks.DEAD_CORALS).add(Blocks.DEAD_TUBE_CORAL, Blocks.DEAD_BRAIN_CORAL, Blocks.DEAD_BUBBLE_CORAL, Blocks.DEAD_FIRE_CORAL, Blocks.DEAD_HORN_CORAL, Blocks.DEAD_TUBE_CORAL_FAN, Blocks.DEAD_BRAIN_CORAL_FAN, Blocks.DEAD_BUBBLE_CORAL_FAN, Blocks.DEAD_FIRE_CORAL_FAN, Blocks.DEAD_HORN_CORAL_FAN);
-            tagger.apply(ToolsTags.Blocks.ALL_CORALS).addTag(BlockTags.CORAL_BLOCKS).addTag(BlockTags.CORAL_PLANTS).addTag(BlockTags.WALL_CORALS).addTag(BlockTags.CORALS).addTag(ToolsTags.Blocks.DEAD_CORALS);
+            tagger.apply(ToolsTags.Blocks.DEAD_CORALS)
+                    .add(Blocks.DEAD_TUBE_CORAL, Blocks.DEAD_BRAIN_CORAL, Blocks.DEAD_BUBBLE_CORAL, Blocks.DEAD_FIRE_CORAL, Blocks.DEAD_HORN_CORAL, Blocks.DEAD_TUBE_CORAL_FAN, Blocks.DEAD_BRAIN_CORAL_FAN, Blocks.DEAD_BUBBLE_CORAL_FAN, Blocks.DEAD_FIRE_CORAL_FAN, Blocks.DEAD_HORN_CORAL_FAN);
+            tagger.apply(ToolsTags.Blocks.ALL_CORALS)
+                    .addTag(ToolsTags.Blocks.DEAD_CORALS)
+                    .addOptionalTag(BlockTags.CORAL_BLOCKS.location())
+                    .addOptionalTag(BlockTags.CORAL_PLANTS.location())
+                    .addOptionalTag(BlockTags.WALL_CORALS.location())
+                    .addOptionalTag(BlockTags.CORALS.location());
 
-            tagger.apply(ToolsTags.Blocks.DESTRUCTIVE_SPARED_BLOCKS).addTag(LibCommonTags.Blocks.ORES).addTag(LibCommonTags.Blocks.CHESTS).add(Blocks.SPAWNER);
-            tagger.apply(ToolsTags.Blocks.DESTRUCTIVE_SPARED_BLOCKS).addTag(LibCommonTags.Blocks.ORES).addTag(LibCommonTags.Blocks.CHESTS).add(Blocks.SPAWNER);
+            tagger.apply(ToolsTags.Blocks.DESTRUCTIVE_SPARED_BLOCKS)
+                    .add(Blocks.SPAWNER)
+                    .addOptionalTag(LibCommonTags.Blocks.ORES.location())
+                    .addOptionalTag(LibCommonTags.Blocks.CHESTS.location());
+            tagger.apply(ToolsTags.Blocks.MINING_SURFACE_BLOCKS)
+                    .addOptionalTag(LibCommonTags.Blocks.ORES.location());
         }
     }
 

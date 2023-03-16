@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        },
+        {
+          "condition": "fabric:tags_populated",
+          "values": [
+            "c:gems/peridot"
+          ]
+        }
+      ]
+    }
+  ],
+  "key": {
+    "X": {
+      "tag": "c:gems/peridot"
+    }
+  },
+  "pattern": [
+    "X X",
+    "X X"
+  ],
+  "result": {
+    "item": "assortedtools:peridot_boots"
+  }
+}

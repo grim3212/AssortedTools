@@ -1,7 +1,6 @@
 package com.grim3212.assorted.tools.common.item;
 
 import com.google.common.collect.Sets;
-import com.grim3212.assorted.lib.core.item.ExtraPropertyHelper;
 import com.grim3212.assorted.lib.core.item.IItemEnchantmentCondition;
 import com.grim3212.assorted.tools.api.ToolsTags;
 import com.grim3212.assorted.tools.common.item.configurable.ConfigurableToolItem;
@@ -20,6 +19,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 
+import java.util.Optional;
 import java.util.Set;
 
 public abstract class MultiToolItem extends ConfigurableToolItem implements IItemEnchantmentCondition {
@@ -31,14 +31,12 @@ public abstract class MultiToolItem extends ConfigurableToolItem implements IIte
     }
 
     @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        // Support any enchantment that one of the 5 types of tools that make a multitool can
-        return ExtraPropertyHelper.canApplyAtEnchantingTable(stack, enchantment) ||
-                ExtraPropertyHelper.canApplyAtEnchantingTable(new ItemStack(Items.IRON_SWORD), enchantment) ||
-                ExtraPropertyHelper.canApplyAtEnchantingTable(new ItemStack(Items.IRON_SHOVEL), enchantment) ||
-                ExtraPropertyHelper.canApplyAtEnchantingTable(new ItemStack(Items.IRON_PICKAXE), enchantment) ||
-                ExtraPropertyHelper.canApplyAtEnchantingTable(new ItemStack(Items.IRON_HOE), enchantment) ||
-                ExtraPropertyHelper.canApplyAtEnchantingTable(new ItemStack(Items.IRON_AXE), enchantment);
+    public Optional<Boolean> assortedlib_canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        return Optional.of(enchantment.canEnchant(new ItemStack(Items.IRON_SWORD)) ||
+                enchantment.canEnchant(new ItemStack(Items.IRON_SHOVEL)) ||
+                enchantment.canEnchant(new ItemStack(Items.IRON_PICKAXE)) ||
+                enchantment.canEnchant(new ItemStack(Items.IRON_HOE)) ||
+                enchantment.canEnchant(new ItemStack(Items.IRON_AXE)));
     }
 
     @Override

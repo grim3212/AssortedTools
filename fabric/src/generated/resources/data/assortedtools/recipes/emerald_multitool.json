@@ -1,0 +1,57 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "multitools"
+        },
+        {
+          "condition": "fabric:tags_populated",
+          "values": [
+            "c:gems/emerald"
+          ]
+        },
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        }
+      ]
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "assortedtools:emerald_pickaxe"
+    },
+    {
+      "item": "assortedtools:emerald_shovel"
+    },
+    {
+      "item": "assortedtools:emerald_axe"
+    },
+    {
+      "item": "assortedtools:emerald_hoe"
+    },
+    {
+      "item": "assortedtools:emerald_sword"
+    },
+    {
+      "tag": "c:gems/emerald"
+    },
+    {
+      "tag": "c:gems/emerald"
+    },
+    {
+      "tag": "c:gems/emerald"
+    },
+    {
+      "tag": "c:gems/emerald"
+    }
+  ],
+  "result": {
+    "item": "assortedtools:emerald_multitool"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "multitools"
+        },
+        {
+          "condition": "fabric:tags_populated",
+          "values": [
+            "c:ingots/nickel"
+          ]
+        },
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        }
+      ]
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "assortedtools:nickel_pickaxe"
+    },
+    {
+      "item": "assortedtools:nickel_shovel"
+    },
+    {
+      "item": "assortedtools:nickel_axe"
+    },
+    {
+      "item": "assortedtools:nickel_hoe"
+    },
+    {
+      "item": "assortedtools:nickel_sword"
+    },
+    {
+      "tag": "c:ingots/nickel"
+    },
+    {
+      "tag": "c:ingots/nickel"
+    },
+    {
+      "tag": "c:ingots/nickel"
+    },
+    {
+      "tag": "c:ingots/nickel"
+    }
+  ],
+  "result": {
+    "item": "assortedtools:nickel_multitool"
+  }
+}

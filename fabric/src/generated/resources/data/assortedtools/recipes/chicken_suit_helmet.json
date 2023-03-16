@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "chickensuit"
+        },
+        {
+          "condition": "fabric:tags_populated",
+          "values": [
+            "c:feathers"
+          ]
+        }
+      ]
+    }
+  ],
+  "key": {
+    "X": {
+      "tag": "c:feathers"
+    }
+  },
+  "pattern": [
+    "XXX",
+    "X X"
+  ],
+  "result": {
+    "item": "assortedtools:chicken_suit_helmet"
+  }
+}

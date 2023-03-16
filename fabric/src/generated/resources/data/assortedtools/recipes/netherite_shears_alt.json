@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "moreshears"
+        },
+        {
+          "condition": "fabric:tags_populated",
+          "values": [
+            "c:ingots/netherite"
+          ]
+        }
+      ]
+    }
+  ],
+  "key": {
+    "I": {
+      "tag": "c:ingots/netherite"
+    },
+    "L": {
+      "tag": "c:leather"
+    }
+  },
+  "pattern": [
+    "LI",
+    "I "
+  ],
+  "result": {
+    "item": "assortedtools:netherite_shears"
+  }
+}

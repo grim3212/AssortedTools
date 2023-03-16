@@ -1,0 +1,57 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "multitools"
+        },
+        {
+          "condition": "fabric:tags_populated",
+          "values": [
+            "c:gems/topaz"
+          ]
+        },
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        }
+      ]
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "assortedtools:topaz_pickaxe"
+    },
+    {
+      "item": "assortedtools:topaz_shovel"
+    },
+    {
+      "item": "assortedtools:topaz_axe"
+    },
+    {
+      "item": "assortedtools:topaz_hoe"
+    },
+    {
+      "item": "assortedtools:topaz_sword"
+    },
+    {
+      "tag": "c:gems/topaz"
+    },
+    {
+      "tag": "c:gems/topaz"
+    },
+    {
+      "tag": "c:gems/topaz"
+    },
+    {
+      "tag": "c:gems/topaz"
+    }
+  ],
+  "result": {
+    "item": "assortedtools:topaz_multitool"
+  }
+}

@@ -1,6 +1,6 @@
 package com.grim3212.assorted.tools.common.entity;
 
-import com.grim3212.assorted.tools.config.ToolsConfig;
+import com.grim3212.assorted.tools.ToolsCommonMod;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -15,18 +15,18 @@ public class DiamondBoomerangEntity extends BoomerangEntity {
 
     public DiamondBoomerangEntity(EntityType<BoomerangEntity> type, Level world) {
         super(type, world);
-        this.timeBeforeTurnAround = ToolsConfig.Common.diamondBoomerangRange.getValue() <= 0 ? 20 : ToolsConfig.Common.diamondBoomerangRange.getValue();
+        this.timeBeforeTurnAround = ToolsCommonMod.COMMON_CONFIG.diamondBoomerangRange.get() <= 0 ? 20 : ToolsCommonMod.COMMON_CONFIG.diamondBoomerangRange.get();
     }
 
     public DiamondBoomerangEntity(Level worldIn, Player entity, ItemStack itemstack, InteractionHand hand) {
         super(ToolsEntities.DIAMOND_BOOMERANG.get(), worldIn, entity, itemstack, hand);
-        this.timeBeforeTurnAround = ToolsConfig.Common.diamondBoomerangRange.getValue() <= 0 ? 20 : ToolsConfig.Common.diamondBoomerangRange.getValue();
+        this.timeBeforeTurnAround = ToolsCommonMod.COMMON_CONFIG.diamondBoomerangRange.get() <= 0 ? 20 : ToolsCommonMod.COMMON_CONFIG.diamondBoomerangRange.get();
     }
 
     @Override
     protected int getDamage(Entity hitEntity, Player player) {
-        if (ToolsConfig.Common.diamondBoomerangDamage.getValue() > 0) {
-            return ToolsConfig.Common.diamondBoomerangDamage.getValue();
+        if (ToolsCommonMod.COMMON_CONFIG.diamondBoomerangDamage.get() > 0) {
+            return ToolsCommonMod.COMMON_CONFIG.diamondBoomerangDamage.get();
         }
 
         return 0;
@@ -41,7 +41,7 @@ public class DiamondBoomerangEntity extends BoomerangEntity {
     public void beforeTurnAround(Player player) {
         // Following is diamond boomerang only
         // Follows where the entity is looking
-        if (!isBouncing && ToolsConfig.Common.diamondBoomerangFollows.getValue()) {
+        if (!isBouncing && ToolsCommonMod.COMMON_CONFIG.diamondBoomerangFollows.get()) {
             double x = -Mth.sin((player.getYRot() * 3.141593F) / 180F);
             double z = Mth.cos((player.getYRot() * 3.141593F) / 180F);
 

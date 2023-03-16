@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        },
+        {
+          "condition": "fabric:tags_populated",
+          "values": [
+            "c:gems/emerald"
+          ]
+        }
+      ]
+    }
+  ],
+  "key": {
+    "S": {
+      "tag": "c:rods/wooden"
+    },
+    "X": {
+      "tag": "c:gems/emerald"
+    }
+  },
+  "pattern": [
+    "XX",
+    " S",
+    " S"
+  ],
+  "result": {
+    "item": "assortedtools:emerald_hoe"
+  }
+}

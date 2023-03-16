@@ -1,6 +1,5 @@
 package com.grim3212.assorted.tools.client;
 
-import com.grim3212.assorted.lib.client.events.*;
 import com.grim3212.assorted.lib.platform.ClientServices;
 import com.grim3212.assorted.lib.platform.Services;
 import com.grim3212.assorted.tools.Constants;
@@ -21,55 +20,37 @@ import net.minecraft.resources.ResourceLocation;
 public class ToolsClient {
 
     public static KeyMapping TOOL_SWITCH_MODES;
-    private static KeyBindHandler keyBindHandler = new KeyBindHandler();
-    private static ChickenJumpHandler chickenJumpHandler = new ChickenJumpHandler();
 
     public static void init() {
         TOOL_SWITCH_MODES = ClientServices.KEYBINDS.createNew("key.assortedtools.tool_switch_modes", ClientServices.KEYBINDS.getInGameKeyConflictContext(), InputConstants.Type.KEYSYM, InputConstants.KEY_Z, Constants.MOD_NAME);
-        Services.EVENTS.registerEvent(RegisterKeyBindEvent.class, (final RegisterKeyBindEvent event) -> {
-            event.register(TOOL_SWITCH_MODES);
+        ClientServices.CLIENT.registerKeyMapping(TOOL_SWITCH_MODES);
+
+        ClientServices.CLIENT.registerClientTickStart(KeyBindHandler::tick);
+        ClientServices.CLIENT.registerClientTickEnd(ChickenJumpHandler::tick);
+
+        ClampedItemPropertyFunction override = (stack, world, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F;
+        ClientServices.CLIENT.registerItemProperty(() -> ToolsItems.WOOD_SPEAR.get(), new ResourceLocation(Constants.MOD_ID, "throwing"), override);
+        ClientServices.CLIENT.registerItemProperty(() -> ToolsItems.STONE_SPEAR.get(), new ResourceLocation(Constants.MOD_ID, "throwing"), override);
+        ClientServices.CLIENT.registerItemProperty(() -> ToolsItems.IRON_SPEAR.get(), new ResourceLocation(Constants.MOD_ID, "throwing"), override);
+        ClientServices.CLIENT.registerItemProperty(() -> ToolsItems.GOLD_SPEAR.get(), new ResourceLocation(Constants.MOD_ID, "throwing"), override);
+        ClientServices.CLIENT.registerItemProperty(() -> ToolsItems.DIAMOND_SPEAR.get(), new ResourceLocation(Constants.MOD_ID, "throwing"), override);
+        ClientServices.CLIENT.registerItemProperty(() -> ToolsItems.NETHERITE_SPEAR.get(), new ResourceLocation(Constants.MOD_ID, "throwing"), override);
+
+        ToolsItems.MATERIAL_GROUPS.forEach((s, group) -> {
+            ClientServices.CLIENT.registerItemProperty(() -> group.SPEAR.get(), new ResourceLocation(Constants.MOD_ID, "throwing"), override);
         });
 
-        Services.EVENTS.registerEvent(ClientTickEvent.StartClientTickEvent.class, (final ClientTickEvent.StartClientTickEvent event) -> {
-            keyBindHandler.tick();
-        });
+        ClientServices.CLIENT.registerEntityRenderer(() -> ToolsEntities.WOOD_BOOMERANG.get(), BoomerangRenderer::new);
+        ClientServices.CLIENT.registerEntityRenderer(() -> ToolsEntities.DIAMOND_BOOMERANG.get(), BoomerangRenderer::new);
+        ClientServices.CLIENT.registerEntityRenderer(() -> ToolsEntities.POKEBALL.get(), ThrownItemRenderer::new);
+        ClientServices.CLIENT.registerEntityRenderer(() -> ToolsEntities.BETTER_SPEAR.get(), BetterSpearRenderer::new);
 
-        Services.EVENTS.registerEvent(ClientTickEvent.EndClientTickEvent.class, (final ClientTickEvent.EndClientTickEvent event) -> {
-            chickenJumpHandler.tick();
-        });
+        ClientServices.CLIENT.registerEntityLayer(ToolsModelLayers.SPEAR, SpearModel::createLayer);
 
-        Services.EVENTS.registerEvent(ClientSetupEvent.class, (final ClientSetupEvent event) -> {
-            ClampedItemPropertyFunction override = (stack, world, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F;
-
-            event.registerItemProperty(ToolsItems.WOOD_SPEAR.get(), new ResourceLocation(Constants.MOD_ID, "throwing"), override);
-            event.registerItemProperty(ToolsItems.STONE_SPEAR.get(), new ResourceLocation(Constants.MOD_ID, "throwing"), override);
-            event.registerItemProperty(ToolsItems.IRON_SPEAR.get(), new ResourceLocation(Constants.MOD_ID, "throwing"), override);
-            event.registerItemProperty(ToolsItems.GOLD_SPEAR.get(), new ResourceLocation(Constants.MOD_ID, "throwing"), override);
-            event.registerItemProperty(ToolsItems.DIAMOND_SPEAR.get(), new ResourceLocation(Constants.MOD_ID, "throwing"), override);
-            event.registerItemProperty(ToolsItems.NETHERITE_SPEAR.get(), new ResourceLocation(Constants.MOD_ID, "throwing"), override);
-
-            ToolsItems.MATERIAL_GROUPS.forEach((s, group) -> {
-                event.registerItemProperty(group.SPEAR.get(), new ResourceLocation(Constants.MOD_ID, "throwing"), override);
-            });
-        });
-
-        Services.EVENTS.registerEvent(RegisterRenderersEvent.class, (final RegisterRenderersEvent event) -> {
-            event.registerEntityRenderer(ToolsEntities.WOOD_BOOMERANG.get(), BoomerangRenderer::new);
-            event.registerEntityRenderer(ToolsEntities.DIAMOND_BOOMERANG.get(), BoomerangRenderer::new);
-            event.registerEntityRenderer(ToolsEntities.POKEBALL.get(), ThrownItemRenderer::new);
-            event.registerEntityRenderer(ToolsEntities.BETTER_SPEAR.get(), BetterSpearRenderer::new);
-        });
-
-        Services.EVENTS.registerEvent(RegisterEntityLayersEvent.class, (final RegisterEntityLayersEvent event) -> {
-            event.register(ToolsModelLayers.SPEAR, SpearModel::createLayer);
-        });
-
-        Services.EVENTS.registerEvent(RegisterItemColorEvent.class, (final RegisterItemColorEvent event) -> {
-            event.register((stack, tintIndex) -> {
-                if (tintIndex != 1) return 0xFFFFFFFF;
-                return Services.FLUIDS.get(stack).map(x -> Services.FLUIDS.getFluidColor(x)).orElse(0xFFFFFFFF);
-            }, ToolsItems.buckets());
-        });
+        ClientServices.CLIENT.registerItemColor((stack, tintIndex) -> {
+            if (tintIndex != 1) return 0xFFFFFFFF;
+            return Services.FLUIDS.get(stack).map(x -> Services.FLUIDS.getFluidColor(x)).orElse(0xFFFFFFFF);
+        }, () -> ToolsItems.buckets());
     }
 
 }

@@ -2,9 +2,9 @@ package com.grim3212.assorted.tools.common.item;
 
 import com.grim3212.assorted.lib.platform.Services;
 import com.grim3212.assorted.lib.util.NBTHelper;
+import com.grim3212.assorted.tools.ToolsCommonMod;
 import com.grim3212.assorted.tools.api.item.ISwitchModes;
 import com.grim3212.assorted.tools.api.util.WandCoord3D;
-import com.grim3212.assorted.tools.config.ToolsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -62,7 +62,7 @@ public abstract class WandItem extends Item implements ISwitchModes {
     protected abstract boolean isTooFar(int range, int maxDiff, int range2D, ItemStack stack);
 
     public boolean isTooFar(WandCoord3D a, WandCoord3D b, ItemStack stack) {
-        if (ToolsConfig.Common.freeBuildMode.getValue()) {
+        if (ToolsCommonMod.COMMON_CONFIG.freeBuildMode.get()) {
             return a.getDistance(b) > 1500.0D;
         }
         return this.isTooFar((int) a.getDistance(b), 10, (int) a.getDistanceFlat(b), stack);
@@ -147,7 +147,7 @@ public abstract class WandItem extends Item implements ISwitchModes {
         Level worldIn = context.getLevel();
         Player playerIn = context.getPlayer();
         InteractionHand hand = context.getHand();
-        boolean isFree = ToolsConfig.Common.freeBuildMode.getValue() || playerIn.isCreative();
+        boolean isFree = ToolsCommonMod.COMMON_CONFIG.freeBuildMode.get() || playerIn.isCreative();
 
         this.stateOrig = worldIn.getBlockState(pos);
         BlockState state = this.stateOrig;

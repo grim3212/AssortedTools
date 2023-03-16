@@ -1,0 +1,57 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "multitools"
+        },
+        {
+          "condition": "fabric:tags_populated",
+          "values": [
+            "c:ingots/platinum"
+          ]
+        },
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        }
+      ]
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "assortedtools:platinum_pickaxe"
+    },
+    {
+      "item": "assortedtools:platinum_shovel"
+    },
+    {
+      "item": "assortedtools:platinum_axe"
+    },
+    {
+      "item": "assortedtools:platinum_hoe"
+    },
+    {
+      "item": "assortedtools:platinum_sword"
+    },
+    {
+      "tag": "c:ingots/platinum"
+    },
+    {
+      "tag": "c:ingots/platinum"
+    },
+    {
+      "tag": "c:ingots/platinum"
+    },
+    {
+      "tag": "c:ingots/platinum"
+    }
+  ],
+  "result": {
+    "item": "assortedtools:platinum_multitool"
+  }
+}

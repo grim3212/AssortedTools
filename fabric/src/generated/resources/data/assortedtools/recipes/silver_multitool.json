@@ -1,0 +1,57 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "multitools"
+        },
+        {
+          "condition": "fabric:tags_populated",
+          "values": [
+            "c:ingots/silver"
+          ]
+        },
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        }
+      ]
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "assortedtools:silver_pickaxe"
+    },
+    {
+      "item": "assortedtools:silver_shovel"
+    },
+    {
+      "item": "assortedtools:silver_axe"
+    },
+    {
+      "item": "assortedtools:silver_hoe"
+    },
+    {
+      "item": "assortedtools:silver_sword"
+    },
+    {
+      "tag": "c:ingots/silver"
+    },
+    {
+      "tag": "c:ingots/silver"
+    },
+    {
+      "tag": "c:ingots/silver"
+    },
+    {
+      "tag": "c:ingots/silver"
+    }
+  ],
+  "result": {
+    "item": "assortedtools:silver_multitool"
+  }
+}

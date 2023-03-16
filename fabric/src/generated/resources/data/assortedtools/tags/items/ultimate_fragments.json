@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "assortedtools:u_fragment",
+    "assortedtools:l_fragment",
+    "assortedtools:t_fragment",
+    "assortedtools:i_fragment",
+    "assortedtools:m_fragment",
+    "assortedtools:a_fragment",
+    "assortedtools:missing_fragment",
+    "assortedtools:e_fragment"
+  ]
+}

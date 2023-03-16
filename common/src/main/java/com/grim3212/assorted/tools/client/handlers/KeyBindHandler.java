@@ -10,13 +10,13 @@ import net.minecraft.world.entity.player.Player;
 
 public class KeyBindHandler {
 
-    private int switchCooldown = 0;
+    // Should be client side only so each client should have own instance of switchCooldown
+    private static int switchCooldown = 0;
 
-    public void tick() {
+    public static void tick(Minecraft mc) {
         if (switchCooldown > 0)
             --switchCooldown;
 
-        Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
         if (mc.isWindowActive()) {
             if (player != null) {
@@ -24,14 +24,14 @@ public class KeyBindHandler {
                     if (switchCooldown == 0) {
                         if (player.getMainHandItem() != null) {
                             if (player.getMainHandItem().getItem() instanceof WandItem) {
-                                switchCooldown = 20;
+                                switchCooldown = 10;
                                 Services.NETWORK.sendToServer(new ToolCycleModesPacket(InteractionHand.MAIN_HAND));
                             }
                         }
 
                         if (player.getOffhandItem() != null) {
                             if (player.getOffhandItem().getItem() instanceof WandItem) {
-                                switchCooldown = 20;
+                                switchCooldown = 10;
                                 Services.NETWORK.sendToServer(new ToolCycleModesPacket(InteractionHand.OFF_HAND));
                             }
                         }

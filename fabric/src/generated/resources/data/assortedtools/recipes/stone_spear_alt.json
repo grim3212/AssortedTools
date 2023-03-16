@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "betterspears"
+        },
+        {
+          "condition": "fabric:tags_populated",
+          "values": [
+            "minecraft:stone_tool_materials"
+          ]
+        }
+      ]
+    }
+  ],
+  "key": {
+    "I": {
+      "tag": "minecraft:stone_tool_materials"
+    },
+    "S": {
+      "tag": "c:rods/wooden"
+    }
+  },
+  "pattern": [
+    "SSI"
+  ],
+  "result": {
+    "item": "assortedtools:stone_spear"
+  }
+}

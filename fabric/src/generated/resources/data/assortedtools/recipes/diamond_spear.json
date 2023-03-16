@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "betterspears"
+        },
+        {
+          "condition": "fabric:tags_populated",
+          "values": [
+            "c:gems/diamond"
+          ]
+        }
+      ]
+    }
+  ],
+  "key": {
+    "I": {
+      "tag": "c:gems/diamond"
+    },
+    "S": {
+      "tag": "c:rods/wooden"
+    }
+  },
+  "pattern": [
+    "I  ",
+    " S ",
+    "  S"
+  ],
+  "result": {
+    "item": "assortedtools:diamond_spear"
+  }
+}

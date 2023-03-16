@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:smithing",
+  "addition": {
+    "tag": "c:ingots/netherite"
+  },
+  "base": {
+    "item": "assortedtools:diamond_bucket"
+  },
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "betterbuckets"
+    }
+  ],
+  "result": {
+    "item": "assortedtools:netherite_bucket"
+  }
+}

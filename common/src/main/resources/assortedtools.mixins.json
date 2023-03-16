@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_17",
+  "package": "com.grim3212.assorted.tools.mixin",
+  "mixins": [
+    "item.AxeItemMixin",
+    "item.HoeItemMixin",
+    "item.ShearsItemMixin",
+    "item.ShovelItemMixin"
+  ],
+  "client": [],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "refmap": "assortedtools.refmap.json"
+}

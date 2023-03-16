@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "betterbuckets"
+        },
+        {
+          "condition": "fabric:tags_populated",
+          "values": [
+            "minecraft:stone_tool_materials"
+          ]
+        }
+      ]
+    }
+  ],
+  "key": {
+    "I": {
+      "tag": "minecraft:stone_tool_materials"
+    }
+  },
+  "pattern": [
+    "I I",
+    " I "
+  ],
+  "result": {
+    "item": "assortedtools:stone_bucket"
+  }
+}

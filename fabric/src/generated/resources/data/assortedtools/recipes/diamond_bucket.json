@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "betterbuckets"
+        },
+        {
+          "condition": "fabric:tags_populated",
+          "values": [
+            "c:gems/diamond"
+          ]
+        }
+      ]
+    }
+  ],
+  "key": {
+    "I": {
+      "tag": "c:gems/diamond"
+    }
+  },
+  "pattern": [
+    "I I",
+    " I "
+  ],
+  "result": {
+    "item": "assortedtools:diamond_bucket"
+  }
+}

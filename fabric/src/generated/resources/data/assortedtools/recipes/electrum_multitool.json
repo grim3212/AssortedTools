@@ -1,0 +1,57 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "multitools"
+        },
+        {
+          "condition": "fabric:tags_populated",
+          "values": [
+            "c:ingots/electrum"
+          ]
+        },
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        }
+      ]
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "assortedtools:electrum_pickaxe"
+    },
+    {
+      "item": "assortedtools:electrum_shovel"
+    },
+    {
+      "item": "assortedtools:electrum_axe"
+    },
+    {
+      "item": "assortedtools:electrum_hoe"
+    },
+    {
+      "item": "assortedtools:electrum_sword"
+    },
+    {
+      "tag": "c:ingots/electrum"
+    },
+    {
+      "tag": "c:ingots/electrum"
+    },
+    {
+      "tag": "c:ingots/electrum"
+    },
+    {
+      "tag": "c:ingots/electrum"
+    }
+  ],
+  "result": {
+    "item": "assortedtools:electrum_multitool"
+  }
+}

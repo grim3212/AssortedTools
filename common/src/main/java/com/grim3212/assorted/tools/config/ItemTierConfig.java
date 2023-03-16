@@ -1,54 +1,50 @@
 package com.grim3212.assorted.tools.config;
 
-import com.grim3212.assorted.lib.config.ConfigGroup;
-import com.grim3212.assorted.lib.config.ConfigOption;
+import com.grim3212.assorted.lib.config.IConfigurationBuilder;
 import com.grim3212.assorted.tools.api.item.ToolsItemTier;
 import net.minecraft.world.item.Tier;
+
+import java.util.function.Supplier;
 
 public class ItemTierConfig {
     private final String name;
     private final Tier defaultTier;
 
-    private final ConfigOption.ConfigOptionInteger harvestLevel;
-    private final ConfigOption.ConfigOptionInteger maxUses;
-    private final ConfigOption.ConfigOptionInteger enchantability;
-    private final ConfigOption.ConfigOptionFloat efficiency;
-    private final ConfigOption.ConfigOptionFloat damage;
-    private final ConfigOption.ConfigOptionFloat axeDamage;
-    private final ConfigOption.ConfigOptionFloat axeSpeed;
+    public final Supplier<Integer> harvestLevel;
+    public final Supplier<Integer> maxUses;
+    public final Supplier<Integer> enchantability;
+    public final Supplier<Double> efficiency;
+    public final Supplier<Double> damage;
+    public final Supplier<Double> axeDamage;
+    public final Supplier<Double> axeSpeed;
 
     // Bucket config properties
-    private final ConfigOption.ConfigOptionInteger maxBuckets;
-    private final ConfigOption.ConfigOptionInteger milkingLevel;
-    private final ConfigOption.ConfigOptionFloat maxPickupTemp;
-    private final ConfigOption<Boolean> breaksAfterUse;
+    public final Supplier<Integer> maxBuckets;
+    public final Supplier<Integer> milkingLevel;
+    public final Supplier<Double> maxPickupTemp;
+    public final Supplier<Boolean> breaksAfterUse;
 
-    public ItemTierConfig(ConfigGroup group, String name, Tier defaultTier, float defaultAxeDamage, float defaultAxeSpeed, int defaultMaxBuckets, int defaultMilkingLevel, float defaultMaxPickupTemp, boolean defaultBreaksAfterUse) {
+    public ItemTierConfig(IConfigurationBuilder builder, String name, String path, Tier defaultTier, float defaultAxeDamage, float defaultAxeSpeed, int defaultMaxBuckets, int defaultMilkingLevel, float defaultMaxPickupTemp, boolean defaultBreaksAfterUse) {
         this.name = name;
         this.defaultTier = defaultTier;
 
-        ConfigGroup itemTierGroup = new ConfigGroup(name);
+        this.maxUses = builder.defineInteger(path + "." + name + ".maxUses", this.defaultTier.getUses(), 1, 100000, "The maximum uses for this item tier");
+        this.enchantability = builder.defineInteger(path + "." + name + ".enchantability", this.defaultTier.getEnchantmentValue(), 0, 100000, "The enchantability for this item tier");
+        this.harvestLevel = builder.defineInteger(path + "." + name + ".harvestLevel", this.defaultTier.getLevel(), 0, 100, "The harvest level for this item tier");
+        this.efficiency = builder.defineDouble(path + "." + name + ".efficiency", this.defaultTier.getSpeed(), 0F, 100000F, "The efficiency for this item tier");
+        this.damage = builder.defineDouble(path + "." + name + ".damage", this.defaultTier.getAttackDamageBonus(), 0F, 100000F, "The amount of damage this item tier does");
 
-        this.maxUses = new ConfigOption.ConfigOptionInteger("maxUses", this.defaultTier.getUses(), "The maximum uses for this item tier", 1, 100000);
-        this.enchantability = new ConfigOption.ConfigOptionInteger("enchantability", this.defaultTier.getEnchantmentValue(), "The enchantability for this item tier", 0, 100000);
-        this.harvestLevel = new ConfigOption.ConfigOptionInteger("harvestLevel", this.defaultTier.getLevel(), "The harvest level for this item tier", 0, 100);
-        this.efficiency = new ConfigOption.ConfigOptionFloat("efficiency", this.defaultTier.getSpeed(), "The efficiency for this item tier", 0F, 100000F);
-        this.damage = new ConfigOption.ConfigOptionFloat("damage", this.defaultTier.getAttackDamageBonus(), "The amount of damage this item tier does", 0F, 100000F);
+        this.axeDamage = builder.defineDouble(path + "." + name + ".axeDamage", defaultAxeDamage, 0F, 100000F, "The damage modifier for axes as they are different per material. Will not affect vanilla tools.");
+        this.axeSpeed = builder.defineDouble(path + "." + name + ".axeSpeed", defaultAxeDamage, -1000F, 100000F, "The speed modifier for axes as they are different per material. Will not affect vanilla tools.");
 
-        this.axeDamage = new ConfigOption.ConfigOptionFloat("axeDamage", defaultAxeDamage, "The damage modifier for axes as they are different per material. Will not affect vanilla tools.", 0F, 100000F);
-        this.axeSpeed = new ConfigOption.ConfigOptionFloat("axeSpeed", defaultAxeSpeed, "The speed modifier for axes as they are different per material. Will not affect vanilla tools.", -1000F, 100000F);
-
-        this.maxBuckets = new ConfigOption.ConfigOptionInteger("maxBuckets", defaultMaxBuckets, "The maximum number of buckets that this materials bucket can hold.", 1, 1000);
-        this.milkingLevel = new ConfigOption.ConfigOptionInteger("milkingLevel", defaultMilkingLevel, "The milking level that will be set for this materials bucket. By default only 0-3", 0, 5);
-        this.maxPickupTemp = new ConfigOption.ConfigOptionFloat("maxPickupTemp", defaultMaxPickupTemp, "The maximum temp of a fluid this materials bucket can pickup.", 0F, 1000000F);
-        this.breaksAfterUse = new ConfigOption<Boolean>("breaksAfterUse", ConfigOption.OptionType.BOOLEAN, defaultBreaksAfterUse, "Is this material so weak that the bucket will break after placing a fluid.");
-
-        itemTierGroup.addOptions(this.maxUses, this.enchantability, this.harvestLevel, this.efficiency, this.damage, this.axeDamage, this.axeSpeed, this.maxBuckets, this.milkingLevel, this.maxPickupTemp, this.breaksAfterUse);
-        group.addSubGroups(itemTierGroup);
+        this.maxBuckets = builder.defineInteger(path + "." + name + ".maxBuckets", defaultMaxBuckets, 1, 1000, "The maximum number of buckets that this materials bucket can hold.");
+        this.milkingLevel = builder.defineInteger(path + "." + name + ".milkingLevel", defaultMilkingLevel, 0, 5, "The milking level that will be set for this materials bucket. By default only 0-3");
+        this.maxPickupTemp = builder.defineDouble(path + "." + name + ".maxPickupTemp", defaultMaxPickupTemp, 0F, 1000000F, "The maximum temp of a fluid this materials bucket can pickup.");
+        this.breaksAfterUse = builder.defineBoolean(path + "." + name + ".breaksAfterUse", defaultBreaksAfterUse, "Is this material so weak that the bucket will break after placing a fluid.");
     }
 
-    public ItemTierConfig(ConfigGroup group, String name, ToolsItemTier defaultTier) {
-        this(group, name, defaultTier, defaultTier.getAxeDamage(), defaultTier.getAxeSpeedIn(), defaultTier.getBucketOptions().maxBuckets, defaultTier.getBucketOptions().milkingLevel, defaultTier.getBucketOptions().maxPickupTemp, defaultTier.getBucketOptions().destroyedAfterUse);
+    public ItemTierConfig(IConfigurationBuilder builder, String name, String path, ToolsItemTier defaultTier) {
+        this(builder, name, path, defaultTier, defaultTier.getAxeDamage(), defaultTier.getAxeSpeedIn(), defaultTier.getBucketOptions().maxBuckets, defaultTier.getBucketOptions().milkingLevel, defaultTier.getBucketOptions().maxPickupTemp, defaultTier.getBucketOptions().destroyedAfterUse);
     }
 
     public String getName() {
@@ -60,47 +56,47 @@ public class ItemTierConfig {
     }
 
     public int getHarvestLevel() {
-        return harvestLevel.getValue();
+        return harvestLevel.get();
     }
 
     public int getMaxUses() {
-        return maxUses.getValue();
+        return maxUses.get();
     }
 
     public float getEfficiency() {
-        return efficiency.getValue();
+        return efficiency.get().floatValue();
     }
 
     public float getDamage() {
-        return damage.getValue();
+        return damage.get().floatValue();
     }
 
     public int getEnchantability() {
-        return enchantability.getValue();
+        return enchantability.get();
     }
 
     public float getAxeDamage() {
-        return this.axeDamage.getValue();
+        return this.axeDamage.get().floatValue();
     }
 
     public float getAxeSpeed() {
-        return this.axeSpeed.getValue();
+        return this.axeSpeed.get().floatValue();
     }
 
     public int getMaxBuckets() {
-        return this.maxBuckets.getValue();
+        return this.maxBuckets.get();
     }
 
     public int getMilkingLevel() {
-        return this.milkingLevel.getValue();
+        return this.milkingLevel.get();
     }
 
     public float getMaxPickupTemp() {
-        return this.maxPickupTemp.getValue();
+        return this.maxPickupTemp.get().floatValue();
     }
 
     public boolean getBreaksAfterUse() {
-        return this.breaksAfterUse.getValue();
+        return this.breaksAfterUse.get();
     }
 
     @Override

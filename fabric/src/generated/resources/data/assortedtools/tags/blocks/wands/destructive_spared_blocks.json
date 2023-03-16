@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:spawner",
+    {
+      "id": "#c:ores",
+      "required": false
+    },
+    {
+      "id": "#c:chests",
+      "required": false
+    }
+  ]
+}

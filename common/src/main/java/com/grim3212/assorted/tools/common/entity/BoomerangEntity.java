@@ -1,6 +1,6 @@
 package com.grim3212.assorted.tools.common.entity;
 
-import com.grim3212.assorted.tools.config.ToolsConfig;
+import com.grim3212.assorted.tools.ToolsCommonMod;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -91,19 +91,19 @@ public abstract class BoomerangEntity extends Entity {
 
         Vec3 vec3d1 = this.position();
         Vec3 vec3d = this.position().add(this.getDeltaMovement());
-        HitResult raytraceresult = this.level.clip(new ClipContext(vec3d1, vec3d, Block.OUTLINE, Fluid.ANY, null));
+        HitResult raytraceresult = this.level.clip(new ClipContext(vec3d1, vec3d, Block.OUTLINE, Fluid.ANY, this));
 
         if (raytraceresult != null) {
             if (raytraceresult.getType() == HitResult.Type.BLOCK) {
                 BlockPos pos = new BlockPos(raytraceresult.getLocation());
                 BlockState state = level.getBlockState(pos);
 
-                if (state.getMaterial() == Material.PLANT && ToolsConfig.Common.breaksPlants.getValue() || state.getBlock() == Blocks.TORCH && ToolsConfig.Common.breaksTorches.getValue()) {
+                if (state.getMaterial() == Material.PLANT && ToolsCommonMod.COMMON_CONFIG.breaksPlants.get() || state.getBlock() == Blocks.TORCH && ToolsCommonMod.COMMON_CONFIG.breaksTorches.get()) {
                     level.destroyBlock(pos, true);
                 }
 
-                if ((state.getBlock() instanceof LeverBlock || state.getBlock() instanceof ButtonBlock) && ToolsConfig.Common.hitsButtons.getValue()) {
-                    if (timeBeforeTurnAround > 0 && ToolsConfig.Common.turnAroundButton.getValue()) {
+                if ((state.getBlock() instanceof LeverBlock || state.getBlock() instanceof ButtonBlock) && ToolsCommonMod.COMMON_CONFIG.hitsButtons.get()) {
+                    if (timeBeforeTurnAround > 0 && ToolsCommonMod.COMMON_CONFIG.turnAroundButton.get()) {
                         timeBeforeTurnAround = 0;
                     }
                     if (activatedPos == null || !activatedPos.equals(pos)) {
@@ -167,7 +167,7 @@ public abstract class BoomerangEntity extends Entity {
             Entity entity = list.get(i);
             if (entity instanceof ItemEntity) {
                 itemsPickedUp.add((ItemEntity) entity);
-                if (timeBeforeTurnAround > 0 && ToolsConfig.Common.turnAroundItem.getValue()) {
+                if (timeBeforeTurnAround > 0 && ToolsCommonMod.COMMON_CONFIG.turnAroundItem.get()) {
                     timeBeforeTurnAround = 0;
                 }
                 continue;
@@ -178,7 +178,7 @@ public abstract class BoomerangEntity extends Entity {
 
             this.onEntityHit(entity, player);
 
-            if (timeBeforeTurnAround > 0 && ToolsConfig.Common.turnAroundMob.getValue()) {
+            if (timeBeforeTurnAround > 0 && ToolsCommonMod.COMMON_CONFIG.turnAroundMob.get()) {
                 timeBeforeTurnAround = 0;
             }
         }

@@ -28,4 +28,4 @@ logs
 # Data Generator cache
 forge/src/generated/resources/.cache
 common/src/generated/resources/.cache
-fabric/src/main/generated/.cache
+fabric/src/generated/resources/.cache

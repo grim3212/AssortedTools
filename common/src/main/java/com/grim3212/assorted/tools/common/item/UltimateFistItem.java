@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Multimap;
 import com.grim3212.assorted.lib.core.item.ExtraPropertyHelper;
 import com.grim3212.assorted.lib.core.item.IItemExtraProperties;
-import com.grim3212.assorted.tools.config.ToolsConfig;
+import com.grim3212.assorted.tools.ToolsCommonMod;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class UltimateFistItem extends Item implements IItemExtraProperties {
 
     public UltimateFistItem(Properties props) {
-        super(props.defaultDurability(ToolsConfig.Common.ultimateItemTier.getDefaultTier().getUses()).fireResistant());
+        super(props.defaultDurability(ToolsCommonMod.COMMON_CONFIG.ultimateItemTier.getDefaultTier().getUses()).fireResistant());
     }
 
     private Multimap<Attribute, AttributeModifier> attribs = null;
@@ -29,8 +29,8 @@ public class UltimateFistItem extends Item implements IItemExtraProperties {
     public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
         if (attribs == null) {
             Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-            builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", (double) ToolsConfig.Common.ultimateItemTier.getDamage(), AttributeModifier.Operation.ADDITION));
-            builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", (double) -0.5F, AttributeModifier.Operation.ADDITION));
+            builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", ToolsCommonMod.COMMON_CONFIG.ultimateItemTier.getDamage(), AttributeModifier.Operation.ADDITION));
+            builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", -0.5F, AttributeModifier.Operation.ADDITION));
             this.attribs = builder.build();
         }
 
@@ -44,7 +44,7 @@ public class UltimateFistItem extends Item implements IItemExtraProperties {
 
     @Override
     public int getMaxDamage(ItemStack stack) {
-        return ToolsConfig.Common.ultimateItemTier.getMaxUses();
+        return ToolsCommonMod.COMMON_CONFIG.ultimateItemTier.getMaxUses();
     }
 
     @Override
@@ -74,7 +74,7 @@ public class UltimateFistItem extends Item implements IItemExtraProperties {
 
     @Override
     public float getDestroySpeed(ItemStack stack, BlockState state) {
-        return ToolsConfig.Common.ultimateItemTier.getEfficiency();
+        return ToolsCommonMod.COMMON_CONFIG.ultimateItemTier.getEfficiency();
     }
 
     @Override

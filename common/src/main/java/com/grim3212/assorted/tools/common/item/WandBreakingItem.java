@@ -3,9 +3,9 @@ package com.grim3212.assorted.tools.common.item;
 import com.google.common.collect.Lists;
 import com.grim3212.assorted.lib.util.NBTHelper;
 import com.grim3212.assorted.tools.Constants;
+import com.grim3212.assorted.tools.ToolsCommonMod;
 import com.grim3212.assorted.tools.api.ToolsTags;
 import com.grim3212.assorted.tools.api.util.WandCoord3D;
-import com.grim3212.assorted.tools.config.ToolsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -42,9 +42,9 @@ public class WandBreakingItem extends WandItem {
             case BREAK_WEAK:
                 return (state.getMaterial().isReplaceable() || state.getMaterial().getPushReaction() == PushReaction.DESTROY || state.getMaterial().isLiquid());
             case BREAK_ALL:
-                return (state.getBlock() != Blocks.BEDROCK || ToolsConfig.Common.bedrockBreaking.getValue());
+                return (state.getBlock() != Blocks.BEDROCK || ToolsCommonMod.COMMON_CONFIG.bedrockBreaking.get());
             case BREAK_XORES:
-                return (state.getBlock() != Blocks.BEDROCK || ToolsConfig.Common.bedrockBreaking.getValue()) && !isOre(state);
+                return (state.getBlock() != Blocks.BEDROCK || ToolsCommonMod.COMMON_CONFIG.bedrockBreaking.get()) && !isOre(state);
         }
         return false;
     }

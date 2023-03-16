@@ -1,10 +1,10 @@
 package com.grim3212.assorted.tools.client.handlers;
 
 import com.grim3212.assorted.lib.platform.Services;
+import com.grim3212.assorted.tools.ToolsCommonMod;
 import com.grim3212.assorted.tools.common.enchantment.ToolsEnchantments;
 import com.grim3212.assorted.tools.common.item.ChickenSuitArmor;
 import com.grim3212.assorted.tools.common.network.ChickenSuitUpdatePacket;
-import com.grim3212.assorted.tools.config.ToolsConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.sounds.SoundEvents;
@@ -16,20 +16,19 @@ import net.minecraft.world.phys.Vec3;
 
 public class ChickenJumpHandler {
 
-    private int numJumps;
+    // Should be client side only so each client should have own instance of numJumps
+    private static int numJumps;
 
-    public void tick() {
-        if (ToolsConfig.Common.chickenSuitEnabled.getValue()) {
+    public static void tick(Minecraft mc) {
+        if (ToolsCommonMod.COMMON_CONFIG.chickenSuitEnabled.get()) {
             Screen screen = Minecraft.getInstance().screen;
             if (screen == null) {
-                onTickInGame();
+                onTickInGame(mc);
             }
         }
     }
 
-    public void onTickInGame() {
-        Minecraft mc = Minecraft.getInstance();
-
+    private static void onTickInGame(Minecraft mc) {
         if (mc.player.isOnGround()) {
             numJumps = 0;
         }
@@ -56,7 +55,7 @@ public class ChickenJumpHandler {
                         // 'Flap those wings' :)
                         if (mc.player.fallDistance > 0.4f) {
                             mc.player.jumpFromGround();
-                            mc.player.fallDistance = -this.numJumps;
+                            mc.player.fallDistance = -numJumps;
 
                             // Only play sound to client player
                             mc.level.playSound(mc.player, mc.player.blockPosition(), SoundEvents.CHICKEN_AMBIENT, SoundSource.PLAYERS, 1.0F, 1.0F);
@@ -78,7 +77,7 @@ public class ChickenJumpHandler {
                     mc.player.fallDistance = 0.0F;
 
                     // Glide on server
-                    Services.NETWORK.sendToServer(new ChickenSuitUpdatePacket(this.numJumps));
+                    Services.NETWORK.sendToServer(new ChickenSuitUpdatePacket(numJumps));
                 }
 
             } else {
@@ -89,7 +88,7 @@ public class ChickenJumpHandler {
         }
     }
 
-    private int getMaxJumps(Player player) {
+    private static int getMaxJumps(Player player) {
         // Start at one for original jump
         int maxJumps = 1;
         for (ItemStack stack : player.getArmorSlots()) {

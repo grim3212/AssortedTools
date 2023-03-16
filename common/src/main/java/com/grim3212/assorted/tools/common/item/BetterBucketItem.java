@@ -4,11 +4,11 @@ import com.grim3212.assorted.lib.annotations.LoaderImplement;
 import com.grim3212.assorted.lib.core.fluid.FluidInformation;
 import com.grim3212.assorted.lib.platform.Services;
 import com.grim3212.assorted.lib.util.NBTHelper;
+import com.grim3212.assorted.tools.ToolsCommonMod;
 import com.grim3212.assorted.tools.api.item.ITiered;
 import com.grim3212.assorted.tools.common.fluid.FluidHelper;
 import com.grim3212.assorted.tools.common.handlers.DispenseBucketHandler;
 import com.grim3212.assorted.tools.config.ItemTierConfig;
-import com.grim3212.assorted.tools.config.ToolsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -138,7 +138,7 @@ public class BetterBucketItem extends Item implements ITiered {
                     }
 
                     int leftover = filledAmount % getBucketAmount();
-                    int newFillAmount = ToolsConfig.Common.allowPartialBucketAmounts.getValue() ? filledAmount : filledAmount - leftover;
+                    int newFillAmount = ToolsCommonMod.COMMON_CONFIG.allowPartialBucketAmounts.get() ? filledAmount : filledAmount - leftover;
                     setAmount(itemStackIn, newFillAmount);
 
                     return InteractionResultHolder.success(itemStackIn);

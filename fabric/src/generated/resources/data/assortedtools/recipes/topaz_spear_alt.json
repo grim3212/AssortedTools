@@ -1,0 +1,39 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "betterspears"
+        },
+        {
+          "condition": "fabric:tags_populated",
+          "values": [
+            "c:gems/topaz"
+          ]
+        },
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        }
+      ]
+    }
+  ],
+  "key": {
+    "I": {
+      "tag": "c:gems/topaz"
+    },
+    "S": {
+      "tag": "c:rods/wooden"
+    }
+  },
+  "pattern": [
+    "SSI"
+  ],
+  "result": {
+    "item": "assortedtools:topaz_spear"
+  }
+}

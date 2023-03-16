@@ -1,9 +1,21 @@
 {
   "values": [
-    "#minecraft:coral_blocks",
-    "#minecraft:coral_plants",
-    "#minecraft:wall_corals",
-    "#minecraft:corals",
-    "#forge:corals/dead"
+    "#forge:corals/dead",
+    {
+      "id": "#minecraft:coral_blocks",
+      "required": false
+    },
+    {
+      "id": "#minecraft:coral_plants",
+      "required": false
+    },
+    {
+      "id": "#minecraft:wall_corals",
+      "required": false
+    },
+    {
+      "id": "#minecraft:corals",
+      "required": false
+    }
   ]
 }

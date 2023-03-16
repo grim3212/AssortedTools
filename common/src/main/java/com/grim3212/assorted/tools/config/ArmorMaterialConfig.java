@@ -1,7 +1,6 @@
 package com.grim3212.assorted.tools.config;
 
-import com.grim3212.assorted.lib.config.ConfigGroup;
-import com.grim3212.assorted.lib.config.ConfigOption;
+import com.grim3212.assorted.lib.config.IConfigurationBuilder;
 import com.grim3212.assorted.tools.api.item.ToolsArmorMaterials;
 
 import java.util.Arrays;
@@ -10,34 +9,29 @@ import java.util.function.Supplier;
 public class ArmorMaterialConfig {
     private final String name;
 
-    private final ConfigOption.ConfigOptionInteger durability;
-    private final ConfigOption.ConfigOptionInteger enchantability;
-    private final ConfigOption.ConfigOptionFloat toughness;
-    private final ConfigOption.ConfigOptionFloat knockbackResistance;
-    private final ConfigOption.ConfigOptionInteger helmetReductionAmount;
-    private final ConfigOption.ConfigOptionInteger chestPlateReductionAmount;
-    private final ConfigOption.ConfigOptionInteger leggingsReductionAmount;
-    private final ConfigOption.ConfigOptionInteger bootsReductionAmount;
+    public final Supplier<Integer> durability;
+    public final Supplier<Integer> enchantability;
+    public final Supplier<Double> toughness;
+    public final Supplier<Double> knockbackResistance;
+    public final Supplier<Integer> bootsReductionAmount;
+    public final Supplier<Integer> leggingsReductionAmount;
+    public final Supplier<Integer> chestPlateReductionAmount;
+    public final Supplier<Integer> helmetReductionAmount;
     private final Supplier<ToolsArmorMaterials> materialRef;
 
-    public ArmorMaterialConfig(ConfigGroup group, String name, int durability, int enchantability, float toughness, float knockbackResistance, int[] reductionAmounts, Supplier<ToolsArmorMaterials> materialRef) {
+    public ArmorMaterialConfig(IConfigurationBuilder builder, String name, String path, int durability, int enchantability, float toughness, float knockbackResistance, int[] reductionAmounts, Supplier<ToolsArmorMaterials> materialRef) {
         this.name = name;
         this.materialRef = materialRef;
 
-        ConfigGroup armorMaterialGroup = new ConfigGroup(name);
+        this.durability = builder.defineInteger(path + "." + name + ".durability", durability, 1, 100000, "The durability multiplier for this armor material");
+        this.enchantability = builder.defineInteger(path + "." + name + ".enchantability", enchantability, 0, 100000, "The enchantability for this armor material");
+        this.toughness = builder.defineDouble(path + "." + name + ".toughness", toughness, 0F, 100000F, "The toughness for this armor material");
+        this.knockbackResistance = builder.defineDouble(path + "." + name + ".knockbackResistance", knockbackResistance, 0F, 100000F, "The knockback resistance for this armor material");
 
-        this.durability = new ConfigOption.ConfigOptionInteger("durability", durability, "The durability multiplier for this armor material", 1, 100000);
-        this.enchantability = new ConfigOption.ConfigOptionInteger("enchantability", enchantability, "The enchantability for this armor material", 0, 100000);
-        this.toughness = new ConfigOption.ConfigOptionFloat("toughness", toughness, "The toughness for this armor material", 0F, 100000F);
-        this.knockbackResistance = new ConfigOption.ConfigOptionFloat("knockbackResistance", knockbackResistance, "The knockback resistance for this armor material", 0F, 100000F);
-
-        this.bootsReductionAmount = new ConfigOption.ConfigOptionInteger("bootsReductionAmount", reductionAmounts[0], "The reduction amount for the boots of this armor material", 0, 100000);
-        this.leggingsReductionAmount = new ConfigOption.ConfigOptionInteger("leggingsReductionAmount", reductionAmounts[1], "The reduction amount for the leggings of this armor material", 0, 100000);
-        this.chestPlateReductionAmount = new ConfigOption.ConfigOptionInteger("chestPlateReductionAmount", reductionAmounts[2], "The reduction amount for the chestplate of this armor material", 0, 100000);
-        this.helmetReductionAmount = new ConfigOption.ConfigOptionInteger("helmetReductionAmount", reductionAmounts[3], "The reduction amount for the helmet of this armor material", 0, 100000);
-
-        armorMaterialGroup.addOptions(this.durability, this.enchantability, this.toughness, this.knockbackResistance, this.bootsReductionAmount, this.leggingsReductionAmount, this.chestPlateReductionAmount, this.helmetReductionAmount);
-        group.addSubGroups(armorMaterialGroup);
+        this.bootsReductionAmount = builder.defineInteger(path + "." + name + ".bootsReductionAmount", reductionAmounts[0], 0, 100000, "The reduction amount for the boots of this armor material");
+        this.leggingsReductionAmount = builder.defineInteger(path + "." + name + ".leggingsReductionAmount", reductionAmounts[1], 0, 100000, "The reduction amount for the leggings of this armor material");
+        this.chestPlateReductionAmount = builder.defineInteger(path + "." + name + ".chestPlateReductionAmount", reductionAmounts[2], 0, 100000, "The reduction amount for the chestplate of this armor material");
+        this.helmetReductionAmount = builder.defineInteger(path + "." + name + ".helmetReductionAmount", reductionAmounts[3], 0, 100000, "The reduction amount for the helmet of this armor material");
     }
 
     public String getName() {
@@ -45,23 +39,23 @@ public class ArmorMaterialConfig {
     }
 
     public int getDurability() {
-        return durability.getValue();
+        return durability.get();
     }
 
     public int getBootsReductionAmount() {
-        return bootsReductionAmount.getValue();
+        return bootsReductionAmount.get();
     }
 
     public int getLeggingsReductionAmount() {
-        return leggingsReductionAmount.getValue();
+        return leggingsReductionAmount.get();
     }
 
     public int getChestPlateReductionAmount() {
-        return chestPlateReductionAmount.getValue();
+        return chestPlateReductionAmount.get();
     }
 
     public int getHelmetReductionAmount() {
-        return helmetReductionAmount.getValue();
+        return helmetReductionAmount.get();
     }
 
     public int[] getReductionAmounts() {
@@ -69,15 +63,15 @@ public class ArmorMaterialConfig {
     }
 
     public int getEnchantability() {
-        return enchantability.getValue();
+        return enchantability.get();
     }
 
     public float getToughness() {
-        return toughness.getValue();
+        return toughness.get().floatValue();
     }
 
     public float getKnockbackResistance() {
-        return knockbackResistance.getValue();
+        return knockbackResistance.get().floatValue();
     }
 
     public ToolsArmorMaterials getMaterial() {

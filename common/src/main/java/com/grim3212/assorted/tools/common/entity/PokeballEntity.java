@@ -1,5 +1,6 @@
 package com.grim3212.assorted.tools.common.entity;
 
+import com.grim3212.assorted.lib.mixin.entity.EntityAccessor;
 import com.grim3212.assorted.lib.util.NBTHelper;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
 import net.minecraft.core.particles.ParticleTypes;
@@ -66,6 +67,10 @@ public class PokeballEntity extends ThrowableItemProjectile {
 
                             LivingEntity livingEntity = (LivingEntity) hitEntity;
                             CompoundTag entity = livingEntity.saveWithoutId(new CompoundTag());
+                            String id = ((EntityAccessor) livingEntity).callGetEncodeId();
+                            if (id != null) {
+                                entity.putString("id", id);
+                            }
                             entity.putString("pokeball_name", livingEntity.getType().getDescriptionId());
 
                             NBTHelper.putTag(currentPokeball, "StoredEntity", entity);

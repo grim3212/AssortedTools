@@ -1,0 +1,6 @@
+// 1.19.3	2023-03-15T07:05:17.2058841	Assorted Tools/Tags for minecraft:block
+0e90fba8fef124d394be36a494da7db15bf47e6d data\c\tags\blocks\corals\all.json
+023aacfec8a137605576149770fb054d1a01123e data\assortedtools\tags\blocks\wands\mining_surface_blocks.json
+55c06afd6bebd6ecb3cf9b4c1eb18ae86a78ba5e data\c\tags\blocks\corals\dead.json
+332512d56ee49c08b51f14971dde3aaf287ad7b8 data\c\tags\blocks\mineable\multitool.json
+b79266647976dddac57cbc3fc83b7b3cd6e9e8a3 data\assortedtools\tags\blocks\wands\destructive_spared_blocks.json

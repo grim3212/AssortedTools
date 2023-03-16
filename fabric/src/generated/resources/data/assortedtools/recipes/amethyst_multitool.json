@@ -1,0 +1,57 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "multitools"
+        },
+        {
+          "condition": "fabric:tags_populated",
+          "values": [
+            "c:gems/amethyst"
+          ]
+        },
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        }
+      ]
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "assortedtools:amethyst_pickaxe"
+    },
+    {
+      "item": "assortedtools:amethyst_shovel"
+    },
+    {
+      "item": "assortedtools:amethyst_axe"
+    },
+    {
+      "item": "assortedtools:amethyst_hoe"
+    },
+    {
+      "item": "assortedtools:amethyst_sword"
+    },
+    {
+      "tag": "c:gems/amethyst"
+    },
+    {
+      "tag": "c:gems/amethyst"
+    },
+    {
+      "tag": "c:gems/amethyst"
+    },
+    {
+      "tag": "c:gems/amethyst"
+    }
+  ],
+  "result": {
+    "item": "assortedtools:amethyst_multitool"
+  }
+}

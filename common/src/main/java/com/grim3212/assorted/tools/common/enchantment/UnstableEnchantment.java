@@ -1,7 +1,7 @@
 package com.grim3212.assorted.tools.common.enchantment;
 
+import com.grim3212.assorted.tools.ToolsCommonMod;
 import com.grim3212.assorted.tools.common.item.BetterSpearItem;
-import com.grim3212.assorted.tools.config.ToolsConfig;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -16,17 +16,17 @@ public class UnstableEnchantment extends Enchantment {
 
     @Override
     public boolean canEnchant(ItemStack stack) {
-        return ToolsConfig.Common.betterSpearsEnabled.getValue() ? stack.getItem() instanceof BetterSpearItem || stack.getItem() == Items.BOOK : false;
+        return ToolsCommonMod.COMMON_CONFIG.betterSpearsEnabled.get() ? stack.getItem() instanceof BetterSpearItem || stack.getItem() == Items.BOOK : false;
     }
 
     @Override
     public boolean isTradeable() {
-        return ToolsConfig.Common.betterSpearsEnabled.getValue() ? super.isTradeable() : false;
+        return ToolsCommonMod.COMMON_CONFIG.betterSpearsEnabled.get() ? super.isTradeable() : false;
     }
 
     @Override
     public boolean isDiscoverable() {
-        return ToolsConfig.Common.betterSpearsEnabled.getValue() ? super.isDiscoverable() : false;
+        return ToolsCommonMod.COMMON_CONFIG.betterSpearsEnabled.get() ? super.isDiscoverable() : false;
     }
 
     @Override

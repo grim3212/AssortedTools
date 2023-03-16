@@ -1,10 +1,13 @@
 {
   "values": [
-    "#forge:ores",
-    "#forge:chests",
     "minecraft:spawner",
-    "#forge:ores",
-    "#forge:chests",
-    "minecraft:spawner"
+    {
+      "id": "#forge:ores",
+      "required": false
+    },
+    {
+      "id": "#forge:chests",
+      "required": false
+    }
   ]
 }

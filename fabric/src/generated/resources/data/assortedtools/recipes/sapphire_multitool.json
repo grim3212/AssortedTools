@@ -1,0 +1,57 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "multitools"
+        },
+        {
+          "condition": "fabric:tags_populated",
+          "values": [
+            "c:gems/sapphire"
+          ]
+        },
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        }
+      ]
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "assortedtools:sapphire_pickaxe"
+    },
+    {
+      "item": "assortedtools:sapphire_shovel"
+    },
+    {
+      "item": "assortedtools:sapphire_axe"
+    },
+    {
+      "item": "assortedtools:sapphire_hoe"
+    },
+    {
+      "item": "assortedtools:sapphire_sword"
+    },
+    {
+      "tag": "c:gems/sapphire"
+    },
+    {
+      "tag": "c:gems/sapphire"
+    },
+    {
+      "tag": "c:gems/sapphire"
+    },
+    {
+      "tag": "c:gems/sapphire"
+    }
+  ],
+  "result": {
+    "item": "assortedtools:sapphire_multitool"
+  }
+}

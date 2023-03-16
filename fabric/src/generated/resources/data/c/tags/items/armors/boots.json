@@ -1,0 +1,22 @@
+{
+  "replace": false,
+  "values": [
+    "assortedtools:nickel_boots",
+    "assortedtools:electrum_boots",
+    "assortedtools:steel_boots",
+    "assortedtools:aluminum_boots",
+    "assortedtools:amethyst_boots",
+    "assortedtools:lead_boots",
+    "assortedtools:bronze_boots",
+    "assortedtools:ruby_boots",
+    "assortedtools:platinum_boots",
+    "assortedtools:peridot_boots",
+    "assortedtools:tin_boots",
+    "assortedtools:topaz_boots",
+    "assortedtools:copper_boots",
+    "assortedtools:invar_boots",
+    "assortedtools:silver_boots",
+    "assortedtools:emerald_boots",
+    "assortedtools:sapphire_boots"
+  ]
+}

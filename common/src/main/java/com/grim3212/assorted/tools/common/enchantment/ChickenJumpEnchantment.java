@@ -1,7 +1,7 @@
 package com.grim3212.assorted.tools.common.enchantment;
 
 import com.grim3212.assorted.lib.annotations.LoaderImplement;
-import com.grim3212.assorted.tools.config.ToolsConfig;
+import com.grim3212.assorted.tools.ToolsCommonMod;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -15,22 +15,22 @@ public class ChickenJumpEnchantment extends Enchantment {
 
     @Override
     public boolean canEnchant(ItemStack stack) {
-        return ToolsConfig.Common.chickenSuitEnabled.getValue() ? super.canEnchant(stack) : false;
+        return ToolsCommonMod.COMMON_CONFIG.chickenSuitEnabled.get() ? super.canEnchant(stack) : false;
     }
 
     @LoaderImplement(loader = LoaderImplement.Loader.FORGE, value = "IForgeEnchantment")
     public boolean isAllowedOnBooks() {
-        return ToolsConfig.Common.chickenSuitEnabled.getValue();
+        return ToolsCommonMod.COMMON_CONFIG.chickenSuitEnabled.get();
     }
 
     @Override
     public boolean isTradeable() {
-        return ToolsConfig.Common.chickenSuitEnabled.getValue() ? super.isTradeable() : false;
+        return ToolsCommonMod.COMMON_CONFIG.chickenSuitEnabled.get() ? super.isTradeable() : false;
     }
 
     @Override
     public boolean isDiscoverable() {
-        return ToolsConfig.Common.chickenSuitEnabled.getValue() ? super.isDiscoverable() : false;
+        return ToolsCommonMod.COMMON_CONFIG.chickenSuitEnabled.get() ? super.isDiscoverable() : false;
     }
 
     @Override

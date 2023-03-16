@@ -1,14 +1,14 @@
 package com.grim3212.assorted.tools.common.item;
 
 import com.google.common.collect.Lists;
+import com.grim3212.assorted.lib.util.ItemUtil;
 import com.grim3212.assorted.lib.util.NBTHelper;
 import com.grim3212.assorted.tools.Constants;
+import com.grim3212.assorted.tools.ToolsCommonMod;
 import com.grim3212.assorted.tools.api.ToolsTags;
 import com.grim3212.assorted.tools.api.util.WandCoord3D;
-import com.grim3212.assorted.tools.config.ToolsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.StringRepresentable;
@@ -17,7 +17,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FlowerBlock;
+import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
@@ -42,13 +44,13 @@ public class WandMiningItem extends WandItem {
 
         switch (MiningMode.fromString(NBTHelper.getString(stack, "Mode"))) {
             case MINE_ALL:
-                return (state.getBlock() != Blocks.BEDROCK || ToolsConfig.Common.bedrockBreaking.getValue()) && (state.getBlock() != Blocks.OBSIDIAN || ToolsConfig.Common.easyMiningObsidian.getValue());
+                return (state.getBlock() != Blocks.BEDROCK || ToolsCommonMod.COMMON_CONFIG.bedrockBreaking.get()) && (state.getBlock() != Blocks.OBSIDIAN || ToolsCommonMod.COMMON_CONFIG.easyMiningObsidian.get());
             case MINE_DIRT:
                 return (state.getBlock() == Blocks.GRASS || state.getBlock() == Blocks.DIRT || state.getBlock() == Blocks.SAND || state.getBlock() == Blocks.GRAVEL || state.getBlock() instanceof LeavesBlock || state.getBlock() == Blocks.FARMLAND || state.getBlock() == Blocks.SNOW || state.getBlock() == Blocks.SOUL_SAND || state.getBlock() == Blocks.VINE || state.getBlock() instanceof FlowerBlock);
             case MINE_WOOD:
                 return state.getMaterial() == Material.WOOD;
             case MINE_ORES:
-                return isMiningOre(state) && (state.getBlock() != Blocks.BEDROCK || ToolsConfig.Common.bedrockBreaking.getValue()) && (state.getBlock() != Blocks.OBSIDIAN || ToolsConfig.Common.easyMiningObsidian.getValue());
+                return isMiningOre(state) && (state.getBlock() != Blocks.BEDROCK || ToolsCommonMod.COMMON_CONFIG.bedrockBreaking.get()) && (state.getBlock() != Blocks.OBSIDIAN || ToolsCommonMod.COMMON_CONFIG.easyMiningObsidian.get());
         }
         return false;
     }
@@ -87,7 +89,7 @@ public class WandMiningItem extends WandItem {
         // MINING OBSIDIAN 1x1x1
         BlockPos startPos = start.pos;
         BlockPos endPos = end.pos;
-        if (mode == MiningMode.MINE_ALL && startPos.equals(endPos) && !ToolsConfig.Common.easyMiningObsidian.getValue()) {
+        if (mode == MiningMode.MINE_ALL && startPos.equals(endPos) && !ToolsCommonMod.COMMON_CONFIG.easyMiningObsidian.get()) {
             BlockState state = world.getBlockState(startPos);
             if (state.getBlock() == Blocks.OBSIDIAN) {
                 state.getBlock().playerWillDestroy(world, startPos, state, entityplayer);
@@ -99,7 +101,7 @@ public class WandMiningItem extends WandItem {
         int X, Y, Z;
         BlockState stateAt;
         int blocks2Dig = 0;
-        boolean isFree = ToolsConfig.Common.bedrockBreaking.getValue() || entityplayer.isCreative();
+        boolean isFree = ToolsCommonMod.COMMON_CONFIG.bedrockBreaking.get() || entityplayer.isCreative();
         int max = (reinforced || isFree) ? 1024 : 512;
         // MINING ORES
         if (mode == MiningMode.MINE_ORES) {
@@ -186,61 +188,18 @@ public class WandMiningItem extends WandItem {
             return false;
         }
         iterable = BlockPos.betweenClosedStream(startPos, endPos).map(BlockPos::immutable).collect(Collectors.toList());
-        for (Object object : iterable) {
-            BlockPos newPos = (BlockPos) object;
+        for (BlockPos newPos : iterable) {
+            stateAt = world.getBlockState(newPos);
             if (canBreak(world, newPos, stack)) {
-                if (destroyBlock(newPos, world, entityplayer)) {
+                if (ItemUtil.destroyBlock(newPos, world, entityplayer)) {
+                    BlockEntity tile = world.getBlockEntity(newPos);
+                    stateAt.getBlock().playerDestroy(world, entityplayer, newPos, stateAt, tile, entityplayer.getUseItem());
                     if (rand.nextInt(blocks2Dig / 50 + 1) == 0)
                         particles(world, newPos, 1);
                 }
             }
         }
         return true;
-    }
-
-    public boolean destroyBlock(BlockPos blockPos, Level level, Player player) {
-        BlockState blockState = level.getBlockState(blockPos);
-        if (!player.getMainHandItem().getItem().canAttackBlock(blockState, level, blockPos, player)) {
-            return false;
-        } else {
-            BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            Block block = blockState.getBlock();
-
-            if (block instanceof GameMasterBlock && !player.canUseGameMasterBlocks()) {
-                level.sendBlockUpdated(blockPos, blockState, blockState, 3);
-                return false;
-            } else {
-                if (player instanceof ServerPlayer serverPlayer) {
-                    if (player.blockActionRestricted(level, blockPos, serverPlayer.gameMode.getGameModeForPlayer())) {
-                        return false;
-                    }
-                } else {
-                    if (player.isSpectator()) {
-                        return false;
-                    }
-                }
-
-                block.playerWillDestroy(level, blockPos, blockState, player);
-                boolean flag = level.removeBlock(blockPos, false);
-                if (flag) {
-                    block.destroy(level, blockPos, blockState);
-                }
-
-                if (player.isCreative()) {
-                    return true;
-                } else {
-                    ItemStack mainHandItem = player.getMainHandItem();
-                    ItemStack mainHandCopy = mainHandItem.copy();
-                    boolean hasCorrectToolForDrops = player.hasCorrectToolForDrops(blockState);
-                    mainHandItem.mineBlock(level, blockState, blockPos, player);
-                    if (flag && hasCorrectToolForDrops) {
-                        block.playerDestroy(level, player, blockPos, blockState, blockEntity, mainHandCopy);
-                    }
-
-                    return true;
-                }
-            }
-        }
     }
 
     @Override

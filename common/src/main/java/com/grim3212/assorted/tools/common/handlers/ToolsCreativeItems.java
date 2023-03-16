@@ -2,6 +2,7 @@ package com.grim3212.assorted.tools.common.handlers;
 
 import com.grim3212.assorted.lib.core.creative.CreativeTabItems;
 import com.grim3212.assorted.lib.util.NBTHelper;
+import com.grim3212.assorted.tools.ToolsCommonMod;
 import com.grim3212.assorted.tools.api.item.ToolsItemTier;
 import com.grim3212.assorted.tools.common.item.BetterBucketItem;
 import com.grim3212.assorted.tools.common.item.BetterMilkBucketItem;
@@ -9,7 +10,6 @@ import com.grim3212.assorted.tools.common.item.ToolsItems;
 import com.grim3212.assorted.tools.common.item.WandBreakingItem.BreakingMode;
 import com.grim3212.assorted.tools.common.item.WandBuildingItem.BuildingMode;
 import com.grim3212.assorted.tools.common.item.WandMiningItem.MiningMode;
-import com.grim3212.assorted.tools.config.ToolsConfig;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.ItemStack;
 
@@ -20,11 +20,11 @@ public class ToolsCreativeItems {
     public static List<ItemStack> getCreativeItems() {
         CreativeTabItems items = new CreativeTabItems();
 
-        if (ToolsConfig.Common.pokeballEnabled.getValue()) {
+        if (ToolsCommonMod.COMMON_CONFIG.pokeballEnabled.get()) {
             items.add(ToolsItems.POKEBALL.get());
         }
 
-        if (ToolsConfig.Common.ultimateFistEnabled.getValue()) {
+        if (ToolsCommonMod.COMMON_CONFIG.ultimateFistEnabled.get()) {
             items.add(ToolsItems.ULTIMATE_FIST.get());
             items.add(ToolsItems.A_FRAGMENT.get());
             items.add(ToolsItems.E_FRAGMENT.get());
@@ -36,19 +36,19 @@ public class ToolsCreativeItems {
             items.add(ToolsItems.MISSING_FRAGMENT.get());
         }
 
-        if (ToolsConfig.Common.chickenSuitEnabled.getValue()) {
+        if (ToolsCommonMod.COMMON_CONFIG.chickenSuitEnabled.get()) {
             items.add(ToolsItems.CHICKEN_SUIT_HELMET.get());
             items.add(ToolsItems.CHICKEN_SUIT_CHESTPLATE.get());
             items.add(ToolsItems.CHICKEN_SUIT_LEGGINGS.get());
             items.add(ToolsItems.CHICKEN_SUIT_BOOTS.get());
         }
 
-        if (ToolsConfig.Common.boomerangsEnabled.getValue()) {
+        if (ToolsCommonMod.COMMON_CONFIG.boomerangsEnabled.get()) {
             items.add(ToolsItems.WOOD_BOOMERANG.get());
             items.add(ToolsItems.DIAMOND_BOOMERANG.get());
         }
 
-        if (ToolsConfig.Common.wandsEnabled.getValue()) {
+        if (ToolsCommonMod.COMMON_CONFIG.wandsEnabled.get()) {
             items.add(NBTHelper.putStringItemStack(new ItemStack(ToolsItems.BREAKING_WAND.get()), "Mode", BreakingMode.BREAK_WEAK.getSerializedName()));
             items.add(NBTHelper.putStringItemStack(new ItemStack(ToolsItems.BUILDING_WAND.get()), "Mode", BuildingMode.BUILD_BOX.getSerializedName()));
             items.add(NBTHelper.putStringItemStack(new ItemStack(ToolsItems.MINING_WAND.get()), "Mode", MiningMode.MINE_ALL.getSerializedName()));
@@ -57,7 +57,7 @@ public class ToolsCreativeItems {
             items.add(NBTHelper.putStringItemStack(new ItemStack(ToolsItems.REINFORCED_MINING_WAND.get()), "Mode", MiningMode.MINE_ALL.getSerializedName()));
         }
 
-        if (ToolsConfig.Common.betterBucketsEnabled.getValue()) {
+        if (ToolsCommonMod.COMMON_CONFIG.betterBucketsEnabled.get()) {
             registerBucket(items, ToolsItems.WOOD_BUCKET.get(), ToolsItems.WOOD_MILK_BUCKET.get());
             registerBucket(items, ToolsItems.STONE_BUCKET.get(), ToolsItems.STONE_MILK_BUCKET.get());
             registerBucket(items, ToolsItems.GOLD_BUCKET.get(), ToolsItems.GOLD_MILK_BUCKET.get());
@@ -65,7 +65,7 @@ public class ToolsCreativeItems {
             registerBucket(items, ToolsItems.NETHERITE_BUCKET.get(), ToolsItems.NETHERITE_MILK_BUCKET.get());
         }
 
-        if (ToolsConfig.Common.betterSpearsEnabled.getValue()) {
+        if (ToolsCommonMod.COMMON_CONFIG.betterSpearsEnabled.get()) {
             items.add(ToolsItems.WOOD_SPEAR.get());
             items.add(ToolsItems.STONE_SPEAR.get());
             items.add(ToolsItems.IRON_SPEAR.get());
@@ -74,7 +74,7 @@ public class ToolsCreativeItems {
             items.add(ToolsItems.NETHERITE_SPEAR.get());
         }
 
-        if (ToolsConfig.Common.hammersEnabled.getValue()) {
+        if (ToolsCommonMod.COMMON_CONFIG.hammersEnabled.get()) {
             items.add(ToolsItems.WOOD_HAMMER.get());
             items.add(ToolsItems.STONE_HAMMER.get());
             items.add(ToolsItems.IRON_HAMMER.get());
@@ -83,7 +83,7 @@ public class ToolsCreativeItems {
             items.add(ToolsItems.NETHERITE_HAMMER.get());
         }
 
-        if (ToolsConfig.Common.multiToolsEnabled.getValue()) {
+        if (ToolsCommonMod.COMMON_CONFIG.multiToolsEnabled.get()) {
             items.add(ToolsItems.WOODEN_MULTITOOL.get());
             items.add(ToolsItems.STONE_MULTITOOL.get());
             items.add(ToolsItems.IRON_MULTITOOL.get());
@@ -92,7 +92,7 @@ public class ToolsCreativeItems {
             items.add(ToolsItems.NETHERITE_MULTITOOL.get());
         }
 
-        if (ToolsConfig.Common.moreShearsEnabled.getValue()) {
+        if (ToolsCommonMod.COMMON_CONFIG.moreShearsEnabled.get()) {
             items.add(ToolsItems.WOOD_SHEARS.get());
             items.add(ToolsItems.STONE_SHEARS.get());
             items.add(ToolsItems.GOLD_SHEARS.get());
@@ -100,10 +100,10 @@ public class ToolsCreativeItems {
             items.add(ToolsItems.NETHERITE_SHEARS.get());
         }
 
-        if (ToolsConfig.Common.extraMaterialsEnabled.getValue()) {
+        if (ToolsCommonMod.COMMON_CONFIG.extraMaterialsEnabled.get()) {
             ToolsItems.MATERIAL_GROUPS.forEach((s, group) -> {
                 ToolsItemTier tier = (ToolsItemTier) group.tier.getDefaultTier();
-                if (ToolsConfig.Common.hideUncraftableItems.getValue() && BuiltInRegistries.ITEM.getTag(tier.repairTag()).isPresent() && BuiltInRegistries.ITEM.getTag(tier.repairTag()).get().stream().count() < 1) {
+                if (ToolsCommonMod.COMMON_CONFIG.hideUncraftableItems.get() && BuiltInRegistries.ITEM.getTag(tier.repairTag()).isPresent() && BuiltInRegistries.ITEM.getTag(tier.repairTag()).get().stream().count() < 1) {
                     return;
                 }
 
@@ -117,23 +117,23 @@ public class ToolsCreativeItems {
                 items.add(group.LEGGINGS.get());
                 items.add(group.BOOTS.get());
 
-                if (ToolsConfig.Common.moreShearsEnabled.getValue()) {
+                if (ToolsCommonMod.COMMON_CONFIG.moreShearsEnabled.get()) {
                     items.add(group.SHEARS.get());
                 }
 
-                if (ToolsConfig.Common.hammersEnabled.getValue()) {
+                if (ToolsCommonMod.COMMON_CONFIG.hammersEnabled.get()) {
                     items.add(group.HAMMER.get());
                 }
 
-                if (ToolsConfig.Common.multiToolsEnabled.getValue()) {
+                if (ToolsCommonMod.COMMON_CONFIG.multiToolsEnabled.get()) {
                     items.add(group.MULTITOOL.get());
                 }
 
-                if (ToolsConfig.Common.betterSpearsEnabled.getValue()) {
+                if (ToolsCommonMod.COMMON_CONFIG.betterSpearsEnabled.get()) {
                     items.add(group.SPEAR.get());
                 }
 
-                if (ToolsConfig.Common.betterBucketsEnabled.getValue()) {
+                if (ToolsCommonMod.COMMON_CONFIG.betterBucketsEnabled.get()) {
                     registerBucket(items, group.BUCKET.get(), group.MILK_BUCKET.get());
                 }
 

@@ -1,7 +1,7 @@
 package com.grim3212.assorted.tools.common.crafting;
 
 import com.grim3212.assorted.lib.platform.Services;
-import com.grim3212.assorted.tools.config.ToolsConfig;
+import com.grim3212.assorted.tools.ToolsCommonMod;
 
 public class ToolsConditions {
 
@@ -22,18 +22,18 @@ public class ToolsConditions {
 
 
     public static void init() {
-        Services.CONDITIONS.registerPartCondition(Parts.WANDS, () -> ToolsConfig.Common.wandsEnabled.getValue());
-        Services.CONDITIONS.registerPartCondition(Parts.HAMMERS, () -> ToolsConfig.Common.hammersEnabled.getValue());
-        Services.CONDITIONS.registerPartCondition(Parts.MULTITOOL, () -> ToolsConfig.Common.multiToolsEnabled.getValue());
-        Services.CONDITIONS.registerPartCondition(Parts.BOOMERANGS, () -> ToolsConfig.Common.boomerangsEnabled.getValue());
-        Services.CONDITIONS.registerPartCondition(Parts.POKEBALL, () -> ToolsConfig.Common.pokeballEnabled.getValue());
-        Services.CONDITIONS.registerPartCondition(Parts.CHICKEN_SUIT, () -> ToolsConfig.Common.chickenSuitEnabled.getValue());
-        Services.CONDITIONS.registerPartCondition(Parts.SPEARS, () -> ToolsConfig.Common.spearsEnabled.getValue());
-        Services.CONDITIONS.registerPartCondition(Parts.BETTER_SPEARS, () -> ToolsConfig.Common.betterSpearsEnabled.getValue());
-        Services.CONDITIONS.registerPartCondition(Parts.BETTER_BUCKETS, () -> ToolsConfig.Common.betterBucketsEnabled.getValue());
-        Services.CONDITIONS.registerPartCondition(Parts.MORE_SHEARS, () -> ToolsConfig.Common.moreShearsEnabled.getValue());
-        Services.CONDITIONS.registerPartCondition(Parts.ULTIMATE_FIST, () -> ToolsConfig.Common.ultimateFistEnabled.getValue());
-        Services.CONDITIONS.registerPartCondition(Parts.EXTRA_MATERIAL, () -> ToolsConfig.Common.extraMaterialsEnabled.getValue());
+        Services.CONDITIONS.registerPartCondition(Parts.WANDS, () -> ToolsCommonMod.COMMON_CONFIG.wandsEnabled.get());
+        Services.CONDITIONS.registerPartCondition(Parts.HAMMERS, () -> ToolsCommonMod.COMMON_CONFIG.hammersEnabled.get());
+        Services.CONDITIONS.registerPartCondition(Parts.MULTITOOL, () -> ToolsCommonMod.COMMON_CONFIG.multiToolsEnabled.get());
+        Services.CONDITIONS.registerPartCondition(Parts.BOOMERANGS, () -> ToolsCommonMod.COMMON_CONFIG.boomerangsEnabled.get());
+        Services.CONDITIONS.registerPartCondition(Parts.POKEBALL, () -> ToolsCommonMod.COMMON_CONFIG.pokeballEnabled.get());
+        Services.CONDITIONS.registerPartCondition(Parts.CHICKEN_SUIT, () -> ToolsCommonMod.COMMON_CONFIG.chickenSuitEnabled.get());
+        Services.CONDITIONS.registerPartCondition(Parts.SPEARS, () -> ToolsCommonMod.COMMON_CONFIG.spearsEnabled.get());
+        Services.CONDITIONS.registerPartCondition(Parts.BETTER_SPEARS, () -> ToolsCommonMod.COMMON_CONFIG.betterSpearsEnabled.get());
+        Services.CONDITIONS.registerPartCondition(Parts.BETTER_BUCKETS, () -> ToolsCommonMod.COMMON_CONFIG.betterBucketsEnabled.get());
+        Services.CONDITIONS.registerPartCondition(Parts.MORE_SHEARS, () -> ToolsCommonMod.COMMON_CONFIG.moreShearsEnabled.get());
+        Services.CONDITIONS.registerPartCondition(Parts.ULTIMATE_FIST, () -> ToolsCommonMod.COMMON_CONFIG.ultimateFistEnabled.get());
+        Services.CONDITIONS.registerPartCondition(Parts.EXTRA_MATERIAL, () -> ToolsCommonMod.COMMON_CONFIG.extraMaterialsEnabled.get());
     }
 
 }

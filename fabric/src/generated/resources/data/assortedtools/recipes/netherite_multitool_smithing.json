@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:smithing",
+  "addition": {
+    "item": "minecraft:netherite_block"
+  },
+  "base": {
+    "item": "assortedtools:diamond_multitool"
+  },
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "multitools"
+    }
+  ],
+  "result": {
+    "item": "assortedtools:netherite_multitool"
+  }
+}

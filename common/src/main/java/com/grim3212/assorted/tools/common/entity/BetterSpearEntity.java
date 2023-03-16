@@ -1,11 +1,11 @@
 package com.grim3212.assorted.tools.common.entity;
 
 import com.google.common.collect.Lists;
+import com.grim3212.assorted.tools.ToolsCommonMod;
 import com.grim3212.assorted.tools.api.util.ToolsDamageSources;
 import com.grim3212.assorted.tools.common.enchantment.ToolsEnchantments;
 import com.grim3212.assorted.tools.common.item.BetterSpearItem;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
-import com.grim3212.assorted.tools.config.ToolsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -220,25 +220,25 @@ public class BetterSpearEntity extends AbstractArrow {
         }
     }
 
-    private List<Float> conductiveChances() {
+    private float conductiveChances(int conductivityLevel) {
         List<Float> defaultChances = Lists.newArrayList(0.6F, 0.3F, 0.1F);
-        List<Float> chances = ToolsConfig.Common.getConductivityChances();
+        List<? extends Float> chances = ToolsCommonMod.COMMON_CONFIG.conductivityLightningChances.get();
 
-        if (chances != null && chances instanceof List<?> && chances.size() == 3) {
+        if (chances != null && chances.size() == 3) {
             for (double chance : chances) {
                 if (chance >= 1.0F && chance < 0.0F) {
-                    return defaultChances;
+                    return defaultChances.get(conductivityLevel);
                 }
             }
-            return chances;
+            return chances.get(conductivityLevel);
         }
 
-        return defaultChances;
+        return defaultChances.get(0);
     }
 
     private void tryConductivity(BlockPos pos) {
         int conductivity = ToolsEnchantments.getConductivity(this.spearItem);
-        boolean flag = conductivity > 0 && this.random.nextDouble() <= 1.0D - conductiveChances().get(conductivity - 1);
+        boolean flag = conductivity > 0 && this.random.nextDouble() <= 1.0D - conductiveChances(conductivity - 1);
 
         if (this.level instanceof ServerLevel && flag) {
             if (this.level.canSeeSky(pos)) {

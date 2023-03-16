@@ -1,0 +1,22 @@
+{
+  "replace": false,
+  "values": [
+    "assortedtools:nickel_pickaxe",
+    "assortedtools:electrum_pickaxe",
+    "assortedtools:steel_pickaxe",
+    "assortedtools:aluminum_pickaxe",
+    "assortedtools:amethyst_pickaxe",
+    "assortedtools:lead_pickaxe",
+    "assortedtools:bronze_pickaxe",
+    "assortedtools:ruby_pickaxe",
+    "assortedtools:platinum_pickaxe",
+    "assortedtools:peridot_pickaxe",
+    "assortedtools:tin_pickaxe",
+    "assortedtools:topaz_pickaxe",
+    "assortedtools:copper_pickaxe",
+    "assortedtools:invar_pickaxe",
+    "assortedtools:silver_pickaxe",
+    "assortedtools:emerald_pickaxe",
+    "assortedtools:sapphire_pickaxe"
+  ]
+}

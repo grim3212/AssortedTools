@@ -1,22 +1,15 @@
 package com.grim3212.assorted.tools.common.item;
 
 import com.grim3212.assorted.lib.core.item.ExtraPropertyHelper;
-import com.grim3212.assorted.lib.core.item.IItemCorrectDrops;
-import com.grim3212.assorted.lib.core.item.IItemEnchantmentCondition;
 import com.grim3212.assorted.lib.core.item.IItemExtraProperties;
-import com.grim3212.assorted.tools.api.ToolsTags;
 import com.grim3212.assorted.tools.api.item.ITiered;
-import com.grim3212.assorted.tools.common.enchantment.ToolsEnchantments;
 import com.grim3212.assorted.tools.config.ItemTierConfig;
 import net.minecraft.core.dispenser.ShearsDispenseItemBehavior;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShearsItem;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.DispenserBlock;
-import net.minecraft.world.level.block.state.BlockState;
 
-public class MaterialShears extends ShearsItem implements ITiered, IItemExtraProperties, IItemCorrectDrops, IItemEnchantmentCondition {
+public class MaterialShears extends ShearsItem implements ITiered, IItemExtraProperties {
 
     private final ItemTierConfig tierHolder;
 
@@ -51,29 +44,6 @@ public class MaterialShears extends ShearsItem implements ITiered, IItemExtraPro
     @Override
     public int getEnchantmentValue() {
         return this.tierHolder.getEnchantability();
-    }
-
-    @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return enchantment == ToolsEnchantments.CORAL_CUTTER.get() || enchantment == Enchantments.BLOCK_EFFICIENCY || ExtraPropertyHelper.canApplyAtEnchantingTable(stack, enchantment);
-    }
-
-    @Override
-    public boolean isCorrectToolForDrops(ItemStack stack, BlockState state) {
-        if (ToolsEnchantments.hasCoralCutter(stack)) {
-            return state.is(ToolsTags.Blocks.ALL_CORALS) ? true : ExtraPropertyHelper.isCorrectToolForDrops(stack, state);
-        }
-
-        return ExtraPropertyHelper.isCorrectToolForDrops(stack, state);
-    }
-
-    @Override
-    public float getDestroySpeed(ItemStack stack, BlockState state) {
-        if (ToolsEnchantments.hasCoralCutter(stack)) {
-            return state.is(ToolsTags.Blocks.ALL_CORALS) ? 10.0F : super.getDestroySpeed(stack, state);
-        }
-
-        return super.getDestroySpeed(stack, state);
     }
 
     @Override

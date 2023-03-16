@@ -1,0 +1,57 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "multitools"
+        },
+        {
+          "condition": "fabric:tags_populated",
+          "values": [
+            "c:gems/ruby"
+          ]
+        },
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        }
+      ]
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "assortedtools:ruby_pickaxe"
+    },
+    {
+      "item": "assortedtools:ruby_shovel"
+    },
+    {
+      "item": "assortedtools:ruby_axe"
+    },
+    {
+      "item": "assortedtools:ruby_hoe"
+    },
+    {
+      "item": "assortedtools:ruby_sword"
+    },
+    {
+      "tag": "c:gems/ruby"
+    },
+    {
+      "tag": "c:gems/ruby"
+    },
+    {
+      "tag": "c:gems/ruby"
+    },
+    {
+      "tag": "c:gems/ruby"
+    }
+  ],
+  "result": {
+    "item": "assortedtools:ruby_multitool"
+  }
+}

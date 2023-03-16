@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "wands"
+    }
+  ],
+  "key": {
+    "G": {
+      "tag": "c:storage_blocks/iron"
+    },
+    "X": {
+      "tag": "c:obsidian"
+    }
+  },
+  "pattern": [
+    "XGX",
+    "XGX",
+    "XGX"
+  ],
+  "result": {
+    "item": "assortedtools:reinforced_breaking_wand"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "moreshears"
+        },
+        {
+          "condition": "fabric:tags_populated",
+          "values": [
+            "c:ingots/aluminum"
+          ]
+        },
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        }
+      ]
+    }
+  ],
+  "key": {
+    "I": {
+      "tag": "c:ingots/aluminum"
+    },
+    "L": {
+      "tag": "c:leather"
+    }
+  },
+  "pattern": [
+    "LI",
+    "I "
+  ],
+  "result": {
+    "item": "assortedtools:aluminum_shears"
+  }
+}

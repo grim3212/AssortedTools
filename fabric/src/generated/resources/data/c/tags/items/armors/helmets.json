@@ -1,0 +1,22 @@
+{
+  "replace": false,
+  "values": [
+    "assortedtools:nickel_helmet",
+    "assortedtools:electrum_helmet",
+    "assortedtools:steel_helmet",
+    "assortedtools:aluminum_helmet",
+    "assortedtools:amethyst_helmet",
+    "assortedtools:lead_helmet",
+    "assortedtools:bronze_helmet",
+    "assortedtools:ruby_helmet",
+    "assortedtools:platinum_helmet",
+    "assortedtools:peridot_helmet",
+    "assortedtools:tin_helmet",
+    "assortedtools:topaz_helmet",
+    "assortedtools:copper_helmet",
+    "assortedtools:invar_helmet",
+    "assortedtools:silver_helmet",
+    "assortedtools:emerald_helmet",
+    "assortedtools:sapphire_helmet"
+  ]
+}
