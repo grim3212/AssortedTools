@@ -72,7 +72,6 @@ public abstract class WandItem extends Item implements ISwitchModes {
 	protected void sendMessage(Player player, Component message) {
 		if (!player.level.isClientSide) {
 			player.sendSystemMessage(message);
-			;
 		}
 	}
 
