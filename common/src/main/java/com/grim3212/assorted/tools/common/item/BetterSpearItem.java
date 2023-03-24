@@ -79,7 +79,7 @@ public class BetterSpearItem extends TridentItem implements ITiered, IItemExtraP
 
     @Override
     public Optional<Boolean> assortedlib_canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        if (enchantment != Enchantments.CHANNELING && enchantment != Enchantments.RIPTIDE) {
+        if (enchantment.category.canEnchant(this) && enchantment != Enchantments.CHANNELING && enchantment != Enchantments.RIPTIDE) {
             return Optional.of(true);
         }
         return Optional.of(false);

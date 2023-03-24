@@ -6,6 +6,7 @@ import com.grim3212.assorted.lib.platform.Services;
 import com.grim3212.assorted.tools.Constants;
 import com.grim3212.assorted.tools.client.handlers.ChickenJumpHandler;
 import com.grim3212.assorted.tools.client.handlers.KeyBindHandler;
+import com.grim3212.assorted.tools.client.model.fluidcontainer.FluidContainerModel;
 import com.grim3212.assorted.tools.client.render.entity.BetterSpearRenderer;
 import com.grim3212.assorted.tools.client.render.entity.BoomerangRenderer;
 import com.grim3212.assorted.tools.client.render.item.SpearBEWLR;
@@ -80,8 +81,10 @@ public class ToolsClient {
 
         ClientServices.CLIENT.registerItemColor((stack, tintIndex) -> {
             if (tintIndex != 1) return 0xFFFFFFFF;
-            return Services.FLUIDS.get(stack).map(x -> Services.FLUIDS.getFluidColor(x)).orElse(0xFFFFFFFF);
+            return Services.FLUIDS.get(stack).map(x -> ClientServices.FLUIDS.getFluidColor(x)).orElse(0xFFFFFFFF);
         }, () -> ToolsItems.buckets());
+
+        ClientServices.CLIENT.registerModelLoader(FluidContainerModel.LOADER_NAME, FluidContainerModel.Loader.INSTANCE);
     }
 
 }

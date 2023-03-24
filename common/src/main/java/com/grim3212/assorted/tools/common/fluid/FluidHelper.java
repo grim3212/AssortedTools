@@ -18,7 +18,10 @@ import net.minecraft.world.level.block.BucketPickup;
 import net.minecraft.world.level.block.LiquidBlockContainer;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.material.*;
+import net.minecraft.world.level.material.FlowingFluid;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
@@ -37,10 +40,10 @@ public class FluidHelper {
             BucketPickup bucketPickup = (BucketPickup) blockState.getBlock();
             ItemStack pickupBlock = bucketPickup.pickupBlock(level, blockPos, blockState);
             if (!pickupBlock.isEmpty()) {
-                FluidState fluid = level.getFluidState(blockPos);
-                if (!fluid.isEmpty()) {
+                FluidInformation fluid = Services.FLUIDS.get(pickupBlock).orElse(new FluidInformation(Fluids.EMPTY));
+                if (!fluid.fluid().isSame(Fluids.EMPTY)) {
                     bucketPickup.getPickupSound().ifPresent((sound) -> playerIn.playSound(sound, 1.0F, 1.0F));
-                    return Optional.of(new FluidInformation(fluid.getType(), Services.FLUIDS.getBucketAmount()));
+                    return Optional.of(new FluidInformation(fluid.fluid(), Services.FLUIDS.getBucketAmount()));
                 }
             }
         }

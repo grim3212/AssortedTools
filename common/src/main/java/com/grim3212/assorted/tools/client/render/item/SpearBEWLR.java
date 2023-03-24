@@ -31,7 +31,7 @@ public class SpearBEWLR extends BlockEntityWithoutLevelRenderer {
     private Map<Item, BakedModel> inventorySpearModels;
 
     public SpearBEWLR() {
-        super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
+        super(null, null);
     }
 
     @Override

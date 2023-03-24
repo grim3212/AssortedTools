@@ -1,28 +1,29 @@
 package com.grim3212.assorted.tools;
 
 import com.google.common.collect.Lists;
-import com.grim3212.assorted.lib.platform.Services;
 import com.grim3212.assorted.tools.client.ToolsClient;
 import com.grim3212.assorted.tools.client.data.ToolsItemModelProvider;
 import com.grim3212.assorted.tools.common.data.ForgeBlockTagProvider;
 import com.grim3212.assorted.tools.common.data.ForgeItemTagProvider;
+import com.grim3212.assorted.tools.common.item.BetterBucketItem;
+import com.grim3212.assorted.tools.common.item.ForgeBetterBucketFluidHandler;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
 import com.grim3212.assorted.tools.common.util.TierRegistryHandler;
 import com.grim3212.assorted.tools.data.ToolsChestLoot;
 import com.grim3212.assorted.tools.data.ToolsCommonRecipeProvider;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.InterModComms;
@@ -42,11 +43,13 @@ public class AssortedToolsForge {
         // Initialize client side
         DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> ToolsClient::init);
 
+        final IEventBus forgeBus = MinecraftForge.EVENT_BUS;
         final IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         modBus.addListener(this::setup);
         modBus.addListener(this::gatherData);
         modBus.addListener(this::sendIMC);
+        forgeBus.addGenericListener(ItemStack.class, this::attachBlockCapabilities);
 
         ToolsCommonMod.init();
     }
@@ -55,22 +58,12 @@ public class AssortedToolsForge {
         event.enqueueWork(() -> {
             TierRegistryHandler.registerTiers();
         });
+    }
 
-        List<Enchantment> enchantments = Services.PLATFORM.getRegistry(Registries.ENCHANTMENT).getValues().toList();
-        ItemStack multiTool = new ItemStack(ToolsItems.IRON_MULTITOOL.get());
-        Constants.LOG.info("What can multitools be enchanted with");
-        enchantments.forEach(e -> {
-            if (e.canEnchant(multiTool)) {
-                Constants.LOG.info(e.getDescriptionId());
-            }
-        });
-        ItemStack shears = new ItemStack(ToolsItems.DIAMOND_SHEARS.get());
-        Constants.LOG.info("What can shears be enchanted with");
-        enchantments.forEach(e -> {
-            if (e.canEnchant(shears)) {
-                Constants.LOG.info(e.getDescriptionId());
-            }
-        });
+    private void attachBlockCapabilities(AttachCapabilitiesEvent<ItemStack> event) {
+        if (event.getObject().getItem() instanceof BetterBucketItem bucketItem) {
+            event.addCapability(new ResourceLocation(Constants.MOD_ID, "fluid_handler"), new ForgeBetterBucketFluidHandler(event.getObject(), bucketItem.getBreakStack(), bucketItem.getEmptyStack(), bucketItem.getMaximumMillibuckets()));
+        }
     }
 
     private void sendIMC(final InterModEnqueueEvent event) {

@@ -78,8 +78,7 @@ public class MilkingHandler {
                                         player.playSound(SoundEvents.COW_MILK, 1.0F, 1.0F);
 
                                         int amount = BetterBucketItem.getAmount(stack);
-                                        BetterBucketItem.setFluid(stack, "milk");
-                                        BetterBucketItem.setAmount(stack, amount + (int) Services.FLUIDS.getBucketAmount());
+                                        BetterBucketItem.store(stack, "milk", amount + (int) Services.FLUIDS.getBucketAmount());
 
                                         event.setCanceled(true);
                                         event.setResult(InteractionResult.SUCCESS);
@@ -103,8 +102,7 @@ public class MilkingHandler {
                                             player.playSound(SoundEvents.COW_MILK, 1.0F, 1.0F);
 
                                             ItemStack milkBucket = new ItemStack(Services.PLATFORM.getRegistry(Registries.ITEM).getValue(new ResourceLocation(bucketName.toString().replace("_bucket", "_milk_bucket"))).orElseThrow());
-                                            BetterBucketItem.setFluid(milkBucket, "milk");
-                                            BetterBucketItem.setAmount(milkBucket, (int) Services.FLUIDS.getBucketAmount());
+                                            BetterBucketItem.store(milkBucket, "milk", (int) Services.FLUIDS.getBucketAmount());
 
                                             if (event.getHand() == InteractionHand.MAIN_HAND)
                                                 player.getInventory().setItem(player.getInventory().selected, milkBucket);

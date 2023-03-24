@@ -15,6 +15,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -27,10 +28,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
@@ -41,7 +42,6 @@ import java.util.Optional;
 
 public class BetterBucketItem extends Item implements ITiered {
 
-    private boolean milkPause = false;
     public final ItemTierConfig tierHolder;
 
     public BetterBucketItem(Properties props, ItemTierConfig tierHolder) {
@@ -54,8 +54,7 @@ public class BetterBucketItem extends Item implements ITiered {
 
     public ItemStack getEmptyStack() {
         ItemStack stack = new ItemStack(this);
-        setFluid(stack, "empty");
-        setAmount(stack, 0);
+        storeFluid(stack, Fluids.EMPTY, 0);
         return stack;
     }
 
@@ -66,12 +65,7 @@ public class BetterBucketItem extends Item implements ITiered {
 
     @Override
     public void onCraftedBy(ItemStack stack, Level worldIn, Player playerIn) {
-        setFluid(stack, "empty");
-        setAmount(stack, 0);
-    }
-
-    public void pauseForMilk() {
-        milkPause = true;
+        storeFluid(stack, Fluids.EMPTY, 0);
     }
 
     public int getMaximumMillibuckets() {
@@ -104,10 +98,6 @@ public class BetterBucketItem extends Item implements ITiered {
         ItemStack itemStackIn = playerIn.getItemInHand(hand);
 
         boolean canContainMore = getAmount(itemStackIn) < getMaximumMillibuckets();
-        if (milkPause) {
-            milkPause = false;
-            return InteractionResultHolder.success(itemStackIn);
-        }
 
         // clicked on a block?
         BlockHitResult blockhitresult = getPlayerPOVHitResult(worldIn, playerIn, canContainMore ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE);
@@ -130,7 +120,6 @@ public class BetterBucketItem extends Item implements ITiered {
                         return InteractionResultHolder.success(itemStackIn);
                     }
 
-
                     int filledAmount = getAmount(itemStackIn) + (int) filledResult.get().amount();
 
                     if (filledAmount > this.getMaximumMillibuckets()) {
@@ -139,7 +128,7 @@ public class BetterBucketItem extends Item implements ITiered {
 
                     int leftover = filledAmount % getBucketAmount();
                     int newFillAmount = ToolsCommonMod.COMMON_CONFIG.allowPartialBucketAmounts.get() ? filledAmount : filledAmount - leftover;
-                    setAmount(itemStackIn, newFillAmount);
+                    storeFluid(itemStackIn, filledResult.get(), newFillAmount);
 
                     return InteractionResultHolder.success(itemStackIn);
                 }
@@ -186,7 +175,7 @@ public class BetterBucketItem extends Item implements ITiered {
 
     }
 
-    public int getBucketAmount() {
+    public static int getBucketAmount() {
         //Currently set to an int might change to a long
         return (int) Services.FLUIDS.getBucketAmount();
     }
@@ -194,35 +183,12 @@ public class BetterBucketItem extends Item implements ITiered {
     /**
      * Check to see if an ItemStack contains empty or the type in its stored NBT
      *
-     * @param stack The ItemStack to check
-     * @param type  The type to check on the ItemStack
+     * @param stack   The ItemStack to check
+     * @param toCheck The type to check on the ItemStack
      * @return True if the ItemStack contains empty or the type in NBT
      */
-    public static boolean isEmptyOrContains(ItemStack stack, String type) {
-        return getFluid(stack).equals("empty") || getFluid(stack).equals(type);
-    }
-
-    public boolean tryPlaceBlock(Player player, Block block, Level worldIn, BlockPos pos) {
-        if (block == null) {
-            return false;
-        }
-
-        Material material = worldIn.getBlockState(pos).getMaterial();
-        boolean isSolid = material.isSolid();
-
-        // can only place in air or non-solid blocks
-        if (!worldIn.isEmptyBlock(pos) && isSolid) {
-            return false;
-        }
-
-        // water goes poof?
-        if (!worldIn.isClientSide && !isSolid && !material.isLiquid()) {
-            worldIn.destroyBlock(pos, true);
-        }
-
-        worldIn.playSound(player, pos, block == Blocks.FIRE ? SoundEvents.FLINTANDSTEEL_USE : SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
-        worldIn.setBlockAndUpdate(pos, block.defaultBlockState());
-        return true;
+    public static boolean isEmptyOrContains(ItemStack stack, String toCheck) {
+        return getFluid(stack).equals(emptyMarker()) || getFluid(stack).equals(toCheck);
     }
 
     public boolean tryPlaceFluid(Player player, FluidInformation fluid, Level worldIn, BlockPos pos, BlockHitResult hitResult) {
@@ -332,19 +298,34 @@ public class BetterBucketItem extends Item implements ITiered {
         return stack.copy();
     }
 
-    public static String getFluid(ItemStack stack) {
-        CompoundTag tag = NBTHelper.getTag(stack, Services.FLUIDS.fluidStackTag());
-        return NBTHelper.getString(tag, "FluidName");
+    public static String emptyMarker() {
+        return getStringFromFluid(Fluids.EMPTY);
     }
 
-    public static void setFluid(ItemStack stack, String fluidName) {
-        CompoundTag tag = NBTHelper.getTag(stack, Services.FLUIDS.fluidStackTag());
-        NBTHelper.putString(tag, "FluidName", fluidName);
+    public static String getStringFromFluid(Fluid f) {
+        return Services.PLATFORM.getRegistry(Registries.FLUID).getRegistryName(f).toString();
     }
 
-    public static int getAmount(ItemStack stack) {
+    public static Fluid getFluidFromString(String s) {
+        return Services.PLATFORM.getRegistry(Registries.FLUID).getValue(new ResourceLocation(s)).orElse(Fluids.EMPTY);
+    }
+
+    public static void store(ItemStack stack, String toStore, int amount) {
         CompoundTag tag = NBTHelper.getTag(stack, Services.FLUIDS.fluidStackTag());
-        return NBTHelper.getInt(tag, "Amount");
+        NBTHelper.putString(tag, "FluidName", toStore);
+        setAmount(stack, amount);
+    }
+
+    public static void storeFluid(ItemStack stack, Fluid fluid, int amount) {
+        store(stack, getStringFromFluid(fluid), amount);
+    }
+
+    public static void storeFluid(ItemStack stack, FluidInformation information, int amount) {
+        storeFluid(stack, information.fluid(), amount);
+    }
+
+    public static void storeFluid(ItemStack stack, FluidInformation information) {
+        storeFluid(stack, information.fluid(), (int) information.amount());
     }
 
     public static void setAmount(ItemStack stack, int amount) {
@@ -352,8 +333,18 @@ public class BetterBucketItem extends Item implements ITiered {
         NBTHelper.putInt(tag, "Amount", amount);
 
         if (amount <= 0) {
-            NBTHelper.putString(tag, "FluidName", "empty");
+            NBTHelper.putString(tag, "FluidName", emptyMarker());
             NBTHelper.putInt(tag, "Amount", 0);
         }
+    }
+
+    public static String getFluid(ItemStack stack) {
+        CompoundTag tag = NBTHelper.getTag(stack, Services.FLUIDS.fluidStackTag());
+        return NBTHelper.getString(tag, "FluidName");
+    }
+
+    public static int getAmount(ItemStack stack) {
+        CompoundTag tag = NBTHelper.getTag(stack, Services.FLUIDS.fluidStackTag());
+        return NBTHelper.getInt(tag, "Amount");
     }
 }

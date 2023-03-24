@@ -145,8 +145,7 @@ public class ToolsCreativeItems {
 
     private static ItemStack genMilkBucket(BetterMilkBucketItem milkBucket) {
         ItemStack stack = new ItemStack(milkBucket);
-        BetterBucketItem.setFluid(stack, "milk");
-        BetterBucketItem.setAmount(stack, milkBucket.getParent().getMaximumMillibuckets());
+        BetterBucketItem.store(stack, "milk", milkBucket.getParent().getMaximumMillibuckets());
         return stack;
     }
 

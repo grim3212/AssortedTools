@@ -1,5 +1,6 @@
 package com.grim3212.assorted.tools.client.data;
 
+import com.grim3212.assorted.lib.LibConstants;
 import com.grim3212.assorted.tools.Constants;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
 import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
@@ -9,7 +10,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -129,8 +129,21 @@ public class ToolsItemModelProvider extends ItemModelProvider {
 
     private void bucketItem(Item bucket, Item milkBucket) {
         String name = name(bucket);
-        getBuilder(name).parent(getExistingFile(new ResourceLocation("forge:item/default"))).texture("particle", prefix("item/buckets/" + name)).texture("base", prefix("item/buckets/" + name)).texture("fluid", prefix("item/buckets/bucket_fluid")).texture("cover", prefix("item/buckets/bucket_covered")).customLoader(DynamicFluidContainerModelBuilder::begin).fluid(Fluids.EMPTY).flipGas(true).applyTint(true).applyFluidLuminosity(true).coverIsMask(true).end();
-        withExistingParent(name(milkBucket), "item/generated").texture("layer0", prefix("item/buckets/" + name)).texture("layer1", prefix("item/buckets/overlay_milk"));
+        getBuilder(name).parent(getExistingFile(new ResourceLocation(LibConstants.MOD_ID, "item/default")))
+                .texture("particle", prefix("item/buckets/" + name))
+                .texture("base", prefix("item/buckets/" + name))
+                .texture("fluid", prefix("item/buckets/bucket_fluid"))
+                .texture("cover", prefix("item/buckets/bucket_covered"))
+                .customLoader(FluidContainerBuilder::begin)
+                .fluid(Fluids.EMPTY)
+                .flipGas(true)
+                .applyTint(true)
+                .applyFluidLuminosity(true)
+                .coverIsMask(true)
+                .end();
+        withExistingParent(name(milkBucket), "item/generated")
+                .texture("layer0", prefix("item/buckets/" + name))
+                .texture("layer1", prefix("item/buckets/overlay_milk"));
     }
 
     private ItemModelBuilder handheldItem(String name) {
