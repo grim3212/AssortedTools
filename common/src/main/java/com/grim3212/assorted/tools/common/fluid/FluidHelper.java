@@ -8,7 +8,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -29,26 +28,30 @@ import java.util.Optional;
 
 public class FluidHelper {
 
-    public static Optional<FluidInformation> tryPickupFluid(@Nullable Player playerIn, InteractionHand hand, Level level, BlockHitResult hitResult) {
-        if (level == null || hitResult == null) {
+    public static Optional<FluidInformation> tryPickupFluid(@Nullable Player playerIn, Level level, BlockPos pos) {
+        if (level == null || pos == null) {
             return Optional.empty();
         }
 
-        BlockPos blockPos = hitResult.getBlockPos();
-        BlockState blockState = level.getBlockState(blockPos);
+        BlockState blockState = level.getBlockState(pos);
         if (blockState.getBlock() instanceof BucketPickup) {
             BucketPickup bucketPickup = (BucketPickup) blockState.getBlock();
-            ItemStack pickupBlock = bucketPickup.pickupBlock(level, blockPos, blockState);
+            ItemStack pickupBlock = bucketPickup.pickupBlock(level, pos, blockState);
             if (!pickupBlock.isEmpty()) {
                 FluidInformation fluid = Services.FLUIDS.get(pickupBlock).orElse(new FluidInformation(Fluids.EMPTY));
                 if (!fluid.fluid().isSame(Fluids.EMPTY)) {
-                    bucketPickup.getPickupSound().ifPresent((sound) -> playerIn.playSound(sound, 1.0F, 1.0F));
+                    if (playerIn != null)
+                        bucketPickup.getPickupSound().ifPresent((sound) -> playerIn.playSound(sound, 1.0F, 1.0F));
                     return Optional.of(new FluidInformation(fluid.fluid(), Services.FLUIDS.getBucketAmount()));
                 }
             }
         }
 
         return Optional.empty();
+    }
+
+    public static Optional<FluidInformation> tryPickupFluid(@Nullable Player playerIn, Level level, BlockHitResult hitResult) {
+        return tryPickupFluid(playerIn, level, hitResult.getBlockPos());
     }
 
     public static boolean tryPlaceFluid(@Nullable Player player, Level level, BlockPos pos, @Nullable BlockHitResult hitResult, FluidInformation information) {

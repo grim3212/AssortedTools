@@ -64,7 +64,7 @@ public class ForgeBetterBucketFluidHandler extends FluidHandlerItemStack {
 
             return fillAmount;
         } else {
-            if (contained.isFluidEqual(resource)) {
+            if (contained.getFluid().isSame(resource.getFluid())) {
                 int fillAmount = Math.min(capacity - contained.getAmount(), resource.getAmount());
                 int leftover = fillAmount % FluidType.BUCKET_VOLUME;
 

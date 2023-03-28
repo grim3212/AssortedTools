@@ -17,7 +17,6 @@ import com.grim3212.assorted.tools.Constants;
 import com.mojang.math.Transformation;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.*;
 import net.minecraft.core.registries.Registries;
@@ -59,7 +58,7 @@ public class FluidContainerModel implements IModelSpecification<FluidContainerMo
     }
 
     public static RenderTypeGroup getLayerRenderTypes(boolean unlit) {
-        return new RenderTypeGroup(RenderType.solid(), RenderType.entitySolid(TextureAtlas.LOCATION_BLOCKS));
+        return new RenderTypeGroup(RenderType.translucent(), unlit ? ClientServices.MODELS.getItemUnlitUnsortedTranslucentRenderType() : ClientServices.MODELS.getItemUnsortedTranslucentRenderType());
     }
 
     @Override
@@ -105,7 +104,6 @@ public class FluidContainerModel implements IModelSpecification<FluidContainerMo
                 // Fluid layer
                 var transformedState = new SimpleModelState(modelState.getRotation().compose(FLUID_TRANSFORM), modelState.isUvLocked());
                 var unbaked = UnbakedGeometryHelper.createUnbakedItemMaskElements(1, templateSprite); // Use template as mask
-
                 var quads = UnbakedGeometryHelper.bakeElements(unbaked, $ -> fluidSprite, transformedState, modelLocation); // Bake with fluid texture
 
                 var emissive = applyFluidLuminosity && fluidVariant.isPresent() && fluidVariant.get().getLuminance(fluidInformation) > 0;
@@ -117,7 +115,7 @@ public class FluidContainerModel implements IModelSpecification<FluidContainerMo
         }
 
         if (coverSprite != null) {
-            var sprite = coverIsMask ? baseSprite : coverSprite;
+            var sprite = !coverIsMask ? coverSprite : null;
             if (sprite != null) {
                 // Cover/overlay
                 var transformedState = new SimpleModelState(modelState.getRotation().compose(COVER_TRANSFORM), modelState.isUvLocked());
@@ -129,7 +127,7 @@ public class FluidContainerModel implements IModelSpecification<FluidContainerMo
 
         modelBuilder.setParticle(particleSprite);
 
-        return modelBuilder.build();
+        return ClientServices.MODELS.adaptToPlatform(modelBuilder.build());
     }
 
 

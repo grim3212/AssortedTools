@@ -77,7 +77,7 @@ public class BetterBucketItem extends Item implements ITiered {
         if (getAmount(stack) <= 0) {
             tooltip.add(Component.translatable("tooltip.buckets.empty"));
         } else {
-            tooltip.add(Component.translatable("tooltip.buckets.contains", getAmount(stack), getMaximumMillibuckets()));
+            tooltip.add(Component.translatable("tooltip.buckets.contains", getAmount(stack) / BetterBucketItem.getBucketAmount(), getMaximumMillibuckets() / BetterBucketItem.getBucketAmount()));
         }
     }
 
@@ -112,7 +112,7 @@ public class BetterBucketItem extends Item implements ITiered {
             BlockPos clickPosOffset = clickPos.relative(direction);
 
             if (canContainMore) {
-                Optional<FluidInformation> filledResult = FluidHelper.tryPickupFluid(playerIn, hand, worldIn, blockhitresult);
+                Optional<FluidInformation> filledResult = FluidHelper.tryPickupFluid(playerIn, worldIn, blockhitresult);
                 if (!filledResult.isEmpty()) {
                     // Don't change if in creative
                     // Also if it isn't a complete bucket then don't add it either

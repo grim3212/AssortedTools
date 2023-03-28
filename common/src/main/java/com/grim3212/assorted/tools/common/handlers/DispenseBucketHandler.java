@@ -15,6 +15,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 
 import javax.annotation.Nonnull;
+import java.util.Optional;
 
 /**
  * Fills or drains a fluid container item using a Dispenser.
@@ -38,7 +39,7 @@ public class DispenseBucketHandler extends DefaultDispenseItemBehavior {
         Direction dispenserFacing = source.getBlockState().getValue(DispenserBlock.FACING);
         BlockPos blockpos = source.getPos().relative(dispenserFacing);
 
-        if (Services.FLUIDS.get(stack).isPresent() && Services.FLUIDS.get(stack).get().fluid() != level.getFluidState(blockpos).getType()) {
+        if (Services.FLUIDS.get(stack).isPresent() && !Services.FLUIDS.get(stack).get().fluid().isSame(level.getFluidState(blockpos).getType())) {
             return dumpContainer(source, stack);
         } else {
             return fillContainer(source, stack);
@@ -54,10 +55,9 @@ public class DispenseBucketHandler extends DefaultDispenseItemBehavior {
         Direction dispenserFacing = source.getBlockState().getValue(DispenserBlock.FACING);
         BlockPos blockpos = source.getPos().relative(dispenserFacing);
 
-
-        FluidInformation fluidHandler = Services.FLUIDS.get(stack).orElse(null);
         Fluid fluid = level.getFluidState(blockpos).getType();
-        if (fluidHandler == null || (fluidHandler.fluid() != Fluids.EMPTY && fluidHandler.fluid() != fluid)) {
+        Optional<FluidInformation> fluidHandler = FluidHelper.tryPickupFluid(null, level, blockpos);
+        if (fluidHandler == null || fluidHandler.isEmpty()) {
             return super.execute(source, stack);
         }
 
