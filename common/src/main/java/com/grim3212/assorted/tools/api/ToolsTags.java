@@ -45,6 +45,7 @@ public class ToolsTags {
         public static final TagKey<Item> GEMS_PERIDOT = commonTag("gems/peridot");
 
         public static final TagKey<Item> ULTIMATE_FRAGMENTS = toolsTag("ultimate_fragments");
+        public static final TagKey<Item> CAGE_SUPPORTED = TagKey.create(Registries.ITEM, new ResourceLocation("assorteddecor", "cage_supported"));
 
         private static TagKey<Item> toolsTag(String name) {
             return TagKey.create(Registries.ITEM, new ResourceLocation(Constants.MOD_ID, name));

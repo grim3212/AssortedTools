@@ -21,9 +21,9 @@ import net.minecraft.world.level.block.Blocks;
 
 import java.util.function.Consumer;
 
-public class ToolsCommonRecipeProvider extends ConditionalRecipeProvider {
+public class ToolsRecipes extends ConditionalRecipeProvider {
 
-    public ToolsCommonRecipeProvider(PackOutput output) {
+    public ToolsRecipes(PackOutput output) {
         super(output, Constants.MOD_ID);
     }
 

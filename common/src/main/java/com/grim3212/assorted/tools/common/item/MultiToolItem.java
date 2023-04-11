@@ -22,7 +22,7 @@ import net.minecraft.world.level.material.Material;
 import java.util.Optional;
 import java.util.Set;
 
-public abstract class MultiToolItem extends ConfigurableToolItem implements IItemEnchantmentCondition {
+public class MultiToolItem extends ConfigurableToolItem implements IItemEnchantmentCondition {
 
     private static final Set<Material> EFFECTIVE_ON_MATERIALS = Sets.newHashSet(Material.WOOD, Material.NETHER_WOOD, Material.PLANT, Material.REPLACEABLE_PLANT, Material.BAMBOO, Material.VEGETABLE, Material.METAL, Material.HEAVY_METAL, Material.STONE);
 

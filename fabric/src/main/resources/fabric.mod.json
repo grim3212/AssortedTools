@@ -18,14 +18,15 @@
       "com.grim3212.assorted.tools.AssortedToolsFabric"
     ],
     "client": [
-      "com.grim3212.assorted.tools.client.ToolsClientFabric"
+      "com.grim3212.assorted.tools.AssortedToolsFabricClient"
     ],
     "fabric-datagen": [
-      "com.grim3212.assorted.tools.common.data.AssortedToolsFabricDatagen"
+      "com.grim3212.assorted.tools.AssortedToolsFabricDatagen"
     ]
   },
   "mixins": [
-    "${mod_id}.mixins.json"
+    "${mod_id}.mixins.json",
+    "${mod_id}_fabric.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.14",

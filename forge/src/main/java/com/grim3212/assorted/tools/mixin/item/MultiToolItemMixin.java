@@ -1,5 +1,7 @@
-package com.grim3212.assorted.tools.common.item;
+package com.grim3212.assorted.tools.mixin.item;
 
+import com.grim3212.assorted.tools.common.item.MultiToolItem;
+import com.grim3212.assorted.tools.common.item.configurable.ConfigurableToolItem;
 import com.grim3212.assorted.tools.config.ItemTierConfig;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -8,24 +10,29 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
+import org.spongepowered.asm.mixin.Mixin;
 
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
-public class ForgeMultiToolItem extends MultiToolItem {
-    public ForgeMultiToolItem(ItemTierConfig tier, Properties builderIn) {
-        super(tier, builderIn);
+@Mixin(MultiToolItem.class)
+public class MultiToolItemMixin extends ConfigurableToolItem {
+    public MultiToolItemMixin(ItemTierConfig tierHolder, Supplier<Float> toolDamage, Supplier<Float> attackSpeedIn, TagKey<Block> effectiveBlocksIn, Properties builderIn) {
+        super(tierHolder, toolDamage, attackSpeedIn, effectiveBlocksIn, builderIn);
     }
 
     @Override

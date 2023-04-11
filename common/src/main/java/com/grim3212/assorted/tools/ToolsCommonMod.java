@@ -18,6 +18,8 @@ public class ToolsCommonMod {
     public static final ToolsCommonConfig COMMON_CONFIG = new ToolsCommonConfig();
 
     public static void init() {
+        Constants.LOG.info(Constants.MOD_NAME + " starting up...");
+
         ToolsItems.init();
         ToolsEntities.init();
         ToolsEnchantments.init();

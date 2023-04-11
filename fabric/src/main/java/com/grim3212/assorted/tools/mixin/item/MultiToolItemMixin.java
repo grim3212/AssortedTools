@@ -1,10 +1,9 @@
-package com.grim3212.assorted.tools.common.item;
+package com.grim3212.assorted.tools.mixin.item;
 
 import com.google.common.collect.BiMap;
+import com.grim3212.assorted.tools.common.item.MultiToolItem;
+import com.grim3212.assorted.tools.common.item.configurable.ConfigurableToolItem;
 import com.grim3212.assorted.tools.config.ItemTierConfig;
-import com.grim3212.assorted.tools.mixin.item.AxeItemMixin;
-import com.grim3212.assorted.tools.mixin.item.HoeItemMixin;
-import com.grim3212.assorted.tools.mixin.item.ShovelItemMixin;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
@@ -12,6 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.HoneycombItem;
@@ -24,16 +24,20 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import org.spongepowered.asm.mixin.Mixin;
 
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
-public class FabricMultiToolItem extends MultiToolItem {
-    public FabricMultiToolItem(ItemTierConfig tier, Properties builderIn) {
-        super(tier, builderIn);
+@Mixin(MultiToolItem.class)
+public class MultiToolItemMixin extends ConfigurableToolItem {
+    public MultiToolItemMixin(ItemTierConfig tierHolder, Supplier<Float> toolDamage, Supplier<Float> attackSpeedIn, TagKey<Block> effectiveBlocksIn, Properties builderIn) {
+        super(tierHolder, toolDamage, attackSpeedIn, effectiveBlocksIn, builderIn);
     }
 
+    @Override
     public InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
         BlockPos blockPos = context.getClickedPos();

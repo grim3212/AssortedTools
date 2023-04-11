@@ -6,7 +6,6 @@ import com.grim3212.assorted.lib.registry.IRegistryObject;
 import com.grim3212.assorted.lib.registry.RegistryProvider;
 import com.grim3212.assorted.tools.Constants;
 import com.grim3212.assorted.tools.ToolsCommonMod;
-import com.grim3212.assorted.tools.ToolsServices;
 import com.grim3212.assorted.tools.common.item.configurable.ConfigurableArmorItem;
 import com.grim3212.assorted.tools.config.ArmorMaterialConfig;
 import com.grim3212.assorted.tools.config.ItemTierConfig;
@@ -49,12 +48,12 @@ public class ToolsItems {
 
     public static final IRegistryObject<PokeballItem> POKEBALL = register("pokeball", () -> new PokeballItem(new Item.Properties()));
 
-    public static final IRegistryObject<MultiToolItem> WOODEN_MULTITOOL = register("wooden_multitool", () -> ToolsServices.TOOLS.getMultiToolItem(ToolsCommonMod.COMMON_CONFIG.woodItemTier, new Item.Properties()));
-    public static final IRegistryObject<MultiToolItem> STONE_MULTITOOL = register("stone_multitool", () -> ToolsServices.TOOLS.getMultiToolItem(ToolsCommonMod.COMMON_CONFIG.stoneItemTier, new Item.Properties()));
-    public static final IRegistryObject<MultiToolItem> GOLDEN_MULTITOOL = register("golden_multitool", () -> ToolsServices.TOOLS.getMultiToolItem(ToolsCommonMod.COMMON_CONFIG.goldItemTier, new Item.Properties()));
-    public static final IRegistryObject<MultiToolItem> IRON_MULTITOOL = register("iron_multitool", () -> ToolsServices.TOOLS.getMultiToolItem(ToolsCommonMod.COMMON_CONFIG.ironItemTier, new Item.Properties()));
-    public static final IRegistryObject<MultiToolItem> DIAMOND_MULTITOOL = register("diamond_multitool", () -> ToolsServices.TOOLS.getMultiToolItem(ToolsCommonMod.COMMON_CONFIG.diamondItemTier, new Item.Properties()));
-    public static final IRegistryObject<MultiToolItem> NETHERITE_MULTITOOL = register("netherite_multitool", () -> ToolsServices.TOOLS.getMultiToolItem(ToolsCommonMod.COMMON_CONFIG.netheriteItemTier, new Item.Properties()));
+    public static final IRegistryObject<MultiToolItem> WOODEN_MULTITOOL = register("wooden_multitool", () -> new MultiToolItem(ToolsCommonMod.COMMON_CONFIG.woodItemTier, new Item.Properties()));
+    public static final IRegistryObject<MultiToolItem> STONE_MULTITOOL = register("stone_multitool", () -> new MultiToolItem(ToolsCommonMod.COMMON_CONFIG.stoneItemTier, new Item.Properties()));
+    public static final IRegistryObject<MultiToolItem> GOLDEN_MULTITOOL = register("golden_multitool", () -> new MultiToolItem(ToolsCommonMod.COMMON_CONFIG.goldItemTier, new Item.Properties()));
+    public static final IRegistryObject<MultiToolItem> IRON_MULTITOOL = register("iron_multitool", () -> new MultiToolItem(ToolsCommonMod.COMMON_CONFIG.ironItemTier, new Item.Properties()));
+    public static final IRegistryObject<MultiToolItem> DIAMOND_MULTITOOL = register("diamond_multitool", () -> new MultiToolItem(ToolsCommonMod.COMMON_CONFIG.diamondItemTier, new Item.Properties()));
+    public static final IRegistryObject<MultiToolItem> NETHERITE_MULTITOOL = register("netherite_multitool", () -> new MultiToolItem(ToolsCommonMod.COMMON_CONFIG.netheriteItemTier, new Item.Properties()));
 
     public static final IRegistryObject<BetterSpearItem> WOOD_SPEAR = register("wood_spear", () -> new BetterSpearItem(new Item.Properties(), ToolsCommonMod.COMMON_CONFIG.woodItemTier));
     public static final IRegistryObject<BetterSpearItem> STONE_SPEAR = register("stone_spear", () -> new BetterSpearItem(new Item.Properties(), ToolsCommonMod.COMMON_CONFIG.stoneItemTier));
@@ -136,7 +135,7 @@ public class ToolsItems {
             this.SWORD = register(tier.getName() + "_sword", () -> new MaterialSwordItem(tier, new Item.Properties()));
 
             this.HAMMER = register(tier.getName() + "_hammer", () -> new HammerItem(tier, new Item.Properties()));
-            this.MULTITOOL = register(tier.getName() + "_multitool", () -> ToolsServices.TOOLS.getMultiToolItem(tier, new Item.Properties()));
+            this.MULTITOOL = register(tier.getName() + "_multitool", () -> new MultiToolItem(tier, new Item.Properties()));
             this.SPEAR = register(tier.getName() + "_spear", () -> new BetterSpearItem(new Item.Properties(), tier));
 
             this.BUCKET = register(tier.getName() + "_bucket", () -> new BetterBucketItem(new Item.Properties(), tier));
