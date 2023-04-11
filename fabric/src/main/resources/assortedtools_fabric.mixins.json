@@ -4,7 +4,13 @@
   "compatibilityLevel": "JAVA_17",
   "package": "com.grim3212.assorted.tools.mixin",
   "mixins": [
-    "item.MultiToolItemMixin"
+    "block.BeehiveBlockMixin",
+    "block.PumpkinBlockMixin",
+    "block.TripWireBlockMixin",
+    "enchantment.DiggingEnchantmentMixin",
+    "item.MaterialShearsMixin",
+    "item.MultiToolItemMixin",
+    "loot.ItemPredicateMixin"
   ],
   "client": [],
   "injectors": {

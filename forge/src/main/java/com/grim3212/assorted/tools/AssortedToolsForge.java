@@ -12,7 +12,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;
-import net.minecraft.world.item.ShearsItem;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
@@ -35,8 +34,6 @@ public class AssortedToolsForge {
         modBus.addListener(this::gatherData);
 
         ToolsCommonMod.init();
-
-        ShearsItem
     }
 
     private void setup(final FMLCommonSetupEvent event) {
