@@ -1,12 +1,12 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "category": "equipment",
   "fabric:load_conditions": [
     {
       "condition": "assortedlib:part_enabled",
       "part": "ultimatefist"
     }
   ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
   "ingredients": [
     {
       "item": "assortedtools:u_fragment"

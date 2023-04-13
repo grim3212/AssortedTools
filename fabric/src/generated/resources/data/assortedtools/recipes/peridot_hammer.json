@@ -1,6 +1,4 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "equipment",
   "fabric:load_conditions": [
     {
       "condition": "fabric:and",
@@ -22,6 +20,8 @@
       ]
     }
   ],
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
   "key": {
     "I": {
       "tag": "c:gems/peridot"

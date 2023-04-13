@@ -1,12 +1,12 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "equipment",
   "fabric:load_conditions": [
     {
       "condition": "assortedlib:part_enabled",
       "part": "wands"
     }
   ],
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
   "key": {
     "G": {
       "tag": "c:storage_blocks/diamond"

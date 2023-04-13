@@ -24,7 +24,7 @@ public class ToolsItems {
 
     public static final RegistryProvider<Item> ITEMS = RegistryProvider.create(Registries.ITEM, Constants.MOD_ID);
 
-    public static final IRegistryObject<HammerItem> NETHERITE_HAMMER = register("netherite_hammer", () -> new HammerItem(ToolsCommonMod.COMMON_CONFIG.netheriteItemTier, new Item.Properties()));
+    public static final IRegistryObject<HammerItem> NETHERITE_HAMMER = register("netherite_hammer", () -> new HammerItem(ToolsCommonMod.COMMON_CONFIG.netheriteItemTier, new Item.Properties().fireResistant()));
     public static final IRegistryObject<HammerItem> DIAMOND_HAMMER = register("diamond_hammer", () -> new HammerItem(ToolsCommonMod.COMMON_CONFIG.diamondItemTier, new Item.Properties()));
     public static final IRegistryObject<HammerItem> GOLD_HAMMER = register("gold_hammer", () -> new HammerItem(ToolsCommonMod.COMMON_CONFIG.goldItemTier, new Item.Properties()));
     public static final IRegistryObject<HammerItem> IRON_HAMMER = register("iron_hammer", () -> new HammerItem(ToolsCommonMod.COMMON_CONFIG.ironItemTier, new Item.Properties()));
@@ -53,14 +53,14 @@ public class ToolsItems {
     public static final IRegistryObject<MultiToolItem> GOLDEN_MULTITOOL = register("golden_multitool", () -> new MultiToolItem(ToolsCommonMod.COMMON_CONFIG.goldItemTier, new Item.Properties()));
     public static final IRegistryObject<MultiToolItem> IRON_MULTITOOL = register("iron_multitool", () -> new MultiToolItem(ToolsCommonMod.COMMON_CONFIG.ironItemTier, new Item.Properties()));
     public static final IRegistryObject<MultiToolItem> DIAMOND_MULTITOOL = register("diamond_multitool", () -> new MultiToolItem(ToolsCommonMod.COMMON_CONFIG.diamondItemTier, new Item.Properties()));
-    public static final IRegistryObject<MultiToolItem> NETHERITE_MULTITOOL = register("netherite_multitool", () -> new MultiToolItem(ToolsCommonMod.COMMON_CONFIG.netheriteItemTier, new Item.Properties()));
+    public static final IRegistryObject<MultiToolItem> NETHERITE_MULTITOOL = register("netherite_multitool", () -> new MultiToolItem(ToolsCommonMod.COMMON_CONFIG.netheriteItemTier, new Item.Properties().fireResistant()));
 
     public static final IRegistryObject<BetterSpearItem> WOOD_SPEAR = register("wood_spear", () -> new BetterSpearItem(new Item.Properties(), ToolsCommonMod.COMMON_CONFIG.woodItemTier));
     public static final IRegistryObject<BetterSpearItem> STONE_SPEAR = register("stone_spear", () -> new BetterSpearItem(new Item.Properties(), ToolsCommonMod.COMMON_CONFIG.stoneItemTier));
     public static final IRegistryObject<BetterSpearItem> IRON_SPEAR = register("iron_spear", () -> new BetterSpearItem(new Item.Properties(), ToolsCommonMod.COMMON_CONFIG.ironItemTier));
     public static final IRegistryObject<BetterSpearItem> GOLD_SPEAR = register("gold_spear", () -> new BetterSpearItem(new Item.Properties(), ToolsCommonMod.COMMON_CONFIG.goldItemTier));
     public static final IRegistryObject<BetterSpearItem> DIAMOND_SPEAR = register("diamond_spear", () -> new BetterSpearItem(new Item.Properties(), ToolsCommonMod.COMMON_CONFIG.diamondItemTier));
-    public static final IRegistryObject<BetterSpearItem> NETHERITE_SPEAR = register("netherite_spear", () -> new BetterSpearItem(new Item.Properties(), ToolsCommonMod.COMMON_CONFIG.netheriteItemTier));
+    public static final IRegistryObject<BetterSpearItem> NETHERITE_SPEAR = register("netherite_spear", () -> new BetterSpearItem(new Item.Properties().fireResistant(), ToolsCommonMod.COMMON_CONFIG.netheriteItemTier));
 
     public static final IRegistryObject<BetterBucketItem> WOOD_BUCKET = register("wood_bucket", () -> new BetterBucketItem(new Item.Properties(), ToolsCommonMod.COMMON_CONFIG.woodItemTier));
     public static final IRegistryObject<BetterMilkBucketItem> WOOD_MILK_BUCKET = register("wood_milk_bucket", () -> new BetterMilkBucketItem(() -> WOOD_BUCKET.get(), new Item.Properties()));
@@ -70,14 +70,14 @@ public class ToolsItems {
     public static final IRegistryObject<BetterMilkBucketItem> GOLD_MILK_BUCKET = register("gold_milk_bucket", () -> new BetterMilkBucketItem(() -> GOLD_BUCKET.get(), new Item.Properties()));
     public static final IRegistryObject<BetterBucketItem> DIAMOND_BUCKET = register("diamond_bucket", () -> new BetterBucketItem(new Item.Properties(), ToolsCommonMod.COMMON_CONFIG.diamondItemTier));
     public static final IRegistryObject<BetterMilkBucketItem> DIAMOND_MILK_BUCKET = register("diamond_milk_bucket", () -> new BetterMilkBucketItem(() -> DIAMOND_BUCKET.get(), new Item.Properties()));
-    public static final IRegistryObject<BetterBucketItem> NETHERITE_BUCKET = register("netherite_bucket", () -> new BetterBucketItem(new Item.Properties(), ToolsCommonMod.COMMON_CONFIG.netheriteItemTier));
-    public static final IRegistryObject<BetterMilkBucketItem> NETHERITE_MILK_BUCKET = register("netherite_milk_bucket", () -> new BetterMilkBucketItem(() -> NETHERITE_BUCKET.get(), new Item.Properties()));
+    public static final IRegistryObject<BetterBucketItem> NETHERITE_BUCKET = register("netherite_bucket", () -> new BetterBucketItem(new Item.Properties().fireResistant(), ToolsCommonMod.COMMON_CONFIG.netheriteItemTier));
+    public static final IRegistryObject<BetterMilkBucketItem> NETHERITE_MILK_BUCKET = register("netherite_milk_bucket", () -> new BetterMilkBucketItem(() -> NETHERITE_BUCKET.get(), new Item.Properties().fireResistant()));
 
     public static final IRegistryObject<MaterialShears> WOOD_SHEARS = register("wood_shears", () -> new MaterialShears(new Item.Properties(), ToolsCommonMod.COMMON_CONFIG.woodItemTier));
     public static final IRegistryObject<MaterialShears> STONE_SHEARS = register("stone_shears", () -> new MaterialShears(new Item.Properties(), ToolsCommonMod.COMMON_CONFIG.stoneItemTier));
     public static final IRegistryObject<MaterialShears> GOLD_SHEARS = register("gold_shears", () -> new MaterialShears(new Item.Properties(), ToolsCommonMod.COMMON_CONFIG.goldItemTier));
     public static final IRegistryObject<MaterialShears> DIAMOND_SHEARS = register("diamond_shears", () -> new MaterialShears(new Item.Properties(), ToolsCommonMod.COMMON_CONFIG.diamondItemTier));
-    public static final IRegistryObject<MaterialShears> NETHERITE_SHEARS = register("netherite_shears", () -> new MaterialShears(new Item.Properties(), ToolsCommonMod.COMMON_CONFIG.netheriteItemTier));
+    public static final IRegistryObject<MaterialShears> NETHERITE_SHEARS = register("netherite_shears", () -> new MaterialShears(new Item.Properties().fireResistant(), ToolsCommonMod.COMMON_CONFIG.netheriteItemTier));
 
     public static final IRegistryObject<FragmentItem> U_FRAGMENT = register("u_fragment", () -> new FragmentItem(new Item.Properties().rarity(Rarity.RARE)));
     public static final IRegistryObject<FragmentItem> L_FRAGMENT = register("l_fragment", () -> new FragmentItem(new Item.Properties().rarity(Rarity.RARE)));
@@ -88,7 +88,7 @@ public class ToolsItems {
     public static final IRegistryObject<FragmentItem> MISSING_FRAGMENT = register("missing_fragment", () -> new FragmentItem(new Item.Properties().rarity(Rarity.RARE)));
     public static final IRegistryObject<FragmentItem> E_FRAGMENT = register("e_fragment", () -> new FragmentItem(new Item.Properties().rarity(Rarity.RARE)));
 
-    public static final IRegistryObject<UltimateFistItem> ULTIMATE_FIST = register("ultimate_fist", () -> new UltimateFistItem(new Item.Properties().rarity(Rarity.EPIC)));
+    public static final IRegistryObject<UltimateFistItem> ULTIMATE_FIST = register("ultimate_fist", () -> new UltimateFistItem(new Item.Properties().fireResistant().rarity(Rarity.EPIC)));
 
     public static final Map<String, MaterialGroup> MATERIAL_GROUPS = Maps.newHashMap();
 

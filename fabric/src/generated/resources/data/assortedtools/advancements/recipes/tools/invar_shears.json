@@ -1,4 +1,25 @@
 {
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "moreshears"
+        },
+        {
+          "condition": "fabric:tags_populated",
+          "values": [
+            "c:ingots/invar"
+          ]
+        },
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        }
+      ]
+    }
+  ],
   "parent": "minecraft:recipes/root",
   "criteria": {
     "has_item": {
@@ -28,27 +49,6 @@
       "trigger": "minecraft:recipe_unlocked"
     }
   },
-  "fabric:load_conditions": [
-    {
-      "condition": "fabric:and",
-      "values": [
-        {
-          "condition": "assortedlib:part_enabled",
-          "part": "moreshears"
-        },
-        {
-          "condition": "fabric:tags_populated",
-          "values": [
-            "c:ingots/invar"
-          ]
-        },
-        {
-          "condition": "assortedlib:part_enabled",
-          "part": "extramaterials"
-        }
-      ]
-    }
-  ],
   "requirements": [
     [
       "has_leather",

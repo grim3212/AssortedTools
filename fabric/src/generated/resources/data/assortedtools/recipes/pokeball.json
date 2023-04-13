@@ -1,12 +1,12 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "equipment",
   "fabric:load_conditions": [
     {
       "condition": "assortedlib:part_enabled",
       "part": "pokeball"
     }
   ],
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
   "key": {
     "B": {
       "item": "minecraft:stone_button"

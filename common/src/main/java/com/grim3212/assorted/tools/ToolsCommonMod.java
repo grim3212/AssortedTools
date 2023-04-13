@@ -9,9 +9,6 @@ import com.grim3212.assorted.tools.common.handlers.*;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
 import com.grim3212.assorted.tools.common.network.ToolsPackets;
 import com.grim3212.assorted.tools.config.ToolsCommonConfig;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 
 public class ToolsCommonMod {
 
@@ -25,8 +22,7 @@ public class ToolsCommonMod {
         ToolsEnchantments.init();
         ToolsPackets.init();
         ToolsConditions.init();
-
-        Services.PLATFORM.registerCreativeTab(new ResourceLocation(Constants.MOD_ID, "tab"), Component.translatable("itemGroup.assortedtools"), () -> new ItemStack(ToolsItems.IRON_HAMMER.get()), () -> ToolsCreativeItems.getCreativeItems());
+        ToolsCreativeItems.init();
 
         Services.EVENTS.registerEvent(AnvilUpdatedEvent.class, (final AnvilUpdatedEvent event) -> ChickenSuitConversionHandler.anvilUpdateEvent(event));
         Services.EVENTS.registerEvent(EntityInteractEvent.class, (final EntityInteractEvent event) -> MilkingHandler.interact(event));

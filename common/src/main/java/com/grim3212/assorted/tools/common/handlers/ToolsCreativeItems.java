@@ -1,7 +1,9 @@
 package com.grim3212.assorted.tools.common.handlers;
 
 import com.grim3212.assorted.lib.core.creative.CreativeTabItems;
+import com.grim3212.assorted.lib.platform.Services;
 import com.grim3212.assorted.lib.util.NBTHelper;
+import com.grim3212.assorted.tools.Constants;
 import com.grim3212.assorted.tools.ToolsCommonMod;
 import com.grim3212.assorted.tools.api.item.ToolsItemTier;
 import com.grim3212.assorted.tools.common.item.BetterBucketItem;
@@ -11,13 +13,15 @@ import com.grim3212.assorted.tools.common.item.WandBreakingItem.BreakingMode;
 import com.grim3212.assorted.tools.common.item.WandBuildingItem.BuildingMode;
 import com.grim3212.assorted.tools.common.item.WandMiningItem.MiningMode;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
 public class ToolsCreativeItems {
 
-    public static List<ItemStack> getCreativeItems() {
+    private static List<ItemStack> getCreativeItems() {
         CreativeTabItems items = new CreativeTabItems();
 
         if (ToolsCommonMod.COMMON_CONFIG.pokeballEnabled.get()) {
@@ -152,5 +156,9 @@ public class ToolsCreativeItems {
     private static void registerBucket(CreativeTabItems output, BetterBucketItem bucket, BetterMilkBucketItem milkBucket) {
         output.add(bucket);
         output.add(genMilkBucket(milkBucket));
+    }
+
+    public static void init() {
+        Services.PLATFORM.registerCreativeTab(new ResourceLocation(Constants.MOD_ID, "tab"), Component.translatable("itemGroup." + Constants.MOD_ID), () -> new ItemStack(ToolsItems.IRON_HAMMER.get()), ToolsCreativeItems::getCreativeItems);
     }
 }

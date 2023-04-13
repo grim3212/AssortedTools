@@ -1,4 +1,21 @@
 {
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        },
+        {
+          "condition": "fabric:tags_populated",
+          "values": [
+            "c:gems/ruby"
+          ]
+        }
+      ]
+    }
+  ],
   "parent": "minecraft:recipes/root",
   "criteria": {
     "has_item": {
@@ -18,23 +35,6 @@
       "trigger": "minecraft:recipe_unlocked"
     }
   },
-  "fabric:load_conditions": [
-    {
-      "condition": "fabric:and",
-      "values": [
-        {
-          "condition": "assortedlib:part_enabled",
-          "part": "extramaterials"
-        },
-        {
-          "condition": "fabric:tags_populated",
-          "values": [
-            "c:gems/ruby"
-          ]
-        }
-      ]
-    }
-  ],
   "requirements": [
     [
       "has_item",

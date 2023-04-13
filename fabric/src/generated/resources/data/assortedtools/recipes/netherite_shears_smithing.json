@@ -1,4 +1,10 @@
 {
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "moreshears"
+    }
+  ],
   "type": "minecraft:smithing",
   "addition": {
     "tag": "c:ingots/netherite"
@@ -6,12 +12,6 @@
   "base": {
     "item": "assortedtools:diamond_shears"
   },
-  "fabric:load_conditions": [
-    {
-      "condition": "assortedlib:part_enabled",
-      "part": "moreshears"
-    }
-  ],
   "result": {
     "item": "assortedtools:netherite_shears"
   }

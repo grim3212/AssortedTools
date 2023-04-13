@@ -1,4 +1,10 @@
 {
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "pokeball"
+    }
+  ],
   "parent": "minecraft:recipes/root",
   "criteria": {
     "has_iron": {
@@ -28,12 +34,6 @@
       "trigger": "minecraft:recipe_unlocked"
     }
   },
-  "fabric:load_conditions": [
-    {
-      "condition": "assortedlib:part_enabled",
-      "part": "pokeball"
-    }
-  ],
   "requirements": [
     [
       "has_iron",
