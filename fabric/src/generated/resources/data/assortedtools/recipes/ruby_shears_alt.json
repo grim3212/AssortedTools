@@ -36,5 +36,6 @@
   ],
   "result": {
     "item": "assortedtools:ruby_shears"
-  }
+  },
+  "show_notification": true
 }

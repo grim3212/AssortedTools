@@ -27,5 +27,6 @@
   ],
   "result": {
     "item": "assortedtools:chicken_suit_boots"
-  }
+  },
+  "show_notification": true
 }

@@ -28,5 +28,6 @@
   ],
   "result": {
     "item": "assortedtools:tin_leggings"
-  }
+  },
+  "show_notification": true
 }

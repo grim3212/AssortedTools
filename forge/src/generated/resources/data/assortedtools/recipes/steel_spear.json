@@ -35,5 +35,6 @@
   ],
   "result": {
     "item": "assortedtools:steel_spear"
-  }
+  },
+  "show_notification": true
 }

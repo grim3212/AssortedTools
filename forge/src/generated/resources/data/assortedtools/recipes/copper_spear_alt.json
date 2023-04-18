@@ -33,5 +33,6 @@
   ],
   "result": {
     "item": "assortedtools:copper_spear"
-  }
+  },
+  "show_notification": true
 }

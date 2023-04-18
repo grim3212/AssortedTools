@@ -34,5 +34,6 @@
   ],
   "result": {
     "item": "assortedtools:electrum_shears"
-  }
+  },
+  "show_notification": true
 }

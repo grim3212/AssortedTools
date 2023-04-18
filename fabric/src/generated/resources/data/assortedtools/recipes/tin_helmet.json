@@ -29,5 +29,6 @@
   ],
   "result": {
     "item": "assortedtools:tin_helmet"
-  }
+  },
+  "show_notification": true
 }

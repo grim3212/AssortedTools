@@ -29,5 +29,6 @@
   ],
   "result": {
     "item": "assortedtools:invar_helmet"
-  }
+  },
+  "show_notification": true
 }

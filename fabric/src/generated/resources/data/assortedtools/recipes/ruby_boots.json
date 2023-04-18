@@ -29,5 +29,6 @@
   ],
   "result": {
     "item": "assortedtools:ruby_boots"
-  }
+  },
+  "show_notification": true
 }

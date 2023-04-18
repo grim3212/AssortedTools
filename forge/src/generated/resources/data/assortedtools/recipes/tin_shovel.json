@@ -31,5 +31,6 @@
   ],
   "result": {
     "item": "assortedtools:tin_shovel"
-  }
+  },
+  "show_notification": true
 }

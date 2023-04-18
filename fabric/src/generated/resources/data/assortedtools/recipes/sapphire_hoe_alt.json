@@ -33,5 +33,6 @@
   ],
   "result": {
     "item": "assortedtools:sapphire_hoe"
-  }
+  },
+  "show_notification": true
 }

@@ -22,5 +22,6 @@
   ],
   "result": {
     "item": "assortedtools:reinforced_breaking_wand"
-  }
+  },
+  "show_notification": true
 }

@@ -4,7 +4,6 @@ import com.grim3212.assorted.lib.events.AnvilUpdatedEvent;
 import com.grim3212.assorted.tools.common.enchantment.ToolsEnchantments;
 import com.grim3212.assorted.tools.common.item.ChickenSuitArmor;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -23,7 +22,7 @@ public class ChickenSuitConversionHandler {
             ArmorItem convertArmor = (ArmorItem) left.getItem();
             ChickenSuitArmor chickenArmor = (ChickenSuitArmor) right.getItem();
 
-            if (chickenArmor.getSlot() == convertArmor.getSlot()) {
+            if (chickenArmor.getType() == convertArmor.getType()) {
                 if (ToolsEnchantments.CHICKEN_JUMP.get().canEnchant(left)) {
 
                     ItemStack output = left.copy();
@@ -41,13 +40,13 @@ public class ChickenSuitConversionHandler {
                     event.setOutput(output);
                     event.setMaterialCost(1);
 
-                    if (convertArmor.getSlot() == EquipmentSlot.HEAD) {
+                    if (convertArmor.getType() == ArmorItem.Type.HELMET) {
                         event.setCost(cost + 2);
-                    } else if (convertArmor.getSlot() == EquipmentSlot.CHEST) {
+                    } else if (convertArmor.getType() == ArmorItem.Type.CHESTPLATE) {
                         event.setCost(cost + 5);
-                    } else if (convertArmor.getSlot() == EquipmentSlot.LEGS) {
+                    } else if (convertArmor.getType() == ArmorItem.Type.LEGGINGS) {
                         event.setCost(cost + 4);
-                    } else if (convertArmor.getSlot() == EquipmentSlot.FEET) {
+                    } else if (convertArmor.getType() == ArmorItem.Type.BOOTS) {
                         event.setCost(cost + 2);
                     }
                 }

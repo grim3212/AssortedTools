@@ -27,5 +27,6 @@
   ],
   "result": {
     "item": "assortedtools:stone_bucket"
-  }
+  },
+  "show_notification": true
 }

@@ -22,5 +22,6 @@
   ],
   "result": {
     "item": "assortedtools:breaking_wand"
-  }
+  },
+  "show_notification": true
 }

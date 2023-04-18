@@ -35,5 +35,6 @@
   ],
   "result": {
     "item": "assortedtools:aluminum_spear"
-  }
+  },
+  "show_notification": true
 }

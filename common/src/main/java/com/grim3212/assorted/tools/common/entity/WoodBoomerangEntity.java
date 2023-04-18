@@ -1,9 +1,9 @@
 package com.grim3212.assorted.tools.common.entity;
 
 import com.grim3212.assorted.tools.ToolsCommonMod;
+import com.grim3212.assorted.tools.api.util.ToolsDamageSources;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
@@ -33,7 +33,7 @@ public class WoodBoomerangEntity extends BoomerangEntity {
 
     @Override
     public DamageSource causeNewDamage(BoomerangEntity entityboomerang, Entity entity) {
-        return (new IndirectEntityDamageSource("wood_boomerang", entityboomerang, entity)).setProjectile();
+        return this.damageSources().source(ToolsDamageSources.BOOMERANG, entityboomerang, entity);
     }
 
 }

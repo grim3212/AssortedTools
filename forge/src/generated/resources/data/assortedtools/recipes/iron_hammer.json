@@ -31,5 +31,6 @@
   ],
   "result": {
     "item": "assortedtools:iron_hammer"
-  }
+  },
+  "show_notification": true
 }

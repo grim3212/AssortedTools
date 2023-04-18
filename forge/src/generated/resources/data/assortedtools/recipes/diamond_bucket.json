@@ -27,5 +27,6 @@
   ],
   "result": {
     "item": "assortedtools:diamond_bucket"
-  }
+  },
+  "show_notification": true
 }

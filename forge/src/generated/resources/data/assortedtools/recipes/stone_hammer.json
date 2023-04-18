@@ -31,5 +31,6 @@
   ],
   "result": {
     "item": "assortedtools:stone_hammer"
-  }
+  },
+  "show_notification": true
 }

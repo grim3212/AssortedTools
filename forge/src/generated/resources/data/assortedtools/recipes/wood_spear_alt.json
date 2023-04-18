@@ -29,5 +29,6 @@
   ],
   "result": {
     "item": "assortedtools:wood_spear"
-  }
+  },
+  "show_notification": true
 }

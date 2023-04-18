@@ -32,5 +32,6 @@
   ],
   "result": {
     "item": "assortedtools:netherite_shears"
-  }
+  },
+  "show_notification": true
 }

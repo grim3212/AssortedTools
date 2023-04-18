@@ -33,5 +33,6 @@
   ],
   "result": {
     "item": "assortedtools:topaz_hoe"
-  }
+  },
+  "show_notification": true
 }

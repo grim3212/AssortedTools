@@ -28,5 +28,6 @@
   ],
   "result": {
     "item": "assortedtools:silver_leggings"
-  }
+  },
+  "show_notification": true
 }

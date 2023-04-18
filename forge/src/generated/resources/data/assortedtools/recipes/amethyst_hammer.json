@@ -35,5 +35,6 @@
   ],
   "result": {
     "item": "assortedtools:amethyst_hammer"
-  }
+  },
+  "show_notification": true
 }

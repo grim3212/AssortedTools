@@ -33,5 +33,6 @@
   ],
   "result": {
     "item": "assortedtools:electrum_sword"
-  }
+  },
+  "show_notification": true
 }

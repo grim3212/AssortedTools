@@ -31,5 +31,6 @@
   ],
   "result": {
     "item": "assortedtools:platinum_hoe"
-  }
+  },
+  "show_notification": true
 }

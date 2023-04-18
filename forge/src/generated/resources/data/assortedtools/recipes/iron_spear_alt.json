@@ -29,5 +29,6 @@
   ],
   "result": {
     "item": "assortedtools:iron_spear"
-  }
+  },
+  "show_notification": true
 }

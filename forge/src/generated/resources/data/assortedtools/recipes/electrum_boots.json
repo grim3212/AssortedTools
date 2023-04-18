@@ -27,5 +27,6 @@
   ],
   "result": {
     "item": "assortedtools:electrum_boots"
-  }
+  },
+  "show_notification": true
 }

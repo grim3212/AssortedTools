@@ -31,5 +31,6 @@
   ],
   "result": {
     "item": "assortedtools:ruby_shovel"
-  }
+  },
+  "show_notification": true
 }

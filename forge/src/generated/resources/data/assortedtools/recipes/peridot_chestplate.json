@@ -28,5 +28,6 @@
   ],
   "result": {
     "item": "assortedtools:peridot_chestplate"
-  }
+  },
+  "show_notification": true
 }

@@ -31,5 +31,6 @@
   ],
   "result": {
     "item": "assortedtools:ruby_hoe"
-  }
+  },
+  "show_notification": true
 }

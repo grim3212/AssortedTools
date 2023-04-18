@@ -27,5 +27,6 @@
   ],
   "result": {
     "item": "assortedtools:tin_boots"
-  }
+  },
+  "show_notification": true
 }

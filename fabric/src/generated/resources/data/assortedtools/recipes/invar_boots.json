@@ -29,5 +29,6 @@
   ],
   "result": {
     "item": "assortedtools:invar_boots"
-  }
+  },
+  "show_notification": true
 }

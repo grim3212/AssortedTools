@@ -30,5 +30,6 @@
   ],
   "result": {
     "item": "assortedtools:steel_chestplate"
-  }
+  },
+  "show_notification": true
 }

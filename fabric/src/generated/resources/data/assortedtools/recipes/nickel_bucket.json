@@ -33,5 +33,6 @@
   ],
   "result": {
     "item": "assortedtools:nickel_bucket"
-  }
+  },
+  "show_notification": true
 }

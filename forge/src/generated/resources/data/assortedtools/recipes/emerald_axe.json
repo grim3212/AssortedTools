@@ -31,5 +31,6 @@
   ],
   "result": {
     "item": "assortedtools:emerald_axe"
-  }
+  },
+  "show_notification": true
 }

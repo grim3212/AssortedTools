@@ -17,7 +17,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
@@ -174,10 +173,9 @@ public class BetterSpearEntity extends AbstractArrow {
         }
 
         Entity owner = this.getOwner();
-        DamageSource damagesource = ToolsDamageSources.spear(this, (Entity) (owner == null ? this : owner));
         this.dealtDamage = true;
         SoundEvent soundevent = SoundEvents.TRIDENT_HIT;
-        if (hitEntity.hurt(damagesource, f)) {
+        if (hitEntity.hurt(this.damageSources().source(ToolsDamageSources.SPEAR, this, owner == null ? this : owner), f)) {
             if (hitEntity.getType() == EntityType.ENDERMAN) {
                 return;
             }

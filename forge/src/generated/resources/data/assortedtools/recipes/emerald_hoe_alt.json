@@ -31,5 +31,6 @@
   ],
   "result": {
     "item": "assortedtools:emerald_hoe"
-  }
+  },
+  "show_notification": true
 }

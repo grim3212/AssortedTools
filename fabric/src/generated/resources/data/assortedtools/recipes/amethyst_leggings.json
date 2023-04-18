@@ -30,5 +30,6 @@
   ],
   "result": {
     "item": "assortedtools:amethyst_leggings"
-  }
+  },
+  "show_notification": true
 }

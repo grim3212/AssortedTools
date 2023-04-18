@@ -3,10 +3,10 @@ package com.grim3212.assorted.tools.client.data;
 import com.grim3212.assorted.lib.LibConstants;
 import com.grim3212.assorted.tools.Constants;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
-import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
@@ -171,7 +171,7 @@ public class ToolsItemModelProvider extends ItemModelProvider {
         withExistingParent(name, "item/trident_in_hand")
                 .texture("particle", prefix("item/tools/" + name))
                 // Add head transformation
-                .transforms().transform(TransformType.HEAD).rotation(0, 180, 120).translation(8, 10, -11).scale(1.5F).end().end()
+                .transforms().transform(ItemDisplayContext.HEAD).rotation(0, 180, 120).translation(8, 10, -11).scale(1.5F).end().end()
                 .override().predicate(prefix("throwing"), 1).model(throwingModel).end();
     }
 }

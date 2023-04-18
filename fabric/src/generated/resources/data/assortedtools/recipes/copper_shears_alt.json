@@ -36,5 +36,6 @@
   ],
   "result": {
     "item": "assortedtools:copper_shears"
-  }
+  },
+  "show_notification": true
 }

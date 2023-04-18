@@ -31,5 +31,6 @@
   ],
   "result": {
     "item": "assortedtools:tin_hoe"
-  }
+  },
+  "show_notification": true
 }

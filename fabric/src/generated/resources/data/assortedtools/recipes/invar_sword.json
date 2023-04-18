@@ -33,5 +33,6 @@
   ],
   "result": {
     "item": "assortedtools:invar_sword"
-  }
+  },
+  "show_notification": true
 }

@@ -28,5 +28,6 @@
   ],
   "result": {
     "item": "assortedtools:silver_chestplate"
-  }
+  },
+  "show_notification": true
 }

@@ -27,5 +27,6 @@
   ],
   "result": {
     "item": "assortedtools:emerald_boots"
-  }
+  },
+  "show_notification": true
 }

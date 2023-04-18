@@ -36,5 +36,6 @@
   ],
   "result": {
     "item": "assortedtools:steel_shears"
-  }
+  },
+  "show_notification": true
 }

@@ -31,5 +31,6 @@
   ],
   "result": {
     "item": "assortedtools:amethyst_bucket"
-  }
+  },
+  "show_notification": true
 }

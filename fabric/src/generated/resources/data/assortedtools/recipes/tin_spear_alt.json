@@ -35,5 +35,6 @@
   ],
   "result": {
     "item": "assortedtools:tin_spear"
-  }
+  },
+  "show_notification": true
 }

@@ -30,5 +30,6 @@
   ],
   "result": {
     "item": "assortedtools:sapphire_leggings"
-  }
+  },
+  "show_notification": true
 }

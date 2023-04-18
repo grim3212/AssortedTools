@@ -30,5 +30,6 @@
   ],
   "result": {
     "item": "assortedtools:lead_leggings"
-  }
+  },
+  "show_notification": true
 }

@@ -31,5 +31,6 @@
   ],
   "result": {
     "item": "assortedtools:emerald_pickaxe"
-  }
+  },
+  "show_notification": true
 }

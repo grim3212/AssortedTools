@@ -30,5 +30,6 @@
   ],
   "result": {
     "item": "assortedtools:electrum_chestplate"
-  }
+  },
+  "show_notification": true
 }

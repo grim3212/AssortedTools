@@ -28,5 +28,6 @@
   ],
   "result": {
     "item": "assortedtools:pokeball"
-  }
+  },
+  "show_notification": true
 }

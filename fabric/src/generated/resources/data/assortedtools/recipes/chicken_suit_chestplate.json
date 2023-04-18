@@ -30,5 +30,6 @@
   ],
   "result": {
     "item": "assortedtools:chicken_suit_chestplate"
-  }
+  },
+  "show_notification": true
 }

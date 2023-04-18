@@ -28,5 +28,6 @@
   ],
   "result": {
     "item": "assortedtools:platinum_leggings"
-  }
+  },
+  "show_notification": true
 }

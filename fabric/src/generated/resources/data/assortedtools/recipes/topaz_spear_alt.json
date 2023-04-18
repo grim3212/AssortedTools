@@ -35,5 +35,6 @@
   ],
   "result": {
     "item": "assortedtools:topaz_spear"
-  }
+  },
+  "show_notification": true
 }

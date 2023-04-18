@@ -1,14 +1,13 @@
 package com.grim3212.assorted.tools.api.util;
 
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.IndirectEntityDamageSource;
-import net.minecraft.world.entity.Entity;
-
-import javax.annotation.Nullable;
+import com.grim3212.assorted.tools.Constants;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.damagesource.DamageType;
 
 public class ToolsDamageSources {
 
-    public static DamageSource spear(Entity hitEntity, @Nullable Entity owner) {
-        return (new IndirectEntityDamageSource("spear", hitEntity, owner)).setProjectile();
-    }
+    public static final ResourceKey<DamageType> SPEAR = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(Constants.MOD_ID, "spear"));
+    public static final ResourceKey<DamageType> BOOMERANG = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(Constants.MOD_ID, "boomerang"));
 }

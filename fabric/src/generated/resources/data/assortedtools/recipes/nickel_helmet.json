@@ -29,5 +29,6 @@
   ],
   "result": {
     "item": "assortedtools:nickel_helmet"
-  }
+  },
+  "show_notification": true
 }

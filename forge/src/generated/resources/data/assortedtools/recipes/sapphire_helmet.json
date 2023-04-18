@@ -27,5 +27,6 @@
   ],
   "result": {
     "item": "assortedtools:sapphire_helmet"
-  }
+  },
+  "show_notification": true
 }

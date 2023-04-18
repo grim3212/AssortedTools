@@ -35,5 +35,6 @@
   ],
   "result": {
     "item": "assortedtools:aluminum_hammer"
-  }
+  },
+  "show_notification": true
 }

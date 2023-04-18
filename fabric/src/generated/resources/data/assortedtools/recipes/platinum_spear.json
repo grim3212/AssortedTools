@@ -37,5 +37,6 @@
   ],
   "result": {
     "item": "assortedtools:platinum_spear"
-  }
+  },
+  "show_notification": true
 }

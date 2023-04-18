@@ -31,5 +31,6 @@
   ],
   "result": {
     "item": "assortedtools:gold_hammer"
-  }
+  },
+  "show_notification": true
 }

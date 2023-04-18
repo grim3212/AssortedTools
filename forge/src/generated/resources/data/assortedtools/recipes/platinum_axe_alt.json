@@ -31,5 +31,6 @@
   ],
   "result": {
     "item": "assortedtools:platinum_axe"
-  }
+  },
+  "show_notification": true
 }

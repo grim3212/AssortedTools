@@ -34,5 +34,6 @@
   ],
   "result": {
     "item": "assortedtools:lead_shears"
-  }
+  },
+  "show_notification": true
 }

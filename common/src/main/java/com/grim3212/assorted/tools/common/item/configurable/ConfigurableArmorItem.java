@@ -21,8 +21,8 @@ public class ConfigurableArmorItem extends ArmorItem implements IItemExtraProper
     private Multimap<Attribute, AttributeModifier> modifiers;
     private final ToolsArmorMaterials material;
 
-    public ConfigurableArmorItem(ToolsArmorMaterials material, EquipmentSlot slot, Properties builderIn) {
-        super(material.defaultMaterial(), slot, builderIn);
+    public ConfigurableArmorItem(ToolsArmorMaterials material, ArmorItem.Type type, Properties builderIn) {
+        super(material.defaultMaterial(), type, builderIn);
         this.material = material;
     }
 
@@ -33,7 +33,7 @@ public class ConfigurableArmorItem extends ArmorItem implements IItemExtraProper
 
     @Override
     public int getDefense() {
-        return this.material.getDefenseForSlot(this.getSlot());
+        return this.material.getDefenseForType(this.type);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class ConfigurableArmorItem extends ArmorItem implements IItemExtraProper
 
     @Override
     public int getMaxDamage(ItemStack stack) {
-        return this.material.getDurabilityForSlot(this.getSlot());
+        return this.material.getDurabilityForType(this.type);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class ConfigurableArmorItem extends ArmorItem implements IItemExtraProper
 
     @Override
     public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
-        if (equipmentSlot == this.slot) {
+        if (equipmentSlot == this.type.getSlot()) {
             return getModifiers(equipmentSlot);
         }
         return super.getDefaultAttributeModifiers(equipmentSlot);
@@ -72,9 +72,9 @@ public class ConfigurableArmorItem extends ArmorItem implements IItemExtraProper
     public Multimap<Attribute, AttributeModifier> getModifiers(EquipmentSlot equipmentSlot) {
         if (this.modifiers == null || this.modifiers.isEmpty()) {
             Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-            UUID uuid = ArmorItemAccessor.assortedlib_getArmorModPerSlot()[slot.getIndex()];
-            builder.put(Attributes.ARMOR, new AttributeModifier(uuid, "Armor modifier", (double) getDefense(), AttributeModifier.Operation.ADDITION));
-            builder.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(uuid, "Armor toughness", (double) getToughness(), AttributeModifier.Operation.ADDITION));
+            UUID uuid = ArmorItemAccessor.assortedlib_getArmorModPerSlot().get(this.type);
+            builder.put(Attributes.ARMOR, new AttributeModifier(uuid, "Armor modifier", getDefense(), AttributeModifier.Operation.ADDITION));
+            builder.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(uuid, "Armor toughness", getToughness(), AttributeModifier.Operation.ADDITION));
             if (this.knockbackResistance > 0) {
                 builder.put(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(uuid, "Armor knockback resistance", (double) this.material.getKnockbackResistance(), AttributeModifier.Operation.ADDITION));
             }

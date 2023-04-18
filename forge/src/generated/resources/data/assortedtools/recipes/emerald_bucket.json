@@ -31,5 +31,6 @@
   ],
   "result": {
     "item": "assortedtools:emerald_bucket"
-  }
+  },
+  "show_notification": true
 }

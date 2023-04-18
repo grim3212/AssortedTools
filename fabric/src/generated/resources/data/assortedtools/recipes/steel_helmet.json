@@ -29,5 +29,6 @@
   ],
   "result": {
     "item": "assortedtools:steel_helmet"
-  }
+  },
+  "show_notification": true
 }

@@ -22,5 +22,6 @@
   ],
   "result": {
     "item": "assortedtools:building_wand"
-  }
+  },
+  "show_notification": true
 }

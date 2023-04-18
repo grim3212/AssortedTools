@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "assortedtools:wood_boomerang"
-  }
+  },
+  "show_notification": true
 }

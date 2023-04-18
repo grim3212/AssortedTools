@@ -29,5 +29,6 @@
   ],
   "result": {
     "item": "assortedtools:nickel_boots"
-  }
+  },
+  "show_notification": true
 }

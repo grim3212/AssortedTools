@@ -6,7 +6,6 @@ import com.grim3212.assorted.tools.common.item.ToolsItems;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -14,6 +13,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 public class BoomerangRenderer extends EntityRenderer<BoomerangEntity> {
@@ -34,7 +34,7 @@ public class BoomerangRenderer extends EntityRenderer<BoomerangEntity> {
         matrixStackIn.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot()) + 90.0F));
         matrixStackIn.mulPose(Axis.YN.rotationDegrees(90.0f));
         matrixStackIn.mulPose(Axis.ZN.rotationDegrees(entityIn.getBoomerangRotation()));
-        this.itemRenderer.renderStatic(getItemStackForRender(entityIn), ItemTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, 0);
+        this.itemRenderer.renderStatic(getItemStackForRender(entityIn), ItemDisplayContext.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, entityIn.level, 0);
         matrixStackIn.popPose();
 
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);

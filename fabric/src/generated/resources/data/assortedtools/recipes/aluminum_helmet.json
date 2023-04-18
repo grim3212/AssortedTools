@@ -29,5 +29,6 @@
   ],
   "result": {
     "item": "assortedtools:aluminum_helmet"
-  }
+  },
+  "show_notification": true
 }

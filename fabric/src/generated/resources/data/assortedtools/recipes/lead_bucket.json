@@ -33,5 +33,6 @@
   ],
   "result": {
     "item": "assortedtools:lead_bucket"
-  }
+  },
+  "show_notification": true
 }

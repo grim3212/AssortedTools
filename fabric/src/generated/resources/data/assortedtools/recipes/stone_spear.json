@@ -33,5 +33,6 @@
   ],
   "result": {
     "item": "assortedtools:stone_spear"
-  }
+  },
+  "show_notification": true
 }

@@ -31,5 +31,6 @@
   ],
   "result": {
     "item": "assortedtools:topaz_bucket"
-  }
+  },
+  "show_notification": true
 }

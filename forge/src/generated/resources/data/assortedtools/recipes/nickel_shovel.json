@@ -31,5 +31,6 @@
   ],
   "result": {
     "item": "assortedtools:nickel_shovel"
-  }
+  },
+  "show_notification": true
 }

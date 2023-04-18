@@ -31,5 +31,6 @@
   ],
   "result": {
     "item": "assortedtools:steel_pickaxe"
-  }
+  },
+  "show_notification": true
 }

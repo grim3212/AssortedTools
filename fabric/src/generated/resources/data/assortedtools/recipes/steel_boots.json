@@ -29,5 +29,6 @@
   ],
   "result": {
     "item": "assortedtools:steel_boots"
-  }
+  },
+  "show_notification": true
 }

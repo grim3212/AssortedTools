@@ -35,5 +35,6 @@
   ],
   "result": {
     "item": "assortedtools:bronze_spear"
-  }
+  },
+  "show_notification": true
 }

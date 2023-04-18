@@ -35,5 +35,6 @@
   ],
   "result": {
     "item": "assortedtools:nickel_hammer"
-  }
+  },
+  "show_notification": true
 }

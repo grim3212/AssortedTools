@@ -37,5 +37,6 @@
   ],
   "result": {
     "item": "assortedtools:platinum_hammer"
-  }
+  },
+  "show_notification": true
 }

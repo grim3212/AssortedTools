@@ -30,5 +30,6 @@
   ],
   "result": {
     "item": "assortedtools:invar_chestplate"
-  }
+  },
+  "show_notification": true
 }

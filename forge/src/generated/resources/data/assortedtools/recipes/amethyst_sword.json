@@ -31,5 +31,6 @@
   ],
   "result": {
     "item": "assortedtools:amethyst_sword"
-  }
+  },
+  "show_notification": true
 }

@@ -8,7 +8,7 @@ import com.grim3212.assorted.tools.config.ArmorMaterialConfig;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -50,13 +50,13 @@ public enum ToolsArmorMaterials implements ArmorMaterial {
     }
 
     @Override
-    public int getDurabilityForSlot(EquipmentSlot slot) {
-        return this.getMaterial().getDurability() * ArmorMaterialsMixin.assortedlib_getHealthperSlot()[slot.getIndex()];
+    public int getDurabilityForType(ArmorItem.Type type) {
+        return this.getMaterial().getDurability() * ArmorMaterialsMixin.assortedlib_getHealthperSlot().get(type);
     }
 
     @Override
-    public int getDefenseForSlot(EquipmentSlot slot) {
-        return this.getMaterial().getReductionAmounts()[slot.getIndex()];
+    public int getDefenseForType(ArmorItem.Type type) {
+        return this.getMaterial().getReductionAmounts().get(type);
     }
 
     @Override
@@ -111,12 +111,12 @@ public enum ToolsArmorMaterials implements ArmorMaterial {
             }
 
             @Override
-            public int getDurabilityForSlot(EquipmentSlot p_40410_) {
+            public int getDurabilityForType(ArmorItem.Type type) {
                 return 0;
             }
 
             @Override
-            public int getDefenseForSlot(EquipmentSlot p_40411_) {
+            public int getDefenseForType(ArmorItem.Type type) {
                 return 0;
             }
 

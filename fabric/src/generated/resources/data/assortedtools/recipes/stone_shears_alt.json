@@ -32,5 +32,6 @@
   ],
   "result": {
     "item": "assortedtools:stone_shears"
-  }
+  },
+  "show_notification": true
 }

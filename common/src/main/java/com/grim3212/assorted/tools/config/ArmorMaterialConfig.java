@@ -2,8 +2,11 @@ package com.grim3212.assorted.tools.config;
 
 import com.grim3212.assorted.lib.config.IConfigurationBuilder;
 import com.grim3212.assorted.tools.api.item.ToolsArmorMaterials;
+import net.minecraft.Util;
+import net.minecraft.world.item.ArmorItem;
 
 import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.function.Supplier;
 
 public class ArmorMaterialConfig {
@@ -58,8 +61,19 @@ public class ArmorMaterialConfig {
         return helmetReductionAmount.get();
     }
 
-    public int[] getReductionAmounts() {
-        return new int[]{getBootsReductionAmount(), getLeggingsReductionAmount(), getChestPlateReductionAmount(), getHelmetReductionAmount()};
+    private EnumMap<ArmorItem.Type, Integer> cachedReductionAmounts;
+
+    public EnumMap<ArmorItem.Type, Integer> getReductionAmounts() {
+        if (cachedReductionAmounts == null) {
+            this.cachedReductionAmounts = Util.make(new EnumMap(ArmorItem.Type.class), (map) -> {
+                map.put(ArmorItem.Type.BOOTS, getBootsReductionAmount());
+                map.put(ArmorItem.Type.LEGGINGS, getLeggingsReductionAmount());
+                map.put(ArmorItem.Type.CHESTPLATE, getChestPlateReductionAmount());
+                map.put(ArmorItem.Type.HELMET, getHelmetReductionAmount());
+            });
+        }
+
+        return this.cachedReductionAmounts;
     }
 
     public int getEnchantability() {
@@ -80,6 +94,6 @@ public class ArmorMaterialConfig {
 
     @Override
     public String toString() {
-        return "[Name:" + getName() + ", Durability:" + getDurability() + ", ReductionAmounts:" + Arrays.toString(getReductionAmounts()) + ", Enchantability:" + getEnchantability() + ", Toughness:" + getToughness() + ", KnockbackResistance:" + getKnockbackResistance() + "]";
+        return "[Name:" + getName() + ", Durability:" + getDurability() + ", ReductionAmounts:" + Arrays.toString(getReductionAmounts().values().toArray(new Integer[0])) + ", Enchantability:" + getEnchantability() + ", Toughness:" + getToughness() + ", KnockbackResistance:" + getKnockbackResistance() + "]";
     }
 }

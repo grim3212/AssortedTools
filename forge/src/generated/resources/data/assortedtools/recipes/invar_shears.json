@@ -34,5 +34,6 @@
   ],
   "result": {
     "item": "assortedtools:invar_shears"
-  }
+  },
+  "show_notification": true
 }

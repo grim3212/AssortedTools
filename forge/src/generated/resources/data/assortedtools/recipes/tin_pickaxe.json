@@ -31,5 +31,6 @@
   ],
   "result": {
     "item": "assortedtools:tin_pickaxe"
-  }
+  },
+  "show_notification": true
 }

@@ -36,5 +36,6 @@
   ],
   "result": {
     "item": "assortedtools:platinum_shears"
-  }
+  },
+  "show_notification": true
 }

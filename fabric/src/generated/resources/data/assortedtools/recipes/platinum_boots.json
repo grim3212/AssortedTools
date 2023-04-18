@@ -29,5 +29,6 @@
   ],
   "result": {
     "item": "assortedtools:platinum_boots"
-  }
+  },
+  "show_notification": true
 }

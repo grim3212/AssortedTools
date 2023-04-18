@@ -33,5 +33,6 @@
   ],
   "result": {
     "item": "assortedtools:tin_sword"
-  }
+  },
+  "show_notification": true
 }

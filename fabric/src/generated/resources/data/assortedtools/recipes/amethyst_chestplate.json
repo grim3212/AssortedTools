@@ -30,5 +30,6 @@
   ],
   "result": {
     "item": "assortedtools:amethyst_chestplate"
-  }
+  },
+  "show_notification": true
 }

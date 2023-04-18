@@ -29,5 +29,6 @@
   ],
   "result": {
     "item": "assortedtools:lead_boots"
-  }
+  },
+  "show_notification": true
 }

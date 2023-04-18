@@ -30,5 +30,6 @@
   ],
   "result": {
     "item": "assortedtools:gold_shears"
-  }
+  },
+  "show_notification": true
 }

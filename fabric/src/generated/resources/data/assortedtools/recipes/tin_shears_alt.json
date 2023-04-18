@@ -36,5 +36,6 @@
   ],
   "result": {
     "item": "assortedtools:tin_shears"
-  }
+  },
+  "show_notification": true
 }

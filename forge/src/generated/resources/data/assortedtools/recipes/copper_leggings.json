@@ -28,5 +28,6 @@
   ],
   "result": {
     "item": "assortedtools:copper_leggings"
-  }
+  },
+  "show_notification": true
 }

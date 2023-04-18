@@ -35,5 +35,6 @@
   ],
   "result": {
     "item": "assortedtools:amethyst_spear"
-  }
+  },
+  "show_notification": true
 }

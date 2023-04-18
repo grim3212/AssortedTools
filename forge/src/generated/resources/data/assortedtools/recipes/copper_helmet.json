@@ -27,5 +27,6 @@
   ],
   "result": {
     "item": "assortedtools:copper_helmet"
-  }
+  },
+  "show_notification": true
 }

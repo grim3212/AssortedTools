@@ -27,5 +27,6 @@
   ],
   "result": {
     "item": "assortedtools:electrum_helmet"
-  }
+  },
+  "show_notification": true
 }

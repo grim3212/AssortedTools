@@ -28,5 +28,6 @@
   ],
   "result": {
     "item": "assortedtools:bronze_leggings"
-  }
+  },
+  "show_notification": true
 }

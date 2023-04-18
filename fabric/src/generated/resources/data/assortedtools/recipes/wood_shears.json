@@ -32,5 +32,6 @@
   ],
   "result": {
     "item": "assortedtools:wood_shears"
-  }
+  },
+  "show_notification": true
 }

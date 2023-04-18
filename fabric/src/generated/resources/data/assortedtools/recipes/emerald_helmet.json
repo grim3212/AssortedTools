@@ -29,5 +29,6 @@
   ],
   "result": {
     "item": "assortedtools:emerald_helmet"
-  }
+  },
+  "show_notification": true
 }

@@ -30,5 +30,6 @@
   ],
   "result": {
     "item": "assortedtools:peridot_leggings"
-  }
+  },
+  "show_notification": true
 }

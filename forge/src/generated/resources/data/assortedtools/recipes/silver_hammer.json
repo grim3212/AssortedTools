@@ -35,5 +35,6 @@
   ],
   "result": {
     "item": "assortedtools:silver_hammer"
-  }
+  },
+  "show_notification": true
 }

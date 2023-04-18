@@ -27,5 +27,6 @@
   ],
   "result": {
     "item": "assortedtools:topaz_helmet"
-  }
+  },
+  "show_notification": true
 }

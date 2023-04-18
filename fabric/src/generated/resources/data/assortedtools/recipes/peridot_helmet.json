@@ -29,5 +29,6 @@
   ],
   "result": {
     "item": "assortedtools:peridot_helmet"
-  }
+  },
+  "show_notification": true
 }

@@ -22,5 +22,6 @@
   ],
   "result": {
     "item": "assortedtools:mining_wand"
-  }
+  },
+  "show_notification": true
 }

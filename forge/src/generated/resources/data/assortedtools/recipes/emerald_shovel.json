@@ -31,5 +31,6 @@
   ],
   "result": {
     "item": "assortedtools:emerald_shovel"
-  }
+  },
+  "show_notification": true
 }

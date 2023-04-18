@@ -35,5 +35,6 @@
   ],
   "result": {
     "item": "assortedtools:ruby_hammer"
-  }
+  },
+  "show_notification": true
 }

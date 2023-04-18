@@ -33,5 +33,6 @@
   ],
   "result": {
     "item": "assortedtools:silver_bucket"
-  }
+  },
+  "show_notification": true
 }

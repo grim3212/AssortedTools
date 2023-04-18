@@ -33,5 +33,6 @@
   ],
   "result": {
     "item": "assortedtools:bronze_bucket"
-  }
+  },
+  "show_notification": true
 }

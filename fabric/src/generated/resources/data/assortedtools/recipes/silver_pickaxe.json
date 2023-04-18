@@ -33,5 +33,6 @@
   ],
   "result": {
     "item": "assortedtools:silver_pickaxe"
-  }
+  },
+  "show_notification": true
 }

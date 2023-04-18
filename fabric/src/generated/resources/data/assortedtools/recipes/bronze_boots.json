@@ -29,5 +29,6 @@
   ],
   "result": {
     "item": "assortedtools:bronze_boots"
-  }
+  },
+  "show_notification": true
 }

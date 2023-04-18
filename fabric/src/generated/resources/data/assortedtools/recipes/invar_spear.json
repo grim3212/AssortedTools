@@ -37,5 +37,6 @@
   ],
   "result": {
     "item": "assortedtools:invar_spear"
-  }
+  },
+  "show_notification": true
 }

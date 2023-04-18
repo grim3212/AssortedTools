@@ -6,7 +6,6 @@ import com.grim3212.assorted.tools.api.ToolsTags;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -18,7 +17,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 public class ToolsItemTagProvider extends LibItemTagProvider {
-    public ToolsItemTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup, TagsProvider<Block> blockTags) {
+    public ToolsItemTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup, CompletableFuture<TagLookup<Block>> blockTags) {
         super(output, lookup, blockTags);
     }
 

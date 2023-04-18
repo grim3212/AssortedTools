@@ -27,5 +27,6 @@
   ],
   "result": {
     "item": "assortedtools:bronze_helmet"
-  }
+  },
+  "show_notification": true
 }

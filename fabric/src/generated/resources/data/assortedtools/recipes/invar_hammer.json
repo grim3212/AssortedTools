@@ -37,5 +37,6 @@
   ],
   "result": {
     "item": "assortedtools:invar_hammer"
-  }
+  },
+  "show_notification": true
 }

@@ -28,5 +28,6 @@
   ],
   "result": {
     "item": "minecraft:cake"
-  }
+  },
+  "show_notification": true
 }

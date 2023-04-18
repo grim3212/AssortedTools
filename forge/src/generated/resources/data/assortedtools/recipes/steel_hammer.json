@@ -35,5 +35,6 @@
   ],
   "result": {
     "item": "assortedtools:steel_hammer"
-  }
+  },
+  "show_notification": true
 }

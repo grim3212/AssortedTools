@@ -30,5 +30,6 @@
   ],
   "result": {
     "item": "assortedtools:platinum_chestplate"
-  }
+  },
+  "show_notification": true
 }

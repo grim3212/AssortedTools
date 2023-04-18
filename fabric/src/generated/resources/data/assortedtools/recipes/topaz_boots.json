@@ -29,5 +29,6 @@
   ],
   "result": {
     "item": "assortedtools:topaz_boots"
-  }
+  },
+  "show_notification": true
 }

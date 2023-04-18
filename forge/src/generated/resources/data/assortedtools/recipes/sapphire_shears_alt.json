@@ -34,5 +34,6 @@
   ],
   "result": {
     "item": "assortedtools:sapphire_shears"
-  }
+  },
+  "show_notification": true
 }

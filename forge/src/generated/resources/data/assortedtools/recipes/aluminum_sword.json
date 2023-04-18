@@ -31,5 +31,6 @@
   ],
   "result": {
     "item": "assortedtools:aluminum_sword"
-  }
+  },
+  "show_notification": true
 }

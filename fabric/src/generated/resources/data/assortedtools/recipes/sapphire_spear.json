@@ -37,5 +37,6 @@
   ],
   "result": {
     "item": "assortedtools:sapphire_spear"
-  }
+  },
+  "show_notification": true
 }

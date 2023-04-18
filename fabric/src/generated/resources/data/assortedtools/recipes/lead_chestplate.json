@@ -30,5 +30,6 @@
   ],
   "result": {
     "item": "assortedtools:lead_chestplate"
-  }
+  },
+  "show_notification": true
 }

@@ -28,5 +28,6 @@
   ],
   "result": {
     "item": "assortedtools:copper_chestplate"
-  }
+  },
+  "show_notification": true
 }

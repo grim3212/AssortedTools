@@ -35,5 +35,6 @@
   ],
   "result": {
     "item": "assortedtools:sapphire_hammer"
-  }
+  },
+  "show_notification": true
 }

@@ -27,5 +27,6 @@
   ],
   "result": {
     "item": "assortedtools:silver_helmet"
-  }
+  },
+  "show_notification": true
 }

@@ -31,5 +31,6 @@
   ],
   "result": {
     "item": "assortedtools:peridot_sword"
-  }
+  },
+  "show_notification": true
 }

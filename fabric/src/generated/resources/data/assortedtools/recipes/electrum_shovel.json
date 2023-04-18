@@ -33,5 +33,6 @@
   ],
   "result": {
     "item": "assortedtools:electrum_shovel"
-  }
+  },
+  "show_notification": true
 }

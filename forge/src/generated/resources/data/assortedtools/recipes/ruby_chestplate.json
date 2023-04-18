@@ -28,5 +28,6 @@
   ],
   "result": {
     "item": "assortedtools:ruby_chestplate"
-  }
+  },
+  "show_notification": true
 }

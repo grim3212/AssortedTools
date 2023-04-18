@@ -28,5 +28,6 @@
   ],
   "result": {
     "item": "assortedtools:aluminum_chestplate"
-  }
+  },
+  "show_notification": true
 }

@@ -27,5 +27,6 @@
   ],
   "result": {
     "item": "assortedtools:aluminum_boots"
-  }
+  },
+  "show_notification": true
 }

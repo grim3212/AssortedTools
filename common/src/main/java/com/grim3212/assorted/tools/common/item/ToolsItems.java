@@ -12,7 +12,7 @@ import com.grim3212.assorted.tools.config.ItemTierConfig;
 import com.grim3212.assorted.tools.config.ModdedItemTierConfig;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 
@@ -41,10 +41,10 @@ public class ToolsItems {
     public static final IRegistryObject<WandMiningItem> MINING_WAND = register("mining_wand", () -> new WandMiningItem(false, new Item.Properties().durability(15)));
     public static final IRegistryObject<WandMiningItem> REINFORCED_MINING_WAND = register("reinforced_mining_wand", () -> new WandMiningItem(true, new Item.Properties().durability(120)));
 
-    public static final IRegistryObject<ChickenSuitArmor> CHICKEN_SUIT_HELMET = register("chicken_suit_helmet", () -> new ChickenSuitArmor(EquipmentSlot.HEAD, new Item.Properties()));
-    public static final IRegistryObject<ChickenSuitArmor> CHICKEN_SUIT_CHESTPLATE = register("chicken_suit_chestplate", () -> new ChickenSuitArmor(EquipmentSlot.CHEST, new Item.Properties()));
-    public static final IRegistryObject<ChickenSuitArmor> CHICKEN_SUIT_LEGGINGS = register("chicken_suit_leggings", () -> new ChickenSuitArmor(EquipmentSlot.LEGS, new Item.Properties()));
-    public static final IRegistryObject<ChickenSuitArmor> CHICKEN_SUIT_BOOTS = register("chicken_suit_boots", () -> new ChickenSuitArmor(EquipmentSlot.FEET, new Item.Properties()));
+    public static final IRegistryObject<ChickenSuitArmor> CHICKEN_SUIT_HELMET = register("chicken_suit_helmet", () -> new ChickenSuitArmor(ArmorItem.Type.HELMET, new Item.Properties()));
+    public static final IRegistryObject<ChickenSuitArmor> CHICKEN_SUIT_CHESTPLATE = register("chicken_suit_chestplate", () -> new ChickenSuitArmor(ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+    public static final IRegistryObject<ChickenSuitArmor> CHICKEN_SUIT_LEGGINGS = register("chicken_suit_leggings", () -> new ChickenSuitArmor(ArmorItem.Type.LEGGINGS, new Item.Properties()));
+    public static final IRegistryObject<ChickenSuitArmor> CHICKEN_SUIT_BOOTS = register("chicken_suit_boots", () -> new ChickenSuitArmor(ArmorItem.Type.BOOTS, new Item.Properties()));
 
     public static final IRegistryObject<PokeballItem> POKEBALL = register("pokeball", () -> new PokeballItem(new Item.Properties()));
 
@@ -143,10 +143,10 @@ public class ToolsItems {
             this.SHEARS = register(tier.getName() + "_shears", () -> new MaterialShears(new Item.Properties(), tier));
 
             if (armor != null) {
-                this.HELMET = register(tier.getName() + "_helmet", () -> new MaterialArmorItem(armor.getMaterial(), EquipmentSlot.HEAD, new Item.Properties()));
-                this.CHESTPLATE = register(tier.getName() + "_chestplate", () -> new MaterialArmorItem(armor.getMaterial(), EquipmentSlot.CHEST, new Item.Properties()));
-                this.LEGGINGS = register(tier.getName() + "_leggings", () -> new MaterialArmorItem(armor.getMaterial(), EquipmentSlot.LEGS, new Item.Properties()));
-                this.BOOTS = register(tier.getName() + "_boots", () -> new MaterialArmorItem(armor.getMaterial(), EquipmentSlot.FEET, new Item.Properties()));
+                this.HELMET = register(tier.getName() + "_helmet", () -> new MaterialArmorItem(armor.getMaterial(), ArmorItem.Type.HELMET, new Item.Properties()));
+                this.CHESTPLATE = register(tier.getName() + "_chestplate", () -> new MaterialArmorItem(armor.getMaterial(), ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+                this.LEGGINGS = register(tier.getName() + "_leggings", () -> new MaterialArmorItem(armor.getMaterial(), ArmorItem.Type.LEGGINGS, new Item.Properties()));
+                this.BOOTS = register(tier.getName() + "_boots", () -> new MaterialArmorItem(armor.getMaterial(), ArmorItem.Type.BOOTS, new Item.Properties()));
             } else {
                 throw new NullPointerException("Got null ArmorMaterialHolder when registering Extra Materials");
             }

@@ -95,7 +95,7 @@ public abstract class BoomerangEntity extends Entity {
 
         if (raytraceresult != null) {
             if (raytraceresult.getType() == HitResult.Type.BLOCK) {
-                BlockPos pos = new BlockPos(raytraceresult.getLocation());
+                BlockPos pos = BlockPos.containing(raytraceresult.getLocation());
                 BlockState state = level.getBlockState(pos);
 
                 if (state.getMaterial() == Material.PLANT && ToolsCommonMod.COMMON_CONFIG.breaksPlants.get() || state.getBlock() == Blocks.TORCH && ToolsCommonMod.COMMON_CONFIG.breaksTorches.get()) {

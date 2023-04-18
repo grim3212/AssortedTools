@@ -31,5 +31,6 @@
   ],
   "result": {
     "item": "assortedtools:diamond_hammer"
-  }
+  },
+  "show_notification": true
 }
