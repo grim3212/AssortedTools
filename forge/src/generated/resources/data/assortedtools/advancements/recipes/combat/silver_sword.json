@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:silver_sword"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

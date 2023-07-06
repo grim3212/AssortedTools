@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:iron_hammer"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

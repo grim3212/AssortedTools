@@ -45,5 +45,6 @@
     "recipes": [
       "assortedtools:copper_shovel"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

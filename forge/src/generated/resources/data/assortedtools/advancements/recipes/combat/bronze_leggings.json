@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:bronze_leggings"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

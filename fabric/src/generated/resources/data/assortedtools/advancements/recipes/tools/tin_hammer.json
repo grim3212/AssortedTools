@@ -49,5 +49,6 @@
     "recipes": [
       "assortedtools:tin_hammer"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

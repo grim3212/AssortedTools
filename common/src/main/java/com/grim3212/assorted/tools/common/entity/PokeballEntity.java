@@ -44,14 +44,14 @@ public class PokeballEntity extends ThrowableItemProjectile {
 
     @Override
     protected void onHit(HitResult result) {
-        if (!level.isClientSide) {
+        if (!level().isClientSide) {
             if (result.getType() == HitResult.Type.BLOCK) {
                 if (this.hasEntity) {
-                    Optional<Entity> loadEntity = EntityType.create(NBTHelper.getTag(currentPokeball, "StoredEntity"), this.level);
+                    Optional<Entity> loadEntity = EntityType.create(NBTHelper.getTag(currentPokeball, "StoredEntity"), this.level());
                     if (loadEntity.isPresent()) {
                         Entity spawnEntity = loadEntity.get();
                         spawnEntity.moveTo(this.getX(), this.getY() + 1.0D, this.getZ(), this.getYRot(), 0.0F);
-                        this.level.addFreshEntity(spawnEntity);
+                        this.level().addFreshEntity(spawnEntity);
                     }
 
                     // Always reset pokeball
@@ -85,7 +85,7 @@ public class PokeballEntity extends ThrowableItemProjectile {
             }
 
             this.spawnAtLocation(this.currentPokeball, 0.2F);
-            this.level.broadcastEntityEvent(this, (byte) 3);
+            this.level().broadcastEntityEvent(this, (byte) 3);
             this.removeAfterChangingDimensions();
         }
     }
@@ -94,7 +94,7 @@ public class PokeballEntity extends ThrowableItemProjectile {
     public void handleEntityEvent(byte id) {
         if (id == 3) {
             for (int i = 0; i < 8; ++i) {
-                this.level.addParticle(ParticleTypes.ITEM_SNOWBALL, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
+                this.level().addParticle(ParticleTypes.ITEM_SNOWBALL, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
             }
         }
     }

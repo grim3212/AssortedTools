@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:wooden_multitool"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

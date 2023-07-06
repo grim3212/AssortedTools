@@ -47,5 +47,6 @@
     "recipes": [
       "assortedtools:aluminum_hammer"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

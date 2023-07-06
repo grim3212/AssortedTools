@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:platinum_chestplate"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

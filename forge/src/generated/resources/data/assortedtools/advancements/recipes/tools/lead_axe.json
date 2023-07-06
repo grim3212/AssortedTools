@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:lead_axe"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

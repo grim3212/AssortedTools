@@ -34,5 +34,6 @@
     "recipes": [
       "assortedtools:netherite_hammer_smithing"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

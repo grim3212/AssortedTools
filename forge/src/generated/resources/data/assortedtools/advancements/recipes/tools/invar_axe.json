@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:invar_axe"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

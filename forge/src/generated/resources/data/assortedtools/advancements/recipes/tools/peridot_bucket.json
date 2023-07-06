@@ -47,5 +47,6 @@
     "recipes": [
       "assortedtools:peridot_bucket"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

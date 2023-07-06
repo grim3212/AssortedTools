@@ -45,5 +45,6 @@
     "recipes": [
       "assortedtools:iron_multitool"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

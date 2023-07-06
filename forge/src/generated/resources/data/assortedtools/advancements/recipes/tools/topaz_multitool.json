@@ -47,5 +47,6 @@
     "recipes": [
       "assortedtools:topaz_multitool"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

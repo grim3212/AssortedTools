@@ -34,7 +34,7 @@ public class BoomerangRenderer extends EntityRenderer<BoomerangEntity> {
         matrixStackIn.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot()) + 90.0F));
         matrixStackIn.mulPose(Axis.YN.rotationDegrees(90.0f));
         matrixStackIn.mulPose(Axis.ZN.rotationDegrees(entityIn.getBoomerangRotation()));
-        this.itemRenderer.renderStatic(getItemStackForRender(entityIn), ItemDisplayContext.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, entityIn.level, 0);
+        this.itemRenderer.renderStatic(getItemStackForRender(entityIn), ItemDisplayContext.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, entityIn.level(), 0);
         matrixStackIn.popPose();
 
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);

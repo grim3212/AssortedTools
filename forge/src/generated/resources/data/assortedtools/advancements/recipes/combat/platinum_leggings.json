@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:platinum_leggings"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

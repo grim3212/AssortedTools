@@ -49,5 +49,6 @@
     "recipes": [
       "assortedtools:copper_spear"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

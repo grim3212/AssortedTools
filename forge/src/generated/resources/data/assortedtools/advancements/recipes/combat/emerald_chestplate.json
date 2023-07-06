@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:emerald_chestplate"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

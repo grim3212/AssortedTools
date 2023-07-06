@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:stone_spear"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

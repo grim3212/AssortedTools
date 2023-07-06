@@ -45,5 +45,6 @@
     "recipes": [
       "assortedtools:silver_hoe_alt"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -60,5 +60,6 @@
     "recipes": [
       "assortedtools:lead_shears"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

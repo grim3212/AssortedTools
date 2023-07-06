@@ -47,5 +47,6 @@
     "recipes": [
       "assortedtools:bronze_multitool"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

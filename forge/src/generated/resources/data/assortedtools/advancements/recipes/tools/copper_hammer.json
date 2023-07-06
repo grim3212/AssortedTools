@@ -47,5 +47,6 @@
     "recipes": [
       "assortedtools:copper_hammer"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

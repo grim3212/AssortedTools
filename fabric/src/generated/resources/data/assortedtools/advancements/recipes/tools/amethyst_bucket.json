@@ -49,5 +49,6 @@
     "recipes": [
       "assortedtools:amethyst_bucket"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

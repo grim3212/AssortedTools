@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -32,12 +32,12 @@ public class CoralCutterHandler {
 
                 ItemStack fakeTool = toolStack.copy();
                 fakeTool.enchant(Enchantments.SILK_TOUCH, 1);
-                LootContext fakeContext = new LootContext.Builder(event.getWorld())
+                LootParams fakeContext = new LootParams.Builder(event.getWorld())
                         .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(event.getPos()))
                         .withParameter(LootContextParams.BLOCK_STATE, event.getState())
                         .withParameter(LootContextParams.TOOL, fakeTool)
                         .create(LootContextParamSets.BLOCK);
-                LootTable loottable = event.getWorld().getServer().getLootTables().get(event.getState().getBlock().getLootTable());
+                LootTable loottable = event.getWorld().getServer().getLootData().getLootTable(event.getState().getBlock().getLootTable());
                 List<ItemStack> droppedItems = loottable.getRandomItems(fakeContext);
                 event.setDrops(droppedItems);
             }

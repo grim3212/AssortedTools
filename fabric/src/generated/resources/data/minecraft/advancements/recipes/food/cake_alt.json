@@ -34,5 +34,6 @@
     "recipes": [
       "minecraft:cake_alt"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

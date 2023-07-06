@@ -45,5 +45,6 @@
     "recipes": [
       "assortedtools:electrum_axe"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

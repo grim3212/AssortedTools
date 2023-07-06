@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:steel_boots"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

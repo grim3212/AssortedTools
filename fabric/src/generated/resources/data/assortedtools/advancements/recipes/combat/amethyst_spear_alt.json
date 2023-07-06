@@ -49,5 +49,6 @@
     "recipes": [
       "assortedtools:amethyst_spear_alt"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

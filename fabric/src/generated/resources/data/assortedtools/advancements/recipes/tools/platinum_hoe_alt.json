@@ -45,5 +45,6 @@
     "recipes": [
       "assortedtools:platinum_hoe_alt"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -45,5 +45,6 @@
     "recipes": [
       "assortedtools:aluminum_helmet"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

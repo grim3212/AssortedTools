@@ -35,7 +35,7 @@ public class WandBuildingItem extends WandItem {
     protected boolean canBreak(Level worldIn, BlockPos pos, ItemStack stack) {
         BlockState state = worldIn.getBlockState(pos);
 
-        if (state.getMaterial().isReplaceable() || state.getMaterial().getPushReaction() == PushReaction.DESTROY || state.getMaterial().isLiquid())
+        if (state.canBeReplaced() || state.getPistonPushReaction() == PushReaction.DESTROY || state.liquid())
             return true;
 
         switch (BuildingMode.fromString(NBTHelper.getString(stack, "Mode"))) {
@@ -102,7 +102,7 @@ public class WandBuildingItem extends WandItem {
         // count items in inv.
         for (int t = 0; t < entityplayer.getInventory().getContainerSize(); t++) {
             ItemStack currentItem = entityplayer.getInventory().getItem(t);
-            if (!currentItem.isEmpty() && currentItem.sameItem(neededStack)) {
+            if (!currentItem.isEmpty() && ItemStack.isSameItem(currentItem, neededStack)) {
                 invItems += currentItem.getCount();
                 if (invItems == neededItems)
                     break; // enough, no need to continue counting.
@@ -115,7 +115,7 @@ public class WandBuildingItem extends WandItem {
         // remove blocks from inventory, highest positions first (quickbar last)
         for (int t = entityplayer.getInventory().getContainerSize() - 1; t >= 0; t--) {
             ItemStack currentItem = entityplayer.getInventory().getItem(t);
-            if (!currentItem.isEmpty() && currentItem.sameItem(neededStack)) {
+            if (!currentItem.isEmpty() && ItemStack.isSameItem(currentItem, neededStack)) {
                 int stackSize = currentItem.getCount();
                 if (stackSize < neededItems) {
                     entityplayer.getInventory().setItem(t, ItemStack.EMPTY);

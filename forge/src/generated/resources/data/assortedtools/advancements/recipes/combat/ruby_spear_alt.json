@@ -47,5 +47,6 @@
     "recipes": [
       "assortedtools:ruby_spear_alt"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

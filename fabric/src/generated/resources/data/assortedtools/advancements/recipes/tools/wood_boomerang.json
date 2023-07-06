@@ -34,5 +34,6 @@
     "recipes": [
       "assortedtools:wood_boomerang"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

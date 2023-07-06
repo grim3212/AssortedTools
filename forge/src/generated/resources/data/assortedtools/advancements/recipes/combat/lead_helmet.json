@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:lead_helmet"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

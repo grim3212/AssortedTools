@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:copper_chestplate"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

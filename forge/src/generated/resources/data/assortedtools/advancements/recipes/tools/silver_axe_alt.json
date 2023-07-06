@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:silver_axe_alt"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

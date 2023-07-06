@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:nickel_hoe_alt"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

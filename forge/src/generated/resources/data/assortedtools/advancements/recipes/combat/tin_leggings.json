@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:tin_leggings"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

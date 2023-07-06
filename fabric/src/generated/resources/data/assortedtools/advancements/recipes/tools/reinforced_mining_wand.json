@@ -34,5 +34,6 @@
     "recipes": [
       "assortedtools:reinforced_mining_wand"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

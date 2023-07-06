@@ -49,5 +49,6 @@
     "recipes": [
       "assortedtools:steel_bucket"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

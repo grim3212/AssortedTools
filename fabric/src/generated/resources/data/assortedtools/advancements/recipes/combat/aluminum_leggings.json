@@ -45,5 +45,6 @@
     "recipes": [
       "assortedtools:aluminum_leggings"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

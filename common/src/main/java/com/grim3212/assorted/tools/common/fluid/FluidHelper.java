@@ -20,7 +20,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
@@ -61,7 +60,6 @@ public class FluidHelper {
 
         BlockState blockState = level.getBlockState(pos);
         Block block = blockState.getBlock();
-        Material material = blockState.getMaterial();
         boolean bl = blockState.canBeReplaced(content);
         boolean bl2 = blockState.isAir() || bl || block instanceof LiquidBlockContainer && ((LiquidBlockContainer) block).canPlaceLiquid(level, pos, blockState, content);
         if (!bl2) {
@@ -82,7 +80,7 @@ public class FluidHelper {
             playEmptySound(player, level, pos, information);
             return true;
         } else {
-            if (!level.isClientSide() && bl && !material.isLiquid()) {
+            if (!level.isClientSide() && bl && !blockState.liquid()) {
                 level.destroyBlock(pos, true);
             }
 

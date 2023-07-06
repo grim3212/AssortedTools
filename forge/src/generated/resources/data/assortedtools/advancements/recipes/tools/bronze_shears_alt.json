@@ -58,5 +58,6 @@
     "recipes": [
       "assortedtools:bronze_shears_alt"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

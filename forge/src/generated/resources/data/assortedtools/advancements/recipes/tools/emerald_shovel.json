@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:emerald_shovel"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

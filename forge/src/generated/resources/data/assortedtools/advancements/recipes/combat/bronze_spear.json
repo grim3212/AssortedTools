@@ -47,5 +47,6 @@
     "recipes": [
       "assortedtools:bronze_spear"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

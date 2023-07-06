@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:lead_boots"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

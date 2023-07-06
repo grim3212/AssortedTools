@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:gold_spear_alt"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

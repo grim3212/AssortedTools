@@ -49,5 +49,6 @@
     "recipes": [
       "assortedtools:platinum_multitool"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

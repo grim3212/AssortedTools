@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:diamond_bucket"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

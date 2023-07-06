@@ -26,12 +26,12 @@ public class MaterialShearsMixin extends ShearsItem {
                 shearable.shear(SoundSource.PLAYERS);
                 entity.gameEvent(GameEvent.SHEAR, player);
 
-                if (!entity.level.isClientSide) {
+                if (!entity.level().isClientSide) {
                     stack.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(usedHand));
                 }
             }
         }
 
-        return InteractionResult.sidedSuccess(player.level.isClientSide);
+        return InteractionResult.sidedSuccess(player.level().isClientSide);
     }
 }

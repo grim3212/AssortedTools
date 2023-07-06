@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:stone_bucket"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

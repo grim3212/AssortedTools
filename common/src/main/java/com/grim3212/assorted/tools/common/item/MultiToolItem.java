@@ -1,6 +1,5 @@
 package com.grim3212.assorted.tools.common.item;
 
-import com.google.common.collect.Sets;
 import com.grim3212.assorted.lib.core.item.IItemEnchantmentCondition;
 import com.grim3212.assorted.tools.api.ToolsTags;
 import com.grim3212.assorted.tools.common.item.configurable.ConfigurableToolItem;
@@ -17,14 +16,10 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 
 import java.util.Optional;
-import java.util.Set;
 
 public class MultiToolItem extends ConfigurableToolItem implements IItemEnchantmentCondition {
-
-    private static final Set<Material> EFFECTIVE_ON_MATERIALS = Sets.newHashSet(Material.WOOD, Material.NETHER_WOOD, Material.PLANT, Material.REPLACEABLE_PLANT, Material.BAMBOO, Material.VEGETABLE, Material.METAL, Material.HEAVY_METAL, Material.STONE);
 
     public MultiToolItem(ItemTierConfig tier, Item.Properties builderIn) {
         super(tier, () -> tier.getAxeDamage() > tier.getDamage() ? tier.getAxeDamage() : tier.getDamage() + tier.getDamage(), () -> -2.8f, ToolsTags.Blocks.MINEABLE_MULTITOOL, builderIn);
@@ -57,7 +52,12 @@ public class MultiToolItem extends ConfigurableToolItem implements IItemEnchantm
         if (state.is(Blocks.COBWEB)) {
             return 15.0F;
         }
-        Material material = state.getMaterial();
-        return EFFECTIVE_ON_MATERIALS.contains(material) ? this.getTierHolder().getEfficiency() : material == Material.PLANT || material == Material.REPLACEABLE_PLANT || material == Material.VEGETABLE || state.is(BlockTags.LEAVES) ? 1.5F : super.getDestroySpeed(stack, state);
+
+        boolean validBlock = state.is(BlockTags.MINEABLE_WITH_SHOVEL) ||
+                state.is(BlockTags.MINEABLE_WITH_PICKAXE) ||
+                state.is(BlockTags.MINEABLE_WITH_AXE) ||
+                state.is(BlockTags.MINEABLE_WITH_HOE);
+
+        return validBlock ? this.getTierHolder().getEfficiency() : state.is(BlockTags.SWORD_EFFICIENT) ? 1.5F : super.getDestroySpeed(stack, state);
     }
 }

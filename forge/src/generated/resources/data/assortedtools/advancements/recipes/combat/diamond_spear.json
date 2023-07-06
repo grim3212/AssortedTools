@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:diamond_spear"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

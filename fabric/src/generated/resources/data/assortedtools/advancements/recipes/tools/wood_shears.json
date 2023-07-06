@@ -56,5 +56,6 @@
     "recipes": [
       "assortedtools:wood_shears"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

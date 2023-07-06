@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:chicken_suit_leggings"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

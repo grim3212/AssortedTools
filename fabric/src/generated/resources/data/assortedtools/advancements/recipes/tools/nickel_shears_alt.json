@@ -60,5 +60,6 @@
     "recipes": [
       "assortedtools:nickel_shears_alt"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -45,5 +45,6 @@
     "recipes": [
       "assortedtools:copper_axe_alt"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

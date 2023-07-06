@@ -45,5 +45,6 @@
     "recipes": [
       "assortedtools:gold_bucket"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

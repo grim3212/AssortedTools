@@ -34,5 +34,6 @@
     "recipes": [
       "assortedtools:diamond_boomerang"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

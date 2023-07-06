@@ -47,5 +47,6 @@
     "recipes": [
       "assortedtools:steel_spear_alt"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:ruby_axe"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

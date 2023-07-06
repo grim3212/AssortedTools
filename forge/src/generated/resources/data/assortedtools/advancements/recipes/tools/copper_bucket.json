@@ -47,5 +47,6 @@
     "recipes": [
       "assortedtools:copper_bucket"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

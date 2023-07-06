@@ -34,5 +34,6 @@
     "recipes": [
       "assortedtools:breaking_wand"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

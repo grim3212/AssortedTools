@@ -45,5 +45,6 @@
     "recipes": [
       "assortedtools:tin_boots"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

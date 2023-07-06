@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:ruby_leggings"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

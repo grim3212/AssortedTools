@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:invar_shovel"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

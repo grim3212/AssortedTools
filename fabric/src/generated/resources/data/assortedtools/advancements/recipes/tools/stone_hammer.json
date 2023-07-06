@@ -45,5 +45,6 @@
     "recipes": [
       "assortedtools:stone_hammer"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

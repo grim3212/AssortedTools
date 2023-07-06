@@ -71,15 +71,15 @@ public abstract class WandItem extends Item implements ISwitchModes {
     protected abstract boolean doEffect(Level world, Player entityplayer, InteractionHand hand, WandCoord3D start, WandCoord3D end, BlockState state);
 
     protected void sendMessage(Player player, Component message) {
-        if (!player.level.isClientSide) {
+        if (!player.level().isClientSide) {
             player.sendSystemMessage(message);
         }
     }
 
     protected void error(Player entityplayer, WandCoord3D p, String reason) {
-        entityplayer.level.playSound(entityplayer, p.pos, SoundEvents.LAVA_EXTINGUISH, SoundSource.BLOCKS, (entityplayer.level.random.nextFloat() + 0.7F) / 2.0F, 0.5F + entityplayer.level.random.nextFloat() * 0.3F);
+        entityplayer.level().playSound(entityplayer, p.pos, SoundEvents.LAVA_EXTINGUISH, SoundSource.BLOCKS, (entityplayer.level().random.nextFloat() + 0.7F) / 2.0F, 0.5F + entityplayer.level().random.nextFloat() * 0.3F);
         sendMessage(entityplayer, Component.translatable("error.wand." + reason));
-        particles(entityplayer.level, p.pos, 3);
+        particles(entityplayer.level(), p.pos, 3);
     }
 
     protected abstract double[] getParticleColor();

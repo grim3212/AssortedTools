@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:invar_helmet"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -29,7 +29,7 @@ public class ChickenJumpHandler {
     }
 
     private static void onTickInGame(Minecraft mc) {
-        if (mc.player.isOnGround()) {
+        if (mc.player.onGround()) {
             numJumps = 0;
         }
 

@@ -54,5 +54,6 @@
     "recipes": [
       "assortedtools:stone_shears"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

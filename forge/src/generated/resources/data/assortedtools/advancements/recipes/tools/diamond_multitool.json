@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:diamond_multitool"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:electrum_boots"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

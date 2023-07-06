@@ -34,5 +34,6 @@
     "recipes": [
       "assortedtools:reinforced_building_wand"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

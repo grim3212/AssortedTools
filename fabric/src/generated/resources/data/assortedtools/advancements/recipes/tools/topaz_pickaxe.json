@@ -45,5 +45,6 @@
     "recipes": [
       "assortedtools:topaz_pickaxe"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:netherite_spear_alt"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -45,5 +45,6 @@
     "recipes": [
       "assortedtools:chicken_suit_boots"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

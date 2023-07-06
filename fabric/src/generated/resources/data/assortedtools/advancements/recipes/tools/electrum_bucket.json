@@ -49,5 +49,6 @@
     "recipes": [
       "assortedtools:electrum_bucket"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

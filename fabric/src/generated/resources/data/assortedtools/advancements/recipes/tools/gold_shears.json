@@ -56,5 +56,6 @@
     "recipes": [
       "assortedtools:gold_shears"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

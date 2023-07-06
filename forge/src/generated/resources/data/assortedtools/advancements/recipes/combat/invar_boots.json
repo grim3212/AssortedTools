@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:invar_boots"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

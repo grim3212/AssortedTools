@@ -60,5 +60,6 @@
     "recipes": [
       "assortedtools:amethyst_shears_alt"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

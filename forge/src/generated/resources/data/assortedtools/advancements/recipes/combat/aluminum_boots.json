@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:aluminum_boots"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

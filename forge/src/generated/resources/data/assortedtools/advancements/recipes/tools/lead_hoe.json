@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:lead_hoe"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:tin_sword"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

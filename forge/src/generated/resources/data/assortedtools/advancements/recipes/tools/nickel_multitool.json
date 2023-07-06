@@ -47,5 +47,6 @@
     "recipes": [
       "assortedtools:nickel_multitool"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

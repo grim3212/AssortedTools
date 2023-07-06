@@ -36,5 +36,6 @@
     "recipes": [
       "assortedtools:netherite_multitool_smithing"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

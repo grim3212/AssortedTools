@@ -31,8 +31,8 @@ import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class BetterSpearEntity extends AbstractArrow {
@@ -94,7 +94,7 @@ public class BetterSpearEntity extends AbstractArrow {
         if ((this.dealtDamage || this.isNoPhysics()) && entity != null) {
             int i = this.entityData.get(ID_LOYALTY);
             if (i > 0 && !this.isAcceptibleReturnOwner()) {
-                if (!this.level.isClientSide && this.pickup == AbstractArrow.Pickup.ALLOWED) {
+                if (!this.level().isClientSide && this.pickup == AbstractArrow.Pickup.ALLOWED) {
                     this.spawnAtLocation(this.getPickupItem(), 0.1F);
                 }
 
@@ -103,7 +103,7 @@ public class BetterSpearEntity extends AbstractArrow {
                 this.setNoPhysics(true);
                 Vec3 vector3d = new Vec3(entity.getX() - this.getX(), entity.getEyeY() - this.getY(), entity.getZ() - this.getZ());
                 this.setPosRaw(this.getX(), this.getY() + vector3d.y * 0.015D * (double) i, this.getZ());
-                if (this.level.isClientSide) {
+                if (this.level().isClientSide) {
                     this.yOld = this.getY();
                 }
 
@@ -146,7 +146,7 @@ public class BetterSpearEntity extends AbstractArrow {
 
                 motion = motion.scale(this.bounceCount == 1 ? 0.42F : 0.99F);
                 this.setDeltaMovement(motion.x, motion.y * -1D, motion.z);
-                level.playSound((Player) null, this.blockPosition(), SoundEvents.SLIME_SQUISH_SMALL, SoundSource.PLAYERS, 1.0F, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
+                level().playSound((Player) null, this.blockPosition(), SoundEvents.SLIME_SQUISH_SMALL, SoundSource.PLAYERS, 1.0F, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
                 this.spawnSlimeParticles();
             } else {
                 super.onHitBlock(rayTrace);
@@ -209,7 +209,7 @@ public class BetterSpearEntity extends AbstractArrow {
             float f1 = this.random.nextFloat() * 0.5F + 0.5F;
             float f2 = Mth.sin(f) * (float) 1 * 0.5F * f1;
             float f3 = Mth.cos(f) * (float) 1 * 0.5F * f1;
-            this.level.addParticle(ParticleTypes.ITEM_SLIME, this.getX() + (double) f2, this.getY(), this.getZ() + (double) f3, 0.0D, 0.0D, 0.0D);
+            this.level().addParticle(ParticleTypes.ITEM_SLIME, this.getX() + (double) f2, this.getY(), this.getZ() + (double) f3, 0.0D, 0.0D, 0.0D);
         }
     }
 
@@ -233,13 +233,13 @@ public class BetterSpearEntity extends AbstractArrow {
         int conductivity = ToolsEnchantments.getConductivity(this.getSpearStack());
         boolean flag = conductivity > 0 && this.random.nextDouble() <= 1.0D - conductiveChances(conductivity - 1);
 
-        if (this.level instanceof ServerLevel && flag) {
-            if (this.level.canSeeSky(pos)) {
+        if (this.level() instanceof ServerLevel && flag) {
+            if (this.level().canSeeSky(pos)) {
                 Entity owner = this.getOwner();
-                LightningBolt lightningboltentity = EntityType.LIGHTNING_BOLT.create(this.level);
+                LightningBolt lightningboltentity = EntityType.LIGHTNING_BOLT.create(this.level());
                 lightningboltentity.moveTo(Vec3.atBottomCenterOf(pos));
                 lightningboltentity.setCause(owner instanceof ServerPlayer ? (ServerPlayer) owner : null);
-                this.level.addFreshEntity(lightningboltentity);
+                this.level().addFreshEntity(lightningboltentity);
             }
         }
     }
@@ -248,8 +248,8 @@ public class BetterSpearEntity extends AbstractArrow {
         int instability = ToolsEnchantments.getInstability(this.getSpearStack());
 
         if (instability > 0) {
-            if (!level.isClientSide) {
-                level.explode(null, this.getX(), this.getY(), this.getZ(), instability * 2F, Level.ExplosionInteraction.BLOCK);
+            if (!level().isClientSide) {
+                level().explode(null, this.getX(), this.getY(), this.getZ(), instability * 2F, Level.ExplosionInteraction.BLOCK);
             }
         }
     }
@@ -261,8 +261,8 @@ public class BetterSpearEntity extends AbstractArrow {
             for (int fire = 0; fire < 6; ++fire) {
                 BlockPos blockPos = pos.offset(this.random.nextInt(3) - 1, this.random.nextInt(3) - 1, this.random.nextInt(3) - 1);
 
-                if (this.level.getBlockState(blockPos).isAir() && BaseFireBlock.canBePlacedAt(level, blockPos, getDirection())) {
-                    level.setBlockAndUpdate(blockPos, BaseFireBlock.getState(this.level, blockPos));
+                if (this.level().getBlockState(blockPos).isAir() && BaseFireBlock.canBePlacedAt(level(), blockPos, getDirection())) {
+                    level().setBlockAndUpdate(blockPos, BaseFireBlock.getState(this.level(), blockPos));
                 }
             }
         }

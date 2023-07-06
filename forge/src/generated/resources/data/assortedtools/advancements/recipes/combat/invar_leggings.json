@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:invar_leggings"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

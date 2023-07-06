@@ -45,5 +45,6 @@
     "recipes": [
       "assortedtools:bronze_hoe_alt"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

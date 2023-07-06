@@ -45,5 +45,6 @@
     "recipes": [
       "assortedtools:amethyst_sword"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

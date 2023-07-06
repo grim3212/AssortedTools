@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:tin_chestplate"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

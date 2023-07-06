@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:invar_sword"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -49,5 +49,6 @@
     "recipes": [
       "assortedtools:peridot_multitool"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

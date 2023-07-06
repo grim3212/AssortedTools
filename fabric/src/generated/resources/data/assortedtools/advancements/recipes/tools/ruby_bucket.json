@@ -49,5 +49,6 @@
     "recipes": [
       "assortedtools:ruby_bucket"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

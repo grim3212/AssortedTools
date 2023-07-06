@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:golden_multitool"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

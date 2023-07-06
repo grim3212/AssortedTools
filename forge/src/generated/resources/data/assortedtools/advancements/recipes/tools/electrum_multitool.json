@@ -47,5 +47,6 @@
     "recipes": [
       "assortedtools:electrum_multitool"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

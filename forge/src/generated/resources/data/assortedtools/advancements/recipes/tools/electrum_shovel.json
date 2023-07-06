@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:electrum_shovel"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

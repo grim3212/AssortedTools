@@ -47,5 +47,6 @@
     "recipes": [
       "assortedtools:silver_spear"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

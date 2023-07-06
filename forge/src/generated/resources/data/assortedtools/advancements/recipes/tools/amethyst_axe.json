@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:amethyst_axe"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

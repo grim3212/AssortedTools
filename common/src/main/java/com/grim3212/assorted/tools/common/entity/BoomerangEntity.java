@@ -29,12 +29,11 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.LeverBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.*;
 
 public abstract class BoomerangEntity extends Entity {
@@ -91,15 +90,15 @@ public abstract class BoomerangEntity extends Entity {
 
         Vec3 vec3d1 = this.position();
         Vec3 vec3d = this.position().add(this.getDeltaMovement());
-        HitResult raytraceresult = this.level.clip(new ClipContext(vec3d1, vec3d, Block.OUTLINE, Fluid.ANY, this));
+        HitResult raytraceresult = this.level().clip(new ClipContext(vec3d1, vec3d, Block.OUTLINE, Fluid.ANY, this));
 
         if (raytraceresult != null) {
             if (raytraceresult.getType() == HitResult.Type.BLOCK) {
                 BlockPos pos = BlockPos.containing(raytraceresult.getLocation());
-                BlockState state = level.getBlockState(pos);
+                BlockState state = level().getBlockState(pos);
 
-                if (state.getMaterial() == Material.PLANT && ToolsCommonMod.COMMON_CONFIG.breaksPlants.get() || state.getBlock() == Blocks.TORCH && ToolsCommonMod.COMMON_CONFIG.breaksTorches.get()) {
-                    level.destroyBlock(pos, true);
+                if (state.canBeReplaced() && ToolsCommonMod.COMMON_CONFIG.breaksPlants.get() || state.getBlock() == Blocks.TORCH && ToolsCommonMod.COMMON_CONFIG.breaksTorches.get()) {
+                    level().destroyBlock(pos, true);
                 }
 
                 if ((state.getBlock() instanceof LeverBlock || state.getBlock() instanceof ButtonBlock) && ToolsCommonMod.COMMON_CONFIG.hitsButtons.get()) {
@@ -108,7 +107,7 @@ public abstract class BoomerangEntity extends Entity {
                     }
                     if (activatedPos == null || !activatedPos.equals(pos)) {
                         activatedPos = pos;
-                        state.getBlock().use(state, level, pos, player, InteractionHand.MAIN_HAND, (BlockHitResult) raytraceresult);
+                        state.getBlock().use(state, level(), pos, player, InteractionHand.MAIN_HAND, (BlockHitResult) raytraceresult);
                     }
                 }
             }
@@ -162,7 +161,7 @@ public abstract class BoomerangEntity extends Entity {
         prevBoomerangRotation = getBoomerangRotation();
         for (this.setBoomerangRotation(this.getBoomerangRotation() + 36F); this.getBoomerangRotation() > 360F; this.setBoomerangRotation(this.getBoomerangRotation() - 360F)) {
         }
-        List<Entity> list = level.getEntities(this, this.getBoundingBox().expandTowards(0.5D, 0.5D, 0.5D));
+        List<Entity> list = level().getEntities(this, this.getBoundingBox().expandTowards(0.5D, 0.5D, 0.5D));
         for (int i = 0; i < list.size(); i++) {
             Entity entity = list.get(i);
             if (entity instanceof ItemEntity) {
@@ -252,7 +251,7 @@ public abstract class BoomerangEntity extends Entity {
     public Player getReturnTo() {
         try {
             UUID uuid = this.getReturnToId();
-            return uuid == null ? null : this.level.getPlayerByUUID(uuid);
+            return uuid == null ? null : this.level().getPlayerByUUID(uuid);
         } catch (IllegalArgumentException e) {
             return null;
         }
@@ -299,7 +298,7 @@ public abstract class BoomerangEntity extends Entity {
         ListTag itemsGathered = compound.getList("ItemsPickedUp", Tag.TAG_COMPOUND);
         for (int i = 0; i < itemsGathered.size(); i++) {
             CompoundTag tag = itemsGathered.getCompound(i);
-            ItemEntity item = new ItemEntity(level, 0, 0, 0, ItemStack.EMPTY);
+            ItemEntity item = new ItemEntity(level(), 0, 0, 0, ItemStack.EMPTY);
             item.readAdditionalSaveData(tag);
             this.itemsPickedUp.add(item);
         }

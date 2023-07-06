@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:wood_bucket"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

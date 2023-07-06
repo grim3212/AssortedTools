@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:invar_hoe"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

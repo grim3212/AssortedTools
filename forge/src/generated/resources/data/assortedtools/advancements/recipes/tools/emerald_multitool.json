@@ -47,5 +47,6 @@
     "recipes": [
       "assortedtools:emerald_multitool"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

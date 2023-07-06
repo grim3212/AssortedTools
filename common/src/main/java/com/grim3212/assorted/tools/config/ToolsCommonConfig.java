@@ -87,7 +87,7 @@ public class ToolsCommonConfig {
         turnAroundItem = builder.defineBoolean("boomerangs.turnAroundItem", false, "Set this to true if you would like boomerangs to turn around after they have picked up items.");
         turnAroundMob = builder.defineBoolean("boomerangs.turnAroundMob", false, "Set this to true if you would like boomerangs to turn around after they have hit a mob.");
         breaksTorches = builder.defineBoolean("boomerangs.breaksTorches", false, "Set this to true if you would like boomerangs to be able to break torches.");
-        breaksPlants = builder.defineBoolean("boomerangs.breaksPlants", false, "Set this to true if you would like boomerangs to be able to break plants.");
+        breaksPlants = builder.defineBoolean("boomerangs.breaksPlants", false, "Set this to true if you would like boomerangs to be able to break plants and any other weak blocks.");
         hitsButtons = builder.defineBoolean("boomerangs.hitsButtons", true, "Set this to false if you would like boomerangs to not be able to hit buttons or levers.");
         turnAroundButton = builder.defineBoolean("boomerangs.turnAroundButton", true, "Set this to false if you would like boomerangs to not turn around after they have hit a button or a lever.");
         woodBoomerangRange = builder.defineInteger("boomerangs.woodBoomerangRange", 20, 1, 200, "The maximum range away from the player the wood boomerang will travel before turning around.");

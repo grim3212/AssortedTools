@@ -63,7 +63,7 @@ public class MilkingHandler {
         Entity entity = event.getTarget();
         Player player = event.getPlayer();
 
-        if (entity instanceof LivingEntity && !entity.level.isClientSide()) {
+        if (entity instanceof LivingEntity && !entity.level().isClientSide()) {
             if (!player.isCreative() && !((LivingEntity) entity).isBaby()) {
                 if (stack.getItem() instanceof BetterMilkBucketItem) {
                     BetterMilkBucketItem bucket = (BetterMilkBucketItem) stack.getItem();

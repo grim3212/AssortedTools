@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:nickel_shovel"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -49,5 +49,6 @@
     "recipes": [
       "assortedtools:bronze_bucket"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -33,7 +33,6 @@ import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 
@@ -196,8 +195,7 @@ public class BetterBucketItem extends Item implements ITiered {
             // Handle vanilla differently
             if (fluid.fluid() == Fluids.WATER || fluid.fluid() == Fluids.LAVA) {
                 BlockState iblockstate = worldIn.getBlockState(pos);
-                Material material = iblockstate.getMaterial();
-                boolean flag = !material.isSolid();
+                boolean flag = !iblockstate.isSolid();
                 boolean flag1 = iblockstate.canBeReplaced(fluid.fluid());
 
                 if (!worldIn.isEmptyBlock(pos) && !flag && !flag1) {
@@ -213,7 +211,7 @@ public class BetterBucketItem extends Item implements ITiered {
                             worldIn.addParticle(ParticleTypes.LARGE_SMOKE, (double) l + Math.random(), (double) i + Math.random(), (double) j + Math.random(), 0.0D, 0.0D, 0.0D);
                         }
                     } else {
-                        if (!worldIn.isClientSide && (flag || flag1) && !material.isLiquid()) {
+                        if (!worldIn.isClientSide && (flag || flag1) && !iblockstate.liquid()) {
                             worldIn.destroyBlock(pos, true);
                         }
 

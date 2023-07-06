@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:electrum_sword"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

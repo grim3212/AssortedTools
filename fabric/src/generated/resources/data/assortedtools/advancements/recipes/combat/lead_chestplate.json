@@ -45,5 +45,6 @@
     "recipes": [
       "assortedtools:lead_chestplate"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

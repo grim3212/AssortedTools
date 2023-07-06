@@ -49,5 +49,6 @@
     "recipes": [
       "assortedtools:sapphire_multitool"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

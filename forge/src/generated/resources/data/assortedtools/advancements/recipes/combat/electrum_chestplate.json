@@ -43,5 +43,6 @@
     "recipes": [
       "assortedtools:electrum_chestplate"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }
