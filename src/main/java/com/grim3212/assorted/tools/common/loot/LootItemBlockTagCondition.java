@@ -28,7 +28,7 @@ public class LootItemBlockTagCondition implements LootItemCondition {
 	}
 
 	public LootItemConditionType getType() {
-		return ToolsLootConditions.BLOCK_TAG;
+		return ToolsLootConditions.BLOCK_TAG.get();
 	}
 
 	public Set<LootContextParam<?>> getReferencedContextParams() {

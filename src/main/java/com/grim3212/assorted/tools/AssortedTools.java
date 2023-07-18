@@ -82,6 +82,7 @@ public class AssortedTools {
 		ToolsEntities.ENTITIES.register(modBus);
 		ToolsEnchantments.ENCHANTMENTS.register(modBus);
 		ToolsLootModifiers.LOOT_MODIFIERS.register(modBus);
+		ToolsLootConditions.LOOT_ITEM_CONDITIONS.register(modBus);
 
 		ModLoadingContext.get().registerConfig(Type.COMMON, ToolsConfig.COMMON_SPEC);
 
@@ -91,10 +92,6 @@ public class AssortedTools {
 	private void setup(final FMLCommonSetupEvent event) {
 		PacketHandler.init();
 		TierRegistryHandler.registerTiers();
-
-		event.enqueueWork(() -> {
-			ToolsLootConditions.register();
-		});
 	}
 
 	private void sendIMC(final InterModEnqueueEvent event) {
@@ -108,8 +105,6 @@ public class AssortedTools {
 	private void gatherData(GatherDataEvent event) {
 		DataGenerator datagenerator = event.getGenerator();
 		ExistingFileHelper fileHelper = event.getExistingFileHelper();
-
-		ToolsLootConditions.register();
 
 		ToolsBlockTagProvider blockTagProvider = new ToolsBlockTagProvider(datagenerator, fileHelper);
 		datagenerator.addProvider(event.includeServer(), blockTagProvider);

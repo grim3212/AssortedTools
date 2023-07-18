@@ -1,9 +1,8 @@
 package com.grim3212.assorted.tools.common.loot;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
-
-import org.apache.commons.compress.utils.Lists;
 
 import com.google.common.base.Suppliers;
 import com.grim3212.assorted.tools.AssortedTools;
@@ -33,7 +32,7 @@ public abstract class UltimateFragmentLootModifier extends LootModifier {
 	@Override
 	protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
 		if (ToolsConfig.COMMON.ultimateFistEnabled.get()) {
-			List<ItemStack> stacks = Lists.newArrayList();
+			List<ItemStack> stacks = new ArrayList<>();
 			LootPool.lootPool().add(LootTableReference.lootTableReference(extraLootTable).setWeight(1)).name(extraLootTable.getPath()).build().addRandomItems(stacks::add, context);
 
 			generatedLoot.addAll(stacks);
