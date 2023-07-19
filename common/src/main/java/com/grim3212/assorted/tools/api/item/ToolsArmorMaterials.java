@@ -45,23 +45,19 @@ public enum ToolsArmorMaterials implements ArmorMaterial {
         this.repairMaterial = repairTagIn;
     }
 
-    private ArmorMaterialConfig getMaterial() {
-        return this.material.get();
-    }
-
     @Override
     public int getDurabilityForType(ArmorItem.Type type) {
-        return this.getMaterial().getDurability() * ArmorMaterialsMixin.assortedlib_getHealthperSlot().get(type);
+        return this.material.get().getDurability() * ArmorMaterialsMixin.assortedlib_getHealthperSlot().get(type);
     }
 
     @Override
     public int getDefenseForType(ArmorItem.Type type) {
-        return this.getMaterial().getReductionAmounts().get(type);
+        return this.material.get().getReductionAmounts().get(type);
     }
 
     @Override
     public int getEnchantmentValue() {
-        return this.getMaterial().getEnchantability();
+        return this.material.get().getEnchantability();
     }
 
     @Override
@@ -80,17 +76,17 @@ public enum ToolsArmorMaterials implements ArmorMaterial {
 
     @Override
     public String getName() {
-        return this.getMaterial().getName();
+        return this.material.get().getName();
     }
 
     @Override
     public float getToughness() {
-        return this.getMaterial().getToughness();
+        return this.material.get().getToughness();
     }
 
     @Override
     public float getKnockbackResistance() {
-        return this.getMaterial().getKnockbackResistance();
+        return this.material.get().getKnockbackResistance();
     }
 
     public ArmorMaterial defaultMaterial() {
@@ -107,12 +103,12 @@ public enum ToolsArmorMaterials implements ArmorMaterial {
 
             @Override
             public String getName() {
-                return getMaterial().getName();
+                return material.get().getName();
             }
 
             @Override
             public int getDurabilityForType(ArmorItem.Type type) {
-                return 0;
+                return 1;
             }
 
             @Override
@@ -122,7 +118,7 @@ public enum ToolsArmorMaterials implements ArmorMaterial {
 
             @Override
             public int getEnchantmentValue() {
-                return 0;
+                return 1;
             }
 
             @Override

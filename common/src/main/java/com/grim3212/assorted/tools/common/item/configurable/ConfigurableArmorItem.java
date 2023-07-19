@@ -19,31 +19,31 @@ import java.util.UUID;
 public class ConfigurableArmorItem extends ArmorItem implements IItemExtraProperties {
 
     private Multimap<Attribute, AttributeModifier> modifiers;
-    private final ToolsArmorMaterials material;
+    private final ToolsArmorMaterials toolMaterial;
 
-    public ConfigurableArmorItem(ToolsArmorMaterials material, ArmorItem.Type type, Properties builderIn) {
-        super(material.defaultMaterial(), type, builderIn);
-        this.material = material;
+    public ConfigurableArmorItem(ToolsArmorMaterials toolMaterial, ArmorItem.Type type, Properties builderIn) {
+        super(toolMaterial.defaultMaterial(), type, builderIn);
+        this.toolMaterial = toolMaterial;
     }
 
     @Override
     public int getEnchantmentValue() {
-        return this.material.getEnchantmentValue();
+        return this.toolMaterial.getEnchantmentValue();
     }
 
     @Override
     public int getDefense() {
-        return this.material.getDefenseForType(this.type);
+        return this.toolMaterial.getDefenseForType(this.type);
     }
 
     @Override
     public float getToughness() {
-        return this.material.getToughness();
+        return this.toolMaterial.getToughness();
     }
 
     @Override
     public int getMaxDamage(ItemStack stack) {
-        return this.material.getDurabilityForType(this.type);
+        return this.toolMaterial.getDurabilityForType(this.type);
     }
 
     @Override
@@ -75,8 +75,8 @@ public class ConfigurableArmorItem extends ArmorItem implements IItemExtraProper
             UUID uuid = ArmorItemAccessor.assortedlib_getArmorModPerSlot().get(this.type);
             builder.put(Attributes.ARMOR, new AttributeModifier(uuid, "Armor modifier", getDefense(), AttributeModifier.Operation.ADDITION));
             builder.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(uuid, "Armor toughness", getToughness(), AttributeModifier.Operation.ADDITION));
-            if (this.knockbackResistance > 0) {
-                builder.put(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(uuid, "Armor knockback resistance", (double) this.material.getKnockbackResistance(), AttributeModifier.Operation.ADDITION));
+            if (this.toolMaterial.getKnockbackResistance() > 0) {
+                builder.put(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(uuid, "Armor knockback resistance", this.toolMaterial.getKnockbackResistance(), AttributeModifier.Operation.ADDITION));
             }
 
             this.modifiers = builder.build();
