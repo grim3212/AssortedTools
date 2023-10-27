@@ -48,6 +48,11 @@ public class MultiToolItem extends ConfigurableToolItem implements IItemEnchantm
     }
 
     @Override
+    public int getMaxDamage(ItemStack stack) {
+        return (int) (super.getMaxDamage(stack) * this.getTierHolder().getMultiToolModifier());
+    }
+
+    @Override
     public float getDestroySpeed(ItemStack stack, BlockState state) {
         if (state.is(Blocks.COBWEB)) {
             return 15.0F;

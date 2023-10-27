@@ -29,10 +29,6 @@ public class ChickenJumpHandler {
     }
 
     private static void onTickInGame(Minecraft mc) {
-        if (mc.player.onGround()) {
-            numJumps = 0;
-        }
-
         if (!mc.player.isInWater() && !mc.player.isInLava() && mc.player.hasImpulse) {
             int jumpsAllowed = getMaxJumps(mc.player);
 
@@ -80,10 +76,10 @@ public class ChickenJumpHandler {
                     Services.NETWORK.sendToServer(new ChickenSuitUpdatePacket(numJumps));
                 }
 
-            } else {
-                numJumps = 0;
             }
-        } else {
+        }
+
+        if (mc.player.onGround()) {
             numJumps = 0;
         }
     }

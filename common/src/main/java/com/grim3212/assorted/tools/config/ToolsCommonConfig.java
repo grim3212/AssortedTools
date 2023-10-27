@@ -98,12 +98,12 @@ public class ToolsCommonConfig {
 
         conductivityLightningChances = builder.defineList("better_spears.conductivityLightningChances", Lists.newArrayList(0.6F, 0.3F, 0.1F), Float.class, "The chances modifier for lightning to spawn at each level of conductivity. The smaller the number the higher chance.");
 
-        woodItemTier = new ItemTierConfig(builder, "wood", "vanilla_tool_overrides", Tiers.WOOD, 6.0F, -3.2F, 1, 0, 1000f, true);
-        stoneItemTier = new ItemTierConfig(builder, "stone", "vanilla_tool_overrides", Tiers.STONE, 7.0F, -3.2F, 1, 0, 5000f, true);
-        goldItemTier = new ItemTierConfig(builder, "gold", "vanilla_tool_overrides", Tiers.GOLD, 6.0F, -3.0F, 4, 0, 5000f, false);
-        ironItemTier = new ItemTierConfig(builder, "iron", "vanilla_tool_overrides", Tiers.IRON, 6.0F, -3.1F, 1, 0, 5000f, false);
-        diamondItemTier = new ItemTierConfig(builder, "diamond", "vanilla_tool_overrides", Tiers.DIAMOND, 5.0F, -3.0F, 16, 1, 5000f, false);
-        netheriteItemTier = new ItemTierConfig(builder, "netherite", "vanilla_tool_overrides", Tiers.NETHERITE, 5.0F, -3.0F, 64, 2, 10000f, false);
+        woodItemTier = new ItemTierConfig(builder, "wood", "vanilla_tool_overrides", Tiers.WOOD, 6.0F, -3.2F, 1, 0, 1000f, true, 1.5f);
+        stoneItemTier = new ItemTierConfig(builder, "stone", "vanilla_tool_overrides", Tiers.STONE, 7.0F, -3.2F, 1, 0, 5000f, true, 1.5f);
+        goldItemTier = new ItemTierConfig(builder, "gold", "vanilla_tool_overrides", Tiers.GOLD, 6.0F, -3.0F, 4, 0, 5000f, false, 1.5f);
+        ironItemTier = new ItemTierConfig(builder, "iron", "vanilla_tool_overrides", Tiers.IRON, 6.0F, -3.1F, 1, 0, 5000f, false, 1.5f);
+        diamondItemTier = new ItemTierConfig(builder, "diamond", "vanilla_tool_overrides", Tiers.DIAMOND, 5.0F, -3.0F, 16, 1, 5000f, false, 1.5f);
+        netheriteItemTier = new ItemTierConfig(builder, "netherite", "vanilla_tool_overrides", Tiers.NETHERITE, 5.0F, -3.0F, 64, 2, 10000f, false, 1.5f);
         ultimateItemTier = new ItemTierConfig(builder, "ultimate", "ultimate_fist", ToolsItemTier.ULTIMATE);
 
         chickenSuitArmorMaterial = new ArmorMaterialConfig(builder, "chicken_suit", "chicken_suit", 5, 15, 0.0F, 0.0F, new int[]{1, 2, 3, 1}, () -> ToolsArmorMaterials.CHICKEN_SUIT);

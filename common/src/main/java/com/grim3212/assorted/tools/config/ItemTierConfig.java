@@ -24,7 +24,10 @@ public class ItemTierConfig {
     public final Supplier<Double> maxPickupTemp;
     public final Supplier<Boolean> breaksAfterUse;
 
-    public ItemTierConfig(IConfigurationBuilder builder, String name, String path, Tier defaultTier, float defaultAxeDamage, float defaultAxeSpeed, int defaultMaxBuckets, int defaultMilkingLevel, float defaultMaxPickupTemp, boolean defaultBreaksAfterUse) {
+    // MultiTool config properties
+    public final Supplier<Double> multiToolModifier;
+
+    public ItemTierConfig(IConfigurationBuilder builder, String name, String path, Tier defaultTier, float defaultAxeDamage, float defaultAxeSpeed, int defaultMaxBuckets, int defaultMilkingLevel, float defaultMaxPickupTemp, boolean defaultBreaksAfterUse, float defaultMultiToolModifier) {
         this.name = name;
         this.defaultTier = defaultTier;
 
@@ -35,16 +38,18 @@ public class ItemTierConfig {
         this.damage = builder.defineDouble(path + "." + name + ".damage", this.defaultTier.getAttackDamageBonus(), 0F, 100000F, "The amount of damage this item tier does");
 
         this.axeDamage = builder.defineDouble(path + "." + name + ".axeDamage", defaultAxeDamage, 0F, 100000F, "The damage modifier for axes as they are different per material. Will not affect vanilla tools.");
-        this.axeSpeed = builder.defineDouble(path + "." + name + ".axeSpeed", defaultAxeDamage, -1000F, 100000F, "The speed modifier for axes as they are different per material. Will not affect vanilla tools.");
+        this.axeSpeed = builder.defineDouble(path + "." + name + ".axeSpeed", defaultAxeSpeed, -1000F, 100000F, "The speed modifier for axes as they are different per material. Will not affect vanilla tools.");
 
         this.maxBuckets = builder.defineInteger(path + "." + name + ".maxBuckets", defaultMaxBuckets, 1, 1000, "The maximum number of buckets that this materials bucket can hold.");
         this.milkingLevel = builder.defineInteger(path + "." + name + ".milkingLevel", defaultMilkingLevel, 0, 5, "The milking level that will be set for this materials bucket. By default only 0-3");
         this.maxPickupTemp = builder.defineDouble(path + "." + name + ".maxPickupTemp", defaultMaxPickupTemp, 0F, 1000000F, "The maximum temp of a fluid this materials bucket can pickup.");
         this.breaksAfterUse = builder.defineBoolean(path + "." + name + ".breaksAfterUse", defaultBreaksAfterUse, "Is this material so weak that the bucket will break after placing a fluid.");
+
+        this.multiToolModifier = builder.defineDouble(path + "." + name + ".multiToolModifier", defaultMultiToolModifier, 0F, 1000F, "The modifier that will be used to calculate the multitool maximum uses. Normal tool material maxUses * this modifier.");
     }
 
     public ItemTierConfig(IConfigurationBuilder builder, String name, String path, ToolsItemTier defaultTier) {
-        this(builder, name, path, defaultTier, defaultTier.getAxeDamage(), defaultTier.getAxeSpeedIn(), defaultTier.getBucketOptions().maxBuckets, defaultTier.getBucketOptions().milkingLevel, defaultTier.getBucketOptions().maxPickupTemp, defaultTier.getBucketOptions().destroyedAfterUse);
+        this(builder, name, path, defaultTier, defaultTier.getAxeDamage(), defaultTier.getAxeSpeedIn(), defaultTier.getBucketOptions().maxBuckets, defaultTier.getBucketOptions().milkingLevel, defaultTier.getBucketOptions().maxPickupTemp, defaultTier.getBucketOptions().destroyedAfterUse, defaultTier.getMultiToolMod());
     }
 
     public String getName() {
@@ -97,6 +102,10 @@ public class ItemTierConfig {
 
     public boolean getBreaksAfterUse() {
         return this.breaksAfterUse.get();
+    }
+
+    public float getMultiToolModifier() {
+        return multiToolModifier.get().floatValue();
     }
 
     @Override
