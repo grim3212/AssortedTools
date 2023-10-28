@@ -24,6 +24,7 @@ minecraft {
 
 dependencies {
     compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
+    compileOnly group: 'mezz.jei', name: "jei-${jei_minecraft_version}-common-api", version: jei_version
     compileOnly group: 'com.grim3212.assorted.lib', name: "assortedlib-common", version: "$assortedlib_version+$minecraft_version"
 }
 

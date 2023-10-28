@@ -103,6 +103,7 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     annotationProcessor 'org.spongepowered:mixin:0.8.5-SNAPSHOT:processor'
 
+    implementation fg.deobf("mezz.jei:jei-${jei_minecraft_version}-forge:${jei_version}")
     implementation fg.deobf(group: 'com.grim3212.assorted.lib', name: 'assortedlib-forge', version: "$assortedlib_version+$minecraft_version")
 
     compileOnly project(":common")

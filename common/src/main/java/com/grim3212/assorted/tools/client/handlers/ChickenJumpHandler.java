@@ -18,6 +18,8 @@ public class ChickenJumpHandler {
 
     // Should be client side only so each client should have own instance of numJumps
     private static int numJumps;
+    private static int cooldown = 0;
+    private static final int MAX_COOLDOWN = 6;
 
     public static void tick(Minecraft mc) {
         if (ToolsCommonMod.COMMON_CONFIG.chickenSuitEnabled.get()) {
@@ -29,14 +31,23 @@ public class ChickenJumpHandler {
     }
 
     private static void onTickInGame(Minecraft mc) {
+        if (cooldown > 0) {
+            --cooldown;
+        }
+
+        if (mc.player.onGround()) {
+            numJumps = 0;
+        }
+
+
         if (!mc.player.isInWater() && !mc.player.isInLava() && mc.player.hasImpulse) {
             int jumpsAllowed = getMaxJumps(mc.player);
 
             // Must at least have 1 piece of the suit
             if (jumpsAllowed > 1) {
-                if (mc.options.keyJump.consumeClick() && numJumps < jumpsAllowed) {
-                    // Do not perform any calculation on the initial jump
-                    // This is handled by vanilla already
+                boolean jumpPressed = mc.options.keyJump.isDown();
+
+                if (jumpPressed && cooldown == 0 && numJumps < jumpsAllowed) {
                     if (numJumps > 0) {
                         mc.player.jumpFromGround();
                         mc.player.fallDistance = 0.0f;
@@ -49,7 +60,10 @@ public class ChickenJumpHandler {
                     } else {
                         // Allow for resetting fall damage when falling
                         // 'Flap those wings' :)
-                        if (mc.player.fallDistance > 0.4f) {
+                        if (mc.player.fallDistance > 0.1f) {
+                            // If we jumped while in mid-air we still only get the amount of jumps equal to armor pieces with the enchant
+                            numJumps++;
+
                             mc.player.jumpFromGround();
                             mc.player.fallDistance = -numJumps;
 
@@ -62,8 +76,10 @@ public class ChickenJumpHandler {
                     }
 
                     numJumps++;
+                    cooldown = MAX_COOLDOWN;
                 }
 
+                // Handle the glide
                 Vec3 mot = mc.player.getDeltaMovement();
                 if (!mc.options.keyShift.isDown() && mot.y < 0.0D) {
                     double d = -0.14999999999999999D - 0.14999999999999999D * (1.0D - (double) numJumps / 5D);
@@ -77,10 +93,6 @@ public class ChickenJumpHandler {
                 }
 
             }
-        }
-
-        if (mc.player.onGround()) {
-            numJumps = 0;
         }
     }
 
