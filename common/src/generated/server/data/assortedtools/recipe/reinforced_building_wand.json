@@ -9,7 +9,7 @@
   "category": "equipment",
   "key": {
     "G": "#c:storage_blocks/gold",
-    "X": "#c:obsidian"
+    "X": "#c:obsidians"
   },
   "pattern": [
     "XGX",

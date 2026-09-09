@@ -22,7 +22,7 @@
   "category": "equipment",
   "key": {
     "I": "#c:ingots/steel",
-    "L": "#c:leather"
+    "L": "#c:leathers"
   },
   "pattern": [
     " I",

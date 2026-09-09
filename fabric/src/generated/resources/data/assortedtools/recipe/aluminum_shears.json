@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "I": "#c:ingots/aluminum",
-    "L": "#c:leather"
+    "L": "#c:leathers"
   },
   "pattern": [
     " I",

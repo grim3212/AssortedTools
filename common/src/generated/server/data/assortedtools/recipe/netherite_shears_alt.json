@@ -18,7 +18,7 @@
   "category": "equipment",
   "key": {
     "I": "#c:ingots/netherite",
-    "L": "#c:leather"
+    "L": "#c:leathers"
   },
   "pattern": [
     "LI",

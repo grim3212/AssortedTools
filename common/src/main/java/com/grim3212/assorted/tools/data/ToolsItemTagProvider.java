@@ -60,15 +60,15 @@ public class ToolsItemTagProvider extends LibItemTagProvider {
 
         ToolsItems.MATERIAL_GROUPS.forEach((s, group) -> {
             // Add to top level tags
-            tagger.apply(LibCommonTags.Items.TOOLS_SWORDS).add(group.SWORD.get());
-            tagger.apply(LibCommonTags.Items.TOOLS_PICKAXES).add(group.PICKAXE.get());
-            tagger.apply(LibCommonTags.Items.TOOLS_SHOVELS).add(group.SHOVEL.get());
-            tagger.apply(LibCommonTags.Items.TOOLS_AXES).add(group.AXE.get());
-            tagger.apply(LibCommonTags.Items.TOOLS_HOES).add(group.HOE.get());
-            tagger.apply(LibCommonTags.Items.ARMORS_HELMETS).add(group.HELMET.get());
-            tagger.apply(LibCommonTags.Items.ARMORS_CHESTPLATES).add(group.CHESTPLATE.get());
-            tagger.apply(LibCommonTags.Items.ARMORS_LEGGINGS).add(group.LEGGINGS.get());
-            tagger.apply(LibCommonTags.Items.ARMORS_BOOTS).add(group.BOOTS.get());
+            tagger.apply(ItemTags.SWORDS).add(group.SWORD.get());
+            tagger.apply(ItemTags.PICKAXES).add(group.PICKAXE.get());
+            tagger.apply(ItemTags.SHOVELS).add(group.SHOVEL.get());
+            tagger.apply(ItemTags.AXES).add(group.AXE.get());
+            tagger.apply(ItemTags.HOES).add(group.HOE.get());
+            tagger.apply(ItemTags.HEAD_ARMOR).add(group.HELMET.get());
+            tagger.apply(ItemTags.CHEST_ARMOR).add(group.CHESTPLATE.get());
+            tagger.apply(ItemTags.LEG_ARMOR).add(group.LEGGINGS.get());
+            tagger.apply(ItemTags.FOOT_ARMOR).add(group.BOOTS.get());
             tagger.apply(LibCommonTags.Items.FLUID_CONTAINERS).add(group.BUCKET.get());
             tagger.apply(LibCommonTags.Items.BUCKETS_MILK).add(group.MILK_BUCKET.get());
             tagger.apply(LibCommonTags.Items.SHEARS).add(group.SHEARS.get());

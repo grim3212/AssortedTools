@@ -1,6 +1,5 @@
 package com.grim3212.assorted.tools.compat.jei;
 
-import com.grim3212.assorted.lib.util.LibCommonTags;
 import com.grim3212.assorted.tools.Constants;
 import com.grim3212.assorted.tools.common.enchantment.ToolsEnchantments;
 import com.grim3212.assorted.tools.common.item.ChickenSuitArmor;
@@ -12,6 +11,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -27,10 +27,10 @@ import java.util.function.Supplier;
 public class AnvilRecipes {
 
     public static Map<TagKey<Item>, Supplier<ChickenSuitArmor>> CHICKEN_JUMP_MAP = Map.ofEntries(
-            Map.entry(LibCommonTags.Items.ARMORS_HELMETS, ToolsItems.CHICKEN_SUIT_HELMET),
-            Map.entry(LibCommonTags.Items.ARMORS_CHESTPLATES, ToolsItems.CHICKEN_SUIT_CHESTPLATE),
-            Map.entry(LibCommonTags.Items.ARMORS_LEGGINGS, ToolsItems.CHICKEN_SUIT_LEGGINGS),
-            Map.entry(LibCommonTags.Items.ARMORS_BOOTS, ToolsItems.CHICKEN_SUIT_BOOTS)
+            Map.entry(ItemTags.HEAD_ARMOR, ToolsItems.CHICKEN_SUIT_HELMET),
+            Map.entry(ItemTags.CHEST_ARMOR, ToolsItems.CHICKEN_SUIT_CHESTPLATE),
+            Map.entry(ItemTags.LEG_ARMOR, ToolsItems.CHICKEN_SUIT_LEGGINGS),
+            Map.entry(ItemTags.FOOT_ARMOR, ToolsItems.CHICKEN_SUIT_BOOTS)
     );
 
     /**

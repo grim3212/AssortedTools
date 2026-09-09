@@ -22,7 +22,7 @@
   "category": "equipment",
   "key": {
     "I": "#c:ingots/electrum",
-    "L": "#c:leather"
+    "L": "#c:leathers"
   },
   "pattern": [
     "LI",

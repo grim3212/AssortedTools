@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "I": "#c:gems/diamond",
-    "L": "#c:leather"
+    "L": "#c:leathers"
   },
   "pattern": [
     "LI",

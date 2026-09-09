@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "I": "#c:ingots/gold",
-    "L": "#c:leather"
+    "L": "#c:leathers"
   },
   "pattern": [
     " I",

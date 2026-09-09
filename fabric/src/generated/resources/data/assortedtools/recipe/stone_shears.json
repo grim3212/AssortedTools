@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "I": "#minecraft:stone_tool_materials",
-    "L": "#c:leather"
+    "L": "#c:leathers"
   },
   "pattern": [
     " I",
