@@ -1,0 +1,33 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:and",
+      "values": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "betterbuckets"
+        },
+        {
+          "type": "assortedlib:item_tag_populated",
+          "tag": "c:gems/amethyst"
+        },
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        }
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": "#c:gems/amethyst"
+  },
+  "pattern": [
+    "I I",
+    " I "
+  ],
+  "result": {
+    "id": "assortedtools:amethyst_bucket"
+  }
+}

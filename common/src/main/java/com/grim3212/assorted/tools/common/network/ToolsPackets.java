@@ -3,7 +3,7 @@ package com.grim3212.assorted.tools.common.network;
 import com.grim3212.assorted.lib.platform.Services;
 import com.grim3212.assorted.lib.platform.services.INetworkHelper;
 import com.grim3212.assorted.tools.Constants;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class ToolsPackets {
 
@@ -12,8 +12,8 @@ public class ToolsPackets {
         Services.NETWORK.register(new INetworkHelper.MessageHandler<>(resource("tools_cycle_mode"), ToolCycleModesPacket.class, ToolCycleModesPacket::encode, ToolCycleModesPacket::decode, ToolCycleModesPacket::handle, INetworkHelper.MessageBoundSide.SERVER));
     }
 
-    private static ResourceLocation resource(String name) {
-        return new ResourceLocation(Constants.MOD_ID, name);
+    private static Identifier resource(String name) {
+        return Identifier.fromNamespaceAndPath(Constants.MOD_ID, name);
     }
 
 }

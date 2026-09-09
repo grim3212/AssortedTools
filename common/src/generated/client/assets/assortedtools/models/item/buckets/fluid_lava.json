@@ -1,0 +1,11 @@
+{
+  "parent": "assortedlib:item/default",
+  "apply_fluid_luminosity": true,
+  "cover_is_mask": true,
+  "flip_gas": true,
+  "fluid": "minecraft:lava",
+  "loader": "assortedtools:fluid_container",
+  "textures": {
+    "fluid": "assortedtools:item/buckets/bucket_fluid"
+  }
+}

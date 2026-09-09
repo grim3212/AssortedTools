@@ -1,0 +1,37 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:and",
+      "values": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "multitools"
+        },
+        {
+          "type": "assortedlib:item_tag_populated",
+          "tag": "c:ingots/silver"
+        },
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        }
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "assortedtools:silver_pickaxe",
+    "assortedtools:silver_shovel",
+    "assortedtools:silver_axe",
+    "assortedtools:silver_hoe",
+    "assortedtools:silver_sword",
+    "#c:ingots/silver",
+    "#c:ingots/silver",
+    "#c:ingots/silver",
+    "#c:ingots/silver"
+  ],
+  "result": {
+    "id": "assortedtools:silver_multitool"
+  }
+}

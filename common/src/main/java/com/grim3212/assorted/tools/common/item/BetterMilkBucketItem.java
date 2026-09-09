@@ -4,22 +4,26 @@ import com.grim3212.assorted.lib.annotations.LoaderImplement;
 import com.grim3212.assorted.lib.platform.Services;
 import com.grim3212.assorted.tools.api.item.ITiered;
 import com.grim3212.assorted.tools.config.ItemTierConfig;
-import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemInstance;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class BetterMilkBucketItem extends Item implements ITiered {
@@ -35,12 +39,18 @@ public class BetterMilkBucketItem extends Item implements ITiered {
         return parent.get();
     }
 
+    /**
+     * {@code Item.appendHoverText} is marked deprecated in 26.x - tooltips are meant to come from
+     * data components implementing {@code TooltipProvider} - but it is still the only per item
+     * hook, and vanilla's own items still override it.
+     */
+    @SuppressWarnings("deprecation")
     @Override
-    public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flagIn) {
         if (BetterBucketItem.getAmount(stack) <= 0) {
-            tooltip.add(Component.translatable("tooltip.buckets.empty"));
+            tooltip.accept(Component.translatable("tooltip.buckets.empty"));
         } else {
-            tooltip.add(Component.translatable("tooltip.buckets.contains", BetterBucketItem.getAmount(stack), this.getParent().getMaximumMillibuckets()));
+            tooltip.accept(Component.translatable("tooltip.buckets.contains", BetterBucketItem.getAmount(stack), this.getParent().getMaximumMillibuckets()));
         }
     }
 
@@ -51,10 +61,9 @@ public class BetterMilkBucketItem extends Item implements ITiered {
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level worldIn, LivingEntity entityLiving) {
-        if (!worldIn.isClientSide)
+        if (!worldIn.isClientSide())
             entityLiving.removeAllEffects();
-        if (entityLiving instanceof ServerPlayer) {
-            ServerPlayer serverplayer = (ServerPlayer) entityLiving;
+        if (entityLiving instanceof ServerPlayer serverplayer) {
             CriteriaTriggers.CONSUME_ITEM.trigger(serverplayer, stack);
             serverplayer.awardStat(Stats.ITEM_USED.get(this));
         }
@@ -67,26 +76,30 @@ public class BetterMilkBucketItem extends Item implements ITiered {
         return this.getParent().tryBreakBucket(stack);
     }
 
-    @LoaderImplement(loader = LoaderImplement.Loader.FORGE, value = "IForgeItem")
-    public ItemStack getCraftingRemainingItem(ItemStack itemStack) {
-        int amount = BetterBucketItem.getAmount(itemStack);
-        BetterBucketItem.setAmount(itemStack, amount - getBucketAmount());
+    /**
+     * See {@code BetterBucketItem#craftingRemainder}: both loaders now ask for a nullable
+     * {@code ItemStackTemplate} and neither has a {@code hasCraftingRemainingItem} any more.
+     */
+    private @Nullable ItemStackTemplate craftingRemainder(ItemStack stack) {
+        if (BetterBucketItem.getAmount(stack) < getBucketAmount()) {
+            return null;
+        }
 
-        return this.getParent().tryBreakBucket(itemStack);
+        ItemStack remainder = stack.copy();
+        BetterBucketItem.setAmount(remainder, BetterBucketItem.getAmount(remainder) - getBucketAmount());
+
+        ItemStack result = this.getParent().tryBreakBucket(remainder);
+        return result.isEmpty() ? null : ItemStackTemplate.fromStack(result);
     }
 
-    @LoaderImplement(loader = LoaderImplement.Loader.FORGE, value = "IForgeItem")
-    public boolean hasCraftingRemainingItem(ItemStack stack) {
-        return BetterBucketItem.getAmount(stack) >= getBucketAmount();
+    @LoaderImplement(loader = LoaderImplement.Loader.FORGE, value = "IItemExtension")
+    public @Nullable ItemStackTemplate getCraftingRemainder(ItemInstance instance) {
+        return instance instanceof ItemStack stack ? this.craftingRemainder(stack) : this.getCraftingRemainder();
     }
 
     @LoaderImplement(loader = LoaderImplement.Loader.FABRIC, value = "FabricItem")
-    public ItemStack getRecipeRemainder(ItemStack stack) {
-        if (this.hasCraftingRemainingItem(stack)) {
-            return this.getCraftingRemainingItem(stack);
-        }
-
-        return ItemStack.EMPTY;
+    public @Nullable ItemStackTemplate getCraftingRemainder(ItemStack stack) {
+        return this.craftingRemainder(stack);
     }
 
     public int getBucketAmount() {
@@ -95,19 +108,19 @@ public class BetterMilkBucketItem extends Item implements ITiered {
     }
 
     @Override
-    public int getUseDuration(ItemStack stack) {
+    public int getUseDuration(ItemStack stack, LivingEntity user) {
         return 32;
     }
 
     @Override
-    public UseAnim getUseAnimation(ItemStack stack) {
-        return UseAnim.DRINK;
+    public ItemUseAnimation getUseAnimation(ItemStack stack) {
+        return ItemUseAnimation.DRINK;
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
         player.startUsingItem(hand);
-        return InteractionResultHolder.success(player.getItemInHand(hand));
+        return InteractionResult.CONSUME;
     }
 
     @Override

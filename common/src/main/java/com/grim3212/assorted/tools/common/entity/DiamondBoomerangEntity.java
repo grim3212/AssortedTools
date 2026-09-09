@@ -34,7 +34,7 @@ public class DiamondBoomerangEntity extends BoomerangEntity {
 
     @Override
     public DamageSource causeNewDamage(BoomerangEntity entityboomerang, Entity entity) {
-        return this.damageSources().source(ToolsDamageSources.BOOMERANG, entityboomerang, entity);
+        return ToolsDamageSources.source(this.level(), ToolsDamageSources.BOOMERANG, entityboomerang, entity);
     }
 
     @Override

@@ -1,0 +1,33 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:and",
+      "values": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "multitools"
+        },
+        {
+          "type": "assortedlib:item_tag_populated",
+          "tag": "c:ingots/gold"
+        }
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:golden_pickaxe",
+    "minecraft:golden_shovel",
+    "minecraft:golden_axe",
+    "minecraft:golden_hoe",
+    "minecraft:golden_sword",
+    "#c:ingots/gold",
+    "#c:ingots/gold",
+    "#c:ingots/gold",
+    "#c:ingots/gold"
+  ],
+  "result": {
+    "id": "assortedtools:golden_multitool"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "multitools"
+    }
+  ],
+  "type": "minecraft:smithing_transform",
+  "addition": "minecraft:netherite_block",
+  "base": "assortedtools:diamond_multitool",
+  "result": {
+    "id": "assortedtools:netherite_multitool"
+  },
+  "template": "minecraft:netherite_upgrade_smithing_template"
+}

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "assortedtools:invar_pickaxe",
+    "assortedtools:invar_shovel",
+    "assortedtools:invar_axe",
+    "assortedtools:invar_hoe",
+    "assortedtools:invar_sword",
+    "#c:ingots/invar",
+    "#c:ingots/invar",
+    "#c:ingots/invar",
+    "#c:ingots/invar"
+  ],
+  "result": {
+    "id": "assortedtools:invar_multitool"
+  }
+}

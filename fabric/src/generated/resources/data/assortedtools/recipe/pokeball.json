@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": "minecraft:stone_button",
+    "C": "#minecraft:coals",
+    "I": "#c:ingots/iron",
+    "R": "#c:dusts/redstone"
+  },
+  "pattern": [
+    "RRR",
+    "CBC",
+    "III"
+  ],
+  "result": {
+    "id": "assortedtools:pokeball"
+  }
+}

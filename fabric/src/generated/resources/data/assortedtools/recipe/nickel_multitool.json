@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "assortedtools:nickel_pickaxe",
+    "assortedtools:nickel_shovel",
+    "assortedtools:nickel_axe",
+    "assortedtools:nickel_hoe",
+    "assortedtools:nickel_sword",
+    "#c:ingots/nickel",
+    "#c:ingots/nickel",
+    "#c:ingots/nickel",
+    "#c:ingots/nickel"
+  ],
+  "result": {
+    "id": "assortedtools:nickel_multitool"
+  }
+}

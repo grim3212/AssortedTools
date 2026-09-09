@@ -1,0 +1,35 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:and",
+      "values": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "betterspears"
+        },
+        {
+          "type": "assortedlib:item_tag_populated",
+          "tag": "c:gems/emerald"
+        },
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        }
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": "#c:gems/emerald",
+    "S": "#c:rods/wooden"
+  },
+  "pattern": [
+    "I  ",
+    " S ",
+    "  S"
+  ],
+  "result": {
+    "id": "assortedtools:emerald_spear"
+  }
+}

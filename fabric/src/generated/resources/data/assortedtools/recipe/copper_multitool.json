@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "assortedtools:copper_pickaxe",
+    "assortedtools:copper_shovel",
+    "assortedtools:copper_axe",
+    "assortedtools:copper_hoe",
+    "assortedtools:copper_sword",
+    "#c:ingots/copper",
+    "#c:ingots/copper",
+    "#c:ingots/copper",
+    "#c:ingots/copper"
+  ],
+  "result": {
+    "id": "assortedtools:copper_multitool"
+  }
+}

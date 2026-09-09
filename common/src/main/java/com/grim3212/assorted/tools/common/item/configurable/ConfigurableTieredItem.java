@@ -1,53 +1,28 @@
 package com.grim3212.assorted.tools.common.item.configurable;
 
-import com.grim3212.assorted.lib.core.item.ExtraPropertyHelper;
-import com.grim3212.assorted.lib.core.item.IItemExtraProperties;
 import com.grim3212.assorted.tools.api.item.ITiered;
 import com.grim3212.assorted.tools.config.ItemTierConfig;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 
-public class ConfigurableTieredItem extends Item implements ITiered, IItemExtraProperties {
+/**
+ * An item that carries a configured tool material but none of the tool behaviour.
+ * <p>
+ * Everything this class used to override - max damage, enchantability, the repair check, and the
+ * damage accessors it inherited from the library's {@code IItemExtraProperties} - is a data
+ * component now, applied by {@link ConfigurableTools#tiered}. What is left is the tier reference
+ * itself, which the mod reads for things vanilla has no concept of, such as bucket capacity.
+ */
+public class ConfigurableTieredItem extends Item implements ITiered {
 
     private final ItemTierConfig tierHolder;
 
     public ConfigurableTieredItem(ItemTierConfig tierHolder, Properties builder) {
-        super(builder.defaultDurability(tierHolder.getDefaultTier().getUses()));
+        super(ConfigurableTools.tiered(tierHolder, builder));
         this.tierHolder = tierHolder;
     }
 
     @Override
     public ItemTierConfig getTierHolder() {
         return tierHolder;
-    }
-
-    @Override
-    public int getMaxDamage(ItemStack stack) {
-        return this.tierHolder.getMaxUses();
-    }
-
-    @Override
-    public boolean isDamaged(ItemStack stack) {
-        return ExtraPropertyHelper.isDamaged(stack);
-    }
-
-    @Override
-    public void setDamage(ItemStack stack, int damage) {
-        ExtraPropertyHelper.setDamage(stack, damage);
-    }
-
-    @Override
-    public int getDamage(ItemStack stack) {
-        return ExtraPropertyHelper.getDamage(stack);
-    }
-
-    @Override
-    public int getEnchantmentValue() {
-        return this.tierHolder.getEnchantability();
-    }
-
-    @Override
-    public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair) {
-        return this.tierHolder.getDefaultTier().getRepairIngredient().test(repair) || super.isValidRepairItem(toRepair, repair);
     }
 }

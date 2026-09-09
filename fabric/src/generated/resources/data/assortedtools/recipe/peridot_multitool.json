@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "assortedtools:peridot_pickaxe",
+    "assortedtools:peridot_shovel",
+    "assortedtools:peridot_axe",
+    "assortedtools:peridot_hoe",
+    "assortedtools:peridot_sword",
+    "#c:gems/peridot",
+    "#c:gems/peridot",
+    "#c:gems/peridot",
+    "#c:gems/peridot"
+  ],
+  "result": {
+    "id": "assortedtools:peridot_multitool"
+  }
+}

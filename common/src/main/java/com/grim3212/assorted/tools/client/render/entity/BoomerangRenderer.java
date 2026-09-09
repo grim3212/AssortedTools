@@ -5,39 +5,64 @@ import com.grim3212.assorted.tools.common.entity.ToolsEntities;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.item.ItemModelResolver;
+import net.minecraft.client.renderer.item.ItemStackRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
-public class BoomerangRenderer extends EntityRenderer<BoomerangEntity> {
+/**
+ * Rendering is split in 26.2: everything the draw needs is read off the entity in
+ * {@link #extractRenderState} and the submit pass sees only the state. The item is resolved into an
+ * {@link ItemStackRenderState} at extract time - {@code ItemRenderer#renderStatic} is gone, an item's
+ * model is resolved by {@link ItemModelResolver} and then submitted.
+ * <p>
+ * The yaw and pitch the old {@code render(entity, entityYaw, partialTicks, ...)} was handed as
+ * arguments are carried on the state instead.
+ */
+public class BoomerangRenderer extends EntityRenderer<BoomerangEntity, BoomerangRenderer.BoomerangRenderState> {
 
-    private final ItemRenderer itemRenderer;
+    private final ItemModelResolver itemModelResolver;
 
     public BoomerangRenderer(EntityRendererProvider.Context context) {
         super(context);
-        this.itemRenderer = context.getItemRenderer();
+        this.itemModelResolver = context.getItemModelResolver();
         this.shadowRadius = 0.15F;
         this.shadowStrength = 0.75F;
     }
 
     @Override
-    public void render(BoomerangEntity entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
-        matrixStackIn.pushPose();
-        matrixStackIn.mulPose(Axis.YP.rotationDegrees(-entityYaw + 90.0f));
-        matrixStackIn.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot()) + 90.0F));
-        matrixStackIn.mulPose(Axis.YN.rotationDegrees(90.0f));
-        matrixStackIn.mulPose(Axis.ZN.rotationDegrees(entityIn.getBoomerangRotation()));
-        this.itemRenderer.renderStatic(getItemStackForRender(entityIn), ItemDisplayContext.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, entityIn.level(), 0);
-        matrixStackIn.popPose();
+    public BoomerangRenderState createRenderState() {
+        return new BoomerangRenderState();
+    }
 
-        super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
+    @Override
+    public void extractRenderState(BoomerangEntity entity, BoomerangRenderState state, float partialTicks) {
+        super.extractRenderState(entity, state, partialTicks);
+
+        state.yRot = entity.getYRot(partialTicks);
+        state.xRot = entity.getXRot(partialTicks);
+        state.boomerangRotation = entity.getBoomerangRotation();
+
+        this.itemModelResolver.updateForNonLiving(state.item, getItemStackForRender(entity), ItemDisplayContext.GROUND, entity);
+    }
+
+    @Override
+    public void submit(BoomerangRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
+        poseStack.pushPose();
+        poseStack.mulPose(Axis.YP.rotationDegrees(-state.yRot + 90.0F));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(state.xRot + 90.0F));
+        poseStack.mulPose(Axis.YN.rotationDegrees(90.0F));
+        poseStack.mulPose(Axis.ZN.rotationDegrees(state.boomerangRotation));
+        state.item.submit(poseStack, submitNodeCollector, state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor);
+        poseStack.popPose();
+
+        super.submit(state, poseStack, submitNodeCollector, camera);
     }
 
     private ItemStack getItemStackForRender(BoomerangEntity entityIn) {
@@ -47,8 +72,10 @@ public class BoomerangRenderer extends EntityRenderer<BoomerangEntity> {
         return new ItemStack(ToolsItems.WOOD_BOOMERANG.get());
     }
 
-    @Override
-    public ResourceLocation getTextureLocation(BoomerangEntity entity) {
-        return TextureAtlas.LOCATION_BLOCKS;
+    public static class BoomerangRenderState extends EntityRenderState {
+        public final ItemStackRenderState item = new ItemStackRenderState();
+        public float yRot;
+        public float xRot;
+        public float boomerangRotation;
     }
 }

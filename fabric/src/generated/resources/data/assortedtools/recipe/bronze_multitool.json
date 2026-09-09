@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "assortedtools:bronze_pickaxe",
+    "assortedtools:bronze_shovel",
+    "assortedtools:bronze_axe",
+    "assortedtools:bronze_hoe",
+    "assortedtools:bronze_sword",
+    "#c:ingots/bronze",
+    "#c:ingots/bronze",
+    "#c:ingots/bronze",
+    "#c:ingots/bronze"
+  ],
+  "result": {
+    "id": "assortedtools:bronze_multitool"
+  }
+}

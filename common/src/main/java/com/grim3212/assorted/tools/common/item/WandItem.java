@@ -8,6 +8,7 @@ import com.grim3212.assorted.tools.api.util.WandCoord3D;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -22,10 +23,21 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
 public abstract class WandItem extends Item implements ISwitchModes {
+
+    /**
+     * Where the first clicked corner is remembered between the two clicks that make a selection.
+     * <p>
+     * It used to be written straight into the stack's NBT through {@code ItemStack#getTag}, which is
+     * gone; it lives inside the {@code minecraft:custom_data} component now, which is what
+     * {@code NBTHelper} writes.
+     */
+    protected static final String START_KEY = "Start";
+    protected static final String FIRST_USE_KEY = "firstUse";
 
     protected final boolean reinforced;
     protected Random rand;
@@ -40,7 +52,7 @@ public abstract class WandItem extends Item implements ISwitchModes {
     }
 
     @Override
-    public abstract void onCraftedBy(ItemStack stack, Level worldIn, Player playerIn);
+    public abstract void onCraftedBy(ItemStack stack, Player playerIn);
 
     protected abstract boolean canBreak(Level worldIn, BlockPos pos, ItemStack stack);
 
@@ -56,7 +68,7 @@ public abstract class WandItem extends Item implements ISwitchModes {
     }
 
     public boolean isSurface(BlockState state) {
-        return (state.getBlock() == Blocks.DIRT || state.getBlock() == Blocks.GRASS || state.getBlock() == Blocks.STONE || state.getBlock() == Blocks.GRAVEL || state.getBlock() == Blocks.SANDSTONE || state.getBlock() == Blocks.SAND || state.getBlock() == Blocks.BEDROCK || state.getBlock() == Blocks.COAL_ORE || state.getBlock() == Blocks.IRON_ORE || state.getBlock() == Blocks.GOLD_ORE || state.getBlock() == Blocks.DIAMOND_ORE || state.getBlock() == Blocks.LAPIS_ORE);
+        return (state.getBlock() == Blocks.DIRT || state.getBlock() == Blocks.GRASS_BLOCK || state.getBlock() == Blocks.STONE || state.getBlock() == Blocks.GRAVEL || state.getBlock() == Blocks.SANDSTONE || state.getBlock() == Blocks.SAND || state.getBlock() == Blocks.BEDROCK || state.getBlock() == Blocks.COAL_ORE || state.getBlock() == Blocks.IRON_ORE || state.getBlock() == Blocks.GOLD_ORE || state.getBlock() == Blocks.DIAMOND_ORE || state.getBlock() == Blocks.LAPIS_ORE);
     }
 
     protected abstract boolean isTooFar(int range, int maxDiff, int range2D, ItemStack stack);
@@ -71,13 +83,13 @@ public abstract class WandItem extends Item implements ISwitchModes {
     protected abstract boolean doEffect(Level world, Player entityplayer, InteractionHand hand, WandCoord3D start, WandCoord3D end, BlockState state);
 
     protected void sendMessage(Player player, Component message) {
-        if (!player.level().isClientSide) {
+        if (!player.level().isClientSide()) {
             player.sendSystemMessage(message);
         }
     }
 
     protected void error(Player entityplayer, WandCoord3D p, String reason) {
-        entityplayer.level().playSound(entityplayer, p.pos, SoundEvents.LAVA_EXTINGUISH, SoundSource.BLOCKS, (entityplayer.level().random.nextFloat() + 0.7F) / 2.0F, 0.5F + entityplayer.level().random.nextFloat() * 0.3F);
+        entityplayer.level().playSound(entityplayer, p.pos, SoundEvents.LAVA_EXTINGUISH, SoundSource.BLOCKS, (entityplayer.level().getRandom().nextFloat() + 0.7F) / 2.0F, 0.5F + entityplayer.level().getRandom().nextFloat() * 0.3F);
         sendMessage(entityplayer, Component.translatable("error.wand." + reason));
         particles(entityplayer.level(), p.pos, 3);
     }
@@ -118,27 +130,46 @@ public abstract class WandItem extends Item implements ISwitchModes {
             double d2 = pos.getY() + this.rand.nextFloat();
             double d3 = pos.getZ() + this.rand.nextFloat();
 
-            if ((l == 0) && (!world.getBlockState(pos.above()).isSolidRender(world, pos))) {
+            // isSolidRender is position independent now, it is a property of the state alone.
+            if ((l == 0) && (!world.getBlockState(pos.above()).isSolidRender())) {
                 d2 = pos.getY() + 1 + d;
             }
-            if ((l == 1) && (!world.getBlockState(pos.below()).isSolidRender(world, pos))) {
+            if ((l == 1) && (!world.getBlockState(pos.below()).isSolidRender())) {
                 d2 = pos.getY() + 0 - d;
             }
-            if ((l == 2) && (!world.getBlockState(pos.south()).isSolidRender(world, pos))) {
+            if ((l == 2) && (!world.getBlockState(pos.south()).isSolidRender())) {
                 d3 = pos.getZ() + 1 + d;
             }
-            if ((l == 3) && (!world.getBlockState(pos.north()).isSolidRender(world, pos))) {
+            if ((l == 3) && (!world.getBlockState(pos.north()).isSolidRender())) {
                 d3 = pos.getZ() + 0 - d;
             }
-            if ((l == 4) && (!world.getBlockState(pos.east()).isSolidRender(world, pos))) {
+            if ((l == 4) && (!world.getBlockState(pos.east()).isSolidRender())) {
                 d1 = pos.getX() + 1 + d;
             }
-            if ((l == 5) && (!world.getBlockState(pos.west()).isSolidRender(world, pos))) {
+            if ((l == 5) && (!world.getBlockState(pos.west()).isSolidRender())) {
                 d1 = pos.getX() + 0 - d;
             }
             if ((d1 < pos.getX()) || (d1 > pos.getX() + 1) || (d2 < 0.0D) || (d2 > pos.getY() + 1) || (d3 < pos.getZ()) || (d3 > pos.getZ() + 1))
                 world.addParticle(DustParticleOptions.REDSTONE, d1, d2, d3, R, G, B);
         }
+    }
+
+    /**
+     * {@code WandCoord3D} reads and writes itself against a parent CompoundTag, which used to be the
+     * stack's own NBT. There is no such thing any more, so the sub tag is lifted in and out of the
+     * custom data component around it. Custom data hands back a detached copy, so a write has to go
+     * back through {@code putTag} to reach the stack.
+     */
+    protected static @Nullable WandCoord3D readStart(Level level, ItemStack stack) {
+        CompoundTag root = new CompoundTag();
+        root.put(START_KEY, NBTHelper.getTag(stack, START_KEY));
+        return WandCoord3D.getFromNBT(level, root, START_KEY);
+    }
+
+    protected static void writeStart(ItemStack stack, WandCoord3D coord) {
+        CompoundTag root = new CompoundTag();
+        coord.writeToNBT(root, START_KEY);
+        NBTHelper.putTag(stack, START_KEY, root.getCompoundOrEmpty(START_KEY));
     }
 
     @Override
@@ -152,7 +183,7 @@ public abstract class WandItem extends Item implements ISwitchModes {
         this.stateOrig = worldIn.getBlockState(pos);
         BlockState state = this.stateOrig;
 
-        if (state.getBlock() == Blocks.GRASS) {
+        if (state.getBlock() == Blocks.GRASS_BLOCK) {
             state = Blocks.DIRT.defaultBlockState();
         }
 
@@ -164,23 +195,23 @@ public abstract class WandItem extends Item implements ISwitchModes {
         }
 
         ItemStack stack = playerIn.getItemInHand(hand);
-        WandCoord3D start = WandCoord3D.getFromNBT(worldIn, stack.getTag(), "Start");
+        WandCoord3D start = readStart(worldIn, stack);
 
         if (start == null) {
             SoundType soundType = Services.LEVEL_PROPERTIES.getSoundType(worldIn, pos, null);
             worldIn.playSound((Player) null, pos, soundType.getBreakSound(), SoundSource.BLOCKS, (soundType.getVolume() + 1.0F) / 2.0F, soundType.getPitch() * 0.8F);
 
             this.stateClicked = state;
-            clicked_current.writeToNBT(stack.getTag(), "Start");
+            writeStart(stack, clicked_current);
 
             particles(worldIn, clicked_current, 0);
 
-            NBTHelper.putBoolean(stack, "firstUse", false);
+            NBTHelper.putBoolean(stack, FIRST_USE_KEY, false);
             return InteractionResult.SUCCESS;
         } else {
 
-            if (NBTHelper.getBoolean(stack, "firstUse")) {
-                NBTHelper.removeTag(stack, "Start");
+            if (NBTHelper.getBoolean(stack, FIRST_USE_KEY)) {
+                NBTHelper.removeTag(stack, START_KEY);
                 error(playerIn, clicked_current, "nostart");
                 return InteractionResult.SUCCESS;
             }
@@ -188,7 +219,7 @@ public abstract class WandItem extends Item implements ISwitchModes {
             WandCoord3D.findEnds(start, clicked_current);
 
             if (isTooFar(start, clicked_current, stack)) {
-                NBTHelper.removeTag(stack, "Start");
+                NBTHelper.removeTag(stack, START_KEY);
                 error(playerIn, clicked_current, "toofar");
                 return InteractionResult.SUCCESS;
             }
@@ -196,19 +227,17 @@ public abstract class WandItem extends Item implements ISwitchModes {
             boolean damage = this.doEffect(worldIn, playerIn, hand, start, clicked_current, state);
 
             if (damage) {
-                NBTHelper.putBoolean(stack, "firstUse", true);
+                NBTHelper.putBoolean(stack, FIRST_USE_KEY, true);
                 if (!isFree) {
-                    NBTHelper.removeTag(stack, "Start");
-                    stack.hurtAndBreak(1, playerIn, (s) -> {
-                        s.broadcastBreakEvent(hand);
-                    });
+                    NBTHelper.removeTag(stack, START_KEY);
+                    stack.hurtAndBreak(1, playerIn, hand);
                     return InteractionResult.SUCCESS;
                 }
             }
         }
 
         // Clear out start if we somehow pop out one of the ifs above
-        NBTHelper.removeTag(stack, "Start");
+        NBTHelper.removeTag(stack, START_KEY);
         return InteractionResult.SUCCESS;
     }
 

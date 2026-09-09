@@ -3,8 +3,6 @@ package com.grim3212.assorted.tools.client.render.model;
 import com.grim3212.assorted.lib.platform.Services;
 import com.grim3212.assorted.tools.Constants;
 import com.grim3212.assorted.tools.common.item.BetterSpearItem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -12,20 +10,25 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.Unit;
 import net.minecraft.world.item.Item;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class SpearModel extends Model {
-    private final ModelPart root;
+/**
+ * {@link Model} carries a state type now and takes its root part in the constructor;
+ * {@code renderToBuffer} is final and draws the whole root, so the old override is gone. The spear
+ * has no animated parts, so its state type is {@link Unit} - exactly what vanilla's
+ * {@code TridentModel} does.
+ */
+public class SpearModel extends Model<Unit> {
 
     public SpearModel(ModelPart root) {
-        super(RenderType::entitySolid);
-        this.root = root;
+        super(root, RenderTypes::entitySolid);
     }
 
     public static LayerDefinition createLayer() {
@@ -38,31 +41,26 @@ public class SpearModel extends Model {
         return LayerDefinition.create(meshdefinition, 32, 32);
     }
 
-    @Override
-    public void renderToBuffer(PoseStack stack, VertexConsumer buffer, int p_225598_3_, int p_225598_4_, float p_225598_5_, float p_225598_6_, float p_225598_7_, float p_225598_8_) {
-        this.root.render(stack, buffer, p_225598_3_, p_225598_4_, p_225598_5_, p_225598_6_, p_225598_7_, p_225598_8_);
-    }
+    public static final Identifier DEFAULT_TEXTURE = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/entity/projectiles/wood_spear.png");
 
-    private static final ResourceLocation WOOD_SPEAR = new ResourceLocation(Constants.MOD_ID, "textures/entity/projectiles/wood_spear.png");
+    protected final Map<Identifier, Identifier> cache = new HashMap<Identifier, Identifier>();
 
-    protected final Map<ResourceLocation, ResourceLocation> cache = new HashMap<ResourceLocation, ResourceLocation>();
-
-    public ResourceLocation getTexture(Item item) {
-        ResourceLocation key = key(item);
+    public Identifier getTexture(Item item) {
+        Identifier key = key(item);
         if (!this.cache.containsKey(key)) {
             if (item instanceof BetterSpearItem) {
                 BetterSpearItem spear = (BetterSpearItem) item;
-                this.cache.put(key(spear), new ResourceLocation(Constants.MOD_ID, "textures/entity/projectiles/" + spear.getTierHolder().getName() + "_spear.png"));
+                this.cache.put(key(spear), Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/entity/projectiles/" + spear.getTierHolder().getName() + "_spear.png"));
             } else {
                 Constants.LOG.error("Tried to get spear texture for non-spear item");
-                return WOOD_SPEAR;
+                return DEFAULT_TEXTURE;
             }
         }
 
         return this.cache.get(key);
     }
 
-    private ResourceLocation key(Item item) {
+    private Identifier key(Item item) {
         return Services.PLATFORM.getRegistry(Registries.ITEM).getRegistryName(item);
     }
 }

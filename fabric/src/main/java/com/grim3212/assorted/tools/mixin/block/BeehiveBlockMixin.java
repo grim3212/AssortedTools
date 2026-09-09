@@ -1,68 +1,33 @@
 package com.grim3212.assorted.tools.mixin.block;
 
-import com.grim3212.assorted.lib.util.LibCommonTags;
-import net.minecraft.core.BlockPos;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.stats.Stats;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
+import com.grim3212.assorted.tools.common.item.ToolsShears;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ShearsItem;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BeehiveBlock;
-import net.minecraft.world.level.block.CampfireBlock;
-import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.phys.BlockHitResult;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
+/**
+ * Lets the mod's shears harvest a beehive on Fabric.
+ * <p>
+ * Vanilla hardcodes {@code itemStack.is(Items.SHEARS)}, so modded shears are invisible to it. This
+ * redirects that one call rather than reimplementing the branch, which is what the 1.20.1 version
+ * did - the old copy has to be kept in step with vanilla by hand, and it went stale the moment
+ * {@code Block#use} became {@code useItemOn}.
+ * <p>
+ * Fabric only: NeoForge patches this same line to
+ * {@code canPerformAction(ItemAbilities.SHEARS_HARVEST)}, which {@code MaterialShears} answers
+ * through {@code ShearsItem}.
+ */
 @Mixin(BeehiveBlock.class)
 public abstract class BeehiveBlockMixin {
-    @Shadow
-    protected abstract void resetHoneyLevel(Level level, BlockState state, BlockPos pos);
 
-    @Shadow
-    protected abstract void releaseBeesAndResetHoneyLevel(Level level, BlockState state, BlockPos pos, @Nullable Player player, BeehiveBlockEntity.BeeReleaseStatus beeReleaseStatus);
-
-    @Shadow
-    protected abstract boolean hiveContainsBees(Level level, BlockPos pos);
-
-    @Shadow
-    protected abstract void angerNearbyBees(Level level, BlockPos pos);
-
-    @Inject(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;is(Lnet/minecraft/world/item/Item;)Z", ordinal = 0), cancellable = true)
-    private void use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit, CallbackInfoReturnable<InteractionResult> cir) {
-        ItemStack stack = player.getItemInHand(hand);
-        if (stack.getItem() instanceof ShearsItem || stack.is(LibCommonTags.Items.SHEARS)) {
-            level.playSound(player, player.getX(), player.getY(), player.getZ(), SoundEvents.BEEHIVE_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
-            BeehiveBlock.dropHoneycomb(level, pos);
-            stack.hurtAndBreak(1, player, (playerx) -> {
-                playerx.broadcastBreakEvent(hand);
-            });
-            level.gameEvent(player, GameEvent.SHEAR, pos);
-            if (!level.isClientSide()) {
-                player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
-            }
-
-            if (!CampfireBlock.isSmokeyPos(level, pos)) {
-                if (this.hiveContainsBees(level, pos)) {
-                    this.angerNearbyBees(level, pos);
-                }
-
-                this.releaseBeesAndResetHoneyLevel(level, state, pos, player, BeehiveBlockEntity.BeeReleaseStatus.EMERGENCY);
-            } else {
-                this.resetHoneyLevel(level, state, pos);
-            }
-
-            cir.setReturnValue(InteractionResult.sidedSuccess(level.isClientSide));
-        }
+    // The descriptor is `is(Object)`, not `is(Item)`: `is` lives on the generic
+    // `TypedInstance<T>` interface now, so T erases to Object in the bytecode. Targeting
+    // `is(Item)` compiles and then fails at load with a critical injection failure.
+    // Ordinal 0 is the shears branch; ordinal 1 is the glass bottle one right after it.
+    @Redirect(method = "useItemOn", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;is(Ljava/lang/Object;)Z", ordinal = 0))
+    private boolean assortedtools_shearsHarvest(ItemStack stack, Object item) {
+        return ToolsShears.matches(stack, item);
     }
 }

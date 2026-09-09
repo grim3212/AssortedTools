@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "assortedtools:aluminum_pickaxe",
+    "assortedtools:aluminum_shovel",
+    "assortedtools:aluminum_axe",
+    "assortedtools:aluminum_hoe",
+    "assortedtools:aluminum_sword",
+    "#c:ingots/aluminum",
+    "#c:ingots/aluminum",
+    "#c:ingots/aluminum",
+    "#c:ingots/aluminum"
+  ],
+  "result": {
+    "id": "assortedtools:aluminum_multitool"
+  }
+}

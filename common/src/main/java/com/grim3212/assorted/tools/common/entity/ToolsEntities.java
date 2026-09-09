@@ -4,7 +4,8 @@ import com.grim3212.assorted.lib.registry.IRegistryObject;
 import com.grim3212.assorted.lib.registry.RegistryProvider;
 import com.grim3212.assorted.tools.Constants;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -19,7 +20,9 @@ public class ToolsEntities {
     public static final IRegistryObject<EntityType<BetterSpearEntity>> BETTER_SPEAR = register("better_spear", EntityType.Builder.<BetterSpearEntity>of(BetterSpearEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20));
 
     private static <T extends Entity> IRegistryObject<EntityType<T>> register(final String name, final EntityType.Builder<T> builder) {
-        return ENTITIES.register(name, () -> builder.build(new ResourceLocation(Constants.MOD_ID, name).toString()));
+        // Entity types are built against their own registry key now, not a raw string
+        final ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(Constants.MOD_ID, name));
+        return ENTITIES.register(name, () -> builder.build(key));
     }
 
     public static void init() {

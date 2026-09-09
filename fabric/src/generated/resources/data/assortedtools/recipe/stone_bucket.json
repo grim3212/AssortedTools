@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": "#minecraft:stone_tool_materials"
+  },
+  "pattern": [
+    "I I",
+    " I "
+  ],
+  "result": {
+    "id": "assortedtools:stone_bucket"
+  }
+}

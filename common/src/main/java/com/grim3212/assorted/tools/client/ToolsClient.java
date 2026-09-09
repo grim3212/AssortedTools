@@ -1,33 +1,28 @@
 package com.grim3212.assorted.tools.client;
 
-import com.google.common.collect.Lists;
 import com.grim3212.assorted.lib.platform.ClientServices;
-import com.grim3212.assorted.lib.platform.Services;
 import com.grim3212.assorted.tools.Constants;
+import com.grim3212.assorted.tools.client.color.FluidContainerTintSource;
 import com.grim3212.assorted.tools.client.handlers.ChickenJumpHandler;
 import com.grim3212.assorted.tools.client.handlers.KeyBindHandler;
 import com.grim3212.assorted.tools.client.model.fluidcontainer.FluidContainerModel;
 import com.grim3212.assorted.tools.client.render.entity.BetterSpearRenderer;
 import com.grim3212.assorted.tools.client.render.entity.BoomerangRenderer;
-import com.grim3212.assorted.tools.client.render.item.SpearBEWLR;
+import com.grim3212.assorted.tools.client.render.item.SpearSpecialRenderer;
 import com.grim3212.assorted.tools.client.render.model.SpearModel;
 import com.grim3212.assorted.tools.client.render.model.ToolsModelLayers;
 import com.grim3212.assorted.tools.common.entity.ToolsEntities;
-import com.grim3212.assorted.tools.common.item.ToolsItems;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
-import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
-import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.resources.ResourceLocation;
-
-import java.util.List;
 
 public class ToolsClient {
 
     public static KeyMapping TOOL_SWITCH_MODES;
 
     public static void init() {
+        // The group string becomes a registered KeyMapping.Category id, so the label this key sorts
+        // under is "key.category.assortedlib.assorted_tools" rather than the old free-form group key.
         TOOL_SWITCH_MODES = ClientServices.KEYBINDS.createNew("key.assortedtools.tool_switch_modes", ClientServices.KEYBINDS.getInGameKeyConflictContext(), InputConstants.Type.KEYSYM, InputConstants.KEY_Z, Constants.MOD_NAME);
         ClientServices.CLIENT.registerKeyMapping(TOOL_SWITCH_MODES);
 
@@ -36,53 +31,41 @@ public class ToolsClient {
 
         ClientServices.CLIENT.registerEntityLayer(ToolsModelLayers.SPEAR, SpearModel::createLayer);
 
-        SpearBEWLR spear = new SpearBEWLR();
-        ClientServices.CLIENT.addReloadListener(new ResourceLocation(Constants.MOD_ID, "spear_hand_renderer"), spear);
-
+        // BlockEntityWithoutLevelRenderer is gone: a special item renderer is selected by the item's
+        // own model json ("minecraft:special" naming this id), so code only registers the id to codec
+        // pair. The spear renderer used to be registered against each spear item here, and to be a
+        // reload listener so it could look its inventory models up again; neither is possible or
+        // needed now.
+        // TODO(26.2): nothing selects this yet. The generated spear item models are still in 1.20.1
+        //  shape - a "models/item/<mat>_spear.json" with an "overrides" list - and there is no
+        //  "assets/assortedtools/items/<mat>_spear.json". Until those are regenerated as a
+        //  "minecraft:select" on "minecraft:display_context" (gui/ground/fixed -> the flat
+        //  <mat>_spear_gui model) whose fallback is a "minecraft:condition" on "minecraft:using_item"
+        //  over two "minecraft:special" entries naming assortedtools:spear with the material's
+        //  texture, spears do not render in hand at all. See SpearSpecialRenderer.
         ClientServices.CLIENT.registerBEWLR((register) -> {
-            register.registerBlockEntityWithoutLevelRenderer(ToolsItems.WOOD_SPEAR.get(), spear);
-            register.registerBlockEntityWithoutLevelRenderer(ToolsItems.STONE_SPEAR.get(), spear);
-            register.registerBlockEntityWithoutLevelRenderer(ToolsItems.IRON_SPEAR.get(), spear);
-            register.registerBlockEntityWithoutLevelRenderer(ToolsItems.GOLD_SPEAR.get(), spear);
-            register.registerBlockEntityWithoutLevelRenderer(ToolsItems.DIAMOND_SPEAR.get(), spear);
-            register.registerBlockEntityWithoutLevelRenderer(ToolsItems.NETHERITE_SPEAR.get(), spear);
-
-            ToolsItems.MATERIAL_GROUPS.forEach((s, group) -> {
-                register.registerBlockEntityWithoutLevelRenderer(group.SPEAR.get(), spear);
-            });
+            register.registerSpecialModelRenderer(SpearSpecialRenderer.ID, SpearSpecialRenderer.Unbaked.MAP_CODEC);
         });
 
-        ClampedItemPropertyFunction override = (stack, world, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F;
-        List<ResourceLocation> extraModels = Lists.newArrayList(
-                new ModelResourceLocation(new ResourceLocation(Constants.MOD_ID, "wood_spear_gui"), "inventory"),
-                new ModelResourceLocation(new ResourceLocation(Constants.MOD_ID, "stone_spear_gui"), "inventory"),
-                new ModelResourceLocation(new ResourceLocation(Constants.MOD_ID, "iron_spear_gui"), "inventory"),
-                new ModelResourceLocation(new ResourceLocation(Constants.MOD_ID, "gold_spear_gui"), "inventory"),
-                new ModelResourceLocation(new ResourceLocation(Constants.MOD_ID, "diamond_spear_gui"), "inventory"),
-                new ModelResourceLocation(new ResourceLocation(Constants.MOD_ID, "netherite_spear_gui"), "inventory"));
-        ClientServices.CLIENT.registerItemProperty(() -> ToolsItems.WOOD_SPEAR.get(), new ResourceLocation(Constants.MOD_ID, "throwing"), override);
-        ClientServices.CLIENT.registerItemProperty(() -> ToolsItems.STONE_SPEAR.get(), new ResourceLocation(Constants.MOD_ID, "throwing"), override);
-        ClientServices.CLIENT.registerItemProperty(() -> ToolsItems.IRON_SPEAR.get(), new ResourceLocation(Constants.MOD_ID, "throwing"), override);
-        ClientServices.CLIENT.registerItemProperty(() -> ToolsItems.GOLD_SPEAR.get(), new ResourceLocation(Constants.MOD_ID, "throwing"), override);
-        ClientServices.CLIENT.registerItemProperty(() -> ToolsItems.DIAMOND_SPEAR.get(), new ResourceLocation(Constants.MOD_ID, "throwing"), override);
-        ClientServices.CLIENT.registerItemProperty(() -> ToolsItems.NETHERITE_SPEAR.get(), new ResourceLocation(Constants.MOD_ID, "throwing"), override);
-
-        ToolsItems.MATERIAL_GROUPS.forEach((s, group) -> {
-            ClientServices.CLIENT.registerItemProperty(() -> group.SPEAR.get(), new ResourceLocation(Constants.MOD_ID, "throwing"), override);
-            extraModels.add(new ModelResourceLocation(new ResourceLocation(Constants.MOD_ID, s + "_spear_gui"), "inventory"));
-        });
-
-        ClientServices.CLIENT.registerAdditionalModel(extraModels);
+        // TODO(26.2): registerItemProperty and registerAdditionalModel are both gone.
+        //  The "assortedtools:throwing" ClampedItemPropertyFunction that swapped a spear to its
+        //  _throwing model while the item was in use has no runtime equivalent - model selection by a
+        //  property is data driven through client.renderer.item.properties.** referenced from the
+        //  item model json, and the direct replacement for this particular predicate is vanilla's own
+        //  "minecraft:using_item" conditional property.
+        //  The <mat>_spear_gui models no longer need to be force-loaded either: they were extra
+        //  models only because SpearBEWLR fetched them from the ModelManager by name at runtime, and
+        //  an item model referenced from an item's json is loaded because it is referenced.
 
         ClientServices.CLIENT.registerEntityRenderer(() -> ToolsEntities.WOOD_BOOMERANG.get(), BoomerangRenderer::new);
         ClientServices.CLIENT.registerEntityRenderer(() -> ToolsEntities.DIAMOND_BOOMERANG.get(), BoomerangRenderer::new);
         ClientServices.CLIENT.registerEntityRenderer(() -> ToolsEntities.POKEBALL.get(), ThrownItemRenderer::new);
         ClientServices.CLIENT.registerEntityRenderer(() -> ToolsEntities.BETTER_SPEAR.get(), BetterSpearRenderer::new);
 
-        ClientServices.CLIENT.registerItemColor((stack, tintIndex) -> {
-            if (tintIndex != 1) return 0xFFFFFFFF;
-            return Services.FLUIDS.get(stack).map(x -> ClientServices.FLUIDS.getFluidColor(x)).orElse(0xFFFFFFFF);
-        }, () -> ToolsItems.buckets());
+        // An item's tints live in its model json now; all that is registered from code is the source
+        // type. The bucket models need a "tints" entry naming this id at the fluid layer's index,
+        // which is what the old registerItemColor's "tintIndex != 1" check stood in for.
+        ClientServices.CLIENT.registerItemTintSource(FluidContainerTintSource.ID, FluidContainerTintSource.MAP_CODEC);
 
         ClientServices.CLIENT.registerModelLoader(FluidContainerModel.LOADER_NAME, FluidContainerModel.Loader.INSTANCE);
     }

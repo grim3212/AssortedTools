@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "assortedtools:platinum_pickaxe",
+    "assortedtools:platinum_shovel",
+    "assortedtools:platinum_axe",
+    "assortedtools:platinum_hoe",
+    "assortedtools:platinum_sword",
+    "#c:ingots/platinum",
+    "#c:ingots/platinum",
+    "#c:ingots/platinum",
+    "#c:ingots/platinum"
+  ],
+  "result": {
+    "id": "assortedtools:platinum_multitool"
+  }
+}

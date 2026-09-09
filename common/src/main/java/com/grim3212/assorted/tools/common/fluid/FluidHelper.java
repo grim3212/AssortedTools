@@ -3,11 +3,14 @@ package com.grim3212.assorted.tools.common.fluid;
 import com.grim3212.assorted.lib.core.fluid.FluidInformation;
 import com.grim3212.assorted.lib.platform.Services;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -35,7 +38,7 @@ public class FluidHelper {
         BlockState blockState = level.getBlockState(pos);
         if (blockState.getBlock() instanceof BucketPickup) {
             BucketPickup bucketPickup = (BucketPickup) blockState.getBlock();
-            ItemStack pickupBlock = bucketPickup.pickupBlock(level, pos, blockState);
+            ItemStack pickupBlock = bucketPickup.pickupBlock(playerIn, level, pos, blockState);
             if (!pickupBlock.isEmpty()) {
                 FluidInformation fluid = Services.FLUIDS.get(pickupBlock).orElse(new FluidInformation(Fluids.EMPTY));
                 if (!fluid.fluid().isSame(Fluids.EMPTY)) {
@@ -61,17 +64,22 @@ public class FluidHelper {
         BlockState blockState = level.getBlockState(pos);
         Block block = blockState.getBlock();
         boolean bl = blockState.canBeReplaced(content);
-        boolean bl2 = blockState.isAir() || bl || block instanceof LiquidBlockContainer && ((LiquidBlockContainer) block).canPlaceLiquid(level, pos, blockState, content);
+        boolean bl2 = blockState.isAir() || bl || block instanceof LiquidBlockContainer && ((LiquidBlockContainer) block).canPlaceLiquid(player, level, pos, blockState, content);
         if (!bl2) {
             return hitResult != null && tryPlaceFluid(player, level, hitResult.getBlockPos().relative(hitResult.getDirection()), null, information);
-        } else if (level.dimensionType().ultraWarm() && content.is(FluidTags.WATER)) {
+            // Whether water boils off is an environment attribute sampled per position now, not a
+            // flat dimensionType().ultraWarm() flag. Level#random is protected; getRandom() is the
+            // accessor, and the particles now use it rather than Math.random() so they follow the
+            // level's own random source like vanilla's bucket does.
+        } else if (level.environmentAttributes().getValue(EnvironmentAttributes.WATER_EVAPORATES, pos) && BuiltInRegistries.FLUID.wrapAsHolder(content).is(FluidTags.WATER)) {
             int i = pos.getX();
             int j = pos.getY();
             int k = pos.getZ();
-            level.playSound(player, pos, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.5F, 2.6F + (level.random.nextFloat() - level.random.nextFloat()) * 0.8F);
+            RandomSource random = level.getRandom();
+            level.playSound(player, pos, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.5F, 2.6F + (random.nextFloat() - random.nextFloat()) * 0.8F);
 
             for (int l = 0; l < 8; ++l) {
-                level.addParticle(ParticleTypes.LARGE_SMOKE, (double) i + Math.random(), (double) j + Math.random(), (double) k + Math.random(), 0.0, 0.0, 0.0);
+                level.addParticle(ParticleTypes.LARGE_SMOKE, (double) i + random.nextFloat(), (double) j + random.nextFloat(), (double) k + random.nextFloat(), 0.0, 0.0, 0.0);
             }
 
             return true;
@@ -80,7 +88,11 @@ public class FluidHelper {
             playEmptySound(player, level, pos, information);
             return true;
         } else {
-            if (!level.isClientSide() && bl && !blockState.liquid()) {
+            // BlockStateBase#liquid() is @Deprecated with no replacement in the jar - vanilla's own
+            // BucketItem#emptyContents still calls it here, so this mirrors it.
+            @SuppressWarnings("deprecation")
+            boolean replacingLiquid = blockState.liquid();
+            if (!level.isClientSide() && bl && !replacingLiquid) {
                 level.destroyBlock(pos, true);
             }
 
@@ -95,7 +107,7 @@ public class FluidHelper {
 
     protected static void playEmptySound(@Nullable Player player, LevelAccessor level, BlockPos pos, FluidInformation information) {
         Fluid content = information.fluid();
-        SoundEvent soundEvent = content.is(FluidTags.LAVA) ? SoundEvents.BUCKET_EMPTY_LAVA : SoundEvents.BUCKET_EMPTY;
+        SoundEvent soundEvent = BuiltInRegistries.FLUID.wrapAsHolder(content).is(FluidTags.LAVA) ? SoundEvents.BUCKET_EMPTY_LAVA : SoundEvents.BUCKET_EMPTY;
         level.playSound(player, pos, soundEvent, SoundSource.BLOCKS, 1.0F, 1.0F);
         level.gameEvent(player, GameEvent.FLUID_PLACE, pos);
     }

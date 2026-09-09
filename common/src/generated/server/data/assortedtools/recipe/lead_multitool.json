@@ -1,0 +1,37 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:and",
+      "values": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "multitools"
+        },
+        {
+          "type": "assortedlib:item_tag_populated",
+          "tag": "c:ingots/lead"
+        },
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        }
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "assortedtools:lead_pickaxe",
+    "assortedtools:lead_shovel",
+    "assortedtools:lead_axe",
+    "assortedtools:lead_hoe",
+    "assortedtools:lead_sword",
+    "#c:ingots/lead",
+    "#c:ingots/lead",
+    "#c:ingots/lead",
+    "#c:ingots/lead"
+  ],
+  "result": {
+    "id": "assortedtools:lead_multitool"
+  }
+}

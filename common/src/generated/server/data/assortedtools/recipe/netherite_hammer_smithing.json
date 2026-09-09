@@ -1,0 +1,15 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "hammers"
+    }
+  ],
+  "type": "minecraft:smithing_transform",
+  "addition": "#c:ingots/netherite",
+  "base": "assortedtools:diamond_hammer",
+  "result": {
+    "id": "assortedtools:netherite_hammer"
+  },
+  "template": "minecraft:netherite_upgrade_smithing_template"
+}

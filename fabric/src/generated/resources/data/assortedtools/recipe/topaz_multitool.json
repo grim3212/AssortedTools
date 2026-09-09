@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "assortedtools:topaz_pickaxe",
+    "assortedtools:topaz_shovel",
+    "assortedtools:topaz_axe",
+    "assortedtools:topaz_hoe",
+    "assortedtools:topaz_sword",
+    "#c:gems/topaz",
+    "#c:gems/topaz",
+    "#c:gems/topaz",
+    "#c:gems/topaz"
+  ],
+  "result": {
+    "id": "assortedtools:topaz_multitool"
+  }
+}

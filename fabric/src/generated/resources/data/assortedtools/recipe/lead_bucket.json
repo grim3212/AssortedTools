@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": "#c:ingots/lead"
+  },
+  "pattern": [
+    "I I",
+    " I "
+  ],
+  "result": {
+    "id": "assortedtools:lead_bucket"
+  }
+}

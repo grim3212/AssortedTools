@@ -2,13 +2,22 @@ package com.grim3212.assorted.tools.config;
 
 import com.grim3212.assorted.lib.config.IConfigurationBuilder;
 import com.grim3212.assorted.tools.api.item.ToolsArmorMaterials;
-import net.minecraft.Util;
-import net.minecraft.world.item.ArmorItem;
+import net.minecraft.util.Util;
+import net.minecraft.world.item.equipment.ArmorMaterial;
+import net.minecraft.world.item.equipment.ArmorType;
 
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.function.Supplier;
 
+/**
+ * An armour material whose numbers come from the configuration file.
+ * <p>
+ * Like {@link ItemTierConfig}, the values are now baked into data components when the item is
+ * built, so {@link #material()} reads the configuration once at registration and
+ * <b>changes need a restart</b>. The per-slot durability multiplier that used to come from a mixin
+ * into {@code ArmorMaterials} is public API now: {@link ArmorType#getDurability(int)}.
+ */
 public class ArmorMaterialConfig {
     private final String name;
 
@@ -61,19 +70,36 @@ public class ArmorMaterialConfig {
         return helmetReductionAmount.get();
     }
 
-    private EnumMap<ArmorItem.Type, Integer> cachedReductionAmounts;
+    private EnumMap<ArmorType, Integer> cachedReductionAmounts;
 
-    public EnumMap<ArmorItem.Type, Integer> getReductionAmounts() {
+    public EnumMap<ArmorType, Integer> getReductionAmounts() {
         if (cachedReductionAmounts == null) {
-            this.cachedReductionAmounts = Util.make(new EnumMap(ArmorItem.Type.class), (map) -> {
-                map.put(ArmorItem.Type.BOOTS, getBootsReductionAmount());
-                map.put(ArmorItem.Type.LEGGINGS, getLeggingsReductionAmount());
-                map.put(ArmorItem.Type.CHESTPLATE, getChestPlateReductionAmount());
-                map.put(ArmorItem.Type.HELMET, getHelmetReductionAmount());
+            this.cachedReductionAmounts = Util.make(new EnumMap<>(ArmorType.class), (map) -> {
+                map.put(ArmorType.BOOTS, getBootsReductionAmount());
+                map.put(ArmorType.LEGGINGS, getLeggingsReductionAmount());
+                map.put(ArmorType.CHESTPLATE, getChestPlateReductionAmount());
+                map.put(ArmorType.HELMET, getHelmetReductionAmount());
             });
         }
 
         return this.cachedReductionAmounts;
+    }
+
+    /**
+     * The configured material, ready to hand to {@code Item.Properties#humanoidArmor}.
+     * <p>
+     * Cached for the same reason {@link ItemTierConfig#material()} is: four items share it and all
+     * of them must agree.
+     */
+    private ArmorMaterial cachedMaterial;
+
+    public ArmorMaterial material() {
+        if (this.cachedMaterial == null) {
+            ToolsArmorMaterials material = getMaterial();
+            this.cachedMaterial = new ArmorMaterial(getDurability(), getReductionAmounts(), getEnchantability(), material.equipSound(), getToughness(), getKnockbackResistance(), material.repairTag(), material.assetId());
+        }
+
+        return this.cachedMaterial;
     }
 
     public int getEnchantability() {

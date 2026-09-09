@@ -11,84 +11,86 @@ import com.grim3212.assorted.tools.config.ArmorMaterialConfig;
 import com.grim3212.assorted.tools.config.ItemTierConfig;
 import com.grim3212.assorted.tools.config.ModdedItemTierConfig;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.equipment.ArmorType;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 public class ToolsItems {
 
     public static final RegistryProvider<Item> ITEMS = RegistryProvider.create(Registries.ITEM, Constants.MOD_ID);
 
-    public static final IRegistryObject<HammerItem> NETHERITE_HAMMER = register("netherite_hammer", () -> new HammerItem(ToolsCommonMod.COMMON_CONFIG.netheriteItemTier, new Item.Properties().fireResistant()));
-    public static final IRegistryObject<HammerItem> DIAMOND_HAMMER = register("diamond_hammer", () -> new HammerItem(ToolsCommonMod.COMMON_CONFIG.diamondItemTier, new Item.Properties()));
-    public static final IRegistryObject<HammerItem> GOLD_HAMMER = register("gold_hammer", () -> new HammerItem(ToolsCommonMod.COMMON_CONFIG.goldItemTier, new Item.Properties()));
-    public static final IRegistryObject<HammerItem> IRON_HAMMER = register("iron_hammer", () -> new HammerItem(ToolsCommonMod.COMMON_CONFIG.ironItemTier, new Item.Properties()));
-    public static final IRegistryObject<HammerItem> STONE_HAMMER = register("stone_hammer", () -> new HammerItem(ToolsCommonMod.COMMON_CONFIG.stoneItemTier, new Item.Properties()));
-    public static final IRegistryObject<HammerItem> WOOD_HAMMER = register("wood_hammer", () -> new HammerItem(ToolsCommonMod.COMMON_CONFIG.woodItemTier, new Item.Properties()));
+    public static final IRegistryObject<HammerItem> NETHERITE_HAMMER = register("netherite_hammer", props -> new HammerItem(ToolsCommonMod.COMMON_CONFIG.netheriteItemTier, props.fireResistant()));
+    public static final IRegistryObject<HammerItem> DIAMOND_HAMMER = register("diamond_hammer", props -> new HammerItem(ToolsCommonMod.COMMON_CONFIG.diamondItemTier, props));
+    public static final IRegistryObject<HammerItem> GOLD_HAMMER = register("gold_hammer", props -> new HammerItem(ToolsCommonMod.COMMON_CONFIG.goldItemTier, props));
+    public static final IRegistryObject<HammerItem> IRON_HAMMER = register("iron_hammer", props -> new HammerItem(ToolsCommonMod.COMMON_CONFIG.ironItemTier, props));
+    public static final IRegistryObject<HammerItem> STONE_HAMMER = register("stone_hammer", props -> new HammerItem(ToolsCommonMod.COMMON_CONFIG.stoneItemTier, props));
+    public static final IRegistryObject<HammerItem> WOOD_HAMMER = register("wood_hammer", props -> new HammerItem(ToolsCommonMod.COMMON_CONFIG.woodItemTier, props));
 
-    public static final IRegistryObject<BoomerangItem> WOOD_BOOMERANG = register("wood_boomerang", () -> new BoomerangItem(true, new Item.Properties().stacksTo(1)));
-    public static final IRegistryObject<BoomerangItem> DIAMOND_BOOMERANG = register("diamond_boomerang", () -> new BoomerangItem(false, new Item.Properties().stacksTo(1)));
+    public static final IRegistryObject<BoomerangItem> WOOD_BOOMERANG = register("wood_boomerang", props -> new BoomerangItem(true, props.stacksTo(1)));
+    public static final IRegistryObject<BoomerangItem> DIAMOND_BOOMERANG = register("diamond_boomerang", props -> new BoomerangItem(false, props.stacksTo(1)));
 
-    public static final IRegistryObject<WandBuildingItem> BUILDING_WAND = register("building_wand", () -> new WandBuildingItem(false, new Item.Properties().durability(30)));
-    public static final IRegistryObject<WandBuildingItem> REINFORCED_BUILDING_WAND = register("reinforced_building_wand", () -> new WandBuildingItem(true, new Item.Properties().durability(200)));
-    public static final IRegistryObject<WandBreakingItem> BREAKING_WAND = register("breaking_wand", () -> new WandBreakingItem(false, new Item.Properties().durability(15)));
-    public static final IRegistryObject<WandBreakingItem> REINFORCED_BREAKING_WAND = register("reinforced_breaking_wand", () -> new WandBreakingItem(true, new Item.Properties().durability(120)));
-    public static final IRegistryObject<WandMiningItem> MINING_WAND = register("mining_wand", () -> new WandMiningItem(false, new Item.Properties().durability(15)));
-    public static final IRegistryObject<WandMiningItem> REINFORCED_MINING_WAND = register("reinforced_mining_wand", () -> new WandMiningItem(true, new Item.Properties().durability(120)));
+    public static final IRegistryObject<WandBuildingItem> BUILDING_WAND = register("building_wand", props -> new WandBuildingItem(false, props.durability(30)));
+    public static final IRegistryObject<WandBuildingItem> REINFORCED_BUILDING_WAND = register("reinforced_building_wand", props -> new WandBuildingItem(true, props.durability(200)));
+    public static final IRegistryObject<WandBreakingItem> BREAKING_WAND = register("breaking_wand", props -> new WandBreakingItem(false, props.durability(15)));
+    public static final IRegistryObject<WandBreakingItem> REINFORCED_BREAKING_WAND = register("reinforced_breaking_wand", props -> new WandBreakingItem(true, props.durability(120)));
+    public static final IRegistryObject<WandMiningItem> MINING_WAND = register("mining_wand", props -> new WandMiningItem(false, props.durability(15)));
+    public static final IRegistryObject<WandMiningItem> REINFORCED_MINING_WAND = register("reinforced_mining_wand", props -> new WandMiningItem(true, props.durability(120)));
 
-    public static final IRegistryObject<ChickenSuitArmor> CHICKEN_SUIT_HELMET = register("chicken_suit_helmet", () -> new ChickenSuitArmor(ArmorItem.Type.HELMET, new Item.Properties()));
-    public static final IRegistryObject<ChickenSuitArmor> CHICKEN_SUIT_CHESTPLATE = register("chicken_suit_chestplate", () -> new ChickenSuitArmor(ArmorItem.Type.CHESTPLATE, new Item.Properties()));
-    public static final IRegistryObject<ChickenSuitArmor> CHICKEN_SUIT_LEGGINGS = register("chicken_suit_leggings", () -> new ChickenSuitArmor(ArmorItem.Type.LEGGINGS, new Item.Properties()));
-    public static final IRegistryObject<ChickenSuitArmor> CHICKEN_SUIT_BOOTS = register("chicken_suit_boots", () -> new ChickenSuitArmor(ArmorItem.Type.BOOTS, new Item.Properties()));
+    public static final IRegistryObject<ChickenSuitArmor> CHICKEN_SUIT_HELMET = register("chicken_suit_helmet", props -> new ChickenSuitArmor(ArmorType.HELMET, props));
+    public static final IRegistryObject<ChickenSuitArmor> CHICKEN_SUIT_CHESTPLATE = register("chicken_suit_chestplate", props -> new ChickenSuitArmor(ArmorType.CHESTPLATE, props));
+    public static final IRegistryObject<ChickenSuitArmor> CHICKEN_SUIT_LEGGINGS = register("chicken_suit_leggings", props -> new ChickenSuitArmor(ArmorType.LEGGINGS, props));
+    public static final IRegistryObject<ChickenSuitArmor> CHICKEN_SUIT_BOOTS = register("chicken_suit_boots", props -> new ChickenSuitArmor(ArmorType.BOOTS, props));
 
-    public static final IRegistryObject<PokeballItem> POKEBALL = register("pokeball", () -> new PokeballItem(new Item.Properties()));
+    public static final IRegistryObject<PokeballItem> POKEBALL = register("pokeball", props -> new PokeballItem(props));
 
-    public static final IRegistryObject<MultiToolItem> WOODEN_MULTITOOL = register("wooden_multitool", () -> new MultiToolItem(ToolsCommonMod.COMMON_CONFIG.woodItemTier, new Item.Properties()));
-    public static final IRegistryObject<MultiToolItem> STONE_MULTITOOL = register("stone_multitool", () -> new MultiToolItem(ToolsCommonMod.COMMON_CONFIG.stoneItemTier, new Item.Properties()));
-    public static final IRegistryObject<MultiToolItem> GOLDEN_MULTITOOL = register("golden_multitool", () -> new MultiToolItem(ToolsCommonMod.COMMON_CONFIG.goldItemTier, new Item.Properties()));
-    public static final IRegistryObject<MultiToolItem> IRON_MULTITOOL = register("iron_multitool", () -> new MultiToolItem(ToolsCommonMod.COMMON_CONFIG.ironItemTier, new Item.Properties()));
-    public static final IRegistryObject<MultiToolItem> DIAMOND_MULTITOOL = register("diamond_multitool", () -> new MultiToolItem(ToolsCommonMod.COMMON_CONFIG.diamondItemTier, new Item.Properties()));
-    public static final IRegistryObject<MultiToolItem> NETHERITE_MULTITOOL = register("netherite_multitool", () -> new MultiToolItem(ToolsCommonMod.COMMON_CONFIG.netheriteItemTier, new Item.Properties().fireResistant()));
+    public static final IRegistryObject<MultiToolItem> WOODEN_MULTITOOL = register("wooden_multitool", props -> new MultiToolItem(ToolsCommonMod.COMMON_CONFIG.woodItemTier, props));
+    public static final IRegistryObject<MultiToolItem> STONE_MULTITOOL = register("stone_multitool", props -> new MultiToolItem(ToolsCommonMod.COMMON_CONFIG.stoneItemTier, props));
+    public static final IRegistryObject<MultiToolItem> GOLDEN_MULTITOOL = register("golden_multitool", props -> new MultiToolItem(ToolsCommonMod.COMMON_CONFIG.goldItemTier, props));
+    public static final IRegistryObject<MultiToolItem> IRON_MULTITOOL = register("iron_multitool", props -> new MultiToolItem(ToolsCommonMod.COMMON_CONFIG.ironItemTier, props));
+    public static final IRegistryObject<MultiToolItem> DIAMOND_MULTITOOL = register("diamond_multitool", props -> new MultiToolItem(ToolsCommonMod.COMMON_CONFIG.diamondItemTier, props));
+    public static final IRegistryObject<MultiToolItem> NETHERITE_MULTITOOL = register("netherite_multitool", props -> new MultiToolItem(ToolsCommonMod.COMMON_CONFIG.netheriteItemTier, props.fireResistant()));
 
-    public static final IRegistryObject<BetterSpearItem> WOOD_SPEAR = register("wood_spear", () -> new BetterSpearItem(new Item.Properties(), ToolsCommonMod.COMMON_CONFIG.woodItemTier));
-    public static final IRegistryObject<BetterSpearItem> STONE_SPEAR = register("stone_spear", () -> new BetterSpearItem(new Item.Properties(), ToolsCommonMod.COMMON_CONFIG.stoneItemTier));
-    public static final IRegistryObject<BetterSpearItem> IRON_SPEAR = register("iron_spear", () -> new BetterSpearItem(new Item.Properties(), ToolsCommonMod.COMMON_CONFIG.ironItemTier));
-    public static final IRegistryObject<BetterSpearItem> GOLD_SPEAR = register("gold_spear", () -> new BetterSpearItem(new Item.Properties(), ToolsCommonMod.COMMON_CONFIG.goldItemTier));
-    public static final IRegistryObject<BetterSpearItem> DIAMOND_SPEAR = register("diamond_spear", () -> new BetterSpearItem(new Item.Properties(), ToolsCommonMod.COMMON_CONFIG.diamondItemTier));
-    public static final IRegistryObject<BetterSpearItem> NETHERITE_SPEAR = register("netherite_spear", () -> new BetterSpearItem(new Item.Properties().fireResistant(), ToolsCommonMod.COMMON_CONFIG.netheriteItemTier));
+    public static final IRegistryObject<BetterSpearItem> WOOD_SPEAR = register("wood_spear", props -> new BetterSpearItem(props, ToolsCommonMod.COMMON_CONFIG.woodItemTier));
+    public static final IRegistryObject<BetterSpearItem> STONE_SPEAR = register("stone_spear", props -> new BetterSpearItem(props, ToolsCommonMod.COMMON_CONFIG.stoneItemTier));
+    public static final IRegistryObject<BetterSpearItem> IRON_SPEAR = register("iron_spear", props -> new BetterSpearItem(props, ToolsCommonMod.COMMON_CONFIG.ironItemTier));
+    public static final IRegistryObject<BetterSpearItem> GOLD_SPEAR = register("gold_spear", props -> new BetterSpearItem(props, ToolsCommonMod.COMMON_CONFIG.goldItemTier));
+    public static final IRegistryObject<BetterSpearItem> DIAMOND_SPEAR = register("diamond_spear", props -> new BetterSpearItem(props, ToolsCommonMod.COMMON_CONFIG.diamondItemTier));
+    public static final IRegistryObject<BetterSpearItem> NETHERITE_SPEAR = register("netherite_spear", props -> new BetterSpearItem(props.fireResistant(), ToolsCommonMod.COMMON_CONFIG.netheriteItemTier));
 
-    public static final IRegistryObject<BetterBucketItem> WOOD_BUCKET = register("wood_bucket", () -> new BetterBucketItem(new Item.Properties(), ToolsCommonMod.COMMON_CONFIG.woodItemTier));
-    public static final IRegistryObject<BetterMilkBucketItem> WOOD_MILK_BUCKET = register("wood_milk_bucket", () -> new BetterMilkBucketItem(() -> WOOD_BUCKET.get(), new Item.Properties()));
-    public static final IRegistryObject<BetterBucketItem> STONE_BUCKET = register("stone_bucket", () -> new BetterBucketItem(new Item.Properties(), ToolsCommonMod.COMMON_CONFIG.stoneItemTier));
-    public static final IRegistryObject<BetterMilkBucketItem> STONE_MILK_BUCKET = register("stone_milk_bucket", () -> new BetterMilkBucketItem(() -> STONE_BUCKET.get(), new Item.Properties()));
-    public static final IRegistryObject<BetterBucketItem> GOLD_BUCKET = register("gold_bucket", () -> new BetterBucketItem(new Item.Properties(), ToolsCommonMod.COMMON_CONFIG.goldItemTier));
-    public static final IRegistryObject<BetterMilkBucketItem> GOLD_MILK_BUCKET = register("gold_milk_bucket", () -> new BetterMilkBucketItem(() -> GOLD_BUCKET.get(), new Item.Properties()));
-    public static final IRegistryObject<BetterBucketItem> DIAMOND_BUCKET = register("diamond_bucket", () -> new BetterBucketItem(new Item.Properties(), ToolsCommonMod.COMMON_CONFIG.diamondItemTier));
-    public static final IRegistryObject<BetterMilkBucketItem> DIAMOND_MILK_BUCKET = register("diamond_milk_bucket", () -> new BetterMilkBucketItem(() -> DIAMOND_BUCKET.get(), new Item.Properties()));
-    public static final IRegistryObject<BetterBucketItem> NETHERITE_BUCKET = register("netherite_bucket", () -> new BetterBucketItem(new Item.Properties().fireResistant(), ToolsCommonMod.COMMON_CONFIG.netheriteItemTier));
-    public static final IRegistryObject<BetterMilkBucketItem> NETHERITE_MILK_BUCKET = register("netherite_milk_bucket", () -> new BetterMilkBucketItem(() -> NETHERITE_BUCKET.get(), new Item.Properties().fireResistant()));
+    public static final IRegistryObject<BetterBucketItem> WOOD_BUCKET = register("wood_bucket", props -> new BetterBucketItem(props, ToolsCommonMod.COMMON_CONFIG.woodItemTier));
+    public static final IRegistryObject<BetterMilkBucketItem> WOOD_MILK_BUCKET = register("wood_milk_bucket", props -> new BetterMilkBucketItem(() -> WOOD_BUCKET.get(), props));
+    public static final IRegistryObject<BetterBucketItem> STONE_BUCKET = register("stone_bucket", props -> new BetterBucketItem(props, ToolsCommonMod.COMMON_CONFIG.stoneItemTier));
+    public static final IRegistryObject<BetterMilkBucketItem> STONE_MILK_BUCKET = register("stone_milk_bucket", props -> new BetterMilkBucketItem(() -> STONE_BUCKET.get(), props));
+    public static final IRegistryObject<BetterBucketItem> GOLD_BUCKET = register("gold_bucket", props -> new BetterBucketItem(props, ToolsCommonMod.COMMON_CONFIG.goldItemTier));
+    public static final IRegistryObject<BetterMilkBucketItem> GOLD_MILK_BUCKET = register("gold_milk_bucket", props -> new BetterMilkBucketItem(() -> GOLD_BUCKET.get(), props));
+    public static final IRegistryObject<BetterBucketItem> DIAMOND_BUCKET = register("diamond_bucket", props -> new BetterBucketItem(props, ToolsCommonMod.COMMON_CONFIG.diamondItemTier));
+    public static final IRegistryObject<BetterMilkBucketItem> DIAMOND_MILK_BUCKET = register("diamond_milk_bucket", props -> new BetterMilkBucketItem(() -> DIAMOND_BUCKET.get(), props));
+    public static final IRegistryObject<BetterBucketItem> NETHERITE_BUCKET = register("netherite_bucket", props -> new BetterBucketItem(props.fireResistant(), ToolsCommonMod.COMMON_CONFIG.netheriteItemTier));
+    public static final IRegistryObject<BetterMilkBucketItem> NETHERITE_MILK_BUCKET = register("netherite_milk_bucket", props -> new BetterMilkBucketItem(() -> NETHERITE_BUCKET.get(), props.fireResistant()));
 
-    public static final IRegistryObject<MaterialShears> WOOD_SHEARS = register("wood_shears", () -> new MaterialShears(new Item.Properties(), ToolsCommonMod.COMMON_CONFIG.woodItemTier));
-    public static final IRegistryObject<MaterialShears> STONE_SHEARS = register("stone_shears", () -> new MaterialShears(new Item.Properties(), ToolsCommonMod.COMMON_CONFIG.stoneItemTier));
-    public static final IRegistryObject<MaterialShears> GOLD_SHEARS = register("gold_shears", () -> new MaterialShears(new Item.Properties(), ToolsCommonMod.COMMON_CONFIG.goldItemTier));
-    public static final IRegistryObject<MaterialShears> DIAMOND_SHEARS = register("diamond_shears", () -> new MaterialShears(new Item.Properties(), ToolsCommonMod.COMMON_CONFIG.diamondItemTier));
-    public static final IRegistryObject<MaterialShears> NETHERITE_SHEARS = register("netherite_shears", () -> new MaterialShears(new Item.Properties().fireResistant(), ToolsCommonMod.COMMON_CONFIG.netheriteItemTier));
+    public static final IRegistryObject<MaterialShears> WOOD_SHEARS = register("wood_shears", props -> new MaterialShears(props, ToolsCommonMod.COMMON_CONFIG.woodItemTier));
+    public static final IRegistryObject<MaterialShears> STONE_SHEARS = register("stone_shears", props -> new MaterialShears(props, ToolsCommonMod.COMMON_CONFIG.stoneItemTier));
+    public static final IRegistryObject<MaterialShears> GOLD_SHEARS = register("gold_shears", props -> new MaterialShears(props, ToolsCommonMod.COMMON_CONFIG.goldItemTier));
+    public static final IRegistryObject<MaterialShears> DIAMOND_SHEARS = register("diamond_shears", props -> new MaterialShears(props, ToolsCommonMod.COMMON_CONFIG.diamondItemTier));
+    public static final IRegistryObject<MaterialShears> NETHERITE_SHEARS = register("netherite_shears", props -> new MaterialShears(props.fireResistant(), ToolsCommonMod.COMMON_CONFIG.netheriteItemTier));
 
-    public static final IRegistryObject<FragmentItem> U_FRAGMENT = register("u_fragment", () -> new FragmentItem(new Item.Properties().rarity(Rarity.RARE)));
-    public static final IRegistryObject<FragmentItem> L_FRAGMENT = register("l_fragment", () -> new FragmentItem(new Item.Properties().rarity(Rarity.RARE)));
-    public static final IRegistryObject<FragmentItem> T_FRAGMENT = register("t_fragment", () -> new FragmentItem(new Item.Properties().rarity(Rarity.RARE)));
-    public static final IRegistryObject<FragmentItem> I_FRAGMENT = register("i_fragment", () -> new FragmentItem(new Item.Properties().rarity(Rarity.RARE)));
-    public static final IRegistryObject<FragmentItem> M_FRAGMENT = register("m_fragment", () -> new FragmentItem(new Item.Properties().rarity(Rarity.RARE)));
-    public static final IRegistryObject<FragmentItem> A_FRAGMENT = register("a_fragment", () -> new FragmentItem(new Item.Properties().rarity(Rarity.RARE)));
-    public static final IRegistryObject<FragmentItem> MISSING_FRAGMENT = register("missing_fragment", () -> new FragmentItem(new Item.Properties().rarity(Rarity.RARE)));
-    public static final IRegistryObject<FragmentItem> E_FRAGMENT = register("e_fragment", () -> new FragmentItem(new Item.Properties().rarity(Rarity.RARE)));
+    public static final IRegistryObject<FragmentItem> U_FRAGMENT = register("u_fragment", props -> new FragmentItem(props.rarity(Rarity.RARE)));
+    public static final IRegistryObject<FragmentItem> L_FRAGMENT = register("l_fragment", props -> new FragmentItem(props.rarity(Rarity.RARE)));
+    public static final IRegistryObject<FragmentItem> T_FRAGMENT = register("t_fragment", props -> new FragmentItem(props.rarity(Rarity.RARE)));
+    public static final IRegistryObject<FragmentItem> I_FRAGMENT = register("i_fragment", props -> new FragmentItem(props.rarity(Rarity.RARE)));
+    public static final IRegistryObject<FragmentItem> M_FRAGMENT = register("m_fragment", props -> new FragmentItem(props.rarity(Rarity.RARE)));
+    public static final IRegistryObject<FragmentItem> A_FRAGMENT = register("a_fragment", props -> new FragmentItem(props.rarity(Rarity.RARE)));
+    public static final IRegistryObject<FragmentItem> MISSING_FRAGMENT = register("missing_fragment", props -> new FragmentItem(props.rarity(Rarity.RARE)));
+    public static final IRegistryObject<FragmentItem> E_FRAGMENT = register("e_fragment", props -> new FragmentItem(props.rarity(Rarity.RARE)));
 
-    public static final IRegistryObject<UltimateFistItem> ULTIMATE_FIST = register("ultimate_fist", () -> new UltimateFistItem(new Item.Properties().fireResistant().rarity(Rarity.EPIC)));
+    public static final IRegistryObject<UltimateFistItem> ULTIMATE_FIST = register("ultimate_fist", props -> new UltimateFistItem(props.fireResistant().rarity(Rarity.EPIC)));
 
     public static final Map<String, MaterialGroup> MATERIAL_GROUPS = Maps.newHashMap();
 
@@ -102,8 +104,11 @@ public class ToolsItems {
         return buckets;
     }
 
-    private static <T extends Item> IRegistryObject<T> register(final String name, final Supplier<T> sup) {
-        return ITEMS.register(name, sup);
+    private static <T extends Item> IRegistryObject<T> register(final String name, final Function<Item.Properties, ? extends T> factory) {
+        // Since 1.21.2 every item has to know its own id before it is constructed, so the
+        // properties are built here where the registration name is known.
+        final ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(Constants.MOD_ID, name));
+        return ITEMS.register(name, () -> factory.apply(new Item.Properties().setId(key)));
     }
 
     public static final class MaterialGroup {
@@ -128,25 +133,25 @@ public class ToolsItems {
         public final ItemTierConfig tier;
 
         public MaterialGroup(ModdedItemTierConfig tier, ArmorMaterialConfig armor) {
-            this.PICKAXE = register(tier.getName() + "_pickaxe", () -> new MaterialPickaxeItem(tier, new Item.Properties()));
-            this.SHOVEL = register(tier.getName() + "_shovel", () -> new MaterialShovelItem(tier, new Item.Properties()));
-            this.AXE = register(tier.getName() + "_axe", () -> new MaterialAxeItem(tier, new Item.Properties()));
-            this.HOE = register(tier.getName() + "_hoe", () -> new MaterialHoeItem(tier, new Item.Properties()));
-            this.SWORD = register(tier.getName() + "_sword", () -> new MaterialSwordItem(tier, new Item.Properties()));
+            this.PICKAXE = register(tier.getName() + "_pickaxe", props -> new MaterialPickaxeItem(tier, props));
+            this.SHOVEL = register(tier.getName() + "_shovel", props -> new MaterialShovelItem(tier, props));
+            this.AXE = register(tier.getName() + "_axe", props -> new MaterialAxeItem(tier, props));
+            this.HOE = register(tier.getName() + "_hoe", props -> new MaterialHoeItem(tier, props));
+            this.SWORD = register(tier.getName() + "_sword", props -> new MaterialSwordItem(tier, props));
 
-            this.HAMMER = register(tier.getName() + "_hammer", () -> new HammerItem(tier, new Item.Properties()));
-            this.MULTITOOL = register(tier.getName() + "_multitool", () -> new MultiToolItem(tier, new Item.Properties()));
-            this.SPEAR = register(tier.getName() + "_spear", () -> new BetterSpearItem(new Item.Properties(), tier));
+            this.HAMMER = register(tier.getName() + "_hammer", props -> new HammerItem(tier, props));
+            this.MULTITOOL = register(tier.getName() + "_multitool", props -> new MultiToolItem(tier, props));
+            this.SPEAR = register(tier.getName() + "_spear", props -> new BetterSpearItem(props, tier));
 
-            this.BUCKET = register(tier.getName() + "_bucket", () -> new BetterBucketItem(new Item.Properties(), tier));
-            this.MILK_BUCKET = register(tier.getName() + "_milk_bucket", () -> new BetterMilkBucketItem(() -> this.BUCKET.get(), new Item.Properties()));
-            this.SHEARS = register(tier.getName() + "_shears", () -> new MaterialShears(new Item.Properties(), tier));
+            this.BUCKET = register(tier.getName() + "_bucket", props -> new BetterBucketItem(props, tier));
+            this.MILK_BUCKET = register(tier.getName() + "_milk_bucket", props -> new BetterMilkBucketItem(() -> this.BUCKET.get(), props));
+            this.SHEARS = register(tier.getName() + "_shears", props -> new MaterialShears(props, tier));
 
             if (armor != null) {
-                this.HELMET = register(tier.getName() + "_helmet", () -> new MaterialArmorItem(armor.getMaterial(), ArmorItem.Type.HELMET, new Item.Properties()));
-                this.CHESTPLATE = register(tier.getName() + "_chestplate", () -> new MaterialArmorItem(armor.getMaterial(), ArmorItem.Type.CHESTPLATE, new Item.Properties()));
-                this.LEGGINGS = register(tier.getName() + "_leggings", () -> new MaterialArmorItem(armor.getMaterial(), ArmorItem.Type.LEGGINGS, new Item.Properties()));
-                this.BOOTS = register(tier.getName() + "_boots", () -> new MaterialArmorItem(armor.getMaterial(), ArmorItem.Type.BOOTS, new Item.Properties()));
+                this.HELMET = register(tier.getName() + "_helmet", props -> new MaterialArmorItem(armor.getMaterial(), ArmorType.HELMET, props));
+                this.CHESTPLATE = register(tier.getName() + "_chestplate", props -> new MaterialArmorItem(armor.getMaterial(), ArmorType.CHESTPLATE, props));
+                this.LEGGINGS = register(tier.getName() + "_leggings", props -> new MaterialArmorItem(armor.getMaterial(), ArmorType.LEGGINGS, props));
+                this.BOOTS = register(tier.getName() + "_boots", props -> new MaterialArmorItem(armor.getMaterial(), ArmorType.BOOTS, props));
             } else {
                 throw new NullPointerException("Got null ArmorMaterialHolder when registering Extra Materials");
             }

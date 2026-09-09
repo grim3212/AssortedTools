@@ -1,0 +1,34 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:and",
+      "values": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "moreshears"
+        },
+        {
+          "type": "assortedlib:item_tag_populated",
+          "tag": "c:gems/sapphire"
+        },
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        }
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": "#c:gems/sapphire",
+    "L": "#c:leather"
+  },
+  "pattern": [
+    "LI",
+    "I "
+  ],
+  "result": {
+    "id": "assortedtools:sapphire_shears"
+  }
+}

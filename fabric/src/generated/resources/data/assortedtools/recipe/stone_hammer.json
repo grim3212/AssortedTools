@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": "#minecraft:stone_tool_materials",
+    "S": "#c:rods/wooden"
+  },
+  "pattern": [
+    "III",
+    "ISI",
+    " S "
+  ],
+  "result": {
+    "id": "assortedtools:stone_hammer"
+  }
+}

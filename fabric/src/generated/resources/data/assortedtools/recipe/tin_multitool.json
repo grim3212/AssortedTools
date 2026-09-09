@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "assortedtools:tin_pickaxe",
+    "assortedtools:tin_shovel",
+    "assortedtools:tin_axe",
+    "assortedtools:tin_hoe",
+    "assortedtools:tin_sword",
+    "#c:ingots/tin",
+    "#c:ingots/tin",
+    "#c:ingots/tin",
+    "#c:ingots/tin"
+  ],
+  "result": {
+    "id": "assortedtools:tin_multitool"
+  }
+}

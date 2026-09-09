@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "S": "#c:rods/wooden",
+    "X": "#c:ingots/lead"
+  },
+  "pattern": [
+    "XX",
+    "S ",
+    "S "
+  ],
+  "result": {
+    "id": "assortedtools:lead_hoe"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "S": "#c:rods/wooden",
+    "X": "#c:ingots/copper"
+  },
+  "pattern": [
+    "XX",
+    "XS",
+    " S"
+  ],
+  "result": {
+    "id": "assortedtools:copper_axe"
+  }
+}

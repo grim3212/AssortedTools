@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": "#c:ingots/aluminum",
+    "S": "#c:rods/wooden"
+  },
+  "pattern": [
+    "I  ",
+    " S ",
+    "  S"
+  ],
+  "result": {
+    "id": "assortedtools:aluminum_spear"
+  }
+}

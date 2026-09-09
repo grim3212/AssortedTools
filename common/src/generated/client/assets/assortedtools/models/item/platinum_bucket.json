@@ -1,0 +1,14 @@
+{
+  "parent": "assortedlib:item/default",
+  "apply_fluid_luminosity": true,
+  "cover_is_mask": true,
+  "flip_gas": true,
+  "fluid": "minecraft:empty",
+  "loader": "assortedtools:fluid_container",
+  "textures": {
+    "base": "assortedtools:item/buckets/platinum_bucket",
+    "cover": "assortedtools:item/buckets/bucket_covered",
+    "fluid": "assortedtools:item/buckets/bucket_fluid",
+    "particle": "assortedtools:item/buckets/platinum_bucket"
+  }
+}

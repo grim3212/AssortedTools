@@ -1,0 +1,22 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "wands"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "G": "#c:storage_blocks/gold",
+    "X": "#c:obsidian"
+  },
+  "pattern": [
+    "XGX",
+    "XGX",
+    "XGX"
+  ],
+  "result": {
+    "id": "assortedtools:reinforced_building_wand"
+  }
+}

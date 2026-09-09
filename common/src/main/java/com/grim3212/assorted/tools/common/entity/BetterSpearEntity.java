@@ -5,9 +5,9 @@ import com.grim3212.assorted.tools.ToolsCommonMod;
 import com.grim3212.assorted.tools.api.util.ToolsDamageSources;
 import com.grim3212.assorted.tools.common.enchantment.ToolsEnchantments;
 import com.grim3212.assorted.tools.common.item.BetterSpearItem;
+import com.grim3212.assorted.tools.common.item.ToolsItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -17,17 +17,22 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -38,6 +43,11 @@ import java.util.List;
 public class BetterSpearEntity extends AbstractArrow {
     private static final EntityDataAccessor<Byte> ID_LOYALTY = SynchedEntityData.defineId(BetterSpearEntity.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Boolean> ID_FOIL = SynchedEntityData.defineId(BetterSpearEntity.class, EntityDataSerializers.BOOLEAN);
+    /**
+     * {@link AbstractArrow} owns and persists the pickup stack now, but it never syncs it, and the
+     * renderer picks its texture from the spear's item. So the stack is mirrored into synched data
+     * purely for the client; the server side of it lives in {@code getPickupItemStackOrigin()}.
+     */
     private static final EntityDataAccessor<ItemStack> SPEAR_STACK = SynchedEntityData.defineId(BetterSpearEntity.class, EntityDataSerializers.ITEM_STACK);
     public int clientSideReturnSpearTickCount;
     private int bounceCount;
@@ -49,9 +59,9 @@ public class BetterSpearEntity extends AbstractArrow {
     }
 
     public BetterSpearEntity(Level level, LivingEntity entity, ItemStack stack) {
-        super(ToolsEntities.BETTER_SPEAR.get(), entity, level);
+        super(ToolsEntities.BETTER_SPEAR.get(), entity, level, stack, null);
         this.entityData.set(SPEAR_STACK, stack.copy());
-        this.entityData.set(ID_LOYALTY, (byte) EnchantmentHelper.getLoyalty(stack));
+        this.entityData.set(ID_LOYALTY, this.getLoyaltyFromItem(stack));
         this.entityData.set(ID_FOIL, stack.hasFoil());
     }
 
@@ -63,12 +73,23 @@ public class BetterSpearEntity extends AbstractArrow {
         return 5.0F;
     }
 
+    /**
+     * Loyalty is no longer an enchantment level read off the stack; it is an enchantment value
+     * effect resolved against the server's enchantment registry, so it is only knowable server
+     * side. Mirrors {@code ThrownTrident#getLoyaltyFromItem}.
+     */
+    private byte getLoyaltyFromItem(ItemStack stack) {
+        return this.level() instanceof ServerLevel serverLevel
+                ? (byte) Mth.clamp(EnchantmentHelper.getTridentReturnToOwnerAcceleration(serverLevel, stack, this), 0, 127)
+                : 0;
+    }
+
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(ID_LOYALTY, (byte) 0);
-        this.entityData.define(ID_FOIL, false);
-        this.entityData.define(SPEAR_STACK, ItemStack.EMPTY);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(ID_LOYALTY, (byte) 0);
+        builder.define(ID_FOIL, false);
+        builder.define(SPEAR_STACK, ItemStack.EMPTY);
     }
 
     public ItemStack getSpearStack() {
@@ -76,8 +97,13 @@ public class BetterSpearEntity extends AbstractArrow {
     }
 
     @Override
-    protected ItemStack getPickupItem() {
-        return this.getSpearStack().copy();
+    protected ItemStack getDefaultPickupItem() {
+        return new ItemStack(ToolsItems.WOOD_SPEAR.get());
+    }
+
+    @Override
+    public ItemStack getWeaponItem() {
+        return this.getPickupItemStackOrigin();
     }
 
     public boolean isFoil() {
@@ -94,8 +120,8 @@ public class BetterSpearEntity extends AbstractArrow {
         if ((this.dealtDamage || this.isNoPhysics()) && entity != null) {
             int i = this.entityData.get(ID_LOYALTY);
             if (i > 0 && !this.isAcceptibleReturnOwner()) {
-                if (!this.level().isClientSide && this.pickup == AbstractArrow.Pickup.ALLOWED) {
-                    this.spawnAtLocation(this.getPickupItem(), 0.1F);
+                if (this.level() instanceof ServerLevel serverLevel && this.pickup == AbstractArrow.Pickup.ALLOWED) {
+                    this.spawnAtLocation(serverLevel, this.getPickupItem(), 0.1F);
                 }
 
                 this.discard();
@@ -103,7 +129,7 @@ public class BetterSpearEntity extends AbstractArrow {
                 this.setNoPhysics(true);
                 Vec3 vector3d = new Vec3(entity.getX() - this.getX(), entity.getEyeY() - this.getY(), entity.getZ() - this.getZ());
                 this.setPosRaw(this.getX(), this.getY() + vector3d.y * 0.015D * (double) i, this.getZ());
-                if (this.level().isClientSide) {
+                if (this.level().isClientSide()) {
                     this.yOld = this.getY();
                 }
 
@@ -146,7 +172,7 @@ public class BetterSpearEntity extends AbstractArrow {
 
                 motion = motion.scale(this.bounceCount == 1 ? 0.42F : 0.99F);
                 this.setDeltaMovement(motion.x, motion.y * -1D, motion.z);
-                level().playSound((Player) null, this.blockPosition(), SoundEvents.SLIME_SQUISH_SMALL, SoundSource.PLAYERS, 1.0F, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
+                level().playSound((Player) null, this.blockPosition(), SoundEvents.SLIME_SQUISH_SMALL, SoundSource.PLAYERS, 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
                 this.spawnSlimeParticles();
             } else {
                 super.onHitBlock(rayTrace);
@@ -166,25 +192,29 @@ public class BetterSpearEntity extends AbstractArrow {
     @Override
     protected void onHitEntity(EntityHitResult rayTrace) {
         Entity hitEntity = rayTrace.getEntity();
+        Entity owner = this.getOwner();
         float f = this.getDamage(this.getSpearStack());
-        if (hitEntity instanceof LivingEntity) {
-            LivingEntity livingentity = (LivingEntity) hitEntity;
-            f += EnchantmentHelper.getDamageBonus(this.getSpearStack(), livingentity.getMobType());
+        DamageSource damageSource = ToolsDamageSources.source(this.level(), ToolsDamageSources.SPEAR, this, owner == null ? this : owner);
+
+        // Weapon-specific damage bonuses (what Sharpness/Bane of Arthropods used to add through
+        // getDamageBonus(stack, MobType)) are enchantment value effects now, applied by
+        // EnchantmentHelper against the victim and the damage source. MobType is gone entirely.
+        if (this.level() instanceof ServerLevel serverLevel) {
+            f = EnchantmentHelper.modifyDamage(serverLevel, this.getWeaponItem(), hitEntity, damageSource, f);
         }
 
-        Entity owner = this.getOwner();
         this.dealtDamage = true;
         SoundEvent soundevent = SoundEvents.TRIDENT_HIT;
-        if (hitEntity.hurt(this.damageSources().source(ToolsDamageSources.SPEAR, this, owner == null ? this : owner), f)) {
-            if (hitEntity.getType() == EntityType.ENDERMAN) {
+        // Entity#hurtOrSimulate is @Deprecated; this is its body, split over the two sides.
+        boolean hurt = this.level() instanceof ServerLevel hurtLevel ? hitEntity.hurtServer(hurtLevel, damageSource, f) : hitEntity.hurtClient(damageSource);
+        if (hurt) {
+            if (hitEntity.is(EntityTypes.ENDERMAN)) {
                 return;
             }
 
-            if (hitEntity instanceof LivingEntity) {
-                LivingEntity livingentity1 = (LivingEntity) hitEntity;
-                if (owner instanceof LivingEntity) {
-                    EnchantmentHelper.doPostHurtEffects(livingentity1, owner);
-                    EnchantmentHelper.doPostDamageEffects((LivingEntity) owner, livingentity1);
+            if (hitEntity instanceof LivingEntity livingentity1) {
+                if (this.level() instanceof ServerLevel serverLevel) {
+                    EnchantmentHelper.doPostAttackEffectsWithItemSource(serverLevel, livingentity1, damageSource, this.getWeaponItem());
                 }
 
                 this.doPostHurtEffects(livingentity1);
@@ -233,13 +263,15 @@ public class BetterSpearEntity extends AbstractArrow {
         int conductivity = ToolsEnchantments.getConductivity(this.getSpearStack());
         boolean flag = conductivity > 0 && this.random.nextDouble() <= 1.0D - conductiveChances(conductivity - 1);
 
-        if (this.level() instanceof ServerLevel && flag) {
-            if (this.level().canSeeSky(pos)) {
+        if (this.level() instanceof ServerLevel serverLevel && flag) {
+            if (serverLevel.canSeeSky(pos)) {
                 Entity owner = this.getOwner();
-                LightningBolt lightningboltentity = EntityType.LIGHTNING_BOLT.create(this.level());
-                lightningboltentity.moveTo(Vec3.atBottomCenterOf(pos));
-                lightningboltentity.setCause(owner instanceof ServerPlayer ? (ServerPlayer) owner : null);
-                this.level().addFreshEntity(lightningboltentity);
+                LightningBolt lightningboltentity = EntityTypes.LIGHTNING_BOLT.create(serverLevel, EntitySpawnReason.TRIGGERED);
+                if (lightningboltentity != null) {
+                    lightningboltentity.snapTo(Vec3.atBottomCenterOf(pos));
+                    lightningboltentity.setCause(owner instanceof ServerPlayer ? (ServerPlayer) owner : null);
+                    serverLevel.addFreshEntity(lightningboltentity);
+                }
             }
         }
     }
@@ -248,7 +280,7 @@ public class BetterSpearEntity extends AbstractArrow {
         int instability = ToolsEnchantments.getInstability(this.getSpearStack());
 
         if (instability > 0) {
-            if (!level().isClientSide) {
+            if (!level().isClientSide()) {
                 level().explode(null, this.getX(), this.getY(), this.getZ(), instability * 2F, Level.ExplosionInteraction.BLOCK);
             }
         }
@@ -287,26 +319,25 @@ public class BetterSpearEntity extends AbstractArrow {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag nbt) {
-        super.addAdditionalSaveData(nbt);
-        nbt.put("Spear", this.getSpearStack().save(new CompoundTag()));
-        nbt.putBoolean("DealtDamage", this.dealtDamage);
-        nbt.putBoolean("EffectTriggered", this.effectTriggered);
-        nbt.putInt("BounceCount", this.bounceCount);
+    protected void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putBoolean("DealtDamage", this.dealtDamage);
+        output.putBoolean("EffectTriggered", this.effectTriggered);
+        output.putInt("BounceCount", this.bounceCount);
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag nbt) {
-        super.readAdditionalSaveData(nbt);
-        if (nbt.contains("Spear", 10)) {
-            this.entityData.set(SPEAR_STACK, ItemStack.of(nbt.getCompound("Spear")));
-        }
-
-        this.dealtDamage = nbt.getBoolean("DealtDamage");
-        this.effectTriggered = nbt.getBoolean("EffectTriggered");
-        this.bounceCount = nbt.getInt("BounceCount");
-        this.entityData.set(ID_LOYALTY, (byte) EnchantmentHelper.getLoyalty(this.getSpearStack()));
-        this.entityData.set(ID_FOIL, this.getSpearStack().hasFoil());
+    protected void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        this.dealtDamage = input.getBooleanOr("DealtDamage", false);
+        this.effectTriggered = input.getBooleanOr("EffectTriggered", false);
+        this.bounceCount = input.getIntOr("BounceCount", 0);
+        // AbstractArrow persists the pickup stack under "item" now, so the entity's own "Spear" key
+        // is gone; the synched copy is refreshed from what the superclass just read back.
+        ItemStack stack = this.getPickupItemStackOrigin();
+        this.entityData.set(SPEAR_STACK, stack.copy());
+        this.entityData.set(ID_LOYALTY, this.getLoyaltyFromItem(stack));
+        this.entityData.set(ID_FOIL, stack.hasFoil());
     }
 
     @Override

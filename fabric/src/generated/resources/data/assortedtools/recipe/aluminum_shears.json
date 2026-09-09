@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": "#c:ingots/aluminum",
+    "L": "#c:leather"
+  },
+  "pattern": [
+    " I",
+    "IL"
+  ],
+  "result": {
+    "id": "assortedtools:aluminum_shears"
+  }
+}

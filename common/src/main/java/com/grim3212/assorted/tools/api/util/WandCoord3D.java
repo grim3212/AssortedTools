@@ -64,12 +64,13 @@ public class WandCoord3D {
     }
 
     public void writeToNBT(CompoundTag compound, String key) {
-        if (!compound.contains(key)) {
-            compound.put(key, new CompoundTag());
-        }
-        CompoundTag coord = compound.getCompound(key);
+        // CompoundTag#getCompound returns an Optional now, so the old
+        // "make sure the child exists, then mutate it in place" shape does not work.
+        // The child is written whole instead, which is what every caller wanted anyway.
+        CompoundTag coord = new CompoundTag();
         coord.putIntArray("Pos", new int[]{pos.getX(), pos.getY(), pos.getZ()});
         coord.put("BlockState", NbtUtils.writeBlockState(this.state));
+        compound.put(key, coord);
     }
 
     public static void findEnds(WandCoord3D a, WandCoord3D b) {
@@ -99,18 +100,21 @@ public class WandCoord3D {
     }
 
     public static WandCoord3D getFromNBT(Level level, CompoundTag compound, String key) {
-        if (compound.contains(key)) {
-            CompoundTag nbt = compound.getCompound(key);
-            if (nbt.contains("Pos")) {
-                int[] coord = nbt.getIntArray("Pos");
-                HolderGetter<Block> holdergetter = (HolderGetter<Block>) (level != null ? level.holderLookup(Registries.BLOCK) : BuiltInRegistries.BLOCK.asLookup());
-
-                BlockState state = NbtUtils.readBlockState(holdergetter, nbt.getCompound("BlockState"));
-                if (coord.length == 3) {
-                    return new WandCoord3D(new BlockPos(coord[0], coord[1], coord[2]), state);
-                }
-            }
+        CompoundTag nbt = compound.getCompound(key).orElse(null);
+        if (nbt == null) {
+            return null;
         }
-        return null;
+
+        int[] coord = nbt.getIntArray("Pos").orElse(null);
+        if (coord == null || coord.length != 3) {
+            return null;
+        }
+
+        // Registry is a HolderLookup.RegistryLookup itself now, so BuiltInRegistries.BLOCK is
+        // already the HolderGetter the old asLookup() call produced.
+        HolderGetter<Block> holdergetter = level != null ? level.holderLookup(Registries.BLOCK) : BuiltInRegistries.BLOCK;
+
+        BlockState state = NbtUtils.readBlockState(holdergetter, nbt.getCompoundOrEmpty("BlockState"));
+        return new WandCoord3D(new BlockPos(coord[0], coord[1], coord[2]), state);
     }
 }

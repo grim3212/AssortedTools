@@ -1,0 +1,35 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:and",
+      "values": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "betterspears"
+        },
+        {
+          "type": "assortedlib:item_tag_populated",
+          "tag": "c:gems/peridot"
+        },
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        }
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": "#c:gems/peridot",
+    "S": "#c:rods/wooden"
+  },
+  "pattern": [
+    "I  ",
+    " S ",
+    "  S"
+  ],
+  "result": {
+    "id": "assortedtools:peridot_spear"
+  }
+}

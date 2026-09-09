@@ -1,0 +1,29 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:and",
+      "values": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "betterbuckets"
+        },
+        {
+          "type": "assortedlib:item_tag_populated",
+          "tag": "c:ingots/gold"
+        }
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": "#c:ingots/gold"
+  },
+  "pattern": [
+    "I I",
+    " I "
+  ],
+  "result": {
+    "id": "assortedtools:gold_bucket"
+  }
+}

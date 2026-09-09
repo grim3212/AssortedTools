@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": "#c:ingots/silver"
+  },
+  "pattern": [
+    "I I",
+    " I "
+  ],
+  "result": {
+    "id": "assortedtools:silver_bucket"
+  }
+}

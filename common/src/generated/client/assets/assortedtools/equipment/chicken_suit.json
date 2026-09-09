@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "assortedtools:chicken_suit"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "assortedtools:chicken_suit"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "assortedtools:chicken_suit"
+      }
+    ]
+  }
+}

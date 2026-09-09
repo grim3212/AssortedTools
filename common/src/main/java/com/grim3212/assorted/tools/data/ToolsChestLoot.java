@@ -2,9 +2,10 @@ package com.grim3212.assorted.tools.data;
 
 import com.grim3212.assorted.tools.Constants;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
-import net.minecraft.data.loot.packs.VanillaChestLoot;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.loot.LootTableSubProvider;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -12,46 +13,51 @@ import net.minecraft.world.level.storage.loot.LootTable.Builder;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
-import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.functions.SetNbtFunction;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
 import java.util.function.BiConsumer;
 
-public class ToolsChestLoot extends VanillaChestLoot {
+/**
+ * The three Ultimate Fist fragment pools, injected into vanilla chest loot by
+ * {@code LootTableHandlers}.
+ * <p>
+ * This used to extend {@code VanillaChestLoot}, which was a plain class. It is a record now and
+ * cannot be subclassed, so this implements {@link LootTableSubProvider} directly - which is all the
+ * inheritance ever bought, since none of the vanilla tables were being reused.
+ * <p>
+ * Loot tables are addressed by {@code ResourceKey<LootTable>} rather than a raw {@code Identifier}.
+ */
+public class ToolsChestLoot implements LootTableSubProvider {
 
     @Override
-    public void generate(BiConsumer<ResourceLocation, Builder> builder) {
-        LootPool.Builder ultimateFragmentOverworldLootPool = LootPool.lootPool();
-        ultimateFragmentOverworldLootPool.setRolls(ConstantValue.exactly(1)).add(addItem(ToolsItems.U_FRAGMENT.get(), 1, 1, 1)).add(addItem(ToolsItems.L_FRAGMENT.get(), 1, 1, 1)).add(addItem(ToolsItems.T_FRAGMENT.get(), 1, 1, 1)).add(EmptyLootItem.emptyItem().setWeight(10));
-        Builder ultimateFragmentOverworldLootTable = LootTable.lootTable();
-        ultimateFragmentOverworldLootTable.withPool(ultimateFragmentOverworldLootPool);
-        builder.accept(new ResourceLocation(Constants.MOD_ID, "fragments_overworld_loot"), ultimateFragmentOverworldLootTable);
+    public void generate(BiConsumer<ResourceKey<LootTable>, Builder> builder) {
+        LootPool.Builder overworldPool = LootPool.lootPool();
+        overworldPool.setRolls(ConstantValue.exactly(1)).add(addItem(ToolsItems.U_FRAGMENT.get(), 1, 1, 1)).add(addItem(ToolsItems.L_FRAGMENT.get(), 1, 1, 1)).add(addItem(ToolsItems.T_FRAGMENT.get(), 1, 1, 1)).add(EmptyLootItem.emptyItem().setWeight(10));
+        builder.accept(key("fragments_overworld_loot"), LootTable.lootTable().withPool(overworldPool));
 
-        LootPool.Builder ultimateFragmentNetherLootPool = LootPool.lootPool();
-        ultimateFragmentNetherLootPool.setRolls(ConstantValue.exactly(1)).add(addItem(ToolsItems.I_FRAGMENT.get(), 1, 1, 1)).add(addItem(ToolsItems.M_FRAGMENT.get(), 1, 1, 1)).add(EmptyLootItem.emptyItem().setWeight(15));
-        Builder ultimateFragmentNetherLootTable = LootTable.lootTable();
-        ultimateFragmentNetherLootTable.withPool(ultimateFragmentNetherLootPool);
-        builder.accept(new ResourceLocation(Constants.MOD_ID, "fragments_nether_loot"), ultimateFragmentNetherLootTable);
+        LootPool.Builder netherPool = LootPool.lootPool();
+        netherPool.setRolls(ConstantValue.exactly(1)).add(addItem(ToolsItems.I_FRAGMENT.get(), 1, 1, 1)).add(addItem(ToolsItems.M_FRAGMENT.get(), 1, 1, 1)).add(EmptyLootItem.emptyItem().setWeight(15));
+        builder.accept(key("fragments_nether_loot"), LootTable.lootTable().withPool(netherPool));
 
-        LootPool.Builder ultimateFragmentEndLootPool = LootPool.lootPool();
-        ultimateFragmentEndLootPool.setRolls(ConstantValue.exactly(1)).add(addItem(ToolsItems.A_FRAGMENT.get(), 1, 1, 1)).add(addItem(ToolsItems.MISSING_FRAGMENT.get(), 1, 1, 1)).add(addItem(ToolsItems.E_FRAGMENT.get(), 1, 1, 1)).add(EmptyLootItem.emptyItem().setWeight(15));
-        Builder ultimateFragmentEndLootTable = LootTable.lootTable();
-        ultimateFragmentEndLootTable.withPool(ultimateFragmentEndLootPool);
-        builder.accept(new ResourceLocation(Constants.MOD_ID, "fragments_end_loot"), ultimateFragmentEndLootTable);
+        LootPool.Builder endPool = LootPool.lootPool();
+        endPool.setRolls(ConstantValue.exactly(1)).add(addItem(ToolsItems.A_FRAGMENT.get(), 1, 1, 1)).add(addItem(ToolsItems.MISSING_FRAGMENT.get(), 1, 1, 1)).add(addItem(ToolsItems.E_FRAGMENT.get(), 1, 1, 1)).add(EmptyLootItem.emptyItem().setWeight(15));
+        builder.accept(key("fragments_end_loot"), LootTable.lootTable().withPool(endPool));
     }
 
+    /**
+     * The two-argument form collapsed into one.
+     * <p>
+     * There used to be a second overload taking an {@code ItemStack} so it could copy the stack's
+     * NBT onto the entry with {@code SetNbtFunction}. Stack NBT is gone, and none of these entries
+     * ever carried any - every caller passed a bare item - so the branch was dead in 1.20.1 too.
+     */
     private LootPoolEntryContainer.Builder<?> addItem(ItemLike item, int weight, int min, int max) {
-        return addItem(new ItemStack(item), weight).apply(SetItemCountFunction.setCount(UniformGenerator.between(min, max)));
+        return LootItem.lootTableItem(item).setWeight(weight).apply(SetItemCountFunction.setCount(UniformGenerator.between(min, max)));
     }
 
-    private LootPoolSingletonContainer.Builder<?> addItem(ItemStack item, int weight) {
-        LootPoolSingletonContainer.Builder<?> ret = LootItem.lootTableItem(item.getItem()).setWeight(weight);
-        if (item.hasTag())
-            ret.apply(SetNbtFunction.setTag(item.getOrCreateTag()));
-        return ret;
+    private static ResourceKey<LootTable> key(String path) {
+        return ResourceKey.create(Registries.LOOT_TABLE, Identifier.fromNamespaceAndPath(Constants.MOD_ID, path));
     }
-
 }

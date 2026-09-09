@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "assortedtools:electrum"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "assortedtools:electrum"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "assortedtools:electrum"
+      }
+    ]
+  }
+}

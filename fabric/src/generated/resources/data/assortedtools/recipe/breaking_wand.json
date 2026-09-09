@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "G": "#c:ingots/iron",
+    "X": "#minecraft:planks"
+  },
+  "pattern": [
+    "XGX",
+    "XGX",
+    "XGX"
+  ],
+  "result": {
+    "id": "assortedtools:breaking_wand"
+  }
+}

@@ -1,20 +1,26 @@
 package com.grim3212.assorted.tools.common.entity;
 
-import com.grim3212.assorted.lib.mixin.entity.EntityAccessor;
 import com.grim3212.assorted.lib.util.NBTHelper;
+import com.grim3212.assorted.tools.Constants;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntitySpawnRequest;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.boss.EnderDragonPart;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragonPart;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
+import net.minecraft.world.entity.projectile.throwableitemprojectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.TagValueInput;
+import net.minecraft.world.level.storage.TagValueOutput;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 
@@ -23,71 +29,76 @@ import java.util.Optional;
 public class PokeballEntity extends ThrowableItemProjectile {
 
     private boolean hasEntity;
-    private ItemStack currentPokeball = new ItemStack(ToolsItems.POKEBALL.get(), 1);
 
     public PokeballEntity(EntityType<? extends PokeballEntity> type, Level worldIn) {
         super(type, worldIn);
     }
 
-    public PokeballEntity(EntityType<? extends PokeballEntity> type, double x, double y, double z, Level worldIn) {
-        super(type, x, y, z, worldIn);
+    public PokeballEntity(EntityType<? extends PokeballEntity> type, double x, double y, double z, Level worldIn, ItemStack stack) {
+        super(type, x, y, z, worldIn, stack);
     }
 
     public PokeballEntity(LivingEntity livingEntityIn, Level worldIn, ItemStack stack) {
-        super(ToolsEntities.POKEBALL.get(), livingEntityIn, worldIn);
-        this.currentPokeball = stack;
-        this.hasEntity = false;
-        if (this.currentPokeball.hasTag()) {
-            this.hasEntity = NBTHelper.hasTag(stack, "StoredEntity");
-        }
+        // ThrowableItemProjectile carries and syncs the thrown stack itself now, so the entity no
+        // longer keeps its own copy - getItem()/setItem() are the pokeball.
+        super(ToolsEntities.POKEBALL.get(), livingEntityIn, worldIn, stack);
+        this.hasEntity = NBTHelper.hasTag(stack, "StoredEntity");
     }
 
     @Override
     protected void onHit(HitResult result) {
-        if (!level().isClientSide) {
-            if (result.getType() == HitResult.Type.BLOCK) {
-                if (this.hasEntity) {
-                    Optional<Entity> loadEntity = EntityType.create(NBTHelper.getTag(currentPokeball, "StoredEntity"), this.level());
+        if (!(this.level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+
+        // getItem() hands back the live synched stack, so it is copied before being changed.
+        ItemStack currentPokeball = this.getItem().copy();
+
+        if (result.getType() == HitResult.Type.BLOCK) {
+            if (this.hasEntity) {
+                // Entities deserialize from a ValueInput now, so the stored tag is wrapped in one.
+                try (ProblemReporter.ScopedCollector reporter = new ProblemReporter.ScopedCollector(this.problemPath(), Constants.LOG)) {
+                    Optional<Entity> loadEntity = EntityType.create(
+                            TagValueInput.create(reporter, serverLevel.registryAccess(), NBTHelper.getTag(currentPokeball, "StoredEntity")),
+                            serverLevel,
+                            new EntitySpawnRequest(EntitySpawnReason.BUCKET, true));
                     if (loadEntity.isPresent()) {
                         Entity spawnEntity = loadEntity.get();
-                        spawnEntity.moveTo(this.getX(), this.getY() + 1.0D, this.getZ(), this.getYRot(), 0.0F);
-                        this.level().addFreshEntity(spawnEntity);
+                        spawnEntity.snapTo(this.getX(), this.getY() + 1.0D, this.getZ(), this.getYRot(), 0.0F);
+                        serverLevel.addFreshEntity(spawnEntity);
                     }
-
-                    // Always reset pokeball
-                    this.currentPokeball = new ItemStack(ToolsItems.POKEBALL.get());
                 }
-            } else if (result.getType() == HitResult.Type.ENTITY) {
-                EntityHitResult entityResult = (EntityHitResult) result;
 
-                if (entityResult != null) {
-                    Entity hitEntity = entityResult.getEntity();
-                    if (hitEntity != null && !this.hasEntity && !(hitEntity instanceof Player || hitEntity instanceof EnderDragon || hitEntity instanceof EnderDragonPart)) {
-                        if (hitEntity instanceof LivingEntity) {
-
-                            LivingEntity livingEntity = (LivingEntity) hitEntity;
-                            CompoundTag entity = livingEntity.saveWithoutId(new CompoundTag());
-                            String id = ((EntityAccessor) livingEntity).callGetEncodeId();
-                            if (id != null) {
-                                entity.putString("id", id);
-                            }
+                // Always reset pokeball
+                currentPokeball = new ItemStack(ToolsItems.POKEBALL.get());
+            }
+        } else if (result.getType() == HitResult.Type.ENTITY) {
+            Entity hitEntity = ((EntityHitResult) result).getEntity();
+            if (hitEntity != null && !this.hasEntity && !(hitEntity instanceof Player || hitEntity instanceof EnderDragon || hitEntity instanceof EnderDragonPart)) {
+                if (hitEntity instanceof LivingEntity livingEntity) {
+                    try (ProblemReporter.ScopedCollector reporter = new ProblemReporter.ScopedCollector(livingEntity.problemPath(), Constants.LOG)) {
+                        TagValueOutput entityOutput = TagValueOutput.createWithContext(reporter, serverLevel.registryAccess());
+                        // Entity#save writes the encode id itself, so the accessor mixin the old
+                        // code needed to reach getEncodeId() is no longer used here.
+                        if (livingEntity.save(entityOutput)) {
+                            CompoundTag entity = entityOutput.buildResult();
                             entity.putString("pokeball_name", livingEntity.getType().getDescriptionId());
 
                             NBTHelper.putTag(currentPokeball, "StoredEntity", entity);
-                            this.currentPokeball.hurtAndBreak(1, livingEntity, (ent) -> {
+                            currentPokeball.hurtAndBreak(1, serverLevel, null, item -> {
                             });
-                            this.currentPokeball.setCount(1);
+                            currentPokeball.setCount(1);
 
                             hitEntity.discard();
                         }
                     }
                 }
             }
-
-            this.spawnAtLocation(this.currentPokeball, 0.2F);
-            this.level().broadcastEntityEvent(this, (byte) 3);
-            this.removeAfterChangingDimensions();
         }
+
+        this.spawnAtLocation(serverLevel, currentPokeball, 0.2F);
+        serverLevel.broadcastEntityEvent(this, (byte) 3);
+        this.discard();
     }
 
     @Override

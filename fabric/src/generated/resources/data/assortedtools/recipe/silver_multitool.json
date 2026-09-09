@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "assortedtools:silver_pickaxe",
+    "assortedtools:silver_shovel",
+    "assortedtools:silver_axe",
+    "assortedtools:silver_hoe",
+    "assortedtools:silver_sword",
+    "#c:ingots/silver",
+    "#c:ingots/silver",
+    "#c:ingots/silver",
+    "#c:ingots/silver"
+  ],
+  "result": {
+    "id": "assortedtools:silver_multitool"
+  }
+}

@@ -6,15 +6,15 @@ import com.grim3212.assorted.lib.platform.Services;
 import com.grim3212.assorted.tools.common.item.BetterBucketItem;
 import com.grim3212.assorted.tools.common.item.BetterMilkBucketItem;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.Cow;
-import net.minecraft.world.entity.animal.Pig;
-import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.entity.animal.cow.Cow;
+import net.minecraft.world.entity.animal.pig.Pig;
+import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
@@ -89,7 +89,7 @@ public class MilkingHandler {
                     }
                 } else if (stack.getItem() instanceof BetterBucketItem) {
                     BetterBucketItem bucket = (BetterBucketItem) stack.getItem();
-                    ResourceLocation bucketName = Services.PLATFORM.getRegistry(Registries.ITEM).getRegistryName(bucket);
+                    Identifier bucketName = Services.PLATFORM.getRegistry(Registries.ITEM).getRegistryName(bucket);
                     int milkingLevel = bucket.tierHolder.getMilkingLevel();
 
                     if (bucket != null) {
@@ -101,11 +101,11 @@ public class MilkingHandler {
                                         if (BetterBucketItem.getAmount(stack) < bucket.getMaximumMillibuckets()) {
                                             player.playSound(SoundEvents.COW_MILK, 1.0F, 1.0F);
 
-                                            ItemStack milkBucket = new ItemStack(Services.PLATFORM.getRegistry(Registries.ITEM).getValue(new ResourceLocation(bucketName.toString().replace("_bucket", "_milk_bucket"))).orElseThrow());
+                                            ItemStack milkBucket = new ItemStack(Services.PLATFORM.getRegistry(Registries.ITEM).getValue(Identifier.parse(bucketName.toString().replace("_bucket", "_milk_bucket"))).orElseThrow());
                                             BetterBucketItem.store(milkBucket, "milk", (int) Services.FLUIDS.getBucketAmount());
 
                                             if (event.getHand() == InteractionHand.MAIN_HAND)
-                                                player.getInventory().setItem(player.getInventory().selected, milkBucket);
+                                                player.getInventory().setItem(player.getInventory().getSelectedSlot(), milkBucket);
                                             else
                                                 player.getInventory().setItem(40, milkBucket);
 

@@ -1,9 +1,9 @@
 package com.grim3212.assorted.tools.api;
 
-import com.grim3212.assorted.lib.platform.Services;
+import com.grim3212.assorted.lib.util.LibCommonTags;
 import com.grim3212.assorted.tools.Constants;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -20,11 +20,11 @@ public class ToolsTags {
         public static final TagKey<Block> MINING_SURFACE_BLOCKS = toolsTag("wands/mining_surface_blocks");
 
         private static TagKey<Block> toolsTag(String name) {
-            return TagKey.create(Registries.BLOCK, new ResourceLocation(Constants.MOD_ID, name));
+            return TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Constants.MOD_ID, name));
         }
 
         private static TagKey<Block> commonTag(String name) {
-            return TagKey.create(Registries.BLOCK, new ResourceLocation(Services.PLATFORM.getCommonTagPrefix(), name));
+            return TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(LibCommonTags.COMMON_NAMESPACE, name));
         }
     }
 
@@ -45,14 +45,14 @@ public class ToolsTags {
         public static final TagKey<Item> GEMS_PERIDOT = commonTag("gems/peridot");
 
         public static final TagKey<Item> ULTIMATE_FRAGMENTS = toolsTag("ultimate_fragments");
-        public static final TagKey<Item> CAGE_SUPPORTED = TagKey.create(Registries.ITEM, new ResourceLocation("assorteddecor", "cage_supported"));
+        public static final TagKey<Item> CAGE_SUPPORTED = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("assorteddecor", "cage_supported"));
 
         private static TagKey<Item> toolsTag(String name) {
-            return TagKey.create(Registries.ITEM, new ResourceLocation(Constants.MOD_ID, name));
+            return TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(Constants.MOD_ID, name));
         }
 
         private static TagKey<Item> commonTag(String name) {
-            return TagKey.create(Registries.ITEM, new ResourceLocation(Services.PLATFORM.getCommonTagPrefix(), name));
+            return TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(LibCommonTags.COMMON_NAMESPACE, name));
         }
     }
 }

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "assortedtools:lead_pickaxe",
+    "assortedtools:lead_shovel",
+    "assortedtools:lead_axe",
+    "assortedtools:lead_hoe",
+    "assortedtools:lead_sword",
+    "#c:ingots/lead",
+    "#c:ingots/lead",
+    "#c:ingots/lead",
+    "#c:ingots/lead"
+  ],
+  "result": {
+    "id": "assortedtools:lead_multitool"
+  }
+}

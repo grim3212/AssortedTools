@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": "#minecraft:stone_tool_materials",
+    "L": "#c:leather"
+  },
+  "pattern": [
+    " I",
+    "IL"
+  ],
+  "result": {
+    "id": "assortedtools:stone_shears"
+  }
+}

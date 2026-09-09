@@ -1,0 +1,37 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:and",
+      "values": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "multitools"
+        },
+        {
+          "type": "assortedlib:item_tag_populated",
+          "tag": "c:ingots/electrum"
+        },
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        }
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "assortedtools:electrum_pickaxe",
+    "assortedtools:electrum_shovel",
+    "assortedtools:electrum_axe",
+    "assortedtools:electrum_hoe",
+    "assortedtools:electrum_sword",
+    "#c:ingots/electrum",
+    "#c:ingots/electrum",
+    "#c:ingots/electrum",
+    "#c:ingots/electrum"
+  ],
+  "result": {
+    "id": "assortedtools:electrum_multitool"
+  }
+}

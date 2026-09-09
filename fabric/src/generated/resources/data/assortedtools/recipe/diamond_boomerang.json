@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "X": "#c:gems/diamond",
+    "Y": "assortedtools:wood_boomerang"
+  },
+  "pattern": [
+    "XX",
+    "XY",
+    "XX"
+  ],
+  "result": {
+    "id": "assortedtools:diamond_boomerang"
+  }
+}

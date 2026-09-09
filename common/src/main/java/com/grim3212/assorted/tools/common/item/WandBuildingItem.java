@@ -16,6 +16,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
@@ -23,6 +24,7 @@ import net.minecraft.world.level.material.PushReaction;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class WandBuildingItem extends WandItem {
@@ -31,6 +33,10 @@ public class WandBuildingItem extends WandItem {
         super(reinforced, props);
     }
 
+    // BlockStateBase.liquid() is deprecated with no replacement - it is a legacy block level flag -
+    // but it is what vanilla itself asks to tell a fluid block from a waterlogged one, which is the
+    // distinction this needs.
+    @SuppressWarnings("deprecation")
     @Override
     protected boolean canBreak(Level worldIn, BlockPos pos, ItemStack stack) {
         BlockState state = worldIn.getBlockState(pos);
@@ -175,11 +181,11 @@ public class WandBuildingItem extends WandItem {
         }
         boolean flag = doBuilding(world, start, end, mode, entityplayer, hand, state);
         if (flag && mode != BuildingMode.BUILD_WATER && mode != BuildingMode.BUILD_LAVA)
-            world.playSound((Player) null, end.pos, SoundEvents.ARROW_SHOOT, SoundSource.BLOCKS, (world.random.nextFloat() + 0.7F) / 2.0F, 1.0F + (world.random.nextFloat() - world.random.nextFloat()) * 0.4F);
+            world.playSound((Player) null, end.pos, SoundEvents.ARROW_SHOOT, SoundSource.BLOCKS, (world.getRandom().nextFloat() + 0.7F) / 2.0F, 1.0F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.4F);
         if (flag && mode == BuildingMode.BUILD_WATER)
-            world.playSound((Player) null, end.pos, SoundEvents.PLAYER_SPLASH, SoundSource.BLOCKS, (world.random.nextFloat() + 0.7F) / 2.0F, 1.0F + (world.random.nextFloat() - world.random.nextFloat()) * 0.4F);
+            world.playSound((Player) null, end.pos, SoundEvents.PLAYER_SPLASH, SoundSource.BLOCKS, (world.getRandom().nextFloat() + 0.7F) / 2.0F, 1.0F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.4F);
         if (flag && mode == BuildingMode.BUILD_WATER)
-            world.playSound((Player) null, end.pos, SoundEvents.LAVA_POP, SoundSource.BLOCKS, (world.random.nextFloat() + 0.7F) / 2.0F, 1.0F + (world.random.nextFloat() - world.random.nextFloat()) * 0.4F);
+            world.playSound((Player) null, end.pos, SoundEvents.LAVA_POP, SoundSource.BLOCKS, (world.getRandom().nextFloat() + 0.7F) / 2.0F, 1.0F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.4F);
 
         return flag;
     }
@@ -209,7 +215,7 @@ public class WandBuildingItem extends WandItem {
                 }
 
                 if (neededItems == 0) {
-                    if (!world.isClientSide)
+                    if (!world.isClientSide())
                         error(entityplayer, end, "nowork");
                     return false;
                 }
@@ -230,7 +236,7 @@ public class WandBuildingItem extends WandItem {
                         }
                     }
 
-                    if ((this.stateOrig.getBlock() == Blocks.GRASS) && (affected > 0)) {
+                    if ((this.stateOrig.getBlock() == Blocks.GRASS_BLOCK) && (affected > 0)) {
                         for (int run = 0; run <= 1; run++) {
                             if (run == 0)
                                 Y = start.pos.getY();
@@ -241,8 +247,8 @@ public class WandBuildingItem extends WandItem {
                                 for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
                                     BlockPos newPos = new BlockPos(X, Y, Z);
 
-                                    if ((world.getBlockState(newPos).getBlock() == Blocks.DIRT) && ((world.getBlockState(newPos.above()).getBlock() == null) || (!world.getBlockState(newPos.above()).isSolidRender(world, newPos.above())))) {
-                                        world.setBlockAndUpdate(newPos, Blocks.GRASS.defaultBlockState());
+                                    if ((world.getBlockState(newPos).getBlock() == Blocks.DIRT) && ((world.getBlockState(newPos.above()).getBlock() == null) || (!world.getBlockState(newPos.above()).isSolidRender()))) {
+                                        world.setBlockAndUpdate(newPos, Blocks.GRASS_BLOCK.defaultBlockState());
                                     }
                                 }
                             }
@@ -267,7 +273,7 @@ public class WandBuildingItem extends WandItem {
                 }
 
                 if (neededItems == 0) {
-                    if (!world.isClientSide)
+                    if (!world.isClientSide())
                         error(entityplayer, end, "nowork");
                     return false;
                 }
@@ -287,7 +293,7 @@ public class WandBuildingItem extends WandItem {
                         }
                     }
 
-                    if ((this.stateOrig.getBlock() == Blocks.GRASS) && (affected > 0)) {
+                    if ((this.stateOrig.getBlock() == Blocks.GRASS_BLOCK) && (affected > 0)) {
                         for (int run = 0; run <= 1; run++) {
                             if (run == 0)
                                 Y = start.pos.getY();
@@ -298,8 +304,8 @@ public class WandBuildingItem extends WandItem {
                                 for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
                                     BlockPos newPos = new BlockPos(X, Y, Z);
 
-                                    if ((world.getBlockState(newPos).getBlock() == Blocks.DIRT) && ((world.getBlockState(newPos.above()).getBlock() == null) || (!world.getBlockState(newPos.above()).isSolidRender(world, newPos.above())))) {
-                                        world.setBlockAndUpdate(newPos, Blocks.GRASS.defaultBlockState());
+                                    if ((world.getBlockState(newPos).getBlock() == Blocks.DIRT) && ((world.getBlockState(newPos.above()).getBlock() == null) || (!world.getBlockState(newPos.above()).isSolidRender()))) {
+                                        world.setBlockAndUpdate(newPos, Blocks.GRASS_BLOCK.defaultBlockState());
                                     }
                                 }
                             }
@@ -324,7 +330,7 @@ public class WandBuildingItem extends WandItem {
                 }
 
                 if (neededItems == 0) {
-                    if (!world.isClientSide)
+                    if (!world.isClientSide())
                         error(entityplayer, end, "nowork");
                     return false;
                 }
@@ -349,7 +355,7 @@ public class WandBuildingItem extends WandItem {
                         }
                     }
 
-                    if ((this.stateOrig.getBlock() == Blocks.GRASS) && (affected > 0)) {
+                    if ((this.stateOrig.getBlock() == Blocks.GRASS_BLOCK) && (affected > 0)) {
                         for (int run = 0; run <= 1; run++) {
                             if (run == 0)
                                 Y = start.pos.getY();
@@ -360,8 +366,8 @@ public class WandBuildingItem extends WandItem {
                                 for (Z = start.pos.getZ(); Z <= end.pos.getZ(); Z++) {
                                     BlockPos newPos = new BlockPos(X, Y, Z);
                                     if (((X == start.pos.getX()) && (Y == start.pos.getY())) || ((Y == start.pos.getY()) && (Z == start.pos.getZ())) || ((Z == start.pos.getZ()) && (X == start.pos.getX())) || ((X == start.pos.getX()) && (Y == end.pos.getY())) || ((X == end.pos.getX()) && (Y == start.pos.getY())) || ((Y == start.pos.getY()) && (Z == end.pos.getZ())) || ((Y == end.pos.getY()) && (Z == start.pos.getZ())) || ((Z == start.pos.getZ()) && (X == end.pos.getX()))
-                                            || ((Z == end.pos.getZ()) && (X == start.pos.getX())) || ((X == end.pos.getX()) && (Y == end.pos.getY())) || ((Y == end.pos.getY()) && (Z == end.pos.getZ())) || ((Z == end.pos.getZ()) && (X == end.pos.getX()) && (world.getBlockState(newPos).getBlock() == Blocks.DIRT) && ((world.getBlockState(newPos.above()).getBlock() == null) || (!world.getBlockState(newPos.above()).isSolidRender(world, newPos.above()))))) {
-                                        world.setBlockAndUpdate(newPos, Blocks.GRASS.defaultBlockState());
+                                            || ((Z == end.pos.getZ()) && (X == start.pos.getX())) || ((X == end.pos.getX()) && (Y == end.pos.getY())) || ((Y == end.pos.getY()) && (Z == end.pos.getZ())) || ((Z == end.pos.getZ()) && (X == end.pos.getX()) && (world.getBlockState(newPos).getBlock() == Blocks.DIRT) && ((world.getBlockState(newPos.above()).getBlock() == null) || (!world.getBlockState(newPos.above()).isSolidRender())))) {
+                                        world.setBlockAndUpdate(newPos, Blocks.GRASS_BLOCK.defaultBlockState());
                                     }
                                 }
                             }
@@ -389,7 +395,7 @@ public class WandBuildingItem extends WandItem {
                 }
 
                 if (neededItems == 0) {
-                    if (!world.isClientSide)
+                    if (!world.isClientSide())
                         error(entityplayer, end, "nowork");
                     return false;
                 }
@@ -435,7 +441,7 @@ public class WandBuildingItem extends WandItem {
                     }
 
                     if (neededItems == 0) {
-                        if (!world.isClientSide)
+                        if (!world.isClientSide())
                             error(entityplayer, end, "nowork");
                         return false;
                     }
@@ -500,7 +506,7 @@ public class WandBuildingItem extends WandItem {
                         }
                     }
                     if (neededItems == 0) {
-                        if (!world.isClientSide)
+                        if (!world.isClientSide())
                             error(entityplayer, end, "nowork");
                         return false;
                     }
@@ -568,11 +574,11 @@ public class WandBuildingItem extends WandItem {
                     }
                 }
                 if (cnt > 0L) {
-                    if (!world.isClientSide)
+                    if (!world.isClientSide())
                         sendMessage(entityplayer, Component.translatable("result.wand.fill", cnt));
                     return true;
                 } else {
-                    if (!world.isClientSide)
+                    if (!world.isClientSide())
                         error(entityplayer, end, "nocave");
                     return false;
                 }
@@ -590,17 +596,23 @@ public class WandBuildingItem extends WandItem {
         return stack;
     }
 
+    /**
+     * {@code Item.appendHoverText} is marked deprecated in 26.x - tooltips are meant to come from
+     * data components implementing {@code TooltipProvider} - but it is still the only per item
+     * hook, and vanilla's own items still override it.
+     */
+    @SuppressWarnings("deprecation")
     @Override
-    public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flagIn) {
         BuildingMode mode = BuildingMode.fromString(NBTHelper.getString(stack, "Mode"));
         if (mode != null)
-            tooltip.add(Component.translatable(Constants.MOD_ID + ".wand.current", mode.getTranslatedString()));
+            tooltip.accept(Component.translatable(Constants.MOD_ID + ".wand.current", mode.getTranslatedString()));
         else
-            tooltip.add(Component.translatable(Constants.MOD_ID + ".wand.broken"));
+            tooltip.accept(Component.translatable(Constants.MOD_ID + ".wand.broken"));
     }
 
     @Override
-    public void onCraftedBy(ItemStack stack, Level worldIn, Player playerIn) {
+    public void onCraftedBy(ItemStack stack, Player playerIn) {
         NBTHelper.putString(stack, "Mode", BuildingMode.BUILD_BOX.getSerializedName());
     }
 

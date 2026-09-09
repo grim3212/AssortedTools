@@ -1,0 +1,37 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:and",
+      "values": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "multitools"
+        },
+        {
+          "type": "assortedlib:item_tag_populated",
+          "tag": "c:ingots/copper"
+        },
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        }
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "assortedtools:copper_pickaxe",
+    "assortedtools:copper_shovel",
+    "assortedtools:copper_axe",
+    "assortedtools:copper_hoe",
+    "assortedtools:copper_sword",
+    "#c:ingots/copper",
+    "#c:ingots/copper",
+    "#c:ingots/copper",
+    "#c:ingots/copper"
+  ],
+  "result": {
+    "id": "assortedtools:copper_multitool"
+  }
+}

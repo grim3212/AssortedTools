@@ -1,0 +1,24 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "ultimatefist"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "assortedtools:u_fragment",
+    "assortedtools:l_fragment",
+    "assortedtools:t_fragment",
+    "assortedtools:i_fragment",
+    "assortedtools:m_fragment",
+    "assortedtools:a_fragment",
+    "assortedtools:missing_fragment",
+    "assortedtools:e_fragment",
+    "#c:nether_stars"
+  ],
+  "result": {
+    "id": "assortedtools:ultimate_fist"
+  }
+}

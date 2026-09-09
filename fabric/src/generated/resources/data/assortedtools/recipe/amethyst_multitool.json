@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "assortedtools:amethyst_pickaxe",
+    "assortedtools:amethyst_shovel",
+    "assortedtools:amethyst_axe",
+    "assortedtools:amethyst_hoe",
+    "assortedtools:amethyst_sword",
+    "#c:gems/amethyst",
+    "#c:gems/amethyst",
+    "#c:gems/amethyst",
+    "#c:gems/amethyst"
+  ],
+  "result": {
+    "id": "assortedtools:amethyst_multitool"
+  }
+}

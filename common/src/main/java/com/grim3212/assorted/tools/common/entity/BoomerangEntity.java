@@ -2,12 +2,7 @@ package com.grim3212.assorted.tools.common.entity;
 
 import com.grim3212.assorted.tools.ToolsCommonMod;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -15,6 +10,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityReference;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
@@ -22,19 +18,23 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.ClipContext.Block;
-import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.LeverBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public abstract class BoomerangEntity extends Entity {
 
@@ -45,10 +45,14 @@ public abstract class BoomerangEntity extends Entity {
     private boolean turningAround;
     protected int timeBeforeTurnAround;
     List<ItemEntity> itemsPickedUp;
-    private ItemStack selfStack;
+    private ItemStack selfStack = ItemStack.EMPTY;
     private InteractionHand hand;
     private static final EntityDataAccessor<Float> ROTATION = SynchedEntityData.defineId(BoomerangEntity.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Optional<UUID>> RETURN_UNIQUE_ID = SynchedEntityData.defineId(BoomerangEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+    /**
+     * There is no UUID entity data serializer any more; owners are tracked as an
+     * {@link EntityReference}, which carries the UUID and resolves it lazily against the level.
+     */
+    private static final EntityDataAccessor<Optional<EntityReference<LivingEntity>>> RETURN_TO = SynchedEntityData.defineId(BoomerangEntity.class, EntityDataSerializers.OPTIONAL_LIVING_ENTITY_REFERENCE);
 
     public BoomerangEntity(EntityType<BoomerangEntity> type, Level world) {
         super(type, world);
@@ -77,7 +81,7 @@ public abstract class BoomerangEntity extends Entity {
         this.isBouncing = false;
         this.turningAround = false;
         this.hand = hand;
-        this.setReturnToId(entity.getUUID());
+        this.setReturnTo(entity);
     }
 
     public double getReturnEntityY(Player entity) {
@@ -90,7 +94,7 @@ public abstract class BoomerangEntity extends Entity {
 
         Vec3 vec3d1 = this.position();
         Vec3 vec3d = this.position().add(this.getDeltaMovement());
-        HitResult raytraceresult = this.level().clip(new ClipContext(vec3d1, vec3d, Block.OUTLINE, Fluid.ANY, this));
+        HitResult raytraceresult = this.level().clip(new ClipContext(vec3d1, vec3d, ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY, this));
 
         if (raytraceresult != null) {
             if (raytraceresult.getType() == HitResult.Type.BLOCK) {
@@ -105,9 +109,11 @@ public abstract class BoomerangEntity extends Entity {
                     if (timeBeforeTurnAround > 0 && ToolsCommonMod.COMMON_CONFIG.turnAroundButton.get()) {
                         timeBeforeTurnAround = 0;
                     }
-                    if (activatedPos == null || !activatedPos.equals(pos)) {
+                    if (player != null && (activatedPos == null || !activatedPos.equals(pos))) {
                         activatedPos = pos;
-                        state.getBlock().use(state, level(), pos, player, InteractionHand.MAIN_HAND, (BlockHitResult) raytraceresult);
+                        // Block#use is gone; the no-item half of the interaction is
+                        // BlockState#useWithoutItem, and it no longer takes a hand.
+                        state.useWithoutItem(level(), player, (BlockHitResult) raytraceresult);
                     }
                 }
             }
@@ -200,7 +206,20 @@ public abstract class BoomerangEntity extends Entity {
     }
 
     public void onEntityHit(Entity hitEntity, Player player) {
-        hitEntity.hurt(causeNewDamage(this, player), getDamage(hitEntity, player));
+        // Entity#hurt and #hurtOrSimulate are both @Deprecated now; hurtServer is the real entry
+        // point and only exists on the server, which is where damage was always applied anyway.
+        if (this.level() instanceof ServerLevel serverLevel) {
+            hitEntity.hurtServer(serverLevel, causeNewDamage(this, player), getDamage(hitEntity, player));
+        }
+    }
+
+    /**
+     * Abstract on {@link Entity} now. A boomerang cannot be attacked, like vanilla's own
+     * non-living projectiles.
+     */
+    @Override
+    public boolean hurtServer(ServerLevel level, DamageSource source, float damage) {
+        return false;
     }
 
     protected abstract int getDamage(Entity hitEntity, Player player);
@@ -208,26 +227,21 @@ public abstract class BoomerangEntity extends Entity {
     public abstract DamageSource causeNewDamage(BoomerangEntity entityboomerang, Entity entity);
 
     public void setEntityDead() {
-        if (this.getReturnTo() != null) {
-            if (selfStack != null) {
-                if (this.hand == InteractionHand.OFF_HAND) {
-                    if (this.getReturnTo().getOffhandItem().isEmpty()) {
-                        this.getReturnTo().setItemInHand(InteractionHand.OFF_HAND, selfStack);
-                    } else {
-                        this.getReturnTo().getInventory().add(selfStack);
-                    }
-                } else {
-                    this.getReturnTo().getInventory().add(selfStack);
-                }
+        Player returnTo = this.getReturnTo();
+        if (returnTo != null && !this.selfStack.isEmpty()) {
+            if (this.hand == InteractionHand.OFF_HAND && returnTo.getOffhandItem().isEmpty()) {
+                returnTo.setItemInHand(InteractionHand.OFF_HAND, selfStack);
+            } else {
+                returnTo.getInventory().add(selfStack);
             }
         }
         super.removeAfterChangingDimensions();
     }
 
     @Override
-    protected void defineSynchedData() {
-        this.getEntityData().define(ROTATION, 0.0F);
-        this.getEntityData().define(RETURN_UNIQUE_ID, Optional.empty());
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(ROTATION, 0.0F);
+        builder.define(RETURN_TO, Optional.empty());
     }
 
     public float getBoomerangRotation() {
@@ -240,21 +254,26 @@ public abstract class BoomerangEntity extends Entity {
 
     @Nullable
     public UUID getReturnToId() {
-        return this.entityData.get(RETURN_UNIQUE_ID).orElse(null);
+        return this.entityData.get(RETURN_TO).map(EntityReference::getUUID).orElse(null);
     }
 
-    public void setReturnToId(@Nullable UUID uuid) {
-        this.entityData.set(RETURN_UNIQUE_ID, Optional.ofNullable(uuid));
+    public void setReturnTo(@Nullable Player player) {
+        this.entityData.set(RETURN_TO, Optional.ofNullable(EntityReference.<LivingEntity>of(player)));
+    }
+
+    private void setReturnTo(@Nullable EntityReference<LivingEntity> reference) {
+        this.entityData.set(RETURN_TO, Optional.ofNullable(reference));
     }
 
     @Nullable
     public Player getReturnTo() {
-        try {
-            UUID uuid = this.getReturnToId();
-            return uuid == null ? null : this.level().getPlayerByUUID(uuid);
-        } catch (IllegalArgumentException e) {
+        EntityReference<LivingEntity> reference = this.entityData.get(RETURN_TO).orElse(null);
+        if (reference == null) {
             return null;
         }
+
+        LivingEntity entity = reference.getEntity(this.level(), LivingEntity.class);
+        return entity instanceof Player player ? player : null;
     }
 
     public boolean isReturnTo(LivingEntity entityIn) {
@@ -270,81 +289,39 @@ public abstract class BoomerangEntity extends Entity {
     }
 
     @Override
-    public void load(CompoundTag compound) {
-        super.load(compound);
+    protected void readAdditionalSaveData(ValueInput input) {
+        this.isBouncing = input.getBooleanOr("IsBouncing", false);
+        this.bounceFactor = input.getDoubleOr("BounceFactor", 0.84999999999999998D);
+        this.prevBoomerangRotation = input.getFloatOr("PrevBoomerangRotation", 0.0F);
+        this.setBoomerangRotation(input.getFloatOr("BoomerangRotation", 0.0F));
+        this.turningAround = input.getBooleanOr("TurningAround", false);
+        this.timeBeforeTurnAround = input.getIntOr("TimeBeforeTurnAround", 30);
+
+        int[] activated = input.getIntArray("ActivatedPos").orElse(null);
+        this.activatedPos = activated != null && activated.length == 3 ? new BlockPos(activated[0], activated[1], activated[2]) : null;
+
+        this.setReturnTo(EntityReference.<LivingEntity>read(input, "ReturnTo"));
+
+        this.selfStack = input.read("SelfStack", ItemStack.CODEC).orElse(ItemStack.EMPTY);
+
+        this.hand = "OFF_HAND".equals(input.getStringOr("hand", InteractionHand.MAIN_HAND.name())) ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag compound) {
-        this.isBouncing = compound.getBoolean("IsBouncing");
-        this.bounceFactor = compound.getDouble("BounceFactor");
-        this.prevBoomerangRotation = compound.getFloat("PrevBoomerangRotation");
-        this.setBoomerangRotation(compound.getFloat("BoomerangRotation"));
-        this.turningAround = compound.getBoolean("TurningAround");
-        this.timeBeforeTurnAround = compound.getInt("TimeBeforeTurnAround");
-        if (compound.contains("xPos") && compound.contains("yPos") && compound.contains("zPos"))
-            this.activatedPos = new BlockPos(compound.getInt("xPos"), compound.getInt("yPos"), compound.getInt("zPos"));
-
-        if (compound.contains("ReturnToUUID", 8)) {
-            try {
-                this.setReturnToId(UUID.fromString(compound.getString("ReturnToUUID")));
-            } catch (Throwable t) {
-                // NO-OP
-            }
-        }
-
-        this.selfStack = ItemStack.of(compound.getCompound("SelfStack"));
-
-        ListTag itemsGathered = compound.getList("ItemsPickedUp", Tag.TAG_COMPOUND);
-        for (int i = 0; i < itemsGathered.size(); i++) {
-            CompoundTag tag = itemsGathered.getCompound(i);
-            ItemEntity item = new ItemEntity(level(), 0, 0, 0, ItemStack.EMPTY);
-            item.readAdditionalSaveData(tag);
-            this.itemsPickedUp.add(item);
-        }
-
-        this.hand = InteractionHand.valueOf(compound.getString("hand"));
-    }
-
-    @Override
-    protected void addAdditionalSaveData(CompoundTag compound) {
-        compound.putBoolean("IsBouncing", isBouncing);
-        compound.putDouble("BounceFactor", bounceFactor);
-        compound.putFloat("PrevBoomerangRotation", prevBoomerangRotation);
-        compound.putFloat("BoomerangRotation", this.getBoomerangRotation());
-        compound.putBoolean("TurningAround", turningAround);
-        compound.putInt("TimeBeforeTurnAround", timeBeforeTurnAround);
+    protected void addAdditionalSaveData(ValueOutput output) {
+        output.putBoolean("IsBouncing", isBouncing);
+        output.putDouble("BounceFactor", bounceFactor);
+        output.putFloat("PrevBoomerangRotation", prevBoomerangRotation);
+        output.putFloat("BoomerangRotation", this.getBoomerangRotation());
+        output.putBoolean("TurningAround", turningAround);
+        output.putInt("TimeBeforeTurnAround", timeBeforeTurnAround);
         if (activatedPos != null) {
-            compound.putInt("xPos", activatedPos.getX());
-            compound.putInt("yPos", activatedPos.getY());
-            compound.putInt("zPos", activatedPos.getZ());
+            output.putIntArray("ActivatedPos", new int[]{activatedPos.getX(), activatedPos.getY(), activatedPos.getZ()});
         }
 
-        if (this.getReturnToId() == null) {
-            compound.putString("ReturnToUUID", "");
-        } else {
-            compound.putString("ReturnToUUID", this.getReturnToId().toString());
-        }
+        EntityReference.store(this.entityData.get(RETURN_TO).orElse(null), output, "ReturnTo");
 
-        CompoundTag selfStackTag = new CompoundTag();
-        selfStack.save(selfStackTag);
-        compound.put("SelfStack", selfStackTag);
-
-        ListTag itemsGathered = new ListTag();
-        for (int i = 0; i < itemsPickedUp.size(); i++) {
-            if (itemsPickedUp.get(i) != null) {
-                CompoundTag tag = new CompoundTag();
-                itemsPickedUp.get(i).addAdditionalSaveData(compound);
-                itemsGathered.add(tag);
-            }
-        }
-
-        compound.put("ItemsPickedUp", itemsGathered);
-        compound.putString("hand", this.hand.toString());
-    }
-
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return new ClientboundAddEntityPacket(this);
+        output.store("SelfStack", ItemStack.CODEC, this.selfStack);
+        output.putString("hand", this.hand.name());
     }
 }

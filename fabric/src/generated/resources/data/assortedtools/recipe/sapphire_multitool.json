@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "assortedtools:sapphire_pickaxe",
+    "assortedtools:sapphire_shovel",
+    "assortedtools:sapphire_axe",
+    "assortedtools:sapphire_hoe",
+    "assortedtools:sapphire_sword",
+    "#c:gems/sapphire",
+    "#c:gems/sapphire",
+    "#c:gems/sapphire",
+    "#c:gems/sapphire"
+  ],
+  "result": {
+    "id": "assortedtools:sapphire_multitool"
+  }
+}

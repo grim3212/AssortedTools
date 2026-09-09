@@ -2,11 +2,11 @@ package com.grim3212.assorted.tools.common.handlers;
 
 import com.grim3212.assorted.lib.core.creative.CreativeTabItems;
 import com.grim3212.assorted.lib.registry.IRegistryObject;
+import com.grim3212.assorted.lib.platform.Services;
 import com.grim3212.assorted.lib.registry.RegistryProvider;
 import com.grim3212.assorted.lib.util.NBTHelper;
 import com.grim3212.assorted.tools.Constants;
 import com.grim3212.assorted.tools.ToolsCommonMod;
-import com.grim3212.assorted.tools.api.item.ToolsItemTier;
 import com.grim3212.assorted.tools.common.item.BetterBucketItem;
 import com.grim3212.assorted.tools.common.item.BetterMilkBucketItem;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
@@ -16,6 +16,9 @@ import com.grim3212.assorted.tools.common.item.WandMiningItem.MiningMode;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
@@ -25,10 +28,19 @@ public class ToolsCreativeItems {
 
     public static final RegistryProvider<CreativeModeTab> CREATIVE_TABS = RegistryProvider.create(Registries.CREATIVE_MODE_TAB, Constants.MOD_ID);
 
+    public static final ResourceKey<CreativeModeTab> CREATIVE_TAB_KEY = ResourceKey.create(Registries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(Constants.MOD_ID, "tab"));
+
+    // CreativeModeTab.Output is protected in 26.2 vanilla, so a display items generator cannot be
+    // written against the plain game jar. The tab is registered empty and filled through the
+    // library's modifyCreativeTab hook instead, which both loaders already implement on top of
+    // their own creative tab events.
+    // CreativeModeTab.builder(Row, int) is deprecated by NeoForge's patches only; the vanilla jar
+    // this module compiles against has no other builder. See PORTING-26.2.md.
+    @SuppressWarnings("deprecation")
     public static final IRegistryObject CREATIVE_TAB = CREATIVE_TABS.register("tab", () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
             .title(Component.translatable("itemGroup." + Constants.MOD_ID))
             .icon(() -> new ItemStack(ToolsItems.IRON_HAMMER.get()))
-            .displayItems((props, output) -> output.acceptAll(ToolsCreativeItems.getCreativeItems())).build());
+            .build());
 
     private static List<ItemStack> getCreativeItems() {
         CreativeTabItems items = new CreativeTabItems();
@@ -115,8 +127,10 @@ public class ToolsCreativeItems {
 
         if (ToolsCommonMod.COMMON_CONFIG.extraMaterialsEnabled.get()) {
             ToolsItems.MATERIAL_GROUPS.forEach((s, group) -> {
-                ToolsItemTier tier = (ToolsItemTier) group.tier.getDefaultTier();
-                if (ToolsCommonMod.COMMON_CONFIG.hideUncraftableItems.get() && BuiltInRegistries.ITEM.getTag(tier.repairTag()).isPresent() && BuiltInRegistries.ITEM.getTag(tier.repairTag()).get().stream().count() < 1) {
+                // getDefaultTier() hands back a ToolMaterial record now, and a registry is its own
+                // HolderLookup, so the repair tag is read with Registry#get(TagKey).
+                ToolMaterial tier = group.tier.getDefaultTier();
+                if (ToolsCommonMod.COMMON_CONFIG.hideUncraftableItems.get() && BuiltInRegistries.ITEM.get(tier.repairItems()).map(holders -> holders.size() < 1).orElse(false)) {
                     return;
                 }
 
@@ -168,5 +182,6 @@ public class ToolsCreativeItems {
     }
 
     public static void init() {
+        Services.PLATFORM.modifyCreativeTab(CREATIVE_TAB_KEY, ToolsCreativeItems::getCreativeItems);
     }
 }

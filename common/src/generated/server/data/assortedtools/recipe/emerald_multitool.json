@@ -1,0 +1,37 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:and",
+      "values": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "multitools"
+        },
+        {
+          "type": "assortedlib:item_tag_populated",
+          "tag": "c:gems/emerald"
+        },
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        }
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "assortedtools:emerald_pickaxe",
+    "assortedtools:emerald_shovel",
+    "assortedtools:emerald_axe",
+    "assortedtools:emerald_hoe",
+    "assortedtools:emerald_sword",
+    "#c:gems/emerald",
+    "#c:gems/emerald",
+    "#c:gems/emerald",
+    "#c:gems/emerald"
+  ],
+  "result": {
+    "id": "assortedtools:emerald_multitool"
+  }
+}

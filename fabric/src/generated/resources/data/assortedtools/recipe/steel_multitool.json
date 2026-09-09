@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "assortedtools:steel_pickaxe",
+    "assortedtools:steel_shovel",
+    "assortedtools:steel_axe",
+    "assortedtools:steel_hoe",
+    "assortedtools:steel_sword",
+    "#c:ingots/steel",
+    "#c:ingots/steel",
+    "#c:ingots/steel",
+    "#c:ingots/steel"
+  ],
+  "result": {
+    "id": "assortedtools:steel_multitool"
+  }
+}

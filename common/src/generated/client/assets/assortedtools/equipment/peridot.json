@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "assortedtools:peridot"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "assortedtools:peridot"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "assortedtools:peridot"
+      }
+    ]
+  }
+}

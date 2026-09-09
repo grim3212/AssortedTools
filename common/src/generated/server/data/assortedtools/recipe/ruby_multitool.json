@@ -1,0 +1,37 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:and",
+      "values": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "multitools"
+        },
+        {
+          "type": "assortedlib:item_tag_populated",
+          "tag": "c:gems/ruby"
+        },
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        }
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "assortedtools:ruby_pickaxe",
+    "assortedtools:ruby_shovel",
+    "assortedtools:ruby_axe",
+    "assortedtools:ruby_hoe",
+    "assortedtools:ruby_sword",
+    "#c:gems/ruby",
+    "#c:gems/ruby",
+    "#c:gems/ruby",
+    "#c:gems/ruby"
+  ],
+  "result": {
+    "id": "assortedtools:ruby_multitool"
+  }
+}

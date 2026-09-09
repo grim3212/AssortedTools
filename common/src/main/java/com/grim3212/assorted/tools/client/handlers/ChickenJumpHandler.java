@@ -7,11 +7,15 @@ import com.grim3212.assorted.tools.common.item.ChickenSuitArmor;
 import com.grim3212.assorted.tools.common.network.ChickenSuitUpdatePacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.Holder;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.animal.chicken.ChickenSoundVariants;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.phys.Vec3;
 
 public class ChickenJumpHandler {
@@ -21,9 +25,16 @@ public class ChickenJumpHandler {
     private static int cooldown = 0;
     private static final int MAX_COOLDOWN = 6;
 
+    /**
+     * Chickens pick their sounds from a data driven {@code ChickenSoundVariant} now, so there is no
+     * single {@code SoundEvents.CHICKEN_AMBIENT} constant any more. The classic variant's adult
+     * ambient sound is {@code entity.chicken.ambient}, which is what 1.20.1 played here.
+     */
+    private static final Holder<SoundEvent> CHICKEN_AMBIENT = SoundEvents.CHICKEN_SOUNDS.get(ChickenSoundVariants.SoundSet.CLASSIC).adultSounds().ambientSound();
+
     public static void tick(Minecraft mc) {
         if (ToolsCommonMod.COMMON_CONFIG.chickenSuitEnabled.get()) {
-            Screen screen = Minecraft.getInstance().screen;
+            Screen screen = mc.gui.screen();
             if (screen == null) {
                 onTickInGame(mc);
             }
@@ -40,7 +51,7 @@ public class ChickenJumpHandler {
         }
 
 
-        if (!mc.player.isInWater() && !mc.player.isInLava() && mc.player.hasImpulse) {
+        if (!mc.player.isInWater() && !mc.player.isInLava() && mc.player.needsSync) {
             int jumpsAllowed = getMaxJumps(mc.player);
 
             // Must at least have 1 piece of the suit
@@ -53,7 +64,7 @@ public class ChickenJumpHandler {
                         mc.player.fallDistance = 0.0f;
 
                         // Only play sound to client player
-                        mc.level.playSound(mc.player, mc.player.blockPosition(), SoundEvents.CHICKEN_AMBIENT, SoundSource.PLAYERS, 1.0F, 1.0F);
+                        mc.level.playSound(mc.player, mc.player.blockPosition(), CHICKEN_AMBIENT.value(), SoundSource.PLAYERS, 1.0F, 1.0F);
 
                         // Double jump on server
                         Services.NETWORK.sendToServer(new ChickenSuitUpdatePacket());
@@ -68,7 +79,7 @@ public class ChickenJumpHandler {
                             mc.player.fallDistance = -numJumps;
 
                             // Only play sound to client player
-                            mc.level.playSound(mc.player, mc.player.blockPosition(), SoundEvents.CHICKEN_AMBIENT, SoundSource.PLAYERS, 1.0F, 1.0F);
+                            mc.level.playSound(mc.player, mc.player.blockPosition(), CHICKEN_AMBIENT.value(), SoundSource.PLAYERS, 1.0F, 1.0F);
 
                             // Double jump on server
                             Services.NETWORK.sendToServer(new ChickenSuitUpdatePacket());
@@ -99,13 +110,18 @@ public class ChickenJumpHandler {
     private static int getMaxJumps(Player player) {
         // Start at one for original jump
         int maxJumps = 1;
-        for (ItemStack stack : player.getArmorSlots()) {
+        // getArmorSlots() is gone; the humanoid armour slots are walked through EquipmentSlotGroup.
+        for (EquipmentSlot slot : EquipmentSlotGroup.ARMOR) {
+            if (slot.getType() != EquipmentSlot.Type.HUMANOID_ARMOR)
+                continue;
+
+            ItemStack stack = player.getItemBySlot(slot);
             if (stack.isEmpty())
                 continue;
 
             if (stack.getItem() instanceof ChickenSuitArmor) {
                 maxJumps++;
-            } else if (EnchantmentHelper.getEnchantments(stack).containsKey(ToolsEnchantments.CHICKEN_JUMP.get())) {
+            } else if (ToolsEnchantments.hasChickenJump(stack)) {
                 maxJumps++;
             }
         }

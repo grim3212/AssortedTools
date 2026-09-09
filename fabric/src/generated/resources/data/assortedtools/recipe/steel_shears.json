@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": "#c:ingots/steel",
+    "L": "#c:leather"
+  },
+  "pattern": [
+    " I",
+    "IL"
+  ],
+  "result": {
+    "id": "assortedtools:steel_shears"
+  }
+}

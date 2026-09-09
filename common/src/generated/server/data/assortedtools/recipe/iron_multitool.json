@@ -1,0 +1,33 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:and",
+      "values": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "multitools"
+        },
+        {
+          "type": "assortedlib:item_tag_populated",
+          "tag": "c:ingots/iron"
+        }
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:iron_pickaxe",
+    "minecraft:iron_shovel",
+    "minecraft:iron_axe",
+    "minecraft:iron_hoe",
+    "minecraft:iron_sword",
+    "#c:ingots/iron",
+    "#c:ingots/iron",
+    "#c:ingots/iron",
+    "#c:ingots/iron"
+  ],
+  "result": {
+    "id": "assortedtools:iron_multitool"
+  }
+}

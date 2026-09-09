@@ -1,22 +1,35 @@
 package com.grim3212.assorted.tools.api.item;
 
-import com.grim3212.assorted.lib.mixin.item.ArmorMaterialsMixin;
 import com.grim3212.assorted.lib.util.LibCommonTags;
+import com.grim3212.assorted.tools.Constants;
 import com.grim3212.assorted.tools.ToolsCommonMod;
 import com.grim3212.assorted.tools.api.ToolsTags;
 import com.grim3212.assorted.tools.config.ArmorMaterialConfig;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.equipment.EquipmentAsset;
+import net.minecraft.world.item.equipment.EquipmentAssets;
 
 import java.util.function.Supplier;
 
-public enum ToolsArmorMaterials implements ArmorMaterial {
-    CHICKEN_SUIT(() -> ToolsCommonMod.COMMON_CONFIG.chickenSuitArmorMaterial, () -> SoundEvents.WOOL_PLACE, () -> LibCommonTags.Items.FEATHERS),
+/**
+ * The mod's armour materials, and the defaults its configuration is seeded from.
+ * <p>
+ * No longer implements {@code ArmorMaterial}: that is a record now, built from the configured
+ * numbers by {@link ArmorMaterialConfig#material()}. What is left here is the part that is not
+ * configurable - the equip sound, the repair tag, and the equipment asset naming the armour's
+ * texture layers. Every material needs an asset: since 1.21.4 the worn-armour texture is looked up
+ * through the {@code equipment_asset} registry rather than derived from the material's name, so
+ * each of these has a matching {@code assets/assortedtools/equipment/<name>.json}.
+ */
+public enum ToolsArmorMaterials {
+    CHICKEN_SUIT(() -> ToolsCommonMod.COMMON_CONFIG.chickenSuitArmorMaterial, () -> BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SoundEvents.WOOL_PLACE), () -> LibCommonTags.Items.FEATHERS),
     TIN(() -> ToolsCommonMod.COMMON_CONFIG.moddedArmors.get("tin"), () -> SoundEvents.ARMOR_EQUIP_IRON, () -> ToolsTags.Items.INGOTS_TIN),
     COPPER(() -> ToolsCommonMod.COMMON_CONFIG.moddedArmors.get("copper"), () -> SoundEvents.ARMOR_EQUIP_IRON, () -> LibCommonTags.Items.INGOTS_COPPER),
     SILVER(() -> ToolsCommonMod.COMMON_CONFIG.moddedArmors.get("silver"), () -> SoundEvents.ARMOR_EQUIP_DIAMOND, () -> ToolsTags.Items.INGOTS_SILVER),
@@ -36,101 +49,34 @@ public enum ToolsArmorMaterials implements ArmorMaterial {
     PERIDOT(() -> ToolsCommonMod.COMMON_CONFIG.moddedArmors.get("peridot"), () -> SoundEvents.ARMOR_EQUIP_DIAMOND, () -> ToolsTags.Items.GEMS_PERIDOT);
 
     private final Supplier<ArmorMaterialConfig> material;
-    private final Supplier<SoundEvent> equipSound;
+    private final Supplier<Holder<SoundEvent>> equipSound;
     private final Supplier<TagKey<Item>> repairMaterial;
+    private final ResourceKey<EquipmentAsset> assetId;
 
-    ToolsArmorMaterials(Supplier<ArmorMaterialConfig> material, Supplier<SoundEvent> equipSound, Supplier<TagKey<Item>> repairTagIn) {
+    ToolsArmorMaterials(Supplier<ArmorMaterialConfig> material, Supplier<Holder<SoundEvent>> equipSound, Supplier<TagKey<Item>> repairTagIn) {
         this.material = material;
         this.equipSound = equipSound;
         this.repairMaterial = repairTagIn;
+        this.assetId = ResourceKey.create(EquipmentAssets.ROOT_ID, Identifier.fromNamespaceAndPath(Constants.MOD_ID, this.name().toLowerCase(java.util.Locale.ROOT)));
     }
 
-    @Override
-    public int getDurabilityForType(ArmorItem.Type type) {
-        return this.material.get().getDurability() * ArmorMaterialsMixin.assortedlib_getHealthperSlot().get(type);
+    public ArmorMaterialConfig config() {
+        return this.material.get();
     }
 
-    @Override
-    public int getDefenseForType(ArmorItem.Type type) {
-        return this.material.get().getReductionAmounts().get(type);
+    public Holder<SoundEvent> equipSound() {
+        return this.equipSound.get();
     }
 
-    @Override
-    public int getEnchantmentValue() {
-        return this.material.get().getEnchantability();
+    public TagKey<Item> repairTag() {
+        return this.repairMaterial.get();
     }
 
-    @Override
-    public SoundEvent getEquipSound() {
-        return equipSound.get();
+    public ResourceKey<EquipmentAsset> assetId() {
+        return this.assetId;
     }
 
-    @Override
-    public Ingredient getRepairIngredient() {
-        return Ingredient.of(repairMaterial.get());
-    }
-
-    public TagKey<Item> getRepairMaterial() {
-        return repairMaterial.get();
-    }
-
-    @Override
     public String getName() {
-        return this.material.get().getName();
+        return this.name().toLowerCase(java.util.Locale.ROOT);
     }
-
-    @Override
-    public float getToughness() {
-        return this.material.get().getToughness();
-    }
-
-    @Override
-    public float getKnockbackResistance() {
-        return this.material.get().getKnockbackResistance();
-    }
-
-    public ArmorMaterial defaultMaterial() {
-        return new ArmorMaterial() {
-            @Override
-            public SoundEvent getEquipSound() {
-                return equipSound.get();
-            }
-
-            @Override
-            public Ingredient getRepairIngredient() {
-                return Ingredient.of(repairMaterial.get());
-            }
-
-            @Override
-            public String getName() {
-                return material.get().getName();
-            }
-
-            @Override
-            public int getDurabilityForType(ArmorItem.Type type) {
-                return 1;
-            }
-
-            @Override
-            public int getDefenseForType(ArmorItem.Type type) {
-                return 0;
-            }
-
-            @Override
-            public int getEnchantmentValue() {
-                return 1;
-            }
-
-            @Override
-            public float getToughness() {
-                return 0;
-            }
-
-            @Override
-            public float getKnockbackResistance() {
-                return 0;
-            }
-        };
-    }
-
 }

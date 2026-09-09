@@ -1,0 +1,90 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:composite",
+          "models": [
+            {
+              "type": "minecraft:model",
+              "model": "assortedtools:item/aluminum_bucket"
+            },
+            {
+              "type": "minecraft:model",
+              "model": "assortedtools:item/buckets/fluid_water",
+              "tints": [
+                {
+                  "type": "minecraft:constant",
+                  "value": -1
+                },
+                {
+                  "type": "assortedtools:fluid_container"
+                }
+              ]
+            }
+          ]
+        },
+        "when": "minecraft:water"
+      },
+      {
+        "model": {
+          "type": "minecraft:composite",
+          "models": [
+            {
+              "type": "minecraft:model",
+              "model": "assortedtools:item/aluminum_bucket"
+            },
+            {
+              "type": "minecraft:model",
+              "model": "assortedtools:item/buckets/fluid_lava",
+              "tints": [
+                {
+                  "type": "minecraft:constant",
+                  "value": -1
+                },
+                {
+                  "type": "assortedtools:fluid_container"
+                }
+              ]
+            }
+          ]
+        },
+        "when": "minecraft:lava"
+      },
+      {
+        "model": {
+          "type": "minecraft:composite",
+          "models": [
+            {
+              "type": "minecraft:model",
+              "model": "assortedtools:item/aluminum_bucket"
+            },
+            {
+              "type": "minecraft:model",
+              "model": "assortedtools:item/buckets/fluid_milk",
+              "tints": [
+                {
+                  "type": "minecraft:constant",
+                  "value": -1
+                },
+                {
+                  "type": "assortedtools:fluid_container"
+                }
+              ]
+            }
+          ]
+        },
+        "when": [
+          "milk",
+          "minecraft:milk"
+        ]
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "assortedtools:item/aluminum_bucket"
+    },
+    "property": "minecraft:custom_model_data"
+  }
+}

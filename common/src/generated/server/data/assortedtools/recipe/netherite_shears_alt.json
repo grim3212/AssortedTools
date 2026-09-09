@@ -1,0 +1,30 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:and",
+      "values": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "moreshears"
+        },
+        {
+          "type": "assortedlib:item_tag_populated",
+          "tag": "c:ingots/netherite"
+        }
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": "#c:ingots/netherite",
+    "L": "#c:leather"
+  },
+  "pattern": [
+    "LI",
+    "I "
+  ],
+  "result": {
+    "id": "assortedtools:netherite_shears"
+  }
+}

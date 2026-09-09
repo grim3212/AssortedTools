@@ -17,6 +17,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerBlock;
@@ -26,6 +27,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class WandMiningItem extends WandItem {
@@ -46,7 +48,7 @@ public class WandMiningItem extends WandItem {
             case MINE_ALL:
                 return (state.getBlock() != Blocks.BEDROCK || ToolsCommonMod.COMMON_CONFIG.bedrockBreaking.get()) && (state.getBlock() != Blocks.OBSIDIAN || ToolsCommonMod.COMMON_CONFIG.easyMiningObsidian.get());
             case MINE_DIRT:
-                return state.is(BlockTags.DIRT) || state.getBlock() == Blocks.GRASS || state.getBlock() == Blocks.DIRT || state.getBlock() == Blocks.SAND || state.getBlock() == Blocks.GRAVEL || state.getBlock() instanceof LeavesBlock || state.getBlock() == Blocks.FARMLAND || state.getBlock() == Blocks.SNOW || state.getBlock() == Blocks.SOUL_SAND || state.getBlock() == Blocks.VINE || state.getBlock() instanceof FlowerBlock;
+                return state.is(BlockTags.DIRT) || state.getBlock() == Blocks.GRASS_BLOCK || state.getBlock() == Blocks.DIRT || state.getBlock() == Blocks.SAND || state.getBlock() == Blocks.GRAVEL || state.getBlock() instanceof LeavesBlock || state.getBlock() == Blocks.FARMLAND || state.getBlock() == Blocks.SNOW || state.getBlock() == Blocks.SOUL_SAND || state.getBlock() == Blocks.VINE || state.getBlock() instanceof FlowerBlock;
             case MINE_WOOD:
                 return state.is(BlockTags.LOGS) || state.is(BlockTags.LEAVES);
             case MINE_ORES:
@@ -78,7 +80,7 @@ public class WandMiningItem extends WandItem {
     protected boolean doEffect(Level world, Player entityplayer, InteractionHand hand, WandCoord3D start, WandCoord3D end, BlockState state) {
         boolean damage = doMining(world, start, end, entityplayer, hand);
         if (damage)
-            world.playSound((Player) null, end.pos, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 2.5F, 0.5F + world.random.nextFloat() * 0.3F);
+            world.playSound((Player) null, end.pos, SoundEvents.GENERIC_EXPLODE.value(), SoundSource.BLOCKS, 2.5F, 0.5F + world.getRandom().nextFloat() * 0.3F);
         return damage;
     }
 
@@ -158,7 +160,7 @@ public class WandMiningItem extends WandItem {
                 }
             }
             if (cnt == 0) {
-                if (!world.isClientSide)
+                if (!world.isClientSide())
                     sendMessage(entityplayer, Component.translatable("result.wand.mine"));
                 return false;
             }
@@ -183,7 +185,7 @@ public class WandMiningItem extends WandItem {
         }
         // now the mining itself.
         if (blocks2Dig == 0) {
-            if (!world.isClientSide)
+            if (!world.isClientSide())
                 error(entityplayer, end, "nowork");
             return false;
         }
@@ -211,17 +213,23 @@ public class WandMiningItem extends WandItem {
         return stack;
     }
 
+    /**
+     * {@code Item.appendHoverText} is marked deprecated in 26.x - tooltips are meant to come from
+     * data components implementing {@code TooltipProvider} - but it is still the only per item
+     * hook, and vanilla's own items still override it.
+     */
+    @SuppressWarnings("deprecation")
     @Override
-    public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flagIn) {
         MiningMode mode = MiningMode.fromString(NBTHelper.getString(stack, "Mode"));
         if (mode != null)
-            tooltip.add(Component.translatable(Constants.MOD_ID + ".wand.current", mode.getTranslatedString()));
+            tooltip.accept(Component.translatable(Constants.MOD_ID + ".wand.current", mode.getTranslatedString()));
         else
-            tooltip.add(Component.translatable(Constants.MOD_ID + ".broken"));
+            tooltip.accept(Component.translatable(Constants.MOD_ID + ".broken"));
     }
 
     @Override
-    public void onCraftedBy(ItemStack stack, Level worldIn, Player playerIn) {
+    public void onCraftedBy(ItemStack stack, Player playerIn) {
         NBTHelper.putString(stack, "Mode", MiningMode.MINE_ALL.getSerializedName());
     }
 

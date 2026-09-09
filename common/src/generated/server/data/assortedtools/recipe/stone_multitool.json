@@ -1,0 +1,33 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:and",
+      "values": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "multitools"
+        },
+        {
+          "type": "assortedlib:item_tag_populated",
+          "tag": "minecraft:stone_tool_materials"
+        }
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:stone_pickaxe",
+    "minecraft:stone_shovel",
+    "minecraft:stone_axe",
+    "minecraft:stone_hoe",
+    "minecraft:stone_sword",
+    "#minecraft:stone_tool_materials",
+    "#minecraft:stone_tool_materials",
+    "#minecraft:stone_tool_materials",
+    "#minecraft:stone_tool_materials"
+  ],
+  "result": {
+    "id": "assortedtools:stone_multitool"
+  }
+}
