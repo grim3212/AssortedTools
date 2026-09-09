@@ -1,6 +1,0 @@
-// 26.2	2026-09-09T04:06:21.3911806	Tags for minecraft:block mod id assortedtools
-1c30fa2eeb1aa023571d12d1202a653699afbd59 data/assortedtools/tags/block/wands/destructive_spared_blocks.json
-8883f37d9a94165f529c995b1d4f95c1383f2d52 data/assortedtools/tags/block/wands/mining_surface_blocks.json
-653506fe895ecd1a8fa46cbd38fdbc9c1f820c1d data/c/tags/block/corals/all.json
-fdf2efba0abe5b25f3d1e59b2a5282c9136cc7c8 data/c/tags/block/corals/dead.json
-40cd8e04401d48a8c6d972d447480f8db831fafe data/c/tags/block/mineable/multitool.json
