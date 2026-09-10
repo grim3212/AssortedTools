@@ -1,5 +1,6 @@
 {
   "itemGroup.assortedtools": "Assorted Tools",
+  "key.category.assortedtools.general": "Assorted Tools",
   "key.assortedtools.tool_switch_modes": "Switch Tool Modes",
   "enchantment.assortedtools.chicken_jump": "Chicken Jump",
   "enchantment.assortedtools.chicken_jump.desc": "Lets you hover like a chicken as well as get one extra jump per armor enchanted with Chicken Jump",

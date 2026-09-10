@@ -45,9 +45,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.function.Consumer;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.item.component.CustomModelData;
-import java.util.List;
 
 public class BetterBucketItem extends Item implements ITiered {
 
@@ -388,15 +385,6 @@ public class BetterBucketItem extends Item implements ITiered {
         tag.putInt(AMOUNT_KEY, amount <= 0 ? 0 : amount);
 
         NBTHelper.putTag(stack, FLUID_TAG, tag);
-
-        // Which model a filled bucket draws is chosen by the item model's `select` on
-        // `minecraft:custom_model_data`, so the contained fluid has to be visible in that component
-        // as well as in the mod's own tag. `ItemOverrides`, which used to answer this from the
-        // stack directly, was deleted outright and has no replacement; a select on a vanilla
-        // property is the modern equivalent and needs no loader-side registration.
-        //
-        // The component is network synchronised, so the client sees it without extra plumbing.
-        stack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), List.of(stored), List.of()));
     }
 
     public static String getFluid(ItemStack stack) {

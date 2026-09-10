@@ -18,12 +18,11 @@ import org.jetbrains.annotations.Nullable;
  * item in code. An item model json lists its tint layers, each naming an {@link ItemTintSource} type
  * by id, and code only registers the id to {@link MapCodec} pair - see {@code ToolsClient}. The
  * {@code tintIndex != 1} check the old {@code ItemColor} did is gone with it: which layer a source
- * applies to is now the position of its entry in the model json's {@code tints} list, so this source
- * belongs at index 1, opposite the fluid layer.
+ * applies to is now the position of its entry in a model's {@code tints} list.
  * <p>
- * TODO(26.2): nothing references this yet. The bucket item models are still in 1.20.1 shape (no
- *  {@code assets/assortedtools/items/*.json}, no {@code tints} list), so until those are regenerated
- *  this is registered but never asked for a colour.
+ * {@link com.grim3212.assorted.tools.client.model.fluidcontainer.FluidContainerItemModel} lists this
+ * as the only tint on its fluid layer, whose quads carry tint index 0. It is registered by id as well
+ * so a resource pack can name it from a plain {@code minecraft:model} json.
  */
 public record FluidContainerTintSource() implements ItemTintSource {
 

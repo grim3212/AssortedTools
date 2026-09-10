@@ -2,7 +2,7 @@ package com.grim3212.assorted.tools.client.data;
 
 import com.grim3212.assorted.lib.LibConstants;
 import com.grim3212.assorted.tools.Constants;
-import com.grim3212.assorted.tools.client.color.FluidContainerTintSource;
+import com.grim3212.assorted.tools.client.model.fluidcontainer.FluidContainerItemModel;
 import com.grim3212.assorted.tools.client.render.item.SpearSpecialRenderer;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
 import net.minecraft.client.data.models.BlockModelGenerators;
@@ -14,8 +14,6 @@ import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.renderer.item.ItemModel;
-import net.minecraft.client.renderer.item.SelectItemModel;
-import net.minecraft.client.renderer.item.properties.select.CustomModelDataProperty;
 import net.minecraft.client.renderer.special.TridentSpecialRenderer;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Holder;
@@ -27,8 +25,6 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.model.generators.template.ExtendedModelTemplateBuilder;
 
-import java.util.List;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -53,16 +49,14 @@ import java.util.stream.Stream;
  * template, because a spear is a trident shaped item drawn by a {@code SpecialModelRenderer}. (
  * {@code generateSpear} - vanilla's new copper spear - is <em>not</em> the right shape: it has no
  * special renderer and no throwing pose.)</li>
- * <li>{@link #bucket} - a {@code select} on {@code minecraft:custom_model_data} with one case per
- * fluid, which is what replaced the deleted {@code ItemOverrides} handler.</li>
- * <li>{@link #bucket}'s fluid layer, which is a separate {@code composite} member for atlas
- * reasons - see below.</li>
+ * <li>{@link #bucket} - an {@code assortedtools:fluid_container} item model, which is what replaced
+ * the deleted {@code ItemOverrides} handler.</li>
  * </ul>
  */
 public class ToolsItemModelProvider extends ModelProvider {
 
     /**
-     * The extra texture slots {@code FluidContainerModel} reads. {@link TextureSlot} has no
+     * The extra texture slots {@link FluidContainerItemModel} reads. {@link TextureSlot} has no
      * {@code equals}, so each of these has to be created exactly once and shared.
      */
     private static final TextureSlot BASE = TextureSlot.create("base");
@@ -90,8 +84,10 @@ public class ToolsItemModelProvider extends ModelProvider {
             .build();
 
     /**
-     * The bucket body: the same four slots and the same loader flags the 1.20.1 json carried, with
-     * {@code fluid: minecraft:empty} so no fluid layer is baked. The fluid itself is a second model.
+     * The bucket body: the four texture slots {@link FluidContainerItemModel} masks and fills, plus
+     * the display transforms every one of its layers is drawn with. There is no loader block - the
+     * bucket is an item model type now, not a model json loader - so this is a plain vanilla model
+     * json that happens to name slots vanilla itself would not use.
      */
     private static final ModelTemplate BUCKET_BODY = ExtendedModelTemplateBuilder.builder()
             .parent(LIB_DEFAULT_ITEM)
@@ -99,30 +95,7 @@ public class ToolsItemModelProvider extends ModelProvider {
             .requiredTextureSlot(BASE)
             .requiredTextureSlot(FLUID)
             .requiredTextureSlot(COVER)
-            .customLoader(FluidContainerBuilder::begin, b -> b
-                    .fluid(Identifier.withDefaultNamespace("empty"))
-                    .flipGas(true)
-                    .applyFluidLuminosity(true)
-                    .coverIsMask(true))
             .build();
-
-    /**
-     * The fluids a bucket's contents can be drawn as. Datagen has to enumerate them - a
-     * {@code select} is a fixed list of cases - so this is every fluid this mod can actually put in
-     * one of its buckets: the two vanilla ones and NeoForge's opt-in milk.
-     * <p>
-     * The {@code String}s are the values {@code BetterBucketItem#getFluid} produces, which is what
-     * has to reach {@code minecraft:custom_model_data}. Milk carries two: {@code MilkingHandler}
-     * stores the bare string {@code "milk"} while everything else stores a full fluid id, and both
-     * round trip through {@code getFluidFromString} to {@code minecraft:milk}.
-     */
-    private record BucketFluid(String modelSuffix, Identifier fluid, List<String> componentValues) {
-    }
-
-    private static final List<BucketFluid> BUCKET_FLUIDS = List.of(
-            new BucketFluid("water", Identifier.withDefaultNamespace("water"), List.of("minecraft:water")),
-            new BucketFluid("lava", Identifier.withDefaultNamespace("lava"), List.of("minecraft:lava")),
-            new BucketFluid("milk", Identifier.withDefaultNamespace("milk"), List.of("milk", "minecraft:milk")));
 
     public ToolsItemModelProvider(PackOutput output) {
         super(output, Constants.MOD_ID);
@@ -196,14 +169,11 @@ public class ToolsItemModelProvider extends ModelProvider {
         spear(itemModels, ToolsItems.DIAMOND_SPEAR.get());
         spear(itemModels, ToolsItems.NETHERITE_SPEAR.get());
 
-        // One shared fluid layer per fluid - the layer is the same whatever bucket it sits in.
-        List<ItemModel.Unbaked> fluidLayers = BUCKET_FLUIDS.stream().map(f -> fluidLayer(itemModels, f)).toList();
-
-        bucket(itemModels, fluidLayers, ToolsItems.WOOD_BUCKET.get(), ToolsItems.WOOD_MILK_BUCKET.get());
-        bucket(itemModels, fluidLayers, ToolsItems.STONE_BUCKET.get(), ToolsItems.STONE_MILK_BUCKET.get());
-        bucket(itemModels, fluidLayers, ToolsItems.GOLD_BUCKET.get(), ToolsItems.GOLD_MILK_BUCKET.get());
-        bucket(itemModels, fluidLayers, ToolsItems.DIAMOND_BUCKET.get(), ToolsItems.DIAMOND_MILK_BUCKET.get());
-        bucket(itemModels, fluidLayers, ToolsItems.NETHERITE_BUCKET.get(), ToolsItems.NETHERITE_MILK_BUCKET.get());
+        bucket(itemModels, ToolsItems.WOOD_BUCKET.get(), ToolsItems.WOOD_MILK_BUCKET.get());
+        bucket(itemModels, ToolsItems.STONE_BUCKET.get(), ToolsItems.STONE_MILK_BUCKET.get());
+        bucket(itemModels, ToolsItems.GOLD_BUCKET.get(), ToolsItems.GOLD_MILK_BUCKET.get());
+        bucket(itemModels, ToolsItems.DIAMOND_BUCKET.get(), ToolsItems.DIAMOND_MILK_BUCKET.get());
+        bucket(itemModels, ToolsItems.NETHERITE_BUCKET.get(), ToolsItems.NETHERITE_MILK_BUCKET.get());
 
         ToolsItems.MATERIAL_GROUPS.forEach((s, group) -> {
             tool(itemModels, group.PICKAXE.get());
@@ -220,7 +190,7 @@ public class ToolsItemModelProvider extends ModelProvider {
             armor(itemModels, group.LEGGINGS.get());
             armor(itemModels, group.BOOTS.get());
 
-            bucket(itemModels, fluidLayers, group.BUCKET.get(), group.MILK_BUCKET.get());
+            bucket(itemModels, group.BUCKET.get(), group.MILK_BUCKET.get());
             shear(itemModels, group.SHEARS.get());
         });
     }
@@ -294,22 +264,13 @@ public class ToolsItemModelProvider extends ModelProvider {
      * The bucket, and the milk bucket item that shares its texture.
      * <p>
      * {@code ItemOverrides} was deleted outright, so the 1.20.1 {@code ContainedFluidOverrideHandler}
-     * - which re-baked the model with the stack's fluid - has no equivalent: a model is chosen
-     * <em>before</em> baking now. The replacement is a plain vanilla
-     * {@code minecraft:custom_model_data} {@code select} with one case per fluid, keyed on the string
-     * {@code BetterBucketItem} stores. That is pure vanilla, needs no loader side property
-     * registration ({@code SelectItemModelProperties.ID_MAPPER} is private and vanilla only) and
-     * behaves identically on both loaders.
-     * <p>
-     * <b>The body and the fluid are separate models joined by {@code minecraft:composite}, and that
-     * is not cosmetic.</b> {@code CuboidItemModelWrapper} refuses to bake a model whose quads span
-     * two texture atlases, and they would: the bucket's own textures resolve on the item atlas while
-     * the fluid sprite comes from the fluid's baked {@code FluidModel}, which
-     * {@code ModelManager} bakes with a block-atlas-only material baker. Each composite member bakes
-     * on its own, so each stays single atlas. The fluid layer's depth offset lives inside its own
-     * model, so the two still stack the way they always did.
+     * - which re-baked the model with the stack's fluid - has no equivalent in the model json layer:
+     * a json loader is asked for finished quads while baking is still running, and a fluid's sprite
+     * does not exist until it has finished. The replacement is an item model type, which is handed
+     * the stack at render time; datagen therefore enumerates nothing and a bucket draws whatever
+     * fluid it is actually holding.
      */
-    private void bucket(ItemModelGenerators itemModels, List<ItemModel.Unbaked> fluidLayers, Item bucket, Item milkBucket) {
+    private void bucket(ItemModelGenerators itemModels, Item bucket, Item milkBucket) {
         String name = name(bucket);
         Material bucketTexture = prefixed("item/buckets/" + name);
 
@@ -319,45 +280,13 @@ public class ToolsItemModelProvider extends ModelProvider {
                 .put(FLUID, prefixed("item/buckets/bucket_fluid"))
                 .put(COVER, prefixed("item/buckets/bucket_covered")), itemModels.modelOutput);
 
-        ItemModel.Unbaked body = ItemModelUtils.plainModel(bodyModel);
-
-        List<SelectItemModel.SwitchCase<String>> cases = IntStream.range(0, BUCKET_FLUIDS.size())
-                .mapToObj(i -> ItemModelUtils.when(BUCKET_FLUIDS.get(i).componentValues(), ItemModelUtils.composite(body, fluidLayers.get(i))))
-                .toList();
-
-        itemModels.itemModelOutput.accept(bucket, ItemModelUtils.select(new CustomModelDataProperty(0), body, cases));
+        itemModels.itemModelOutput.accept(bucket, new FluidContainerItemModel.Unbaked(bodyModel, true, true, true));
 
         // The milk bucket is its own item and has always been a plain two layer flat model over the
         // matching bucket's texture.
         Identifier milkModel = ModelTemplates.TWO_LAYERED_ITEM.create(modelId(name(milkBucket)),
                 TextureMapping.layered(bucketTexture, prefixed("item/buckets/overlay_milk")), itemModels.modelOutput);
         itemModels.itemModelOutput.accept(milkBucket, ItemModelUtils.plainModel(milkModel));
-    }
-
-    /**
-     * One fluid layer model, shared by every bucket: the loader masks the fluid's own sprite with
-     * {@code bucket_fluid} and the mask is the same whatever the bucket is made of. No {@code base}
-     * and no {@code cover} slot, so the only quads it produces are the fluid's.
-     * <p>
-     * {@code FluidContainerTintSource} is listed at tint index 1 because that is the index
-     * {@code createUnbakedItemMaskElements(1, ...)} stamps on the fluid layer's quads; index 0 is the
-     * blank constant vanilla uses for an untinted slot.
-     */
-    private ItemModel.Unbaked fluidLayer(ItemModelGenerators itemModels, BucketFluid fluid) {
-        ModelTemplate template = ExtendedModelTemplateBuilder.builder()
-                .parent(LIB_DEFAULT_ITEM)
-                .requiredTextureSlot(FLUID)
-                .customLoader(FluidContainerBuilder::begin, b -> b
-                        .fluid(fluid.fluid())
-                        .flipGas(true)
-                        .applyFluidLuminosity(true)
-                        .coverIsMask(true))
-                .build();
-
-        Identifier model = template.create(modelId("buckets/fluid_" + fluid.modelSuffix()),
-                new TextureMapping().put(FLUID, prefixed("item/buckets/bucket_fluid")), itemModels.modelOutput);
-
-        return ItemModelUtils.tintedModel(model, ItemModelUtils.constantTint(-1), new FluidContainerTintSource());
     }
 
     // ------------------------------------------------------------------ helpers
