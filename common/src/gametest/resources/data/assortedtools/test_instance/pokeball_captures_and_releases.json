@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:function",
+  "environment": "minecraft:default",
+  "function": "assortedtools:pokeball_captures_and_releases",
+  "structure": "assortedtools:test_box",
+  "max_ticks": 200,
+  "setup_ticks": 0,
+  "required": true
+}
