@@ -6,9 +6,11 @@ import com.mojang.authlib.GameProfile;
 import com.grim3212.assorted.lib.events.AnvilUpdatedEvent;
 import com.grim3212.assorted.lib.events.EntityInteractEvent;
 import com.grim3212.assorted.lib.util.LibCommonTags;
+import com.grim3212.assorted.lib.platform.Services;
 import com.grim3212.assorted.lib.util.NBTHelper;
 import com.grim3212.assorted.tools.Constants;
 import com.grim3212.assorted.tools.ToolsCommonMod;
+import com.grim3212.assorted.tools.api.ToolsTags;
 import com.grim3212.assorted.tools.api.item.HarvestTiers;
 import com.grim3212.assorted.tools.common.enchantment.ToolsEnchantments;
 import com.grim3212.assorted.tools.common.entity.BetterSpearEntity;
@@ -33,6 +35,8 @@ import com.grim3212.assorted.tools.config.ItemTierConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -43,10 +47,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.network.protocol.PacketFlow;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.FileToIdConverter;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.CommonListenerCookie;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
@@ -59,6 +67,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.animal.cow.Cow;
 import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.inventory.AnvilMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUseAnimation;
@@ -69,6 +78,9 @@ import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -81,6 +93,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
 import java.io.IOException;
+import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -88,10 +101,12 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * Automated in-world checks for AssortedTools.
@@ -129,9 +144,13 @@ public final class ToolsGameTests {
         out.accept("every_material_armour_set_crafts", ToolsGameTests::everyMaterialArmourSetCrafts);
         out.accept("tools_mine_at_their_tier_speed", ToolsGameTests::toolsMineAtTheirTierSpeed);
         out.accept("tools_take_the_right_enchantments", ToolsGameTests::toolsTakeTheRightEnchantments);
+        out.accept("tools_enchantments_are_obtainable", ToolsGameTests::toolsEnchantmentsAreObtainable);
+        out.accept("spears_are_never_offered_riptide_or_channeling", ToolsGameTests::spearsAreNeverOfferedRiptideOrChanneling);
+        out.accept("spear_anvil_rejects_riptide_and_channeling", ToolsGameTests::spearAnvilRejectsRiptideAndChanneling);
         out.accept("armour_equips_and_protects", ToolsGameTests::armourEquipsAndProtects);
         out.accept("shears_cut_leaves", ToolsGameTests::shearsCutLeaves);
         out.accept("shears_cut_coral_with_coral_cutter", ToolsGameTests::shearsCutCoralWithCoralCutter);
+        out.accept("coral_cutter_covers_every_coral", ToolsGameTests::coralCutterCoversEveryCoral);
         out.accept("spear_sticks_in_a_block_and_is_picked_up", ToolsGameTests::spearSticksInABlockAndIsPickedUp);
         out.accept("spear_damages_a_mob", ToolsGameTests::spearDamagesAMob);
         out.accept("boomerangs_fly_out_and_return", ToolsGameTests::boomerangsFlyOutAndReturn);
@@ -143,6 +162,7 @@ public final class ToolsGameTests {
         out.accept("breaking_wands_clear_their_modes", ToolsGameTests::breakingWandsClearTheirModes);
         out.accept("chicken_suit_converts_armour_in_an_anvil", ToolsGameTests::chickenSuitConvertsArmourInAnAnvil);
         out.accept("every_item_has_a_model_and_a_name", ToolsGameTests::everyItemHasAModelAndAName);
+        out.accept("every_recipe_loads_or_is_conditioned_off", ToolsGameTests::everyRecipeLoadsOrIsConditionedOff);
     }
 
     /**
@@ -634,6 +654,94 @@ public final class ToolsGameTests {
     }
 
     /**
+     * With the default config every part is on, so all six of this mod's enchantments must be
+     * registered - their definitions are conditional on their part now - and in the three vanilla
+     * tags that make an enchantment obtainable.
+     */
+    private static void toolsEnchantmentsAreObtainable(GameTestHelper helper) {
+        Registry<Enchantment> registry = helper.getLevel().registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+        List<String> missing = new ArrayList<>();
+
+        for (ResourceKey<Enchantment> key : List.of(ToolsEnchantments.CHICKEN_JUMP, ToolsEnchantments.BOUNCINESS, ToolsEnchantments.CONDUCTIVE, ToolsEnchantments.FLAMMABLE, ToolsEnchantments.UNSTABLE, ToolsEnchantments.CORAL_CUTTER)) {
+            Optional<Holder.Reference<Enchantment>> enchantment = registry.get(key);
+            if (enchantment.isEmpty()) {
+                missing.add(key.identifier() + " (not registered)");
+                continue;
+            }
+
+            for (TagKey<Enchantment> tag : List.of(EnchantmentTags.IN_ENCHANTING_TABLE, EnchantmentTags.TRADEABLE, EnchantmentTags.ON_RANDOM_LOOT)) {
+                if (!enchantment.get().is(tag)) {
+                    missing.add(key.identifier() + " not in #" + tag.location());
+                }
+            }
+        }
+
+        helper.assertTrue(missing.isEmpty(), "enchantments missing or not obtainable: " + String.join(", ", missing));
+        helper.succeed();
+    }
+
+    /**
+     * Asked the way the enchanting table asks - {@code EnchantmentHelper#getAvailableEnchantmentResults}
+     * over {@code #minecraft:in_enchanting_table}, which NeoForge routes through
+     * {@code isPrimaryItemFor} and Fabric through {@code ALLOW_ENCHANTING} - so the loader wiring is
+     * under test, not just {@code BetterSpearItem}'s methods. A cost of 30 sits inside the window of
+     * all four trident enchantments and all four spear enchantments. The vanilla trident is checked
+     * alongside so the veto cannot leak onto it.
+     */
+    private static void spearsAreNeverOfferedRiptideOrChanneling(GameTestHelper helper) {
+        Registry<Enchantment> registry = helper.getLevel().registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+        Set<ResourceKey<Enchantment>> spear = offeredAtTable(registry, new ItemStack(ToolsItems.IRON_SPEAR.get()));
+        Set<ResourceKey<Enchantment>> trident = offeredAtTable(registry, new ItemStack(Items.TRIDENT));
+
+        helper.assertFalse(spear.contains(Enchantments.RIPTIDE) || spear.contains(Enchantments.CHANNELING), "a spear was offered riptide or channeling: " + spear);
+        helper.assertTrue(spear.containsAll(List.of(Enchantments.LOYALTY, Enchantments.IMPALING)), "a spear was not offered loyalty and impaling: " + spear);
+        helper.assertTrue(spear.containsAll(List.of(ToolsEnchantments.BOUNCINESS, ToolsEnchantments.CONDUCTIVE, ToolsEnchantments.FLAMMABLE, ToolsEnchantments.UNSTABLE)), "a spear was not offered all four spear enchantments: " + spear);
+        helper.assertTrue(trident.containsAll(List.of(Enchantments.RIPTIDE, Enchantments.CHANNELING)), "the vanilla trident lost riptide or channeling: " + trident);
+        helper.succeed();
+    }
+
+    /**
+     * The anvil path, through a real {@link AnvilMenu} so each loader's own hook runs - NeoForge's
+     * patched {@code supportsEnchantment} call and Fabric's {@code AnvilMenuMixin}. A book of Riptide
+     * or Channeling combines with nothing on a spear; Loyalty still goes on, and a vanilla trident
+     * still takes Riptide.
+     */
+    private static void spearAnvilRejectsRiptideAndChanneling(GameTestHelper helper) {
+        ServerPlayer player = survivalPlayer(helper, ItemStack.EMPTY);
+        Registry<Enchantment> registry = helper.getLevel().registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+        Holder<Enchantment> riptide = registry.getOrThrow(Enchantments.RIPTIDE);
+        Holder<Enchantment> loyalty = registry.getOrThrow(Enchantments.LOYALTY);
+
+        helper.assertTrue(combine(player, new ItemStack(ToolsItems.IRON_SPEAR.get()), riptide).isEmpty(), "riptide went onto a spear at an anvil");
+        helper.assertTrue(combine(player, new ItemStack(ToolsItems.IRON_SPEAR.get()), registry.getOrThrow(Enchantments.CHANNELING)).isEmpty(), "channeling went onto a spear at an anvil");
+
+        ItemStack loyalSpear = combine(player, new ItemStack(ToolsItems.IRON_SPEAR.get()), loyalty);
+        helper.assertValueEqual(loyalSpear.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY).getLevel(loyalty), 1, "loyalty level on a spear from an anvil");
+
+        ItemStack riptideTrident = combine(player, new ItemStack(Items.TRIDENT), riptide);
+        helper.assertValueEqual(riptideTrident.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY).getLevel(riptide), 1, "riptide level on a vanilla trident from an anvil");
+        helper.succeed();
+    }
+
+    private static Set<ResourceKey<Enchantment>> offeredAtTable(Registry<Enchantment> registry, ItemStack stack) {
+        return EnchantmentHelper.getAvailableEnchantmentResults(30, stack, registry.getOrThrow(EnchantmentTags.IN_ENCHANTING_TABLE).stream())
+                .stream().map(instance -> instance.enchantment().unwrapKey().orElseThrow()).collect(Collectors.toSet());
+    }
+
+    private static ItemStack combine(ServerPlayer player, ItemStack left, Holder<Enchantment> enchantment) {
+        ItemEnchantments.Mutable stored = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
+        stored.set(enchantment, 1);
+        ItemStack book = new ItemStack(Items.ENCHANTED_BOOK);
+        book.set(DataComponents.STORED_ENCHANTMENTS, stored.toImmutable());
+
+        AnvilMenu menu = new AnvilMenu(0, player.getInventory());
+        menu.getSlot(AnvilMenu.INPUT_SLOT).set(left);
+        menu.getSlot(AnvilMenu.ADDITIONAL_SLOT).set(book);
+        menu.createResult();
+        return menu.getSlot(AnvilMenu.RESULT_SLOT).getItem();
+    }
+
+    /**
      * Armour goes into the armour slots and the defence it grants is the configured one. Those
      * per-slot numbers used to come from an {@code ArmorItem} override; they are baked into the
      * {@code equippable} and {@code attribute_modifiers} components at construction now, so this is
@@ -725,6 +833,43 @@ public final class ToolsGameTests {
         helper.assertItemEntityPresent(Items.TUBE_CORAL_BLOCK, cutterTarget, 2.0D);
         helper.assertItemEntityNotPresent(Items.DEAD_TUBE_CORAL_BLOCK, cutterTarget, 2.0D);
 
+        helper.succeed();
+    }
+
+    /**
+     * Every vanilla coral - live and dead; plant, fan, wall fan and block - is under
+     * {@code c:corals/all}, which is what Coral Cutter's speed, harvest and drop rules all read.
+     * Walks the block registry rather than a list so a coral vanilla adds later cannot slip past.
+     * Then breaks a dead coral block and a dead fan, neither of which plain shears would drop.
+     */
+    private static void coralCutterCoversEveryCoral(GameTestHelper helper) {
+        Holder<Enchantment> coralCutter = helper.getLevel().registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(ToolsEnchantments.CORAL_CUTTER);
+        ItemStack cutter = new ItemStack(ToolsItems.DIAMOND_SHEARS.get());
+        cutter.enchant(coralCutter, 1);
+
+        List<String> missed = new ArrayList<>();
+        BuiltInRegistries.BLOCK.listElements()
+                .filter(block -> block.key().identifier().getNamespace().equals("minecraft") && block.key().identifier().getPath().contains("coral"))
+                .forEach(block -> {
+                    BlockState state = block.value().defaultBlockState();
+                    if (!state.is(ToolsTags.Blocks.ALL_CORALS) || cutter.getDestroySpeed(state) != 10.0F || !cutter.isCorrectToolForDrops(state)) {
+                        missed.add(block.key().identifier().getPath());
+                    }
+                });
+        helper.assertTrue(missed.isEmpty(), "coral cutter does not cover: " + String.join(", ", missed));
+
+        final BlockPos deadBlock = new BlockPos(2, 1, 4);
+        final BlockPos deadFan = new BlockPos(6, 1, 4);
+        helper.setBlock(deadBlock, Blocks.DEAD_TUBE_CORAL_BLOCK);
+        helper.setBlock(deadFan, Blocks.DEAD_TUBE_CORAL_FAN);
+
+        ServerPlayer player = survivalPlayer(helper, cutter);
+        stand(helper, player, new BlockPos(4, 1, 2));
+        player.gameMode.destroyBlock(helper.absolutePos(deadBlock));
+        player.gameMode.destroyBlock(helper.absolutePos(deadFan));
+
+        helper.assertItemEntityPresent(Items.DEAD_TUBE_CORAL_BLOCK, deadBlock, 2.0D);
+        helper.assertItemEntityPresent(Items.DEAD_TUBE_CORAL_FAN, deadFan, 2.0D);
         helper.succeed();
     }
 
@@ -1073,6 +1218,38 @@ public final class ToolsGameTests {
         helper.assertTrue(items > 0, "no items are registered under the " + Constants.MOD_ID + " namespace, so nothing was checked");
         helper.assertTrue(missing.isEmpty(), missing.size() + " assets are missing across " + items + " items: " + String.join(", ", missing));
 
+        helper.succeed();
+    }
+
+    /**
+     * Every recipe file this mod ships either loaded, or carries load conditions and was skipped by
+     * them. A file with neither failed to parse - which is what every extra-material recipe did on
+     * Fabric without AssortedCore: Fabric's datagen wrote them without conditions, and the NeoForge
+     * copy that shadowed it carries a key Fabric ignores. So only this loader's own key counts.
+     */
+    private static void everyRecipeLoadsOrIsConditionedOff(GameTestHelper helper) {
+        MinecraftServer server = helper.getLevel().getServer();
+        FileToIdConverter recipes = FileToIdConverter.json("recipe");
+        String conditionsKey = Services.PLATFORM.getPlatformName().equals("Fabric") ? "fabric:load_conditions" : "neoforge:conditions";
+        List<String> failed = new ArrayList<>();
+
+        recipes.listMatchingResources(server.getResourceManager()).forEach((file, resource) -> {
+            Identifier id = recipes.fileToId(file);
+            if (!id.getNamespace().equals(Constants.MOD_ID) || server.getRecipeManager().byKey(ResourceKey.create(Registries.RECIPE, id)).isPresent()) {
+                return;
+            }
+
+            try (BufferedReader reader = resource.openAsReader()) {
+                JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
+                if (!json.has(conditionsKey)) {
+                    failed.add(id.toString());
+                }
+            } catch (IOException e) {
+                failed.add(id + " (" + e.getMessage() + ")");
+            }
+        });
+
+        helper.assertTrue(failed.isEmpty(), failed.size() + " recipes failed to load without being conditioned off: " + String.join(", ", failed.subList(0, Math.min(10, failed.size()))));
         helper.succeed();
     }
 
