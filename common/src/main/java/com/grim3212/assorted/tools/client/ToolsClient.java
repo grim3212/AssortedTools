@@ -36,29 +36,14 @@ public class ToolsClient {
 
         // BlockEntityWithoutLevelRenderer is gone: a special item renderer is selected by the item's
         // own model json ("minecraft:special" naming this id), so code only registers the id to codec
-        // pair. The spear renderer used to be registered against each spear item here, and to be a
-        // reload listener so it could look its inventory models up again; neither is possible or
-        // needed now.
-        // TODO(26.2): nothing selects this yet. The generated spear item models are still in 1.20.1
-        //  shape - a "models/item/<mat>_spear.json" with an "overrides" list - and there is no
-        //  "assets/assortedtools/items/<mat>_spear.json". Until those are regenerated as a
-        //  "minecraft:select" on "minecraft:display_context" (gui/ground/fixed -> the flat
-        //  <mat>_spear_gui model) whose fallback is a "minecraft:condition" on "minecraft:using_item"
-        //  over two "minecraft:special" entries naming assortedtools:spear with the material's
-        //  texture, spears do not render in hand at all. See SpearSpecialRenderer.
+        // pair. The generated spear item models select this renderer via "minecraft:display_context"
+        // (gui/ground/fixed -> the flat <mat>_spear_gui model), falling back to "minecraft:using_item"
+        // over two "minecraft:special" entries naming assortedtools:spear with the material's texture
+        // - the direct replacement for the old "assortedtools:throwing" ClampedItemPropertyFunction.
+        // Verified in game: spears render in hand and the throwing swap still works.
         ClientServices.CLIENT.registerBEWLR((register) -> {
             register.registerSpecialModelRenderer(SpearSpecialRenderer.ID, SpearSpecialRenderer.Unbaked.MAP_CODEC);
         });
-
-        // TODO(26.2): registerItemProperty and registerAdditionalModel are both gone.
-        //  The "assortedtools:throwing" ClampedItemPropertyFunction that swapped a spear to its
-        //  _throwing model while the item was in use has no runtime equivalent - model selection by a
-        //  property is data driven through client.renderer.item.properties.** referenced from the
-        //  item model json, and the direct replacement for this particular predicate is vanilla's own
-        //  "minecraft:using_item" conditional property.
-        //  The <mat>_spear_gui models no longer need to be force-loaded either: they were extra
-        //  models only because SpearBEWLR fetched them from the ModelManager by name at runtime, and
-        //  an item model referenced from an item's json is loaded because it is referenced.
 
         ClientServices.CLIENT.registerEntityRenderer(() -> ToolsEntities.WOOD_BOOMERANG.get(), BoomerangRenderer::new);
         ClientServices.CLIENT.registerEntityRenderer(() -> ToolsEntities.DIAMOND_BOOMERANG.get(), BoomerangRenderer::new);
