@@ -1,5 +1,6 @@
 package com.grim3212.assorted.tools.common.handlers;
 
+import com.grim3212.assorted.lib.core.item.IItemEnchantmentCondition;
 import com.grim3212.assorted.lib.events.AnvilUpdatedEvent;
 import com.grim3212.assorted.tools.common.enchantment.ToolsEnchantments;
 import com.grim3212.assorted.tools.common.item.ChickenSuitArmor;
@@ -13,6 +14,8 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.equipment.Equippable;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.Optional;
 
 public class ChickenSuitConversionHandler {
 
@@ -38,10 +41,13 @@ public class ChickenSuitConversionHandler {
 
         // Enchantments are data now, so what an enchantment may be applied to lives in its
         // definition and has to be resolved through the registry rather than a canEnchant override.
-        Holder<Enchantment> chickenJump = event.getPlayer().registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(ToolsEnchantments.CHICKEN_JUMP);
-        if (!chickenJump.value().canEnchant(left)) {
+        // Absent entirely, not just unobtainable, while the chicken suit part is disabled - the
+        // definition is conditional on it.
+        Optional<Holder.Reference<Enchantment>> chickenJumpHolder = event.getPlayer().registryAccess().lookupOrThrow(Registries.ENCHANTMENT).get(ToolsEnchantments.CHICKEN_JUMP);
+        if (chickenJumpHolder.isEmpty() || !IItemEnchantmentCondition.supportedByDefault(left, chickenJumpHolder.get())) {
             return;
         }
+        Holder<Enchantment> chickenJump = chickenJumpHolder.get();
 
         ItemStack output = left.copy();
         EnchantmentHelper.updateEnchantments(output, mutable -> mutable.set(chickenJump, 1));

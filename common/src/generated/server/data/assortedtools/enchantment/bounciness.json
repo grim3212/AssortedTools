@@ -1,4 +1,10 @@
 {
+  "neoforge:conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "betterspears"
+    }
+  ],
   "anvil_cost": 2,
   "description": {
     "translate": "enchantment.assortedtools.bounciness"

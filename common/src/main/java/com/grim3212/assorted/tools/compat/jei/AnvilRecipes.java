@@ -22,6 +22,7 @@ import net.minecraft.world.item.enchantment.ItemEnchantments;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 public class AnvilRecipes {
@@ -42,7 +43,12 @@ public class AnvilRecipes {
     public static List<IJeiAnvilRecipe> chickenEnchantRecipes(IVanillaRecipeFactory recipeFactory, IIngredientManager ingredientManager, HolderLookup.Provider registries) {
         List<IJeiAnvilRecipe> recipes = new ArrayList<>();
 
-        Holder<Enchantment> chickenJump = registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(ToolsEnchantments.CHICKEN_JUMP);
+        // Not registered at all while the chicken suit part is disabled.
+        Optional<Holder.Reference<Enchantment>> chickenJumpHolder = registries.lookupOrThrow(Registries.ENCHANTMENT).get(ToolsEnchantments.CHICKEN_JUMP);
+        if (chickenJumpHolder.isEmpty()) {
+            return recipes;
+        }
+        Holder<Enchantment> chickenJump = chickenJumpHolder.get();
 
         CHICKEN_JUMP_MAP.forEach((tag, item) -> {
             var armors = ingredientManager.getAllItemStacks()

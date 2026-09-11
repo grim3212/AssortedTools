@@ -1,4 +1,10 @@
 {
+  "neoforge:conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "betterspears"
+    }
+  ],
   "anvil_cost": 8,
   "description": {
     "translate": "enchantment.assortedtools.conductive"

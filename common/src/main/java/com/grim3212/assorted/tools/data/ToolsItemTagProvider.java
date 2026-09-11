@@ -49,7 +49,7 @@ public class ToolsItemTagProvider extends LibItemTagProvider {
         enchantableMeleeWeapon(tagger, ToolsItems.WOOD_HAMMER.get(), ToolsItems.STONE_HAMMER.get(), ToolsItems.GOLD_HAMMER.get(), ToolsItems.IRON_HAMMER.get(), ToolsItems.DIAMOND_HAMMER.get(), ToolsItems.NETHERITE_HAMMER.get());
         enchantableMeleeWeapon(tagger, ToolsItems.WOODEN_MULTITOOL.get(), ToolsItems.STONE_MULTITOOL.get(), ToolsItems.GOLDEN_MULTITOOL.get(), ToolsItems.IRON_MULTITOOL.get(), ToolsItems.DIAMOND_MULTITOOL.get(), ToolsItems.NETHERITE_MULTITOOL.get());
         enchantableMeleeWeapon(tagger, ToolsItems.ULTIMATE_FIST.get());
-        enchantableDurability(tagger, ToolsItems.WOOD_SPEAR.get(), ToolsItems.STONE_SPEAR.get(), ToolsItems.GOLD_SPEAR.get(), ToolsItems.IRON_SPEAR.get(), ToolsItems.DIAMOND_SPEAR.get(), ToolsItems.NETHERITE_SPEAR.get());
+        enchantableTrident(tagger, ToolsItems.WOOD_SPEAR.get(), ToolsItems.STONE_SPEAR.get(), ToolsItems.GOLD_SPEAR.get(), ToolsItems.IRON_SPEAR.get(), ToolsItems.DIAMOND_SPEAR.get(), ToolsItems.NETHERITE_SPEAR.get());
         enchantableDurability(tagger, ToolsItems.WOOD_SHEARS.get(), ToolsItems.STONE_SHEARS.get(), ToolsItems.GOLD_SHEARS.get(), ToolsItems.DIAMOND_SHEARS.get(), ToolsItems.NETHERITE_SHEARS.get());
         enchantableDurability(tagger, ToolsItems.WOOD_BUCKET.get(), ToolsItems.STONE_BUCKET.get(), ToolsItems.GOLD_BUCKET.get(), ToolsItems.DIAMOND_BUCKET.get(), ToolsItems.NETHERITE_BUCKET.get());
         enchantableDurability(tagger, ToolsItems.BUILDING_WAND.get(), ToolsItems.BREAKING_WAND.get(), ToolsItems.MINING_WAND.get(), ToolsItems.REINFORCED_BUILDING_WAND.get(), ToolsItems.REINFORCED_BREAKING_WAND.get(), ToolsItems.REINFORCED_MINING_WAND.get());
@@ -81,7 +81,8 @@ public class ToolsItemTagProvider extends LibItemTagProvider {
             enchantableArmor(tagger, ItemTags.CHEST_ARMOR_ENCHANTABLE, group.CHESTPLATE.get());
             enchantableArmor(tagger, ItemTags.LEG_ARMOR_ENCHANTABLE, group.LEGGINGS.get());
             enchantableArmor(tagger, ItemTags.FOOT_ARMOR_ENCHANTABLE, group.BOOTS.get());
-            enchantableDurability(tagger, group.SPEAR.get(), group.SHEARS.get(), group.BUCKET.get());
+            enchantableTrident(tagger, group.SPEAR.get());
+            enchantableDurability(tagger, group.SHEARS.get(), group.BUCKET.get());
         });
         tagger.apply(ToolsTags.Items.ULTIMATE_FRAGMENTS).add(ToolsItems.U_FRAGMENT.get(), ToolsItems.L_FRAGMENT.get(), ToolsItems.T_FRAGMENT.get(), ToolsItems.I_FRAGMENT.get(), ToolsItems.M_FRAGMENT.get(), ToolsItems.A_FRAGMENT.get(), ToolsItems.MISSING_FRAGMENT.get(), ToolsItems.E_FRAGMENT.get());
 
@@ -110,6 +111,15 @@ public class ToolsItemTagProvider extends LibItemTagProvider {
         tagger.apply(ItemTags.MELEE_WEAPON_ENCHANTABLE).add(items);
         tagger.apply(ItemTags.SHARP_WEAPON_ENCHANTABLE).add(items);
         tagger.apply(ItemTags.FIRE_ASPECT_ENCHANTABLE).add(items);
+        enchantableDurability(tagger, items);
+    }
+
+    /**
+     * Loyalty and Impaling. The tag also carries Riptide and Channeling, which {@code BetterSpearItem}
+     * vetoes by key through {@code IItemEnchantmentCondition}.
+     */
+    private void enchantableTrident(Function<TagKey<Item>, ItemTagger> tagger, Item... items) {
+        tagger.apply(ItemTags.TRIDENT_ENCHANTABLE).add(items);
         enchantableDurability(tagger, items);
     }
 

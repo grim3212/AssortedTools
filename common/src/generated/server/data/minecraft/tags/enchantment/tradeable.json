@@ -1,0 +1,28 @@
+{
+  "values": [
+    {
+      "id": "assortedtools:chicken_jump",
+      "required": false
+    },
+    {
+      "id": "assortedtools:bounciness",
+      "required": false
+    },
+    {
+      "id": "assortedtools:conductive",
+      "required": false
+    },
+    {
+      "id": "assortedtools:flammable",
+      "required": false
+    },
+    {
+      "id": "assortedtools:unstable",
+      "required": false
+    },
+    {
+      "id": "assortedtools:coral_cutter",
+      "required": false
+    }
+  ]
+}

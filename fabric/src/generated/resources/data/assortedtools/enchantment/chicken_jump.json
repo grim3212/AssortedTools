@@ -1,4 +1,10 @@
 {
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "chickensuit"
+    }
+  ],
   "anvil_cost": 2,
   "description": {
     "translate": "enchantment.assortedtools.chicken_jump"

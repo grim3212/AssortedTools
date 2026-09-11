@@ -4,6 +4,7 @@ import com.grim3212.assorted.lib.core.item.IItemEnchantmentCondition;
 import com.grim3212.assorted.tools.api.item.ITiered;
 import com.grim3212.assorted.tools.common.entity.BetterSpearEntity;
 import com.grim3212.assorted.tools.config.ItemTierConfig;
+import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -15,15 +16,13 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.Weapon;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 
-import java.util.Optional;
 
 /**
  * A throwable spear made of a configured material.
@@ -94,23 +93,24 @@ public class BetterSpearItem extends TridentItem implements ITiered, IItemEnchan
     }
 
     /**
-     * Riptide and Channeling are hard wired to the vanilla trident - riptide drives the player's
-     * spin attack out of {@code TridentItem}, which this overrides away, and channeling's lightning
-     * requires the projectile to literally be a {@code minecraft:trident} - so neither can ever do
-     * anything on one of these. That is why 1.20.1 excluded them by identity.
-     * <p>
-     * There is no way to name an enchantment by id here: {@code Enchantment} is a record built from
-     * data and this hook is handed the value rather than its {@code Holder}, so the two are
-     * identified by the effect components that make them trident-only. Both markers are unique to
-     * those enchantments in vanilla.
+     * Riptide and Channeling are hard wired to the vanilla trident - riptide drives the player's spin
+     * attack out of {@code TridentItem#releaseUsing}, which this overrides away, and channeling's
+     * lightning requires the projectile to literally be a {@code minecraft:trident} - so neither can
+     * ever do anything on one of these. 1.20.1 excluded them by identity and so does this; every
+     * other enchantment follows the {@code #minecraft:enchantable/trident} tag the spears are in.
      */
     @Override
-    public Optional<Boolean> assortedlib_canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        if (enchantment.effects().has(EnchantmentEffectComponents.TRIDENT_SPIN_ATTACK_STRENGTH) || enchantment.effects().has(EnchantmentEffectComponents.HIT_BLOCK)) {
-            return Optional.of(false);
-        }
+    public boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
+        return !isTridentOnly(enchantment) && IItemEnchantmentCondition.supportedByDefault(stack, enchantment);
+    }
 
-        return Optional.of(enchantment.canEnchant(new ItemStack(Items.TRIDENT)));
+    @Override
+    public boolean isPrimaryItemFor(ItemStack stack, Holder<Enchantment> enchantment) {
+        return !isTridentOnly(enchantment) && IItemEnchantmentCondition.primaryByDefault(stack, enchantment);
+    }
+
+    private static boolean isTridentOnly(Holder<Enchantment> enchantment) {
+        return enchantment.is(Enchantments.RIPTIDE) || enchantment.is(Enchantments.CHANNELING);
     }
 
     @Override
