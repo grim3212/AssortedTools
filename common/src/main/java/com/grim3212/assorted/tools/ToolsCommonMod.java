@@ -1,5 +1,6 @@
 package com.grim3212.assorted.tools;
 
+import com.grim3212.assorted.tools.common.item.ToolsDataComponents;
 import com.grim3212.assorted.lib.events.*;
 import com.grim3212.assorted.lib.platform.Services;
 import com.grim3212.assorted.tools.common.crafting.ToolsConditions;
@@ -17,6 +18,7 @@ public class ToolsCommonMod {
     public static void init() {
         Constants.LOG.info(Constants.MOD_NAME + " starting up...");
 
+        ToolsDataComponents.init();
         ToolsItems.init();
         ToolsEntities.init();
         ToolsEnchantments.init();
