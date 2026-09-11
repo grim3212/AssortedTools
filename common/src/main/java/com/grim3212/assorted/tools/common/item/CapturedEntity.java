@@ -19,10 +19,7 @@ import java.util.function.Consumer;
 
 /**
  * The mob a pokeball holds: {@code Entity#save}'s tag plus a {@code pokeball_name} key naming the
- * entity type. Empty on a ball that holds nothing, and every pokeball carries one.
- * <p>
- * It is also the pokeball's tooltip. {@code Item#appendHoverText} is deprecated, and item tooltips
- * come from components implementing {@link TooltipProvider} instead.
+ * entity type. Empty on an empty ball; every pokeball carries one. It is also the ball's tooltip.
  */
 public record CapturedEntity(CompoundTag entity) implements TooltipProvider {
 

@@ -34,10 +34,9 @@ final class WandTests {
     }
 
     /**
-     * The mining wand: cycling its mode through the packet handler, then the two click selection
-     * that mines everything between the corners. The selection anchor moved out of the stack's bare
-     * NBT into {@code minecraft:custom_data} during the port, which is what the {@code Start}
-     * assertions here are watching.
+     * The mining wand: cycling its mode through the packet handler, then the two-click selection
+     * that mines everything between the corners. The {@code Start} assertions watch the anchor kept
+     * in {@code custom_data}.
      */
     private static void miningWandCyclesAndMines(GameTestHelper helper) {
         WandMiningItem wand = ToolsItems.MINING_WAND.get();

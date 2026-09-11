@@ -30,13 +30,9 @@ final class MaterialSetTests {
     }
 
     /**
-     * Every extra material's five tool recipes, asked of the recipe manager itself rather than
-     * enumerated by hand, so a family added to the configuration is covered the day it is added.
-     * <p>
-     * A family whose material tag has nothing in it is skipped, not failed: the recipe carries an
-     * {@code item_tag_populated} condition, so without a mod supplying the ingot the recipe is
-     * legitimately never loaded. Copper, amethyst and emerald come from the loaders themselves, so
-     * there is always something to check.
+     * Every extra material's five tool recipes, found through the recipe manager so a new family is
+     * covered automatically. A family whose material tag is empty is skipped, since its recipes are
+     * conditioned on {@code item_tag_populated}.
      */
     private static void everyMaterialToolSetCrafts(GameTestHelper helper) {
         ItemStack rod = firstOf(LibCommonTags.Items.RODS_WOODEN);
@@ -86,10 +82,8 @@ final class MaterialSetTests {
     }
 
     /**
-     * Armour goes into the armour slots and the defence it grants is the configured one. Those
-     * per-slot numbers used to come from an {@code ArmorItem} override; they are baked into the
-     * {@code equippable} and {@code attribute_modifiers} components at construction now, so this is
-     * the only thing that proves the configuration reached them.
+     * Armour equips and grants its configured defence, which is baked into the {@code equippable}
+     * and {@code attribute_modifiers} components at construction.
      */
     private static void armourEquipsAndProtects(GameTestHelper helper) {
         ServerPlayer player = survivalPlayer(helper, ItemStack.EMPTY);

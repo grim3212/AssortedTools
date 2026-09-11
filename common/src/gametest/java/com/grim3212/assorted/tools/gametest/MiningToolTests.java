@@ -42,10 +42,8 @@ final class MiningToolTests {
     }
 
     /**
-     * The hammer breaks whatever it is swung at and then refuses the normal destroy path, which is
-     * the shape {@code canAttackBlock} used to have and {@code canDestroyBlock} has now. Obsidian,
-     * because a wooden hammer has no business mining it: the point is that the hammer decides and
-     * not the tier.
+     * The hammer breaks what it hits and refuses the normal destroy path ({@code canDestroyBlock}).
+     * Obsidian, because the hammer decides, not the tier.
      */
     private static void hammerBreaksAndWears(GameTestHelper helper) {
         final BlockPos target = new BlockPos(4, 1, 4);
@@ -106,10 +104,9 @@ final class MiningToolTests {
     }
 
     /**
-     * The multitool's right click behaviour, which is nine lines delegating to vanilla's own axe
-     * and shovel now instead of two loader specific mixins reimplementing them. On NeoForge those
-     * vanilla implementations refuse to act unless the stack declares the matching
-     * {@code ItemAbility}, so a missing declaration shows up here as a block that did not change.
+     * The multitool strips and paths by delegating to vanilla's axe and shovel. On NeoForge those
+     * refuse unless the stack declares the {@code ItemAbility}, so a missing one leaves the block
+     * unchanged.
      */
     private static void multitoolStripsAndPaths(GameTestHelper helper) {
         final BlockPos log = new BlockPos(2, 1, 4);
@@ -201,10 +198,8 @@ final class MiningToolTests {
     }
 
     /**
-     * Mining speed. The numbers themselves are configuration, so each tool is measured against its
-     * own tier rather than against a constant, and the whole set is then checked to be ordered the
-     * same way the configured efficiencies are - which is what catches a tool wired to the wrong
-     * tier, the one mistake a per tool equality cannot see.
+     * Each tool is measured against its own configured tier, then the set is checked to be ordered
+     * like the configured efficiencies, which catches a tool wired to the wrong tier.
      */
     private static void toolsMineAtTheirTierSpeed(GameTestHelper helper) {
         final BlockState stone = Blocks.STONE.defaultBlockState();
@@ -253,11 +248,9 @@ final class MiningToolTests {
     }
 
     /**
-     * Other mods recognise a melee weapon or a mining tool by {@code c:tools/melee_weapon} and
-     * {@code c:tools/mining_tool}, which both loaders fill with vanilla items only. Every extra
-     * material sword and axe is a weapon and every extra material pickaxe a mining tool, every
-     * multitool is both, and the ultimate fist is a weapon. Hammers deal no damage of their own, so
-     * they stay out.
+     * Extra-material swords and axes are in {@code c:tools/melee_weapon}, pickaxes in {@code
+     * c:tools/mining_tool}, multitools in both and the ultimate fist in the first; the loaders list
+     * only vanilla items. Hammers deal no damage of their own, so they stay out.
      */
     private static void toolsAreInTheConventionToolTags(GameTestHelper helper) {
         List<Item> multitools = new ArrayList<>(List.of(ToolsItems.WOODEN_MULTITOOL.get(), ToolsItems.STONE_MULTITOOL.get(), ToolsItems.GOLDEN_MULTITOOL.get(), ToolsItems.IRON_MULTITOOL.get(), ToolsItems.DIAMOND_MULTITOOL.get(), ToolsItems.NETHERITE_MULTITOOL.get()));

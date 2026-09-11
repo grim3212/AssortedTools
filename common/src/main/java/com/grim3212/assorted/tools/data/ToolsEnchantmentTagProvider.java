@@ -9,10 +9,8 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * In 1.20.1 all six of this mod's enchantments were discoverable and tradeable while their part was
- * enabled. The part switch is a condition on each definition now ({@link ToolsEnchantmentData#conditions()}),
- * so these tag entries only have to say "obtainable" - a disabled part's enchantments are not
- * registered and drop out of the tags on their own.
+ * Every enchantment is obtainable. A disabled part's enchantments are not registered
+ * ({@link ToolsEnchantmentData#conditions()}), so they drop out of these tags on their own.
  */
 public class ToolsEnchantmentTagProvider extends LibEnchantmentTagProvider {
 

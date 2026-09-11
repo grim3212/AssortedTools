@@ -17,13 +17,8 @@ import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.gameevent.GameEvent;
 
 /**
- * Shears made of a configured material.
- * <p>
- * Everything this class used to override - max damage, enchantability, and the damage accessors it
- * inherited from the library's {@code IItemExtraProperties} - is a data component fixed at
- * construction now. {@code ShearsItem} survives for its {@code useOn} (trimming growing plants) and
- * for {@code createToolProperties}, which is where the wool, leaves and vine mining rules live -
- * but <em>not</em> for shearing entities; see {@link #interactLivingEntity}.
+ * Shears made of a configured material. {@code ShearsItem} supplies {@code useOn} and the wool,
+ * leaves and vine mining rules, but not shearing mobs; see {@link #interactLivingEntity}.
  */
 public class MaterialShears extends ShearsItem implements ITiered {
 
@@ -46,20 +41,10 @@ public class MaterialShears extends ShearsItem implements ITiered {
     }
 
     /**
-     * Shears a sheep, mooshroom, snow golem or bogged on loaders that do not do it for us.
-     * <p>
-     * Vanilla does not dispatch shearing through the item: every shearable mob's
-     * {@code mobInteract} tests {@code itemStack.is(Items.SHEARS)} literally, so modded shears are
-     * invisible to it. NeoForge patches {@code ShearsItem#interactLivingEntity} to route through its
-     * own {@code IShearable}, which this class inherits, so on NeoForge it already worked - hence
-     * the {@code super} call first. That path also honours modded shearable entities, which the
-     * fallback below cannot see, so it must stay ahead of it.
-     * <p>
-     * On Fabric {@code super} is {@code Item}'s, which passes, and the vanilla {@link Shearable}
-     * path below runs instead. That replaces a Fabric-only mixin onto this very class.
-     * <p>
-     * {@code interactLivingEntity} runs before {@code mobInteract}, so the vanilla shears-only
-     * check never sees the stack either way.
+     * Shears a sheep, mooshroom, snow golem or bogged. Every shearable mob tests {@code
+     * is(Items.SHEARS)} in {@code mobInteract}, which runs after this. NeoForge's patched {@code
+     * super} routes through {@code IShearable} and also covers modded mobs, so it goes first; on
+     * Fabric it passes and the vanilla {@link Shearable} fallback runs.
      */
     @Override
     public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {

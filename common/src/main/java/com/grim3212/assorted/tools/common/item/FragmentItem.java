@@ -16,11 +16,9 @@ public class FragmentItem extends Item {
     }
 
     /**
-     * {@code Item.appendHoverText} is marked deprecated in 26.x - tooltips are meant to come from
-     * data components implementing {@code TooltipProvider} - but it is still the only per item
-     * hook, and vanilla's own items (DiscFragmentItem, HangingEntityItem, SmithingTemplateItem)
-     * still override it. The tooltip no longer takes a {@code Level} or a mutable list; it takes a
-     * {@link Consumer} and the tooltip context.
+     * {@code Item.appendHoverText} is deprecated in favour of {@code TooltipProvider} components,
+     * but it is still the only per-item hook, and vanilla's own {@code DiscFragmentItem} still
+     * overrides it.
      */
     @SuppressWarnings("deprecation")
     @Override

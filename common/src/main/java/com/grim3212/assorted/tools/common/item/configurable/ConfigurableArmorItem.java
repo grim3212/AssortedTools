@@ -5,13 +5,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.equipment.ArmorType;
 
 /**
- * A piece of armour built from a configured armour material.
- * <p>
- * {@code ArmorItem} is gone. Armour is a plain {@link Item} carrying an {@code equippable}
- * component, which {@code Properties#humanoidArmor} writes along with the durability, defence,
- * toughness, knockback resistance, enchantability and repair material taken from the record. That
- * covers every override this class used to carry, including the per-slot durability multiplier and
- * the armour modifier UUIDs it reached into vanilla with accessor mixins to get.
+ * A piece of armour built from a configured armour material. {@code Properties#humanoidArmor}
+ * writes the {@code equippable} component, durability, defence and the rest from the record.
  */
 public class ConfigurableArmorItem extends Item {
 

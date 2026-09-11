@@ -30,11 +30,8 @@ import java.util.Random;
 public abstract class WandItem extends Item implements ISwitchModes {
 
     /**
-     * Where the first clicked corner is remembered between the two clicks that make a selection.
-     * <p>
-     * It used to be written straight into the stack's NBT through {@code ItemStack#getTag}, which is
-     * gone; it lives inside the {@code minecraft:custom_data} component now, which is what
-     * {@code NBTHelper} writes.
+     * Where the first corner of a selection is kept between the two clicks, inside
+     * {@code minecraft:custom_data}.
      */
     protected static final String START_KEY = "Start";
     protected static final String FIRST_USE_KEY = "firstUse";
@@ -155,10 +152,9 @@ public abstract class WandItem extends Item implements ISwitchModes {
     }
 
     /**
-     * {@code WandCoord3D} reads and writes itself against a parent CompoundTag, which used to be the
-     * stack's own NBT. There is no such thing any more, so the sub tag is lifted in and out of the
-     * custom data component around it. Custom data hands back a detached copy, so a write has to go
-     * back through {@code putTag} to reach the stack.
+     * {@code WandCoord3D} reads and writes against a parent tag, so the sub tag is lifted out of
+     * the custom data component. Custom data returns a copy, so a write must go back through {@code
+     * putTag}.
      */
     protected static @Nullable WandCoord3D readStart(Level level, ItemStack stack) {
         CompoundTag root = new CompoundTag();

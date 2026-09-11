@@ -13,10 +13,8 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 
 /**
- * Enchantments are a data driven registry now - {@link Enchantment} is a record loaded from JSON,
- * so there is nothing to subclass and nothing to register from code. All this class holds is the
- * {@link ResourceKey}s the rest of the mod looks enchantments up by; the JSON itself is written by
- * {@code com.grim3212.assorted.tools.data.ToolsEnchantmentData}.
+ * The keys the mod looks its enchantments up by. The enchantments themselves are data, written by
+ * {@code ToolsEnchantmentData}.
  */
 public class ToolsEnchantments {
 

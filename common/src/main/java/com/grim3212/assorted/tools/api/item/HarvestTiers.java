@@ -5,16 +5,9 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 
 /**
- * Translates the mod's numeric harvest levels into the tag vanilla actually uses.
- * <p>
- * Harvest level as a number is gone. Since 1.21.2 a tool declares the blocks it <em>cannot</em>
- * get drops from as a {@link TagKey}, baked into its {@code minecraft:tool} data component, and
- * every mining check reads that. The configuration still exposes {@code harvestLevel} as an integer
- * because that is what the option has always been called and what packs are written against, so it
- * is mapped here rather than removed.
- * <p>
- * Levels above netherite have nothing stronger to map to - {@code ULTIMATE} is level 7 and lands on
- * the netherite tag, which is the strongest thing vanilla defines. It mines everything either way.
+ * Maps the configured numeric harvest level to the block tag a tool cannot get drops from
+ * ({@code incorrectBlocksForDrops}). Levels above netherite (ULTIMATE is 7) map to the netherite
+ * tag, the strongest vanilla has.
  */
 public final class HarvestTiers {
 

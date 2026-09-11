@@ -17,13 +17,8 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 /**
- * Rendering is split in 26.2: everything the draw needs is read off the entity in
- * {@link #extractRenderState} and the submit pass sees only the state. The item is resolved into an
- * {@link ItemStackRenderState} at extract time - {@code ItemRenderer#renderStatic} is gone, an item's
- * model is resolved by {@link ItemModelResolver} and then submitted.
- * <p>
- * The yaw and pitch the old {@code render(entity, entityYaw, partialTicks, ...)} was handed as
- * arguments are carried on the state instead.
+ * Draws a boomerang. The item is resolved into an {@link ItemStackRenderState} at extract time, and
+ * the yaw and pitch travel on the state, since the submit pass has no entity.
  */
 public class BoomerangRenderer extends EntityRenderer<BoomerangEntity, BoomerangRenderer.BoomerangRenderState> {
 

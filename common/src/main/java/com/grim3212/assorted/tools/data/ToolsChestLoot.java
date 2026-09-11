@@ -22,12 +22,6 @@ import java.util.function.BiConsumer;
 /**
  * The three Ultimate Fist fragment pools, injected into vanilla chest loot by
  * {@code LootTableHandlers}.
- * <p>
- * This used to extend {@code VanillaChestLoot}, which was a plain class. It is a record now and
- * cannot be subclassed, so this implements {@link LootTableSubProvider} directly - which is all the
- * inheritance ever bought, since none of the vanilla tables were being reused.
- * <p>
- * Loot tables are addressed by {@code ResourceKey<LootTable>} rather than a raw {@code Identifier}.
  */
 public class ToolsChestLoot implements LootTableSubProvider {
 
@@ -46,13 +40,7 @@ public class ToolsChestLoot implements LootTableSubProvider {
         builder.accept(key("fragments_end_loot"), LootTable.lootTable().withPool(endPool));
     }
 
-    /**
-     * The two-argument form collapsed into one.
-     * <p>
-     * There used to be a second overload taking an {@code ItemStack} so it could copy the stack's
-     * NBT onto the entry with {@code SetNbtFunction}. Stack NBT is gone, and none of these entries
-     * ever carried any - every caller passed a bare item - so the branch was dead in 1.20.1 too.
-     */
+    /** A weighted entry dropping between {@code min} and {@code max} of {@code item}. */
     private LootPoolEntryContainer.Builder<?> addItem(ItemLike item, int weight, int min, int max) {
         return LootItem.lootTableItem(item).setWeight(weight).apply(SetItemCountFunction.setCount(UniformGenerator.between(min, max)));
     }

@@ -34,13 +34,8 @@ public class ToolsClient {
 
         ClientServices.CLIENT.registerEntityLayer(ToolsModelLayers.SPEAR, SpearModel::createLayer);
 
-        // BlockEntityWithoutLevelRenderer is gone: a special item renderer is selected by the item's
-        // own model json ("minecraft:special" naming this id), so code only registers the id to codec
-        // pair. The generated spear item models select this renderer via "minecraft:display_context"
-        // (gui/ground/fixed -> the flat <mat>_spear_gui model), falling back to "minecraft:using_item"
-        // over two "minecraft:special" entries naming assortedtools:spear with the material's texture
-        // - the direct replacement for the old "assortedtools:throwing" ClampedItemPropertyFunction.
-        // Verified in game: spears render in hand and the throwing swap still works.
+        // The item's model json picks a special renderer by id ("minecraft:special"), so code only
+        // registers the id and codec. See ToolsItemModelProvider#spear.
         ClientServices.CLIENT.registerBEWLR((register) -> {
             register.registerSpecialModelRenderer(SpearSpecialRenderer.ID, SpearSpecialRenderer.Unbaked.MAP_CODEC);
         });

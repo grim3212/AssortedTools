@@ -25,17 +25,9 @@ import net.minecraft.world.level.Level;
 
 
 /**
- * A throwable spear made of a configured material.
- * <p>
- * Still a {@link TridentItem} - that class survives and still carries the charge-and-throw shape -
- * but everything numeric moved into data components fixed at construction, so the overridden
- * {@code getMaxDamage}, {@code getEnchantmentValue}, {@code isValidRepairItem} and
- * {@code getDefaultAttributeModifiers} are gone, along with the library's
- * {@code IItemExtraProperties} forwarding, which now does exactly what vanilla does natively.
- * <p>
- * Note that 26.2 ships its own spears, built through {@code Item.Properties#spear} on the new
- * kinetic weapon components. Those are a lunge weapon rather than a throwing weapon, so they are
- * not what this is; the trident shape remains the right base.
+ * A throwable spear made of a configured material; its stats are data components fixed at
+ * construction. It extends {@link TridentItem} for the charge-and-throw: vanilla's own spears
+ * ({@code Item.Properties#spear}) are lunge weapons, not thrown ones.
  */
 public class BetterSpearItem extends TridentItem implements ITiered, IItemEnchantmentCondition {
 
@@ -93,11 +85,10 @@ public class BetterSpearItem extends TridentItem implements ITiered, IItemEnchan
     }
 
     /**
-     * Riptide and Channeling are hard wired to the vanilla trident - riptide drives the player's spin
-     * attack out of {@code TridentItem#releaseUsing}, which this overrides away, and channeling's
-     * lightning requires the projectile to literally be a {@code minecraft:trident} - so neither can
-     * ever do anything on one of these. 1.20.1 excluded them by identity and so does this; every
-     * other enchantment follows the {@code #minecraft:enchantable/trident} tag the spears are in.
+     * Riptide and Channeling only work on the vanilla trident (the spin attack lives in
+     * {@code TridentItem#releaseUsing}, which this overrides; the lightning needs a
+     * {@code minecraft:trident} projectile), so they are vetoed. Everything else follows
+     * {@code #minecraft:enchantable/trident}.
      */
     @Override
     public boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {

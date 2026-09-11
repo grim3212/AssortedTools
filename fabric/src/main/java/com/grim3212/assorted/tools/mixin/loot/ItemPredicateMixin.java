@@ -11,19 +11,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 /**
- * Makes a predicate that asks for vanilla shears also accept the mod's, so loot tables and
- * advancements written against {@code minecraft:shears} behave the same with a modded pair.
- * <p>
- * The 1.20.1 version substituted a whole fake {@code ItemStack} of vanilla shears and copied the
- * original's NBT onto it. That cannot work now - stack data is components, and the predicate's
- * {@code components} matcher would have been tested against the substitute rather than the real
- * stack. Redirecting the single item check instead leaves the count and component checks looking at
- * the stack the player is actually holding.
- * <p>
- * {@code items} is an {@code Optional<HolderSet<Item>>} on the record now, not a {@code Set<Item>},
- * so the widening is expressed against the holder set.
- * <p>
- * Fabric only, matching the block mixins: NeoForge routes shears behaviour through item abilities.
+ * Makes an item predicate for vanilla shears also accept the mod's, so loot tables and advancements
+ * treat them alike. Only the item check is redirected, so the count and component checks still see
+ * the real stack. Fabric only; NeoForge uses item abilities.
  */
 @Mixin(ItemPredicate.class)
 public abstract class ItemPredicateMixin {

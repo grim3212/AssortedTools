@@ -16,13 +16,9 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.Unit;
 
 /**
- * Split into an extract pass and a submit pass like every other {@code EntityRenderer} in 26.2. The
- * texture depends on the spear's item, which the submit pass has no entity to ask, so it is resolved
- * into the render state up front.
- * <p>
- * {@code ItemRenderer#getFoilBufferDirect} is gone: the glint is a second submit of the same model
- * against {@link RenderTypes#entityGlint()}, ordered after the solid pass, which is how vanilla's
- * {@code ThrownTridentRenderer} draws an enchanted trident.
+ * The spear's texture depends on its item, so it is resolved into the render state at extract time.
+ * The glint is a second submit against {@link RenderTypes#entityGlint()}, as vanilla's
+ * {@code ThrownTridentRenderer} does.
  */
 public class BetterSpearRenderer extends EntityRenderer<BetterSpearEntity, BetterSpearRenderer.SpearRenderState> {
 

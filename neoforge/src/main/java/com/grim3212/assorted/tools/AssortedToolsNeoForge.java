@@ -34,15 +34,7 @@ import java.util.concurrent.CompletableFuture;
 @Mod(Constants.MOD_ID)
 public class AssortedToolsNeoForge {
 
-    /**
-     * {@code FMLJavaModLoadingContext} is gone; the mod event bus and the mod container are injected
-     * into the {@code @Mod} constructor instead.
-     * <p>
-     * The {@code FMLCommonSetupEvent} listener that used to be here registered every modded tier
-     * with {@code TierSortingRegistry}. Vanilla absorbed that idea into the {@code incorrect_for_*}
-     * block tags in 1.21.2 and the registry is gone, so both the listener and
-     * {@code TierRegistryHandler} were deleted.
-     */
+    /** The mod event bus and container are injected into the {@code @Mod} constructor. */
     public AssortedToolsNeoForge(IEventBus modBus, ModContainer modContainer) {
         modBus.addListener(this::gatherServerData);
         modBus.addListener(this::gatherClientData);
@@ -52,10 +44,8 @@ public class AssortedToolsNeoForge {
     }
 
     /**
-     * {@code ExistingFileHelper} was removed from datagen, the event owns the provider list now
-     * ({@code addProvider}), and the include flags are gone because the server and client halves are
-     * separate events. Getting this split wrong is quiet: the wrong event runs and reports
-     * "All providers took: 0 ms" with a successful build.
+     * Server datagen. The server and client halves are separate events; if the wrong one runs, the
+     * build still succeeds, with "All providers took: 0 ms".
      */
     private void gatherServerData(final GatherDataEvent.Server event) {
         PackOutput packOutput = event.getGenerator().getPackOutput();
@@ -71,12 +61,7 @@ public class AssortedToolsNeoForge {
         event.addProvider(new ToolsEnchantmentTagProvider(packOutput, lookupProvider));
     }
 
-    /**
-     * An item does not answer capability lookups itself any more - {@code Item#initCapabilities} is
-     * gone, and with it the mixin that added it to {@code BetterBucketItem}. A capability is
-     * registered per item here instead, and it is a transactional
-     * {@code ResourceHandler<FluidResource>} rather than the deprecated {@code IFluidHandlerItem}.
-     */
+    /** Registers each better bucket's {@code ResourceHandler<FluidResource>} item capability. */
     private void registerCapabilities(final RegisterCapabilitiesEvent event) {
         for (Item item : ToolsItems.buckets()) {
             if (item instanceof BetterBucketItem bucket) {

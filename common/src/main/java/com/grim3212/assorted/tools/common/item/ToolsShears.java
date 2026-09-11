@@ -7,15 +7,9 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ShearsItem;
 
 /**
- * The one place that answers "should this stack count as shears".
- * <p>
- * Vanilla asks {@code itemStack.is(Items.SHEARS)} by identity in every place shears do something -
- * carving a pumpkin, harvesting a hive, disarming a tripwire, shearing a mob - so a modded pair is
- * invisible to all of it. NeoForge patches those call sites to
- * {@code canPerformAction(ItemAbilities.SHEARS_*)}, which {@code MaterialShears} inherits from
- * {@code ShearsItem}; Fabric has no equivalent, so the mixins there redirect those calls here.
- * <p>
- * Kept in {@code common} so both loaders agree on the answer even though only one of them asks.
+ * The one answer to "does this stack count as shears". Vanilla checks {@code is(Items.SHEARS)} by
+ * identity; NeoForge patches those sites to {@code canPerformAction(ItemAbilities.SHEARS_*)}, and
+ * Fabric's mixins redirect them here. Kept in {@code common} so both loaders agree.
  */
 public final class ToolsShears {
 
@@ -23,10 +17,8 @@ public final class ToolsShears {
     }
 
     /**
-     * Whether {@code stack} should satisfy a vanilla {@code is(item)} check.
-     * <p>
-     * Only widens the check when vanilla was asking about shears specifically. The redirected call
-     * sites also test other items, so answering for those would change unrelated behaviour.
+     * Whether {@code stack} should satisfy a vanilla {@code is(item)} check. Only widens a check
+     * for shears, since the redirected call sites test other items too.
      */
     public static boolean matches(ItemStack stack, Object item) {
         // Object rather than Item because `is` is declared on the generic TypedInstance<T>: the

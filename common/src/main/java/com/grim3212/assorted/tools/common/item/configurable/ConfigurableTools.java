@@ -4,16 +4,9 @@ import com.grim3212.assorted.tools.config.ItemTierConfig;
 import net.minecraft.world.item.Item;
 
 /**
- * The attack damage and speed baselines the mod's tools are built with.
- * <p>
- * These used to live as constants on each {@code Configurable*Item}, feeding an overridden
- * {@code getDefaultAttributeModifiers}. Attributes are a data component now, so the numbers are
- * handed to {@code Item.Properties} at construction instead and the overrides are gone. They are
- * collected here so the values stay in one readable place.
- * <p>
- * Several differ from vanilla's - the pickaxe baseline is 3.0 rather than 1.0, and the hoe derives
- * its damage from the harvest level rather than using a fixed negative. Both are carried over
- * unchanged from 1.20.1 on purpose; they are what these tools have always hit for.
+ * The attack damage and speed baselines the mod's tools are built with. Some differ from vanilla on
+ * purpose: the pickaxe baseline is 3.0 rather than 1.0, and the hoe's damage follows its harvest
+ * level.
  */
 public final class ConfigurableTools {
 

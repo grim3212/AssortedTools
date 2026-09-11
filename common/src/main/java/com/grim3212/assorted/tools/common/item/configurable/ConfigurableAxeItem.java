@@ -6,11 +6,8 @@ import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Item;
 
 /**
- * An axe built from a configured tool material. {@link AxeItem} survives for stripping, scraping
- * and waxing off.
- * <p>
- * Axes are the one shape whose attack damage and speed are per material rather than fixed, which is
- * why the tier configuration carries {@code axeDamage} and {@code axeSpeed} of its own.
+ * An axe built from a configured tool material; {@link AxeItem} supplies stripping, scraping and
+ * waxing off. Axe damage and speed are per material, hence {@code axeDamage} and {@code axeSpeed}.
  */
 public class ConfigurableAxeItem extends AxeItem implements ITiered {
 

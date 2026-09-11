@@ -9,12 +9,9 @@ import net.minecraft.world.item.ToolMaterial;
 import java.util.function.Supplier;
 
 /**
- * The mod's tool materials, and the defaults its configuration is seeded from.
- * <p>
- * No longer a {@code Tier}: that interface is gone, replaced by the {@link ToolMaterial} record.
- * The enum stays because it is the readable home for the numbers, and because the bucket, axe and
- * multitool values hanging off each entry have no place on a vanilla material. {@link #material()}
- * turns an entry into the record vanilla wants.
+ * The mod's tool materials and their configuration defaults, plus the bucket, axe and multitool
+ * values that have no place on a vanilla material. {@link #material()} builds the
+ * {@link ToolMaterial}.
  */
 public enum ToolsItemTier {
     TIN(1, 80, 2.5F, 0.4F, 14, () -> {
@@ -146,11 +143,9 @@ public enum ToolsItemTier {
     }
 
     /**
-     * This entry as the record vanilla builds items from.
-     * <p>
-     * The numeric harvest level becomes {@code incorrectBlocksForDrops}; see {@link HarvestTiers}.
-     * Built fresh on each call rather than cached, because the configured overrides that shadow
-     * these defaults are read at registration and callers there want the values as configured.
+     * This entry as a {@link ToolMaterial}; the harvest level becomes {@code
+     * incorrectBlocksForDrops} (see {@link HarvestTiers}). Not cached: callers at registration want
+     * the configured values, which shadow these defaults.
      */
     public ToolMaterial material() {
         return new ToolMaterial(HarvestTiers.incorrectBlocksForDrops(this.harvestLevel), this.maxUses, this.efficiency, this.attackDamage, this.enchantability, this.repairMaterial.get());
