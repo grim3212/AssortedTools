@@ -16,8 +16,6 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerBlock;
@@ -27,13 +25,12 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class WandMiningItem extends WandItem {
 
     public WandMiningItem(boolean reinforced, Properties props) {
-        super(reinforced, props);
+        super(reinforced, props.component(ToolsDataComponents.WAND_MODE_INFO.get(), new WandModeInfo(WandModeInfo.Kind.MINING)));
     }
 
     private static boolean isMiningOre(BlockState state) {
@@ -213,19 +210,12 @@ public class WandMiningItem extends WandItem {
         return stack;
     }
 
-    /**
-     * {@code Item.appendHoverText} is marked deprecated in 26.x - tooltips are meant to come from
-     * data components implementing {@code TooltipProvider} - but it is still the only per item
-     * hook, and vanilla's own items still override it.
-     */
-    @SuppressWarnings("deprecation")
-    @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flagIn) {
-        MiningMode mode = MiningMode.fromString(NBTHelper.getString(stack, "Mode"));
+    /** The tooltip line for a stored mode, shown through {@link WandModeInfo}. */
+    static Component describeMode(String stored) {
+        MiningMode mode = MiningMode.fromString(stored);
         if (mode != null)
-            tooltip.accept(Component.translatable(Constants.MOD_ID + ".wand.current", mode.getTranslatedString()));
-        else
-            tooltip.accept(Component.translatable(Constants.MOD_ID + ".broken"));
+            return Component.translatable(Constants.MOD_ID + ".wand.current", mode.getTranslatedString());
+        return Component.translatable(Constants.MOD_ID + ".wand.broken");
     }
 
     @Override

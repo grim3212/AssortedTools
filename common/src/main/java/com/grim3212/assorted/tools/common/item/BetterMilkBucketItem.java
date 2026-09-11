@@ -5,7 +5,6 @@ import com.grim3212.assorted.lib.platform.Services;
 import com.grim3212.assorted.tools.api.item.ITiered;
 import com.grim3212.assorted.tools.config.ItemTierConfig;
 import net.minecraft.advancements.triggers.CriteriaTriggers;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
@@ -18,40 +17,26 @@ import net.minecraft.world.item.ItemInstance;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.ItemUseAnimation;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class BetterMilkBucketItem extends Item implements ITiered {
 
     private final Supplier<BetterBucketItem> parent;
 
-    public BetterMilkBucketItem(Supplier<BetterBucketItem> parent, Properties props) {
-        super(props.stacksTo(1));
+    /**
+     * @param tier the parent's tier, for the capacity in its tooltip; passed in because the parent
+     *             is not read while items are still being registered
+     */
+    public BetterMilkBucketItem(Supplier<BetterBucketItem> parent, ItemTierConfig tier, Properties props) {
+        super(props.stacksTo(1).component(ToolsDataComponents.BUCKET_CONTENTS.get(), new BucketContents(tier.getMaxBuckets())));
         this.parent = parent;
     }
 
     public BetterBucketItem getParent() {
         return parent.get();
-    }
-
-    /**
-     * {@code Item.appendHoverText} is marked deprecated in 26.x - tooltips are meant to come from
-     * data components implementing {@code TooltipProvider} - but it is still the only per item
-     * hook, and vanilla's own items still override it.
-     */
-    @SuppressWarnings("deprecation")
-    @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flagIn) {
-        if (BetterBucketItem.getAmount(stack) <= 0) {
-            tooltip.accept(Component.translatable("tooltip.buckets.empty"));
-        } else {
-            tooltip.accept(Component.translatable("tooltip.buckets.contains", BetterBucketItem.getAmount(stack), this.getParent().getMaximumMillibuckets()));
-        }
     }
 
     @Override

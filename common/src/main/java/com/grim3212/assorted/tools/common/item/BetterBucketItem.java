@@ -12,6 +12,8 @@ import com.grim3212.assorted.tools.config.ItemTierConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponentGetter;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -30,8 +32,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemInstance;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -44,7 +45,6 @@ import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
-import java.util.function.Consumer;
 
 public class BetterBucketItem extends Item implements ITiered {
 
@@ -59,7 +59,7 @@ public class BetterBucketItem extends Item implements ITiered {
     public final ItemTierConfig tierHolder;
 
     public BetterBucketItem(Properties props, ItemTierConfig tierHolder) {
-        super(props.stacksTo(1));
+        super(props.stacksTo(1).component(ToolsDataComponents.BUCKET_CONTENTS.get(), new BucketContents(tierHolder.getMaxBuckets())));
 
         this.tierHolder = tierHolder;
 
@@ -84,21 +84,6 @@ public class BetterBucketItem extends Item implements ITiered {
 
     public int getMaximumMillibuckets() {
         return this.tierHolder.getMaxBuckets() * getBucketAmount();
-    }
-
-    /**
-     * {@code Item.appendHoverText} is marked deprecated in 26.x - tooltips are meant to come from
-     * data components implementing {@code TooltipProvider} - but it is still the only per item
-     * hook, and vanilla's own items still override it.
-     */
-    @SuppressWarnings("deprecation")
-    @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flagIn) {
-        if (getAmount(stack) <= 0) {
-            tooltip.accept(Component.translatable("tooltip.buckets.empty"));
-        } else {
-            tooltip.accept(Component.translatable("tooltip.buckets.contains", getAmount(stack) / BetterBucketItem.getBucketAmount(), getMaximumMillibuckets() / BetterBucketItem.getBucketAmount()));
-        }
     }
 
     @Override
@@ -382,6 +367,11 @@ public class BetterBucketItem extends Item implements ITiered {
     }
 
     public static int getAmount(ItemStack stack) {
-        return NBTHelper.getInt(NBTHelper.getTag(stack, FLUID_TAG), AMOUNT_KEY);
+        return getAmount((DataComponentGetter) stack);
+    }
+
+    public static int getAmount(DataComponentGetter components) {
+        CompoundTag customData = components.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
+        return NBTHelper.getInt(NBTHelper.getTag(customData, FLUID_TAG), AMOUNT_KEY);
     }
 }

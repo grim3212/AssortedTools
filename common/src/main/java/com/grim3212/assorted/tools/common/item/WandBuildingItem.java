@@ -15,8 +15,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,13 +22,12 @@ import net.minecraft.world.level.material.PushReaction;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class WandBuildingItem extends WandItem {
 
     public WandBuildingItem(boolean reinforced, Properties props) {
-        super(reinforced, props);
+        super(reinforced, props.component(ToolsDataComponents.WAND_MODE_INFO.get(), new WandModeInfo(WandModeInfo.Kind.BUILDING)));
     }
 
     // BlockStateBase.liquid() is deprecated with no replacement - it is a legacy block level flag -
@@ -596,19 +593,12 @@ public class WandBuildingItem extends WandItem {
         return stack;
     }
 
-    /**
-     * {@code Item.appendHoverText} is marked deprecated in 26.x - tooltips are meant to come from
-     * data components implementing {@code TooltipProvider} - but it is still the only per item
-     * hook, and vanilla's own items still override it.
-     */
-    @SuppressWarnings("deprecation")
-    @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flagIn) {
-        BuildingMode mode = BuildingMode.fromString(NBTHelper.getString(stack, "Mode"));
+    /** The tooltip line for a stored mode, shown through {@link WandModeInfo}. */
+    static Component describeMode(String stored) {
+        BuildingMode mode = BuildingMode.fromString(stored);
         if (mode != null)
-            tooltip.accept(Component.translatable(Constants.MOD_ID + ".wand.current", mode.getTranslatedString()));
-        else
-            tooltip.accept(Component.translatable(Constants.MOD_ID + ".wand.broken"));
+            return Component.translatable(Constants.MOD_ID + ".wand.current", mode.getTranslatedString());
+        return Component.translatable(Constants.MOD_ID + ".wand.broken");
     }
 
     @Override

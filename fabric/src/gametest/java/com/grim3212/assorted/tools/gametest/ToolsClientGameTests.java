@@ -1,6 +1,8 @@
 package com.grim3212.assorted.tools.gametest;
 
+import com.grim3212.assorted.lib.util.NBTHelper;
 import com.grim3212.assorted.tools.common.item.CapturedEntity;
+import com.grim3212.assorted.tools.common.item.FragmentItem;
 import com.grim3212.assorted.tools.common.item.ToolsDataComponents;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
 import net.fabricmc.fabric.api.client.gametest.v1.FabricClientGameTest;
@@ -16,8 +18,8 @@ import net.minecraft.world.item.TooltipFlag;
 import java.util.List;
 
 /**
- * The pokeball's tooltip as Fabric builds it, which only happens on the client; the server gametest
- * covers NeoForge. Run with {@code ./gradlew :fabric:runClientGameTest}; it exits non-zero on a
+ * The component tooltips (pokeball, fragment, wand, bucket) as Fabric builds them, which only
+ * happens on the client; the server gametests cover NeoForge. Run with {@code ./gradlew :fabric:runClientGameTest}; it exits non-zero on a
  * failure.
  */
 public class ToolsClientGameTests implements FabricClientGameTest {
@@ -41,6 +43,23 @@ public class ToolsClientGameTests implements FabricClientGameTest {
                 List<String> stored = tooltipKeys(client, full);
                 if (!stored.contains("tooltip.pokeball.stored")) {
                     throw new AssertionError("a full pokeball's tooltip is " + stored);
+                }
+
+                List<String> fragment = tooltipKeys(client, new ItemStack(ToolsItems.U_FRAGMENT.get()));
+                if (!fragment.contains(FragmentItem.DESCRIPTION_KEY)) {
+                    throw new AssertionError("a fragment's tooltip is " + fragment);
+                }
+
+                ItemStack wandStack = new ItemStack(ToolsItems.MINING_WAND.get());
+                NBTHelper.putString(wandStack, "Mode", "mineall");
+                List<String> wand = tooltipKeys(client, wandStack);
+                if (!wand.contains("assortedtools.wand.current")) {
+                    throw new AssertionError("a mining wand's tooltip is " + wand);
+                }
+
+                List<String> bucket = tooltipKeys(client, ToolsItems.WOOD_BUCKET.get().getEmptyStack());
+                if (!bucket.contains("tooltip.buckets.empty")) {
+                    throw new AssertionError("an empty bucket's tooltip is " + bucket);
                 }
             });
         }

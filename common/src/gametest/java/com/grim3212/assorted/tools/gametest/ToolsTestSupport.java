@@ -350,11 +350,16 @@ final class ToolsTestSupport {
                 .toList();
     }
 
+    /** The lines one component adds to a stack's tooltip, in order. */
+    static <T extends TooltipProvider> List<Component> tooltipLines(GameTestHelper helper, ItemStack stack, DataComponentType<T> type) {
+        List<Component> lines = new ArrayList<>();
+        stack.addToTooltip(type, Item.TooltipContext.of(helper.getLevel()), TooltipDisplay.DEFAULT, lines::add, TooltipFlag.NORMAL);
+        return lines;
+    }
+
     /** The translation keys of the lines one component adds to a stack's tooltip, in order. */
     static <T extends TooltipProvider> List<String> tooltipKeys(GameTestHelper helper, ItemStack stack, DataComponentType<T> type) {
-        List<String> keys = new ArrayList<>();
-        stack.addToTooltip(type, Item.TooltipContext.of(helper.getLevel()), TooltipDisplay.DEFAULT, line -> keys.add(tooltipKey(line)), TooltipFlag.NORMAL);
-        return keys;
+        return tooltipLines(helper, stack, type).stream().map(ToolsTestSupport::tooltipKey).toList();
     }
 
     /** The translation keys of a stack's whole tooltip, as the loader builds it. */
