@@ -1,5 +1,6 @@
 package com.grim3212.assorted.tools;
 
+import com.grim3212.assorted.tools.client.data.ToolsLanguageProvider;
 import com.grim3212.assorted.lib.data.ForgeBlockTagProvider;
 import com.grim3212.assorted.lib.data.ForgeItemTagProvider;
 import com.grim3212.assorted.lib.data.ForgeDatapackRegistryProvider;
@@ -89,5 +90,6 @@ public class AssortedToolsNeoForge {
 
         event.addProvider(new ToolsItemModelProvider(packOutput));
         event.addProvider(new ToolsEquipmentAssetProvider(packOutput));
+        event.addProvider(new ToolsLanguageProvider(packOutput));
     }
 }
