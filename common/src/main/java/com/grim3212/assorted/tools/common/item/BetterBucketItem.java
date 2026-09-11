@@ -387,8 +387,14 @@ public class BetterBucketItem extends Item implements ITiered {
         NBTHelper.putTag(stack, FLUID_TAG, tag);
     }
 
+    /**
+     * The stored fluid, or {@link #emptyMarker()} for a bucket that has never stored one - a bucket
+     * from the creative tab or a command never went through {@link #onCraftedBy}, and read as "" it
+     * matched no fluid at all, so it could not be milked or filled.
+     */
     public static String getFluid(ItemStack stack) {
-        return NBTHelper.getString(NBTHelper.getTag(stack, FLUID_TAG), FLUID_NAME_KEY);
+        String stored = NBTHelper.getString(NBTHelper.getTag(stack, FLUID_TAG), FLUID_NAME_KEY);
+        return stored.isEmpty() ? emptyMarker() : stored;
     }
 
     public static int getAmount(ItemStack stack) {
