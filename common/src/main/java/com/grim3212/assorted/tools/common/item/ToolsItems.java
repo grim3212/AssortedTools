@@ -65,15 +65,15 @@ public class ToolsItems {
     public static final IRegistryObject<BetterSpearItem> NETHERITE_SPEAR = register("netherite_spear", props -> new BetterSpearItem(props.fireResistant(), ToolsCommonMod.COMMON_CONFIG.netheriteItemTier));
 
     public static final IRegistryObject<BetterBucketItem> WOOD_BUCKET = register("wood_bucket", props -> new BetterBucketItem(props, ToolsCommonMod.COMMON_CONFIG.woodItemTier));
-    public static final IRegistryObject<BetterMilkBucketItem> WOOD_MILK_BUCKET = register("wood_milk_bucket", props -> new BetterMilkBucketItem(() -> WOOD_BUCKET.get(), props));
+    public static final IRegistryObject<BetterMilkBucketItem> WOOD_MILK_BUCKET = register("wood_milk_bucket", props -> new BetterMilkBucketItem(() -> WOOD_BUCKET.get(), ToolsCommonMod.COMMON_CONFIG.woodItemTier, props));
     public static final IRegistryObject<BetterBucketItem> STONE_BUCKET = register("stone_bucket", props -> new BetterBucketItem(props, ToolsCommonMod.COMMON_CONFIG.stoneItemTier));
-    public static final IRegistryObject<BetterMilkBucketItem> STONE_MILK_BUCKET = register("stone_milk_bucket", props -> new BetterMilkBucketItem(() -> STONE_BUCKET.get(), props));
+    public static final IRegistryObject<BetterMilkBucketItem> STONE_MILK_BUCKET = register("stone_milk_bucket", props -> new BetterMilkBucketItem(() -> STONE_BUCKET.get(), ToolsCommonMod.COMMON_CONFIG.stoneItemTier, props));
     public static final IRegistryObject<BetterBucketItem> GOLD_BUCKET = register("gold_bucket", props -> new BetterBucketItem(props, ToolsCommonMod.COMMON_CONFIG.goldItemTier));
-    public static final IRegistryObject<BetterMilkBucketItem> GOLD_MILK_BUCKET = register("gold_milk_bucket", props -> new BetterMilkBucketItem(() -> GOLD_BUCKET.get(), props));
+    public static final IRegistryObject<BetterMilkBucketItem> GOLD_MILK_BUCKET = register("gold_milk_bucket", props -> new BetterMilkBucketItem(() -> GOLD_BUCKET.get(), ToolsCommonMod.COMMON_CONFIG.goldItemTier, props));
     public static final IRegistryObject<BetterBucketItem> DIAMOND_BUCKET = register("diamond_bucket", props -> new BetterBucketItem(props, ToolsCommonMod.COMMON_CONFIG.diamondItemTier));
-    public static final IRegistryObject<BetterMilkBucketItem> DIAMOND_MILK_BUCKET = register("diamond_milk_bucket", props -> new BetterMilkBucketItem(() -> DIAMOND_BUCKET.get(), props));
+    public static final IRegistryObject<BetterMilkBucketItem> DIAMOND_MILK_BUCKET = register("diamond_milk_bucket", props -> new BetterMilkBucketItem(() -> DIAMOND_BUCKET.get(), ToolsCommonMod.COMMON_CONFIG.diamondItemTier, props));
     public static final IRegistryObject<BetterBucketItem> NETHERITE_BUCKET = register("netherite_bucket", props -> new BetterBucketItem(props.fireResistant(), ToolsCommonMod.COMMON_CONFIG.netheriteItemTier));
-    public static final IRegistryObject<BetterMilkBucketItem> NETHERITE_MILK_BUCKET = register("netherite_milk_bucket", props -> new BetterMilkBucketItem(() -> NETHERITE_BUCKET.get(), props.fireResistant()));
+    public static final IRegistryObject<BetterMilkBucketItem> NETHERITE_MILK_BUCKET = register("netherite_milk_bucket", props -> new BetterMilkBucketItem(() -> NETHERITE_BUCKET.get(), ToolsCommonMod.COMMON_CONFIG.netheriteItemTier, props.fireResistant()));
 
     public static final IRegistryObject<MaterialShears> WOOD_SHEARS = register("wood_shears", props -> new MaterialShears(props, ToolsCommonMod.COMMON_CONFIG.woodItemTier));
     public static final IRegistryObject<MaterialShears> STONE_SHEARS = register("stone_shears", props -> new MaterialShears(props, ToolsCommonMod.COMMON_CONFIG.stoneItemTier));
@@ -144,7 +144,7 @@ public class ToolsItems {
             this.SPEAR = register(tier.getName() + "_spear", props -> new BetterSpearItem(props, tier));
 
             this.BUCKET = register(tier.getName() + "_bucket", props -> new BetterBucketItem(props, tier));
-            this.MILK_BUCKET = register(tier.getName() + "_milk_bucket", props -> new BetterMilkBucketItem(() -> this.BUCKET.get(), props));
+            this.MILK_BUCKET = register(tier.getName() + "_milk_bucket", props -> new BetterMilkBucketItem(() -> this.BUCKET.get(), tier, props));
             this.SHEARS = register(tier.getName() + "_shears", props -> new MaterialShears(props, tier));
 
             if (armor != null) {
