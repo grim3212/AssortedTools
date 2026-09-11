@@ -1,5 +1,6 @@
 package com.grim3212.assorted.tools.gametest;
 
+import com.grim3212.assorted.lib.util.LibCommonTags;
 import com.grim3212.assorted.tools.api.item.HarvestTiers;
 import com.grim3212.assorted.tools.common.item.MultiToolItem;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
@@ -37,6 +38,7 @@ final class MiningToolTests {
         out.accept("harvest_tier_gates_drops", MiningToolTests::harvestTierGatesDrops);
         out.accept("ultimate_fist_breaks_obsidian", MiningToolTests::ultimateFistBreaksObsidian);
         out.accept("tools_mine_at_their_tier_speed", MiningToolTests::toolsMineAtTheirTierSpeed);
+        out.accept("tools_are_in_the_convention_tool_tags", MiningToolTests::toolsAreInTheConventionToolTags);
     }
 
     /**
@@ -247,6 +249,34 @@ final class MiningToolTests {
             helper.assertTrue(slowSpeed <= fastSpeed, slower.getName() + " mines faster than " + faster.getName() + ", the wrong way round for their configured efficiencies");
         }
 
+        helper.succeed();
+    }
+
+    /**
+     * Other mods recognise a melee weapon or a mining tool by {@code c:tools/melee_weapon} and
+     * {@code c:tools/mining_tool}, which both loaders fill with vanilla items only. Every extra
+     * material sword and axe is a weapon and every extra material pickaxe a mining tool, every
+     * multitool is both, and the ultimate fist is a weapon. Hammers deal no damage of their own, so
+     * they stay out.
+     */
+    private static void toolsAreInTheConventionToolTags(GameTestHelper helper) {
+        List<Item> multitools = new ArrayList<>(List.of(ToolsItems.WOODEN_MULTITOOL.get(), ToolsItems.STONE_MULTITOOL.get(), ToolsItems.GOLDEN_MULTITOOL.get(), ToolsItems.IRON_MULTITOOL.get(), ToolsItems.DIAMOND_MULTITOOL.get(), ToolsItems.NETHERITE_MULTITOOL.get()));
+        List<Item> weapons = new ArrayList<>(List.of(ToolsItems.ULTIMATE_FIST.get()));
+        List<Item> miningTools = new ArrayList<>();
+        for (ToolsItems.MaterialGroup group : ToolsItems.MATERIAL_GROUPS.values()) {
+            multitools.add(group.MULTITOOL.get());
+            weapons.add(group.SWORD.get());
+            weapons.add(group.AXE.get());
+            miningTools.add(group.PICKAXE.get());
+        }
+        weapons.addAll(multitools);
+        miningTools.addAll(multitools);
+
+        List<String> missing = new ArrayList<>();
+        expect(missing, LibCommonTags.Items.TOOLS_MELEE_WEAPONS, weapons.toArray(Item[]::new));
+        expect(missing, LibCommonTags.Items.TOOLS_MINING_TOOLS, miningTools.toArray(Item[]::new));
+        helper.assertTrue(missing.isEmpty(), "missing from the convention tool tags: " + String.join(", ", missing));
+        helper.assertFalse(new ItemStack(ToolsItems.IRON_HAMMER.get()).is(LibCommonTags.Items.TOOLS_MELEE_WEAPONS), "a hammer is tagged as a melee weapon");
         helper.succeed();
     }
 }

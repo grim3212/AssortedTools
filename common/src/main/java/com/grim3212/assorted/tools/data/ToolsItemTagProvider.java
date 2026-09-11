@@ -58,6 +58,12 @@ public class ToolsItemTagProvider extends LibItemTagProvider {
         enchantableArmor(tagger, ItemTags.LEG_ARMOR_ENCHANTABLE, ToolsItems.CHICKEN_SUIT_LEGGINGS.get());
         enchantableArmor(tagger, ItemTags.FOOT_ARMOR_ENCHANTABLE, ToolsItems.CHICKEN_SUIT_BOOTS.get());
 
+        // Other mods recognise a weapon or a mining tool by these convention tags, which both
+        // loaders fill with vanilla items by hand, so a modded tool is only in them if it adds
+        // itself. Hammers deal no damage of their own, so they are not melee weapons.
+        tagger.apply(LibCommonTags.Items.TOOLS_MELEE_WEAPONS).add(ToolsItems.WOODEN_MULTITOOL.get(), ToolsItems.STONE_MULTITOOL.get(), ToolsItems.GOLDEN_MULTITOOL.get(), ToolsItems.IRON_MULTITOOL.get(), ToolsItems.DIAMOND_MULTITOOL.get(), ToolsItems.NETHERITE_MULTITOOL.get(), ToolsItems.ULTIMATE_FIST.get());
+        tagger.apply(LibCommonTags.Items.TOOLS_MINING_TOOLS).add(ToolsItems.WOODEN_MULTITOOL.get(), ToolsItems.STONE_MULTITOOL.get(), ToolsItems.GOLDEN_MULTITOOL.get(), ToolsItems.IRON_MULTITOOL.get(), ToolsItems.DIAMOND_MULTITOOL.get(), ToolsItems.NETHERITE_MULTITOOL.get());
+
         ToolsItems.MATERIAL_GROUPS.forEach((s, group) -> {
             // Add to top level tags
             tagger.apply(ItemTags.SWORDS).add(group.SWORD.get());
@@ -65,6 +71,8 @@ public class ToolsItemTagProvider extends LibItemTagProvider {
             tagger.apply(ItemTags.SHOVELS).add(group.SHOVEL.get());
             tagger.apply(ItemTags.AXES).add(group.AXE.get());
             tagger.apply(ItemTags.HOES).add(group.HOE.get());
+            tagger.apply(LibCommonTags.Items.TOOLS_MELEE_WEAPONS).add(group.SWORD.get(), group.AXE.get(), group.MULTITOOL.get());
+            tagger.apply(LibCommonTags.Items.TOOLS_MINING_TOOLS).add(group.PICKAXE.get(), group.MULTITOOL.get());
             tagger.apply(ItemTags.HEAD_ARMOR).add(group.HELMET.get());
             tagger.apply(ItemTags.CHEST_ARMOR).add(group.CHESTPLATE.get());
             tagger.apply(ItemTags.LEG_ARMOR).add(group.LEGGINGS.get());
