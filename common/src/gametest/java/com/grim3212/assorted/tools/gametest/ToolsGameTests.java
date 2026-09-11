@@ -17,8 +17,6 @@ import java.util.function.Consumer;
  * numeric harvest levels with block tags, and deleted the mixins the multitool and the modded
  * shears used to lean on. None of that is visible to a compiler, so that is what these cover.
  * <p>
- * Manual checks that need a human are in {@code TESTING-CHECKLIST.md}.
- * <p>
  * The tests themselves are split by feature into the {@code *Tests} classes in this package,
  * with shared helpers in {@code ToolsTestSupport}; this only lists them.
  */
