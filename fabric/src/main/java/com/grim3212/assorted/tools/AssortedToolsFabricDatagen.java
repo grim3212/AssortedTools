@@ -1,11 +1,13 @@
 package com.grim3212.assorted.tools;
 
+import com.grim3212.assorted.lib.data.FabricConditionalRecipeProvider;
 import com.grim3212.assorted.lib.data.FabricBlockTagProvider;
 import com.grim3212.assorted.lib.data.FabricItemTagProvider;
-import com.grim3212.assorted.lib.data.FabricWorldGenProvider;
+import com.grim3212.assorted.lib.data.FabricDatapackRegistryProvider;
 import com.grim3212.assorted.tools.data.ToolsBlockTagProvider;
 import com.grim3212.assorted.tools.data.ToolsChestLoot;
 import com.grim3212.assorted.tools.data.ToolsEnchantmentData;
+import com.grim3212.assorted.tools.data.ToolsEnchantmentTagProvider;
 import com.grim3212.assorted.tools.data.ToolsItemTagProvider;
 import com.grim3212.assorted.tools.data.ToolsRecipes;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
@@ -23,11 +25,12 @@ public class AssortedToolsFabricDatagen implements DataGeneratorEntrypoint {
     public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
         FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
         // Recipe providers are not data providers any more - the Runner owns the output.
-        pack.addProvider((output, registriesFuture) -> new ToolsRecipes.Runner(output, registriesFuture));
+        pack.addProvider((output, registriesFuture) -> new FabricConditionalRecipeProvider(output, registriesFuture, new ToolsRecipes.Runner(output, registriesFuture)));
         FabricBlockTagProvider provider = pack.addProvider((output, registriesFuture) -> new FabricBlockTagProvider(output, registriesFuture, new ToolsBlockTagProvider(output, registriesFuture)));
         pack.addProvider((output, registriesFuture) -> new FabricItemTagProvider(output, registriesFuture, provider.contentsGetter(), new ToolsItemTagProvider(output, registriesFuture, provider.contentsGetter())));
         pack.addProvider((output, registriesFuture) -> new LootTableProvider(output, Collections.emptySet(), List.of(new LootTableProvider.SubProviderEntry(registries -> new ToolsChestLoot(), LootContextParamSets.CHEST)), registriesFuture));
-        pack.addProvider((output, registriesFuture) -> new FabricWorldGenProvider(output, registriesFuture, Constants.MOD_ID, getEnchantmentData()));
+        pack.addProvider((output, registriesFuture) -> new FabricDatapackRegistryProvider(output, registriesFuture, Constants.MOD_ID, getEnchantmentData()));
+        pack.addProvider((output, registriesFuture) -> new ToolsEnchantmentTagProvider(output, registriesFuture));
     }
 
     /**
@@ -37,7 +40,7 @@ public class AssortedToolsFabricDatagen implements DataGeneratorEntrypoint {
      */
     @Override
     public void buildRegistry(RegistrySetBuilder registryBuilder) {
-        getEnchantmentData().addToWorldGem(registryBuilder);
+        getEnchantmentData().addEntries(registryBuilder);
     }
 
     private ToolsEnchantmentData enchantmentData;
