@@ -51,7 +51,9 @@ public class FabricBetterBucketFluidHandler implements SingleSlotStorage<FluidVa
                     }
                 }
 
-                BetterBucketItem.setAmount(stack, Math.min(newAmount, bucket.getMaximumMillibuckets()));
+                // storeFluid, not setAmount: setAmount keeps the stored name, which for an empty bucket is
+                // the empty marker, so the bucket would hold "minecraft:empty" rather than what was inserted.
+                BetterBucketItem.storeFluid(stack, resource.getFluid(), Math.min(newAmount, bucket.getMaximumMillibuckets()));
                 ItemVariant newVariant = ItemVariant.of(stack);
                 if (context.exchange(newVariant, 1, transaction) == 1) {
                     return returnAmount;
