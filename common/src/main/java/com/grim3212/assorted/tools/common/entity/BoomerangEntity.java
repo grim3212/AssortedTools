@@ -321,7 +321,10 @@ public abstract class BoomerangEntity extends Entity {
 
         EntityReference.store(this.entityData.get(RETURN_TO).orElse(null), output, "ReturnTo");
 
-        output.store("SelfStack", ItemStack.CODEC, this.selfStack);
+        // ItemStack.CODEC refuses an empty stack, which a boomerang spawned without one still has.
+        if (!this.selfStack.isEmpty()) {
+            output.store("SelfStack", ItemStack.CODEC, this.selfStack);
+        }
         output.putString("hand", this.hand.name());
     }
 }
