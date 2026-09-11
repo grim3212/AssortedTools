@@ -6,6 +6,7 @@ import com.mojang.authlib.GameProfile;
 import com.grim3212.assorted.lib.events.AnvilUpdatedEvent;
 import com.grim3212.assorted.lib.events.EntityInteractEvent;
 import com.grim3212.assorted.lib.util.LibCommonTags;
+import com.grim3212.assorted.lib.core.fluid.FluidInformation;
 import com.grim3212.assorted.lib.platform.Services;
 import com.grim3212.assorted.lib.util.NBTHelper;
 import com.grim3212.assorted.tools.Constants;
@@ -132,6 +133,7 @@ public final class ToolsGameTests {
     public static void forEach(BiConsumer<String, Consumer<GameTestHelper>> out) {
         out.accept("better_bucket_fills_and_empties", ToolsGameTests::betterBucketFillsAndEmpties);
         out.accept("better_bucket_milks_a_cow", ToolsGameTests::betterBucketMilksACow);
+        out.accept("uncrafted_better_bucket_milks_and_fills", ToolsGameTests::uncraftedBetterBucketMilksAndFills);
         out.accept("hammer_breaks_and_wears", ToolsGameTests::hammerBreaksAndWears);
         out.accept("multitool_mines_every_tool_class", ToolsGameTests::multitoolMinesEveryToolClass);
         out.accept("multitool_strips_and_paths", ToolsGameTests::multitoolStripsAndPaths);
@@ -234,6 +236,35 @@ public final class ToolsGameTests {
 
         helper.assertTrue(second.isCanceled(), "milking again into a part full milk bucket was not handled");
         helper.assertValueEqual(BetterBucketItem.getAmount(player.getItemInHand(InteractionHand.MAIN_HAND)), 2 * oneBucket, "milk held after two milkings");
+
+        helper.succeed();
+    }
+
+    /**
+     * A bucket that never went through {@code onCraftedBy} - one from the creative tab or a
+     * command - is an empty bucket like any other. It used to carry no fluid name at all, which
+     * matched neither the empty marker nor milk, so it could be neither milked nor filled. Filled
+     * through the fluid abstraction, and milked through {@code Player#interactOn}, which is where
+     * each loader raises the library's entity interact event.
+     */
+    private static void uncraftedBetterBucketMilksAndFills(GameTestHelper helper) {
+        BetterBucketItem bucket = ToolsItems.GOLD_BUCKET.get();
+        int oneBucket = BetterBucketItem.getBucketAmount();
+
+        ItemStack fresh = new ItemStack(bucket);
+        helper.assertValueEqual(BetterBucketItem.getFluid(fresh), BetterBucketItem.emptyMarker(), "fluid read off a never-crafted bucket");
+        helper.assertTrue(BetterBucketItem.isEmptyOrContains(fresh, "milk"), "a never-crafted bucket does not count as empty");
+
+        ItemStack filled = Services.FLUIDS.insertInto(fresh, new FluidInformation(Fluids.WATER, oneBucket));
+        helper.assertValueEqual(BetterBucketItem.getFluid(filled), "minecraft:water", "fluid in a never-crafted bucket after filling");
+        helper.assertValueEqual(BetterBucketItem.getAmount(filled), oneBucket, "water in a never-crafted bucket after filling");
+
+        Cow cow = helper.spawn(EntityTypes.COW, new BlockPos(4, 1, 4));
+        ServerPlayer player = survivalPlayer(helper, new ItemStack(bucket));
+        player.interactOn(cow, InteractionHand.MAIN_HAND, Vec3.ZERO);
+        ItemStack milk = player.getItemInHand(InteractionHand.MAIN_HAND);
+        helper.assertTrue(milk.is(ToolsItems.GOLD_MILK_BUCKET.get()), "milking a cow with a never-crafted bucket left " + milk);
+        helper.assertValueEqual(BetterBucketItem.getAmount(milk), oneBucket, "milk held after milking with a never-crafted bucket");
 
         helper.succeed();
     }
@@ -1033,11 +1064,8 @@ public final class ToolsGameTests {
 
                     ItemStack left = helper.getBlockEntity(dispenser, DispenserBlockEntity.class).getItem(0);
                     helper.assertTrue(left.is(bucket), "the dispenser threw the bucket instead of keeping it");
-                    // How much is left in the bucket afterwards is deliberately not asserted:
-                    // AssortedLib's FabricFluidManager builds its Transaction with
-                    // try-with-resources and never commits it, over a read only
-                    // ContainerItemContext.withConstant, so extractFrom changes nothing on Fabric
-                    // and a dispenser there pours forever. It drains correctly on NeoForge.
+                    // One bucket poured, one left: a dispenser that places without draining pours forever.
+                    helper.assertValueEqual(BetterBucketItem.getAmount(left), oneBucket, "water left in the bucket after one dispense");
                 })
                 .thenSucceed();
     }
