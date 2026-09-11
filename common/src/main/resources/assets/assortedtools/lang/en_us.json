@@ -397,5 +397,9 @@
   "item.assortedtools.peridot_milk_bucket": "Peridot Milk Bucket",
   "item.assortedtools.peridot_bucket": "Peridot Bucket",
   "item.assortedtools.peridot_bucket_filled": "Peridot %s Bucket",
-  "item.assortedtools.peridot_milk_bucket": "Peridot Milk Bucket"
+  "item.assortedtools.peridot_milk_bucket": "Peridot Milk Bucket",
+  "tag.item.assorteddecor.cage_supported": "Cage Supported Items",
+  "tag.item.assortedtools.enchantable.shears": "Enchantable Shears",
+  "tag.item.assortedtools.enchantable.spear": "Enchantable Spears",
+  "tag.item.assortedtools.ultimate_fragments": "Ultimate Fragments"
 }

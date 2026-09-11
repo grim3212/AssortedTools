@@ -1,5 +1,6 @@
 package com.grim3212.assorted.tools.gametest;
 
+import net.minecraft.locale.Language;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.grim3212.assorted.lib.platform.Services;
@@ -34,6 +35,7 @@ final class AssetTests {
     static void register(BiConsumer<String, Consumer<GameTestHelper>> out) {
         out.accept("every_item_has_a_model_and_a_name", AssetTests::everyItemHasAModelAndAName);
         out.accept("every_recipe_loads_or_is_conditioned_off", AssetTests::everyRecipeLoadsOrIsConditionedOff);
+        out.accept("every_item_tag_has_a_name", AssetTests::everyItemTagHasAName);
     }
 
     /**
@@ -112,6 +114,26 @@ final class AssetTests {
         });
 
         helper.assertTrue(failed.isEmpty(), failed.size() + " recipes failed to load without being conditioned off: " + String.join(", ", failed.subList(0, Math.min(10, failed.size()))));
+        helper.succeed();
+    }
+
+    /**
+     * Every item tag outside minecraft has a name. Recipe viewers show it in place of the raw id,
+     * and it is the check Fabric API runs at dev startup ("Untranslated Item Tags detected"), made
+     * to fail here: the key is {@code tag.item.<namespace>.<path>} with each '/' in the path turned
+     * into '.'. Both loaders load every mod's lang file on a dedicated server and name the standard
+     * c: tags themselves, so whatever is still missing is one of ours.
+     */
+    private static void everyItemTagHasAName(GameTestHelper helper) {
+        Language language = Language.getInstance();
+        List<String> missing = helper.getLevel().registryAccess().lookupOrThrow(Registries.ITEM).getTags()
+                .map(tag -> tag.key().location())
+                .filter(id -> !"minecraft".equals(id.getNamespace()))
+                .map(id -> "tag.item." + id.getNamespace() + "." + id.getPath().replace('/', '.'))
+                .filter(key -> !language.has(key))
+                .sorted()
+                .toList();
+        helper.assertTrue(missing.isEmpty(), "item tags with no name in any lang file: " + missing);
         helper.succeed();
     }
 }
