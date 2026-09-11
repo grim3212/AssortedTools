@@ -1,7 +1,10 @@
 package com.grim3212.assorted.tools.data;
 
 import com.google.common.collect.Lists;
-import com.grim3212.assorted.lib.data.LibWorldGenProvider;
+import com.grim3212.assorted.lib.core.conditions.LibConditionProvider;
+import com.grim3212.assorted.lib.data.LibDatapackRegistryProvider;
+import com.grim3212.assorted.lib.platform.Services;
+import com.grim3212.assorted.tools.common.crafting.ToolsConditions;
 import com.grim3212.assorted.tools.common.enchantment.ToolsEnchantments;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
@@ -16,6 +19,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Writes the mod's enchantments as datapack JSON. {@link Enchantment} is a record built from data
@@ -27,16 +31,35 @@ import java.util.List;
  * {@link Enchantment.Cost}, {@code EquipmentSlot[]} to {@link EquipmentSlotGroup}s, {@code canEnchant}
  * to the supported items holder set and {@code checkCompatibility} to the exclusive set.
  */
-public class ToolsEnchantmentData extends LibWorldGenProvider {
+public class ToolsEnchantmentData extends LibDatapackRegistryProvider {
 
     @Override
-    public void addToWorldGem(RegistrySetBuilder builder) {
+    public void addEntries(RegistrySetBuilder builder) {
         builder.add(Registries.ENCHANTMENT, ToolsEnchantmentData::bootstrap);
     }
 
     @Override
     public List<ResourceKey<? extends Registry<?>>> registries() {
         return Lists.newArrayList(Registries.ENCHANTMENT);
+    }
+
+    /**
+     * Each enchantment exists only while its part is enabled. 1.20.1 did this with
+     * {@code isTradeable()} / {@code isDiscoverable()} / {@code canEnchant()} overrides reading the
+     * config; those went with the classes, so the definition itself is conditional now. The four
+     * spear enchantments name each other in their exclusive sets, which is safe because they share
+     * one part and so are always present or absent together.
+     */
+    @Override
+    public Map<ResourceKey<?>, List<LibConditionProvider>> conditions() {
+        List<LibConditionProvider> spears = List.of(Services.CONDITIONS.partEnabled(ToolsConditions.Parts.BETTER_SPEARS));
+        return Map.of(
+                ToolsEnchantments.CHICKEN_JUMP, List.of(Services.CONDITIONS.partEnabled(ToolsConditions.Parts.CHICKEN_SUIT)),
+                ToolsEnchantments.BOUNCINESS, spears,
+                ToolsEnchantments.CONDUCTIVE, spears,
+                ToolsEnchantments.FLAMMABLE, spears,
+                ToolsEnchantments.UNSTABLE, spears,
+                ToolsEnchantments.CORAL_CUTTER, List.of(Services.CONDITIONS.partEnabled(ToolsConditions.Parts.MORE_SHEARS)));
     }
 
     private static void bootstrap(BootstrapContext<Enchantment> context) {

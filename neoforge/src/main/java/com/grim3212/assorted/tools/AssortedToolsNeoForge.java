@@ -2,7 +2,7 @@ package com.grim3212.assorted.tools;
 
 import com.grim3212.assorted.lib.data.ForgeBlockTagProvider;
 import com.grim3212.assorted.lib.data.ForgeItemTagProvider;
-import com.grim3212.assorted.lib.data.ForgeWorldGenProvider;
+import com.grim3212.assorted.lib.data.ForgeDatapackRegistryProvider;
 import com.grim3212.assorted.tools.client.data.ToolsEquipmentAssetProvider;
 import com.grim3212.assorted.tools.common.item.BetterBucketItem;
 import com.grim3212.assorted.tools.common.item.NeoForgeBetterBucketFluidHandler;
@@ -11,6 +11,7 @@ import com.grim3212.assorted.tools.client.data.ToolsItemModelProvider;
 import com.grim3212.assorted.tools.data.ToolsBlockTagProvider;
 import com.grim3212.assorted.tools.data.ToolsChestLoot;
 import com.grim3212.assorted.tools.data.ToolsEnchantmentData;
+import com.grim3212.assorted.tools.data.ToolsEnchantmentTagProvider;
 import com.grim3212.assorted.tools.data.ToolsItemTagProvider;
 import com.grim3212.assorted.tools.data.ToolsRecipes;
 import net.minecraft.core.HolderLookup;
@@ -65,7 +66,8 @@ public class AssortedToolsNeoForge {
         event.addProvider(new ForgeItemTagProvider(packOutput, lookupProvider, blockTagProvider.contentsGetter(), Constants.MOD_ID, new ToolsItemTagProvider(packOutput, lookupProvider, blockTagProvider.contentsGetter())));
         event.addProvider(new LootTableProvider(packOutput, Collections.emptySet(), List.of(new LootTableProvider.SubProviderEntry(registries -> new ToolsChestLoot(), LootContextParamSets.CHEST)), lookupProvider));
         // Enchantments are datapack registry content now, not registered from code.
-        event.addProvider(new ForgeWorldGenProvider(Constants.MOD_ID, new ToolsEnchantmentData()).datpackEntriesProvider(packOutput, lookupProvider));
+        event.addProvider(new ForgeDatapackRegistryProvider(Constants.MOD_ID, new ToolsEnchantmentData()).datpackEntriesProvider(packOutput, lookupProvider));
+        event.addProvider(new ToolsEnchantmentTagProvider(packOutput, lookupProvider));
     }
 
     /**

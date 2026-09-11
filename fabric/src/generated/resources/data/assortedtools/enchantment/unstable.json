@@ -1,4 +1,10 @@
 {
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "betterspears"
+    }
+  ],
   "anvil_cost": 4,
   "description": {
     "translate": "enchantment.assortedtools.unstable"

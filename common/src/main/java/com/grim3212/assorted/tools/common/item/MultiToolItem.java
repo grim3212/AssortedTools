@@ -5,6 +5,7 @@ import com.grim3212.assorted.tools.api.ToolsTags;
 import com.grim3212.assorted.tools.api.item.ITiered;
 import com.grim3212.assorted.tools.config.ItemTierConfig;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.tags.BlockTags;
@@ -22,7 +23,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * The multitool - one item that mines everything a shovel, pickaxe, axe or hoe would.
@@ -36,6 +36,7 @@ import java.util.Optional;
 public class MultiToolItem extends Item implements ITiered, IItemEnchantmentCondition {
 
     private static final float ATTACK_SPEED = -2.8F;
+    private static final List<Item> DELEGATE_TOOLS = List.of(Items.IRON_SWORD, Items.IRON_SHOVEL, Items.IRON_PICKAXE, Items.IRON_HOE, Items.IRON_AXE);
 
     private final ItemTierConfig tierHolder;
 
@@ -64,13 +65,18 @@ public class MultiToolItem extends Item implements ITiered, IItemEnchantmentCond
         return this.tierHolder;
     }
 
+    /**
+     * Anything a sword, shovel, pickaxe, hoe or axe accepts can go on at an anvil. What the
+     * enchanting table rolls stays with the multitool's own tags.
+     */
     @Override
-    public Optional<Boolean> assortedlib_canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return Optional.of(enchantment.canEnchant(new ItemStack(Items.IRON_SWORD)) ||
-                enchantment.canEnchant(new ItemStack(Items.IRON_SHOVEL)) ||
-                enchantment.canEnchant(new ItemStack(Items.IRON_PICKAXE)) ||
-                enchantment.canEnchant(new ItemStack(Items.IRON_HOE)) ||
-                enchantment.canEnchant(new ItemStack(Items.IRON_AXE)));
+    public boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
+        return IItemEnchantmentCondition.supportedByDefault(stack, enchantment) || DELEGATE_TOOLS.stream().anyMatch(tool -> IItemEnchantmentCondition.supportedByDefault(new ItemStack(tool), enchantment));
+    }
+
+    @Override
+    public boolean isPrimaryItemFor(ItemStack stack, Holder<Enchantment> enchantment) {
+        return IItemEnchantmentCondition.primaryByDefault(stack, enchantment);
     }
 
     /**
