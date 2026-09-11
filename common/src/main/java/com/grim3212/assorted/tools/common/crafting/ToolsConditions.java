@@ -28,7 +28,6 @@ public class ToolsConditions {
         Services.CONDITIONS.registerPartCondition(Parts.BOOMERANGS, () -> ToolsCommonMod.COMMON_CONFIG.boomerangsEnabled.get());
         Services.CONDITIONS.registerPartCondition(Parts.POKEBALL, () -> ToolsCommonMod.COMMON_CONFIG.pokeballEnabled.get());
         Services.CONDITIONS.registerPartCondition(Parts.CHICKEN_SUIT, () -> ToolsCommonMod.COMMON_CONFIG.chickenSuitEnabled.get());
-        Services.CONDITIONS.registerPartCondition(Parts.SPEARS, () -> ToolsCommonMod.COMMON_CONFIG.spearsEnabled.get());
         Services.CONDITIONS.registerPartCondition(Parts.BETTER_SPEARS, () -> ToolsCommonMod.COMMON_CONFIG.betterSpearsEnabled.get());
         Services.CONDITIONS.registerPartCondition(Parts.BETTER_BUCKETS, () -> ToolsCommonMod.COMMON_CONFIG.betterBucketsEnabled.get());
         Services.CONDITIONS.registerPartCondition(Parts.MORE_SHEARS, () -> ToolsCommonMod.COMMON_CONFIG.moreShearsEnabled.get());
