@@ -36,7 +36,7 @@ public class ToolsClient {
 
         // The item's model json picks a special renderer by id ("minecraft:special"), so code only
         // registers the id and codec. See ToolsItemModelProvider#spear.
-        ClientServices.CLIENT.registerBEWLR((register) -> {
+        ClientServices.CLIENT.registerSpecialModelRenderers((register) -> {
             register.registerSpecialModelRenderer(SpearSpecialRenderer.ID, SpearSpecialRenderer.Unbaked.MAP_CODEC);
         });
 
