@@ -1,6 +1,9 @@
 package com.grim3212.assorted.tools.gametest;
 
-import com.grim3212.assorted.lib.util.NBTHelper;
+import java.util.List;
+import net.minecraft.core.component.DataComponentType;
+import com.grim3212.assorted.tools.common.item.ToolsDataComponents;
+import com.grim3212.assorted.tools.common.item.CapturedEntity;
 import com.grim3212.assorted.tools.common.entity.BetterSpearEntity;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
 import net.minecraft.core.BlockPos;
@@ -28,6 +31,7 @@ final class ProjectileTests {
 
     static void register(BiConsumer<String, Consumer<GameTestHelper>> out) {
         out.accept("pokeball_captures_and_releases", ProjectileTests::pokeballCapturesAndReleases);
+        out.accept("pokeball_tooltip_names_what_it_holds", ProjectileTests::pokeballTooltipNamesWhatItHolds);
         out.accept("spear_sticks_in_a_block_and_is_picked_up", ProjectileTests::spearSticksInABlockAndIsPickedUp);
         out.accept("spear_damages_a_mob", ProjectileTests::spearDamagesAMob);
         out.accept("boomerangs_fly_out_and_return", ProjectileTests::boomerangsFlyOutAndReturn);
@@ -35,7 +39,7 @@ final class ProjectileTests {
 
     /**
      * A pokeball captures a cow and a second throw releases it. The captured mob lives in the
-     * ball's {@code custom_data} as an {@code Entity#save(ValueOutput)} tag - a different
+     * ball's {@code captured_entity} component as an {@code Entity#save(ValueOutput)} tag - a different
      * serializer from the one the 1.20.1 ball wrote - so a round trip is the only way to know it
      * still reads back.
      */
@@ -53,7 +57,7 @@ final class ProjectileTests {
                 })
                 .thenExecute(() -> {
                     ItemStack captured = filledPokeballs(helper).get(0).copy();
-                    CompoundTag stored = NBTHelper.getTag(captured, "StoredEntity");
+                    CompoundTag stored = CapturedEntity.of(captured).entity();
                     helper.assertValueEqual(stored.getStringOr("id", ""), "minecraft:cow", "the captured entity id");
 
                     helper.killAllEntitiesOfClass(ItemEntity.class);
@@ -117,6 +121,32 @@ final class ProjectileTests {
     private static void boomerangsFlyOutAndReturn(GameTestHelper helper) {
         assertBoomerangReturns(helper, ToolsItems.WOOD_BOOMERANG.get());
         assertBoomerangReturns(helper, ToolsItems.DIAMOND_BOOMERANG.get());
+        helper.succeed();
+    }
+
+    /**
+     * A pokeball's tooltip comes from its {@code captured_entity} component, since
+     * {@code Item#appendHoverText} is deprecated: every ball carries the component, so an empty one
+     * still says so and a full one names its mob. NeoForge adds component lines on the server too, so
+     * there the whole tooltip is checked as well, which proves the component is wired in; Fabric only
+     * adds them on the client, and {@code ToolsClientGameTests} checks it there.
+     */
+    private static void pokeballTooltipNamesWhatItHolds(GameTestHelper helper) {
+        DataComponentType<CapturedEntity> type = ToolsDataComponents.CAPTURED_ENTITY.get();
+
+        ItemStack empty = new ItemStack(ToolsItems.POKEBALL.get());
+        helper.assertValueEqual(tooltipKeys(helper, empty, type), List.of("tooltip.pokeball.empty"), "an empty pokeball's tooltip");
+
+        CompoundTag cow = new CompoundTag();
+        cow.putString("id", "minecraft:cow");
+        cow.putString("pokeball_name", EntityTypes.COW.getDescriptionId());
+        ItemStack full = new ItemStack(ToolsItems.POKEBALL.get());
+        full.set(type, new CapturedEntity(cow));
+        helper.assertValueEqual(tooltipKeys(helper, full, type), List.of("tooltip.pokeball.stored"), "a full pokeball's tooltip");
+
+        if (onNeoForge()) {
+            helper.assertTrue(fullTooltipKeys(helper, full).contains("tooltip.pokeball.stored"), "the pokeball's component line is missing from its tooltip");
+        }
         helper.succeed();
     }
 }

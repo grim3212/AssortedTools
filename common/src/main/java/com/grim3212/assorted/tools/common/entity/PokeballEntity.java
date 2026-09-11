@@ -1,6 +1,7 @@
 package com.grim3212.assorted.tools.common.entity;
 
-import com.grim3212.assorted.lib.util.NBTHelper;
+import com.grim3212.assorted.tools.common.item.ToolsDataComponents;
+import com.grim3212.assorted.tools.common.item.CapturedEntity;
 import com.grim3212.assorted.tools.Constants;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
 import net.minecraft.core.particles.ParticleTypes;
@@ -42,7 +43,7 @@ public class PokeballEntity extends ThrowableItemProjectile {
         // ThrowableItemProjectile carries and syncs the thrown stack itself now, so the entity no
         // longer keeps its own copy - getItem()/setItem() are the pokeball.
         super(ToolsEntities.POKEBALL.get(), livingEntityIn, worldIn, stack);
-        this.hasEntity = NBTHelper.hasTag(stack, "StoredEntity");
+        this.hasEntity = !CapturedEntity.of(stack).isEmpty();
     }
 
     @Override
@@ -59,7 +60,7 @@ public class PokeballEntity extends ThrowableItemProjectile {
                 // Entities deserialize from a ValueInput now, so the stored tag is wrapped in one.
                 try (ProblemReporter.ScopedCollector reporter = new ProblemReporter.ScopedCollector(this.problemPath(), Constants.LOG)) {
                     Optional<Entity> loadEntity = EntityType.create(
-                            TagValueInput.create(reporter, serverLevel.registryAccess(), NBTHelper.getTag(currentPokeball, "StoredEntity")),
+                            TagValueInput.create(reporter, serverLevel.registryAccess(), CapturedEntity.of(currentPokeball).entity()),
                             serverLevel,
                             new EntitySpawnRequest(EntitySpawnReason.BUCKET, true));
                     if (loadEntity.isPresent()) {
@@ -84,7 +85,7 @@ public class PokeballEntity extends ThrowableItemProjectile {
                             CompoundTag entity = entityOutput.buildResult();
                             entity.putString("pokeball_name", livingEntity.getType().getDescriptionId());
 
-                            NBTHelper.putTag(currentPokeball, "StoredEntity", entity);
+                            currentPokeball.set(ToolsDataComponents.CAPTURED_ENTITY.get(), new CapturedEntity(entity));
                             currentPokeball.hurtAndBreak(1, serverLevel, null, item -> {
                             });
                             currentPokeball.setCount(1);
