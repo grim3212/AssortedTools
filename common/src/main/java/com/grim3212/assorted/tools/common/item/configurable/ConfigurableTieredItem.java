@@ -5,12 +5,9 @@ import com.grim3212.assorted.tools.config.ItemTierConfig;
 import net.minecraft.world.item.Item;
 
 /**
- * An item that carries a configured tool material but none of the tool behaviour.
- * <p>
- * Everything this class used to override - max damage, enchantability, the repair check, and the
- * damage accessors it inherited from the library's {@code IItemExtraProperties} - is a data
- * component now, applied by {@link ConfigurableTools#tiered}. What is left is the tier reference
- * itself, which the mod reads for things vanilla has no concept of, such as bucket capacity.
+ * An item that carries a configured tool material but no tool behaviour. Its stats come from
+ * {@link ConfigurableTools#tiered}; the tier is kept for things vanilla has no concept of, such as
+ * bucket capacity.
  */
 public class ConfigurableTieredItem extends Item implements ITiered {
 

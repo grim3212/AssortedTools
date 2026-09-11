@@ -17,27 +17,10 @@ import org.joml.Vector3fc;
 import java.util.function.Consumer;
 
 /**
- * Draws a spear held in hand, replacing {@code SpearBEWLR}.
- * <p>
- * {@code BlockEntityWithoutLevelRenderer} is gone in 26.2 and with it the ability to attach an item
- * renderer to an {@code Item} from code. An item opts in from its own model json, which names a
- * {@code minecraft:special} renderer by id, and the only thing registered in code is the id to
- * {@link MapCodec} pair - see {@code ToolsClient}. This is exactly how vanilla's trident is drawn
- * ({@code TridentSpecialRenderer}); the spear is the same shape of item, so it is modelled on it.
- * <p>
- * Two things the old renderer did in code are now the model json's job and are <b>not</b> handled
- * here:
- * <ul>
- * <li>the flat inventory sprite for the GUI, GROUND and FIXED display contexts, which
- * {@code SpearBEWLR#renderByItem} used to branch to - a {@code minecraft:select} on
- * {@code minecraft:display_context} picks the {@code <material>_spear_gui} model for those cases
- * and the {@code minecraft:special} entry for the rest;</li>
- * <li>the {@code assortedtools:throwing} item property that swapped in the
- * {@code <material>_spear_throwing} model while the item was being used, which is a
- * {@code minecraft:condition} on {@code minecraft:using_item}.</li>
- * </ul>
- * The {@code scale(1, -1, -1)} the old renderer applied before drawing is likewise the model json's
- * {@code transformation}, as it is for the trident.
+ * Draws a spear held in hand, as vanilla's {@code TridentSpecialRenderer} draws the trident. The
+ * item model json picks the flat {@code <material>_spear_gui} model for the GUI, ground and fixed
+ * contexts, swaps to the throwing model on {@code minecraft:using_item}, and supplies the
+ * {@code scale(1, -1, -1)} as its {@code transformation}; none of that is done here.
  */
 public class SpearSpecialRenderer implements NoDataSpecialModelRenderer {
 

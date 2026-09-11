@@ -3,7 +3,6 @@ package com.grim3212.assorted.tools.gametest;
 import com.grim3212.assorted.lib.events.AnvilUpdatedEvent;
 import com.grim3212.assorted.tools.common.enchantment.ToolsEnchantments;
 import com.grim3212.assorted.tools.common.handlers.ChickenSuitConversionHandler;
-import com.grim3212.assorted.tools.common.item.BetterSpearItem;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -49,11 +48,8 @@ final class EnchantmentTests {
     }
 
     /**
-     * What may be enchanted is a {@code #minecraft:enchantable/*} item tag now, and those tags are
-     * opt-in: an item missing from them is unenchantable at a table with no error anywhere. Every
-     * tool, weapon and armour piece in this mod was missing from all of them at one point during
-     * the port, so this pins the whole set - and reports every gap at once, because fixing them one
-     * failure at a time is a very slow loop.
+     * Every tool, weapon and armour piece is in its {@code #minecraft:enchantable/*} tags. They are
+     * opt-in, so a missing item is silently unenchantable. Every gap is reported at once.
      */
     private static void toolsTakeTheRightEnchantments(GameTestHelper helper) {
         List<String> missing = new ArrayList<>();
@@ -121,12 +117,10 @@ final class EnchantmentTests {
     }
 
     /**
-     * Asked the way the enchanting table asks - {@code EnchantmentHelper#getAvailableEnchantmentResults}
-     * over {@code #minecraft:in_enchanting_table}, which NeoForge routes through
-     * {@code isPrimaryItemFor} and Fabric through {@code ALLOW_ENCHANTING} - so the loader wiring is
-     * under test, not just {@code BetterSpearItem}'s methods. A cost of 30 sits inside the window of
-     * all four trident enchantments and all four spear enchantments. The vanilla trident is checked
-     * alongside so the veto cannot leak onto it.
+     * Asks the way the enchanting table does, so each loader's wiring is under test: NeoForge goes
+     * through {@code isPrimaryItemFor}, Fabric through {@code ALLOW_ENCHANTING}. A cost of 30 falls
+     * in every trident and spear enchantment's window; the vanilla trident is checked so the veto
+     * cannot leak onto it.
      */
     private static void spearsAreNeverOfferedRiptideOrChanneling(GameTestHelper helper) {
         Registry<Enchantment> registry = helper.getLevel().registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
@@ -141,10 +135,9 @@ final class EnchantmentTests {
     }
 
     /**
-     * The anvil path, through a real {@link AnvilMenu} so each loader's own hook runs - NeoForge's
-     * patched {@code supportsEnchantment} call and Fabric's {@code AnvilMenuMixin}. A book of Riptide
-     * or Channeling combines with nothing on a spear; Loyalty still goes on, and a vanilla trident
-     * still takes Riptide.
+     * The anvil path, through a real {@link AnvilMenu} so each loader's hook runs: Riptide and
+     * Channeling books do not combine with a spear, Loyalty does, and a vanilla trident still takes
+     * Riptide.
      */
     private static void spearAnvilRejectsRiptideAndChanneling(GameTestHelper helper) {
         ServerPlayer player = survivalPlayer(helper, ItemStack.EMPTY);

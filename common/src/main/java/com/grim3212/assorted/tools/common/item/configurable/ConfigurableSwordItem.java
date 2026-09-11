@@ -5,11 +5,8 @@ import com.grim3212.assorted.tools.config.ItemTierConfig;
 import net.minecraft.world.item.Item;
 
 /**
- * A sword built from a configured tool material.
- * <p>
- * {@code SwordItem} is gone; a sword is a plain {@link Item} whose material is applied through
- * {@code Properties#sword}, which also sets the cobweb mining rule and the blocking-disable weapon
- * component that used to be hardcoded in the class.
+ * A sword built from a configured tool material. {@code Properties#sword} also adds the cobweb
+ * mining rule and the blocking-disable weapon component.
  */
 public class ConfigurableSwordItem extends Item implements ITiered {
 

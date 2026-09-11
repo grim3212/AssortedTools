@@ -48,10 +48,8 @@ final class BucketTests {
     }
 
     /**
-     * Two water sources picked up into one bucket, then put back down, through the item's own
-     * {@code use} - so the whole chain runs: the POV raytrace, {@code FluidHelper}'s pickup and
-     * placement, and the fluid tag inside {@code minecraft:custom_data} that replaced the per
-     * loader NBT key.
+     * Two water sources picked up into one bucket and put back down through the item's own {@code
+     * use}, so the raytrace, {@code FluidHelper} and the fluid kept in {@code custom_data} all run.
      */
     private static void betterBucketFillsAndEmpties(GameTestHelper helper) {
         final BlockPos waterA = new BlockPos(2, 1, 2);
@@ -90,10 +88,8 @@ final class BucketTests {
     }
 
     /**
-     * Milking a cow, both halves: an empty bucket becomes the matching milk bucket, and milking
-     * again with that milk bucket tops it up. The handler is called with the library event
-     * directly because the two loaders raise that event from different call sites, and it is the
-     * handler - not the plumbing - that this is about.
+     * Milking a cow turns an empty bucket into milk, and milking again tops it up. The handler is
+     * called directly because the two loaders raise the event from different call sites.
      */
     private static void betterBucketMilksACow(GameTestHelper helper) {
         Cow cow = helper.spawn(EntityTypes.COW, new BlockPos(4, 1, 4));
@@ -121,11 +117,9 @@ final class BucketTests {
     }
 
     /**
-     * A bucket that never went through {@code onCraftedBy} - one from the creative tab or a
-     * command - is an empty bucket like any other. It used to carry no fluid name at all, which
-     * matched neither the empty marker nor milk, so it could be neither milked nor filled. Filled
-     * through the fluid abstraction, and milked through {@code Player#interactOn}, which is where
-     * each loader raises the library's entity interact event.
+     * A bucket that never went through {@code onCraftedBy} (creative tab, command) still fills and
+     * milks. Milking goes through {@code Player#interactOn}, where each loader raises the entity
+     * interact event.
      */
     private static void uncraftedBetterBucketMilksAndFills(GameTestHelper helper) {
         BetterBucketItem bucket = ToolsItems.GOLD_BUCKET.get();
@@ -223,10 +217,8 @@ final class BucketTests {
     }
 
     /**
-     * A dispenser drains a better bucket into the world through {@code DispenseBucketHandler}. The
-     * handler is registered per bucket item from {@code BetterBucketItem}'s constructor, and
-     * {@code DefaultDispenseItemBehavior#dispense} is final now, so {@code execute} being the hook
-     * and {@code consumeWithRemainder} putting the drained bucket back are both new shapes.
+     * A dispenser drains a better bucket into the world through {@code DispenseBucketHandler}, and
+     * {@code consumeWithRemainder} puts the drained bucket back.
      */
     private static void dispenserPlacesFluidFromABetterBucket(GameTestHelper helper) {
         final BlockPos dispenser = new BlockPos(4, 1, 4);

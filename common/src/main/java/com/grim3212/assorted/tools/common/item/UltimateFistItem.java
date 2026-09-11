@@ -16,13 +16,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
- * The ultimate fist - the reward for assembling all eight fragments.
- * <p>
- * It is not a tiered item and never was; it just reads its numbers off the ultimate tier's
- * configuration. Those numbers are data components fixed at construction now, so the overridden
- * {@code getMaxDamage}, {@code getEnchantmentValue}, {@code isEnchantable} and
- * {@code getDefaultAttributeModifiers} are gone: no {@code enchantable} component at all is what
- * "not enchantable" means, and the attributes are handed to the properties instead.
+ * The ultimate fist, the reward for assembling all eight fragments. Not a tiered item: it reads its
+ * numbers from the ultimate tier's configuration. It has no {@code enchantable} component, so it
+ * cannot be enchanted.
  */
 public class UltimateFistItem extends Item {
 

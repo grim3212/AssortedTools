@@ -8,11 +8,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 /**
- * Lets the mod's shears disarm a tripwire on Fabric. See {@link BeehiveBlockMixin} for why this is
- * a redirect rather than a copy of the branch, and why it is Fabric only.
- * <p>
- * The 1.20.1 version overrode {@code playerWillDestroy} wholesale and called {@code super} itself,
- * which meant its return value drifted from vanilla's when the signature changed.
+ * Lets the mod's shears disarm a tripwire on Fabric. See {@link BeehiveBlockMixin} for why it is a
+ * redirect and Fabric only.
  */
 @Mixin(TripWireBlock.class)
 public abstract class TripWireBlockMixin {

@@ -16,11 +16,8 @@ import net.minecraft.world.item.TooltipFlag;
 import java.util.List;
 
 /**
- * What a headless server cannot see: the pokeball's tooltip as Fabric builds it. Fabric only adds a
- * mod component's tooltip lines on the client, so this is the one place the {@code captured_entity}
- * line can be checked end to end on Fabric; the server gametest covers NeoForge.
- * <p>
- * Runs in a real client - {@code ./gradlew :fabric:runClientGameTest} - and exits non-zero on a
+ * The pokeball's tooltip as Fabric builds it, which only happens on the client; the server gametest
+ * covers NeoForge. Run with {@code ./gradlew :fabric:runClientGameTest}; it exits non-zero on a
  * failure.
  */
 public class ToolsClientGameTests implements FabricClientGameTest {

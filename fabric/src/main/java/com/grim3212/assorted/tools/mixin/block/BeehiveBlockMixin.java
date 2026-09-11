@@ -8,16 +8,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 /**
- * Lets the mod's shears harvest a beehive on Fabric.
- * <p>
- * Vanilla hardcodes {@code itemStack.is(Items.SHEARS)}, so modded shears are invisible to it. This
- * redirects that one call rather than reimplementing the branch, which is what the 1.20.1 version
- * did - the old copy has to be kept in step with vanilla by hand, and it went stale the moment
- * {@code Block#use} became {@code useItemOn}.
- * <p>
- * Fabric only: NeoForge patches this same line to
- * {@code canPerformAction(ItemAbilities.SHEARS_HARVEST)}, which {@code MaterialShears} answers
- * through {@code ShearsItem}.
+ * Lets the mod's shears harvest a beehive on Fabric. Redirects vanilla's {@code is(Items.SHEARS)}
+ * rather than copying the branch, so it stays in step with vanilla. NeoForge already patches this
+ * line to {@code canPerformAction(ItemAbilities.SHEARS_HARVEST)}.
  */
 @Mixin(BeehiveBlock.class)
 public abstract class BeehiveBlockMixin {

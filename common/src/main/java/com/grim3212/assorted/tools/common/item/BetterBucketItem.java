@@ -49,12 +49,8 @@ import java.util.function.Consumer;
 public class BetterBucketItem extends Item implements ITiered {
 
     /**
-     * The key the stored fluid lives under inside the stack's {@code minecraft:custom_data}.
-     * <p>
-     * This used to be {@code Services.FLUIDS.fluidStackTag()}, a per loader key so the loader's own
-     * fluid handler could read the same raw NBT. That method is gone - fluid stacks carry data
-     * components on both loaders now and neither serialises through item NBT any more - so the mod
-     * owns the key itself and every loader side handler goes through the static accessors below.
+     * The key the stored fluid lives under inside the stack's {@code minecraft:custom_data}. Each
+     * loader's fluid handler goes through the static accessors below.
      */
     public static final String FLUID_TAG = "Fluid";
     private static final String FLUID_NAME_KEY = "FluidName";
@@ -204,22 +200,15 @@ public class BetterBucketItem extends Item implements ITiered {
         return (int) Services.FLUIDS.getBucketAmount();
     }
 
-    /**
-     * Check to see if an ItemStack contains empty or the type in its stored NBT
-     *
-     * @param stack   The ItemStack to check
-     * @param toCheck The type to check on the ItemStack
-     * @return True if the ItemStack contains empty or the type in NBT
-     */
+    /** Whether the stack holds no fluid or {@code toCheck}. */
     public static boolean isEmptyOrContains(ItemStack stack, String toCheck) {
         return getFluid(stack).equals(emptyMarker()) || getFluid(stack).equals(toCheck);
     }
 
     /**
-     * {@code BlockStateBase.isSolid()} and {@code liquid()} are deprecated with no replacement -
-     * they are legacy block level flags - but vanilla's own {@code BucketItem.emptyContents} asks
-     * exactly these two questions in exactly this order, and any other predicate would change which
-     * blocks a bucket is allowed to flood.
+     * {@code isSolid()} and {@code liquid()} are deprecated with no replacement, but vanilla's
+     * {@code BucketItem.emptyContents} asks exactly these, and any other test would change which
+     * blocks a bucket may flood.
      */
     @SuppressWarnings("deprecation")
     public boolean tryPlaceFluid(Player player, FluidInformation fluid, Level worldIn, BlockPos pos, BlockHitResult hitResult) {
@@ -264,13 +253,8 @@ public class BetterBucketItem extends Item implements ITiered {
     }
 
     /**
-     * What is left behind when one of these is used up in a recipe: the same bucket with one
-     * bucket's worth of fluid taken out of it, or whatever {@link #tryBreakBucket} leaves once it
-     * has run dry.
-     * <p>
-     * Both loaders replaced their stack sensitive crafting remainder hook with one returning a
-     * nullable {@code ItemStackTemplate}, and {@code hasCraftingRemainingItem} is gone entirely -
-     * returning null is how "no remainder" is said now.
+     * The crafting remainder: the same bucket with one bucket's worth taken out, or whatever
+     * {@link #tryBreakBucket} leaves once it runs dry. Null means no remainder.
      */
     private @Nullable ItemStackTemplate craftingRemainder(ItemStack stack) {
         if (getAmount(stack) < getBucketAmount()) {

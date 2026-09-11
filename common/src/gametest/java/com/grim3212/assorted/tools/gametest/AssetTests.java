@@ -39,10 +39,8 @@ final class AssetTests {
     }
 
     /**
-     * Every item this mod registers has a model and a name, and the creative tab they all live in
-     * exists. Missing models and missing lang keys are the most repeated failure of this whole
-     * port and are invisible to both a compiler and a headless server, so this reads the mod's own
-     * assets straight off the classpath and reports every gap in one message.
+     * Every item has a model and a name, and the creative tab exists. Every gap is reported at
+     * once.
      */
     private static void everyItemHasAModelAndAName(GameTestHelper helper) {
         helper.assertTrue(BuiltInRegistries.CREATIVE_MODE_TAB.get(ToolsCreativeItems.CREATIVE_TAB_KEY).isPresent(), "the Assorted Tools creative tab is not registered");
@@ -86,10 +84,8 @@ final class AssetTests {
     }
 
     /**
-     * Every recipe file this mod ships either loaded, or carries load conditions and was skipped by
-     * them. A file with neither failed to parse - which is what every extra-material recipe did on
-     * Fabric without AssortedCore: Fabric's datagen wrote them without conditions, and the NeoForge
-     * copy that shadowed it carries a key Fabric ignores. So only this loader's own key counts.
+     * Every recipe file either loaded or was skipped by this loader's own load conditions; anything
+     * else failed to parse.
      */
     private static void everyRecipeLoadsOrIsConditionedOff(GameTestHelper helper) {
         MinecraftServer server = helper.getLevel().getServer();
@@ -118,11 +114,9 @@ final class AssetTests {
     }
 
     /**
-     * Every item tag outside minecraft has a name. Recipe viewers show it in place of the raw id,
-     * and it is the check Fabric API runs at dev startup ("Untranslated Item Tags detected"), made
-     * to fail here: the key is {@code tag.item.<namespace>.<path>} with each '/' in the path turned
-     * into '.'. Both loaders load every mod's lang file on a dedicated server and name the standard
-     * c: tags themselves, so whatever is still missing is one of ours.
+     * Every non-vanilla item tag has a {@code tag.item.<namespace>.<path>} name, the check Fabric
+     * API warns about at dev startup. Both loaders name the standard c: tags, so anything missing
+     * is ours.
      */
     private static void everyItemTagHasAName(GameTestHelper helper) {
         Language language = Language.getInstance();

@@ -25,13 +25,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.List;
 
 /**
- * The multitool - one item that mines everything a shovel, pickaxe, axe or hoe would.
- * <p>
- * It cannot extend {@code ConfigurableToolItem} any more. Durability is a data component fixed at
- * construction, and the multitool's durability is the tier's scaled by the configured
- * {@code multiToolModifier}, which used to be an overridden {@code getMaxDamage(stack)}. Since
- * {@code Properties#tool} writes the material's own durability, the scaling has to happen in the
- * material handed to it, so this builds its properties itself.
+ * The multitool: mines everything a shovel, pickaxe, axe or hoe would. It builds its own properties
+ * because its durability is the tier's scaled by {@code multiToolModifier}, and
+ * {@code Properties#tool} would write the material's own.
  */
 public class MultiToolItem extends Item implements ITiered, IItemEnchantmentCondition {
 
@@ -103,18 +99,9 @@ public class MultiToolItem extends Item implements ITiered, IItemEnchantmentCond
     }
 
     /**
-     * Stripping, scraping, waxing off, path making, dousing a campfire and tilling - whichever of
-     * them the clicked block accepts, in the order a player would expect.
-     * <p>
-     * This used to be two whole reimplementations of vanilla's behaviour, one per loader: a Fabric
-     * mixin that read {@code STRIPPABLES} / {@code FLATTENABLES} / {@code TILLABLES} out of vanilla
-     * through accessor mixins, and a NeoForge mixin built on {@code ToolActions}, which no longer
-     * exists. Both are deleted.
-     * <p>
-     * Vanilla's own {@code useOn} implementations read nothing from the item they are called on -
-     * they act on the context and damage {@code context.getItemInHand()}, which here is the
-     * multitool. So the tools can simply be asked in turn, and the behaviour stays correct as
-     * vanilla changes rather than drifting from a copy.
+     * Strips, scrapes, waxes off, makes a path, douses a campfire or tills, whichever the block
+     * accepts. Vanilla's tool {@code useOn} reads only the context, never the item, so each tool is
+     * simply asked in turn and stays in step with vanilla.
      */
     @Override
     public InteractionResult useOn(UseOnContext context) {

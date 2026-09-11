@@ -20,10 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * {@link Model} carries a state type now and takes its root part in the constructor;
- * {@code renderToBuffer} is final and draws the whole root, so the old override is gone. The spear
- * has no animated parts, so its state type is {@link Unit} - exactly what vanilla's
- * {@code TridentModel} does.
+ * The spear model. It has no animated parts, so its state is {@link Unit}, like vanilla's
+ * {@code TridentModel}.
  */
 public class SpearModel extends Model<Unit> {
 

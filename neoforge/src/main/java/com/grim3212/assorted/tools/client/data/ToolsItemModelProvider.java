@@ -28,30 +28,9 @@ import net.neoforged.neoforge.client.model.generators.template.ExtendedModelTemp
 import java.util.stream.Stream;
 
 /**
- * Forge's {@code ItemModelProvider} / {@code ItemModelBuilder} / {@code ExistingFileHelper} /
- * {@code ForgeRegistries} are all gone, and so is the idea that an item model is one json. An item
- * points at a data driven {@code ItemModel} in {@code assets/<ns>/items/} - a
- * {@code minecraft:model} / {@code select} / {@code condition} / {@code special} / {@code composite}
- * tree - which names the {@code assets/<ns>/models/} geometry to draw. {@link ModelProvider} writes
- * both halves.
- * <p>
- * {@code generateFlatItem(item, template)} cannot be used for most of this mod: it derives the
- * texture from the item's id, and almost every texture here lives in a subfolder
- * ({@code item/tools/}, {@code item/armors/}, {@code item/shears/}, {@code item/buckets/}). So the
- * flat models are built with {@code ModelTemplate#create(Identifier, TextureMapping, output)} and
- * handed to {@code itemModelOutput} explicitly.
- * <p>
- * Three things here are not plain flat items:
- * <ul>
- * <li>{@link #spear} - a {@code select} on the display context between a flat gui model and a
- * {@code condition} on {@code minecraft:using_item} over two {@code minecraft:special} entries
- * naming {@link SpearSpecialRenderer}; vanilla's {@code ItemModelGenerators#generateTrident} is the
- * template, because a spear is a trident shaped item drawn by a {@code SpecialModelRenderer}. (
- * {@code generateSpear} - vanilla's new copper spear - is <em>not</em> the right shape: it has no
- * special renderer and no throwing pose.)</li>
- * <li>{@link #bucket} - an {@code assortedtools:fluid_container} item model, which is what replaced
- * the deleted {@code ItemOverrides} handler.</li>
- * </ul>
+ * Item models for the whole mod. Most textures live in subfolders ({@code item/tools/}, {@code
+ * item/armors/}, ...), so flat models are built with an explicit {@code TextureMapping} rather than
+ * {@code generateFlatItem}. {@link #spear} and {@link #bucket} are not plain flat items.
  */
 public class ToolsItemModelProvider extends ModelProvider {
 
@@ -66,11 +45,9 @@ public class ToolsItemModelProvider extends ModelProvider {
     private static final Identifier LIB_DEFAULT_ITEM = Identifier.fromNamespaceAndPath(LibConstants.MOD_ID, "item/default");
 
     /**
-     * The in hand spear model, and the throwing pose it swaps to. Both keep the vanilla trident
-     * parents they had in 1.20.1; the {@code head} transform was an inline {@code transforms()} block
-     * on the old builder and is a template transform now. {@code display} entries are still merged
-     * per perspective down the parent chain, so naming only {@code head} leaves every other
-     * perspective coming from {@code minecraft:item/trident_in_hand} exactly as before.
+     * The in-hand spear model and its throwing pose, on the vanilla trident parents. Only {@code
+     * head} is set; every other perspective is inherited from {@code
+     * minecraft:item/trident_in_hand}.
      */
     private static final ModelTemplate SPEAR_IN_HAND = ExtendedModelTemplateBuilder.builder()
             .parent(Identifier.withDefaultNamespace("item/trident_in_hand"))
@@ -85,9 +62,7 @@ public class ToolsItemModelProvider extends ModelProvider {
 
     /**
      * The bucket body: the four texture slots {@link FluidContainerItemModel} masks and fills, plus
-     * the display transforms every one of its layers is drawn with. There is no loader block - the
-     * bucket is an item model type now, not a model json loader - so this is a plain vanilla model
-     * json that happens to name slots vanilla itself would not use.
+     * the display transforms every layer uses. A plain model json, not a loader.
      */
     private static final ModelTemplate BUCKET_BODY = ExtendedModelTemplateBuilder.builder()
             .parent(LIB_DEFAULT_ITEM)
@@ -225,15 +200,10 @@ public class ToolsItemModelProvider extends ModelProvider {
     // ------------------------------------------------------------------ spears
 
     /**
-     * Modelled on vanilla's {@code generateTrident}, which is the same shape of item: flat in the
-     * inventory, a {@code SpecialModelRenderer} everywhere else, and a second special entry for the
-     * throwing pose.
-     * <p>
-     * The three things the deleted {@code SpearBEWLR} did in code all land here:
-     * {@code createFlatModelDispatch} is the GUI/GROUND/FIXED branch, {@code isUsingItem()} is the
-     * old {@code assortedtools:throwing} {@code ClampedItemPropertyFunction}, and
-     * {@code TridentSpecialRenderer.DEFAULT_TRANSFORMATION} is its {@code scale(1, -1, -1)}. The
-     * texture the renderer resolved per stack is baked into each {@code Unbaked} instead.
+     * Modelled on vanilla's {@code generateTrident}: flat in the GUI, ground and fixed contexts, a
+     * {@code SpecialModelRenderer} elsewhere, and a second special entry for the throwing pose. The
+     * texture is baked into each {@code Unbaked}. Vanilla's {@code generateSpear} has no special
+     * renderer or throwing pose, so it is the wrong shape.
      */
     private void spear(ItemModelGenerators itemModels, Item item) {
         String name = name(item);
@@ -261,14 +231,9 @@ public class ToolsItemModelProvider extends ModelProvider {
     // ------------------------------------------------------------------ buckets
 
     /**
-     * The bucket, and the milk bucket item that shares its texture.
-     * <p>
-     * {@code ItemOverrides} was deleted outright, so the 1.20.1 {@code ContainedFluidOverrideHandler}
-     * - which re-baked the model with the stack's fluid - has no equivalent in the model json layer:
-     * a json loader is asked for finished quads while baking is still running, and a fluid's sprite
-     * does not exist until it has finished. The replacement is an item model type, which is handed
-     * the stack at render time; datagen therefore enumerates nothing and a bucket draws whatever
-     * fluid it is actually holding.
+     * The bucket and the milk bucket that shares its texture: an {@code
+     * assortedtools:fluid_container} item model, which draws whatever fluid the stack holds at
+     * render time.
      */
     private void bucket(ItemModelGenerators itemModels, Item bucket, Item milkBucket) {
         String name = name(bucket);

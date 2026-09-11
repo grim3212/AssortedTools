@@ -35,10 +35,8 @@ public class AnvilRecipes {
     );
 
     /**
-     * Takes a {@link HolderLookup.Provider} because enchantments are registry content now: the mod
-     * holds a {@link net.minecraft.resources.ResourceKey}, and writing one onto a stack needs the
-     * {@link Holder} the registry resolves it to. The plugin gets the provider from JEI's context
-     * map rather than reaching for a client-side registry access.
+     * Takes a {@link HolderLookup.Provider} because writing an enchantment onto a stack needs its
+     * {@link Holder}; JEI's context supplies it.
      */
     public static List<IJeiAnvilRecipe> chickenEnchantRecipes(IVanillaRecipeFactory recipeFactory, IIngredientManager ingredientManager, HolderLookup.Provider registries) {
         List<IJeiAnvilRecipe> recipes = new ArrayList<>();

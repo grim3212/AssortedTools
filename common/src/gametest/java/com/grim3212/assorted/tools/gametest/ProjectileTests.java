@@ -38,10 +38,8 @@ final class ProjectileTests {
     }
 
     /**
-     * A pokeball captures a cow and a second throw releases it. The captured mob lives in the
-     * ball's {@code captured_entity} component as an {@code Entity#save(ValueOutput)} tag - a different
-     * serializer from the one the 1.20.1 ball wrote - so a round trip is the only way to know it
-     * still reads back.
+     * A pokeball captures a cow and a second throw releases it. The round trip proves the
+     * {@code captured_entity} tag written by {@code Entity#save(ValueOutput)} reads back.
      */
     private static void pokeballCapturesAndReleases(GameTestHelper helper) {
         ServerPlayer player = survivalPlayer(helper, ItemStack.EMPTY);
@@ -69,10 +67,9 @@ final class ProjectileTests {
     }
 
     /**
-     * A spear thrown through the item's own {@code releaseUsing}, ticked by hand until it lands,
-     * then picked back up. The pickup only works because {@code AbstractArrow#setOwner} promotes
-     * {@code pickup} to ALLOWED for a player owner - the constructor leaves it DISALLOWED - so it
-     * is worth pinning rather than assuming.
+     * A spear thrown through {@code releaseUsing}, ticked until it lands, then picked up. Pickup
+     * relies on {@code AbstractArrow#setOwner} promoting {@code pickup} to ALLOWED for a player
+     * owner.
      */
     private static void spearSticksInABlockAndIsPickedUp(GameTestHelper helper) {
         ServerPlayer player = survivalPlayer(helper, new ItemStack(ToolsItems.IRON_SPEAR.get()));
@@ -125,11 +122,9 @@ final class ProjectileTests {
     }
 
     /**
-     * A pokeball's tooltip comes from its {@code captured_entity} component, since
-     * {@code Item#appendHoverText} is deprecated: every ball carries the component, so an empty one
-     * still says so and a full one names its mob. NeoForge adds component lines on the server too, so
-     * there the whole tooltip is checked as well, which proves the component is wired in; Fabric only
-     * adds them on the client, and {@code ToolsClientGameTests} checks it there.
+     * A pokeball's tooltip comes from its {@code captured_entity} component: an empty ball says so
+     * and a full one names its mob. NeoForge also builds the full tooltip on the server, so there
+     * it is checked too; {@code ToolsClientGameTests} covers Fabric.
      */
     private static void pokeballTooltipNamesWhatItHolds(GameTestHelper helper) {
         DataComponentType<CapturedEntity> type = ToolsDataComponents.CAPTURED_ENTITY.get();

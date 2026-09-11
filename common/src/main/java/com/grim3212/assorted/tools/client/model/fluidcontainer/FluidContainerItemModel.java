@@ -57,33 +57,12 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
- * The bucket item model: a base layer, the contained fluid masked to the bucket's fluid window, and a
- * cover layer drawn on top.
- * <p>
- * <b>This has to be an {@link ItemModel} type, not a model json loader.</b> A fluid's appearance is a
- * baked {@code FluidModel} that {@code ModelManager} only publishes once <em>all</em> baking has
- * finished - {@code ModelManager#getFluidStateModelSet} throws "Fluid models not yet initialized"
- * before that - while a model json loader is asked for a finished {@code QuadCollection} during
- * baking. There is therefore no way for a json loader to know what a fluid looks like, on either
- * loader. An {@code ItemModel} is handed the {@link ItemStack} in {@link #update} instead, which runs
- * at render time, so the fluid's sprite is both available and stack accurate; the result is cached
- * per fluid because it never changes for the life of a bake.
- * <p>
- * That also restores what 1.20.1 did with {@code ItemOverrides#resolve} and the port briefly lost: a
- * bucket draws whatever fluid it holds, including fluids from other mods, rather than the fixed set
- * of cases datagen could enumerate.
- * <p>
- * Two structural differences from the 1.20.1 model remain:
- * <ul>
- * <li>the per layer {@code RenderTypeGroup} is gone. A quad's chunk/item layer is derived from its
- * sprite ({@code BakedQuad.MaterialInfo#layer}), so the translucency the fluid and cover layers used
- * to ask for is requested through {@link Material#withForceTranslucent(boolean)} instead;</li>
- * <li>{@code isGui3d} / {@code useBlockLight} are not model loader decisions any more - they come off
- * the named model's json ({@code gui_light}) through {@link ModelRenderProperties}.</li>
- * </ul>
- * <p>
- * AssortedDecor's {@code ColorizerItemModel} is the same shape - a stack aware item model reached
- * through {@code ClientServices.CLIENT.registerItemModelType} - for the same reason.
+ * The bucket item model: a base layer, the contained fluid masked to the bucket's fluid window, and
+ * a cover layer on top. It has to be an {@link ItemModel}, not a model json loader: fluid models
+ * exist only once all baking has finished, while {@link #update} runs at render time with the
+ * stack. So a bucket draws any fluid it holds, including other mods'. The result is cached per
+ * fluid. Translucency comes from {@link Material#withForceTranslucent(boolean)}, gui light from the
+ * json.
  */
 public class FluidContainerItemModel implements ItemModel {
 
@@ -217,10 +196,8 @@ public class FluidContainerItemModel implements ItemModel {
     }
 
     /**
-     * One drawn layer: {@code CuboidItemModelWrapper}, which is what a {@code minecraft:model} item
-     * would use for this, has a private constructor in the vanilla jar and only NeoForge opens it, so
-     * common carries the two fields it would have held and {@link #update} does the render state work
-     * itself.
+     * One drawn layer. {@code CuboidItemModelWrapper}'s constructor is private in the vanilla jar,
+     * so this holds its two fields and {@link #update} does the render state work.
      */
     private record Layer(QuadCollection quads, List<ItemTintSource> tints, Supplier<Vector3fc[]> extents) {
         private static Layer of(QuadCollection quads, List<ItemTintSource> tints) {
@@ -245,10 +222,9 @@ public class FluidContainerItemModel implements ItemModel {
     }
 
     /**
-     * Cuts {@code mask}'s opaque pixels out as flat elements and bakes every face of them against one
-     * fixed material. The library's slot-driven {@code bakeElements} cannot be used here because a
-     * fluid's sprite arrives as a {@link TextureAtlasSprite} from the platform's fluid helper rather
-     * than as a named texture slot.
+     * Cuts {@code mask}'s opaque pixels out as flat elements baked against one material. The
+     * library's {@code bakeElements} needs a texture slot, and a fluid sprite comes from the fluid
+     * helper instead.
      */
     private QuadCollection bakeMasked(ModelBaker baker, TextureAtlasSprite mask, Material.Baked material, ModelState modelState, boolean emissive) {
         List<BakedQuad> quads = new ArrayList<>();
@@ -268,14 +244,11 @@ public class FluidContainerItemModel implements ItemModel {
     }
 
     /**
-     * @param model                The <em>geometry</em> json naming the {@code base} / {@code fluid} /
-     *                             {@code cover} / {@code particle} texture slots, plus the display
-     *                             transforms and gui light every bucket layer is drawn with. It is a
-     *                             plain vanilla model json - the loader block it used to carry is gone
-     *                             along with the json loader.
-     * @param flipGas              Turn the model upside down when the fluid is lighter than air.
-     * @param coverIsMask          Fill the cover's shape with the base texture rather than the cover
-     *                             texture, which is how a bucket draws its own lip back over the fluid.
+     * @param model The geometry json naming the {@code base}, {@code fluid}, {@code cover} and
+     * {@code particle} slots, with the display transforms and gui light every layer uses.
+     * @param flipGas Turn the model upside down when the fluid is lighter than air.
+     * @param coverIsMask Fill the cover's shape with the base texture, which is how a bucket draws
+     * its own lip back over the fluid.
      * @param applyFluidLuminosity Draw the fluid layer fullbright when the fluid emits light.
      */
     public record Unbaked(Identifier model, boolean flipGas, boolean coverIsMask, boolean applyFluidLuminosity) implements ItemModel.Unbaked {

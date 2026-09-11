@@ -22,14 +22,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Writes the mod's enchantments as datapack JSON. {@link Enchantment} is a record built from data
- * in 26.2, so this provider is the only place the old enchantment classes' numbers still live.
- * <p>
- * The 1.20.1 values map across as: {@code Rarity} to a {@code weight}
- * (COMMON/UNCOMMON/RARE/VERY_RARE = 10/5/2/1) and to the {@code anvilCost} the old anvil derived
- * from the same rarity (1/2/4/8), {@code getMinCost}/{@code getMaxCost} to a linear
- * {@link Enchantment.Cost}, {@code EquipmentSlot[]} to {@link EquipmentSlotGroup}s, {@code canEnchant}
- * to the supported items holder set and {@code checkCompatibility} to the exclusive set.
+ * Writes the mod's enchantments as datapack JSON. Weights and anvil costs follow the old rarity
+ * scale: common, uncommon, rare, very rare are weight 10/5/2/1 and anvil cost 1/2/4/8.
  */
 public class ToolsEnchantmentData extends LibDatapackRegistryProvider {
 
@@ -44,11 +38,8 @@ public class ToolsEnchantmentData extends LibDatapackRegistryProvider {
     }
 
     /**
-     * Each enchantment exists only while its part is enabled. 1.20.1 did this with
-     * {@code isTradeable()} / {@code isDiscoverable()} / {@code canEnchant()} overrides reading the
-     * config; those went with the classes, so the definition itself is conditional now. The four
-     * spear enchantments name each other in their exclusive sets, which is safe because they share
-     * one part and so are always present or absent together.
+     * Each enchantment exists only while its part is enabled. The four spear enchantments name each
+     * other as exclusive, which is safe because they share one part.
      */
     @Override
     public Map<ResourceKey<?>, List<LibConditionProvider>> conditions() {

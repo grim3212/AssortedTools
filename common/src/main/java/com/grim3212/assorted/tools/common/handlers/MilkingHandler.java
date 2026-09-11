@@ -33,12 +33,9 @@ public class MilkingHandler {
     }
 
     /**
-     * Adds a milkable entity to the specified level All levels above the specified
-     * level will also be able to milk the same entity
+     * Makes an entity milkable at {@code level} and every level above it.
      *
-     * @param level    The milking level to add to
-     * @param milkable The entity to add
-     * @return True if adding was a success and it wasn't a duplicate
+     * @return whether it was added; false for a duplicate
      */
     public static boolean addMilkable(int level, Class<? extends Entity> milkable) {
         if (levels.size() <= level)

@@ -19,14 +19,10 @@ import net.minecraft.world.item.equipment.EquipmentAssets;
 import java.util.function.Supplier;
 
 /**
- * The mod's armour materials, and the defaults its configuration is seeded from.
- * <p>
- * No longer implements {@code ArmorMaterial}: that is a record now, built from the configured
- * numbers by {@link ArmorMaterialConfig#material()}. What is left here is the part that is not
- * configurable - the equip sound, the repair tag, and the equipment asset naming the armour's
- * texture layers. Every material needs an asset: since 1.21.4 the worn-armour texture is looked up
- * through the {@code equipment_asset} registry rather than derived from the material's name, so
- * each of these has a matching {@code assets/assortedtools/equipment/<name>.json}.
+ * The mod's armour materials and their configuration defaults. The configured numbers become an
+ * {@code ArmorMaterial} in {@link ArmorMaterialConfig#material()}; this holds the fixed parts:
+ * equip sound, repair tag and equipment asset. Every material needs a matching {@code
+ * assets/assortedtools/equipment/<name>.json}, or the armour renders untextured.
  */
 public enum ToolsArmorMaterials {
     CHICKEN_SUIT(() -> ToolsCommonMod.COMMON_CONFIG.chickenSuitArmorMaterial, () -> BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SoundEvents.WOOL_PLACE), () -> LibCommonTags.Items.FEATHERS),

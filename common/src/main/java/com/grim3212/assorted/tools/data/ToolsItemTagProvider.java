@@ -100,13 +100,8 @@ public class ToolsItemTagProvider extends LibItemTagProvider {
     }
 
     /**
-     * What an enchantment applies to is a {@code #minecraft:enchantable/*} item tag now.
-     * <p>
-     * {@code EnchantmentCategory} used to answer this with {@code instanceof} checks, so every
-     * modded tool that extended {@code PickaxeItem} or {@code ArmorItem} was covered for free.
-     * Those classes are gone and the tags are opt-in, so without these entries every tool, weapon
-     * and armour piece in this mod is <b>unenchantable at a table</b> - silently, with no warning
-     * and no error.
+     * Adds items to {@code #minecraft:enchantable/*} tags. They are opt-in: without these entries
+     * every tool, weapon and armour piece is silently <b>unenchantable at a table</b>.
      */
     private void enchantableTool(Function<TagKey<Item>, ItemTagger> tagger, Item... items) {
         tagger.apply(ItemTags.MINING_ENCHANTABLE).add(items);

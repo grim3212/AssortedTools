@@ -43,10 +43,9 @@ final class ShearsTests {
     }
 
     /**
-     * Modded shears shear a sheep. Vanilla dispatches shearing on {@code is(Items.SHEARS)}, so this
-     * only works because {@code MaterialShears#interactLivingEntity} handles it: a NeoForge patch
-     * on the superclass there, the mod's own fallback on Fabric, after the Fabric only mixin that
-     * used to do it was deleted.
+     * Modded shears shear a sheep. Vanilla checks {@code is(Items.SHEARS)}, so this relies on
+     * {@code MaterialShears#interactLivingEntity}: NeoForge's patch there, the mod's fallback on
+     * Fabric.
      */
     private static void shearsShearASheep(GameTestHelper helper) {
         final BlockPos where = new BlockPos(4, 1, 4);
@@ -69,11 +68,9 @@ final class ShearsTests {
     }
 
     /**
-     * Modded shears cut leaves and drop the leaf block. The speed comes from the
-     * {@code minecraft:tool} component, but the drop does not: vanilla's leaves loot table asks for
-     * {@code minecraft:shears} by identity, which a modded pair is not. NeoForge's own copy of that
-     * table asks for the {@code shears_dig} ability instead, and Fabric only passes because of this
-     * mod's {@code ItemPredicate} mixin - two entirely different mechanisms, one assertion.
+     * Modded shears cut leaves and drop the leaf block. Vanilla's leaves loot table asks for {@code
+     * minecraft:shears} by identity; NeoForge's copy asks for the {@code shears_dig} ability, and
+     * Fabric passes through this mod's {@code ItemPredicate} mixin.
      */
     private static void shearsCutLeaves(GameTestHelper helper) {
         final BlockPos leaves = new BlockPos(4, 1, 4);
@@ -93,11 +90,10 @@ final class ShearsTests {
     }
 
     /**
-     * The Coral Cutter enchantment, which is three separate pieces since the port: the destroy
-     * speed comes from a mixin onto {@code ItemStack} (a data component cannot be conditioned on an
-     * enchantment), the "may I harvest this" answer from {@code CorrectToolForDropEvent}, and live
-     * coral instead of dead from {@code OnDropStacksEvent} re-rolling the loot with silk touch.
-     * Unenchanted shears are checked alongside so a blanket "always works" cannot pass.
+     * Coral Cutter has three pieces: the speed from a mixin onto {@code ItemStack}, the harvest
+     * check from {@code CorrectToolForDropEvent}, and live coral drops from {@code
+     * OnDropStacksEvent} re-rolling the loot with silk touch. Unenchanted shears are checked so
+     * "always works" cannot pass.
      */
     private static void shearsCutCoralWithCoralCutter(GameTestHelper helper) {
         final BlockPos plainTarget = new BlockPos(2, 1, 4);
@@ -140,10 +136,9 @@ final class ShearsTests {
     }
 
     /**
-     * Every vanilla coral - live and dead; plant, fan, wall fan and block - is under
-     * {@code c:corals/all}, which is what Coral Cutter's speed, harvest and drop rules all read.
-     * Walks the block registry rather than a list so a coral vanilla adds later cannot slip past.
-     * Then breaks a dead coral block and a dead fan, neither of which plain shears would drop.
+     * Every vanilla coral, live and dead, is under {@code c:corals/all}, which all of Coral
+     * Cutter's rules read. Walks the block registry so a new coral cannot slip past, then breaks a
+     * dead coral block and a dead fan, neither of which plain shears would drop.
      */
     private static void coralCutterCoversEveryCoral(GameTestHelper helper) {
         Holder<Enchantment> coralCutter = helper.getLevel().registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(ToolsEnchantments.CORAL_CUTTER);

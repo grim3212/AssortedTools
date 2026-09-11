@@ -8,13 +8,8 @@ import net.minecraft.world.item.ToolMaterial;
 import java.util.function.Supplier;
 
 /**
- * A tool material whose numbers come from the configuration file.
- * <p>
- * These values used to be read on every query, through {@code Item#getMaxDamage(stack)} and
- * friends. Those hooks are gone: durability, enchantability, repair material, attack damage and
- * mining speed are all data components now, fixed on the item when it is built. So
- * {@link #material()} reads the configuration once, at registration, and the result is baked.
- * <b>Editing the configuration therefore needs a restart to take effect.</b>
+ * A tool material whose numbers come from the configuration file. {@link #material()} is read once
+ * at registration and baked into the items' data components, so <b>changes need a restart</b>.
  */
 public class ItemTierConfig {
     private final String name;
@@ -74,11 +69,8 @@ public class ItemTierConfig {
     }
 
     /**
-     * The configured material, ready to hand to {@code Item.Properties}.
-     * <p>
-     * Cached: an item's properties are built once, but several items share a tier and each of them
-     * asks. Cached after the first call also means the values seen by every item of one material
-     * agree even if the configuration is reloaded underneath, which matters because they are baked.
+     * Cached: several items share a tier, and caching keeps every item of one material agreeing
+     * even if the configuration reloads underneath, since the values are baked.
      */
     private ToolMaterial cachedMaterial;
 

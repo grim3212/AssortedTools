@@ -12,23 +12,10 @@ import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Exposes a better bucket's contents to NeoForge's fluid transfer API.
- * <p>
- * Rebuilt on {@link ItemAccessResourceHandler}. The old class extended
- * {@code FluidHandlerItemStack} and implemented {@code IFluidHandlerItem}, handing itself out
- * through a {@code LazyOptional} from {@code Item#initCapabilities} - and every one of those is
- * gone. Capabilities are transactional {@code ResourceHandler}s now, registered per item from
- * {@code RegisterCapabilitiesEvent}, so the mixin that used to add {@code initCapabilities} to
- * {@code BetterBucketItem} was deleted with it.
- * <p>
- * Deliberately <em>not</em> extending {@code ItemAccessFluidHandler}, which stores its contents in a
- * {@code SimpleFluidContent} component. This bucket keeps its fluid in its own tag, read by the
- * item's tooltip, the milking handler, the dispenser behaviour and the model dispatch, and the
- * Fabric side reads the same place. One storage, two loaders.
- * <p>
- * The superclass runs the transaction; these five methods only describe how a stack carries a
- * fluid. {@link #insert} and {@link #extract} are wrapped to keep the whole-bucket rounding that
- * {@code allowPartialBucketAmounts} controls.
+ * Exposes a better bucket's contents to NeoForge's fluid transfer API. Not an
+ * {@code ItemAccessFluidHandler}, which stores fluid in a {@code SimpleFluidContent} component: the
+ * bucket keeps it in its own tag, which the tooltip, milking, dispenser, model and Fabric side all
+ * read. {@link #insert} and {@link #extract} keep the {@code allowPartialBucketAmounts} rounding.
  */
 public class NeoForgeBetterBucketFluidHandler extends ItemAccessResourceHandler<FluidResource> {
 
@@ -77,14 +64,7 @@ public class NeoForgeBetterBucketFluidHandler extends ItemAccessResourceHandler<
         return ItemResource.of(updated);
     }
 
-    /**
-     * Any real fluid, as long as the stack is still the bucket this handler was built for.
-     * <p>
-     * This was {@code canFillFluidType}, whose milk-bucket branch was unreachable:
-     * {@code BetterMilkBucketItem} does not extend {@code BetterBucketItem}, and the capability is
-     * only ever attached to the latter, so a milk bucket never had a fluid handler to ask. Dropped
-     * rather than carried over, since the compiler rejects the {@code instanceof} outright.
-     */
+    /** Any real fluid, as long as the stack is still the bucket this handler was built for. */
     @Override
     public boolean isValid(int index, FluidResource resource) {
         return this.itemAccess.getResource().is(this.bucket) && resource.getFluid() != Fluids.EMPTY;

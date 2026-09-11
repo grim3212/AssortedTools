@@ -11,20 +11,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
- * Makes the Coral Cutter enchantment tear through coral.
- * <p>
- * This used to inject into {@code ShearsItem#getDestroySpeed}. That method no longer exists:
- * shears describe their mining speeds through the {@code minecraft:tool} data component, and
- * {@code ShearsItem} overrides nothing about speed at all. The component is static data, so an
- * enchantment cannot add a rule to it.
- * <p>
- * {@link ItemStack#getDestroySpeed(BlockState)} is the one place a stack and a block state meet to
- * produce a speed, which makes it the right and only place for a condition that depends on both
- * plus the stack's enchantments. The guard is a cheap item identity check, so every other stack in
- * the game pays one reference comparison.
- * <p>
- * The enchantment applies to vanilla shears as well as the mod's own, which is why this is a mixin
- * rather than an override on {@code MaterialShears}.
+ * Makes the Coral Cutter enchantment tear through coral. The {@code minecraft:tool} component is
+ * static and cannot depend on an enchantment, and {@link ItemStack#getDestroySpeed(BlockState)} is
+ * where stack and block meet. A mixin rather than a {@code MaterialShears} override because it
+ * applies to vanilla shears too.
  */
 @Mixin(ItemStack.class)
 public class ItemStackDestroySpeedMixin {

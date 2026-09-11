@@ -111,10 +111,8 @@ final class ToolsTestSupport {
     }
 
     /**
-     * Asserts that a grid of ingredients resolves to a recipe producing {@code expected}. Going
-     * through the recipe manager is the whole point: it is what actually loaded the json, its
-     * conditions included, so a recipe dropped by a failing condition shows up here and nowhere
-     * else.
+     * Asserts a grid crafts {@code expected} through the recipe manager, so a recipe dropped by a
+     * failing load condition fails here.
      */
     static void assertCrafts(GameTestHelper helper, int width, int height, List<ItemStack> grid, Item expected) {
         Identifier id = BuiltInRegistries.ITEM.getKey(expected);
@@ -290,14 +288,10 @@ final class ToolsTestSupport {
     }
 
     /**
-     * A real, fully joined survival player, because none of {@code GameTestHelper}'s three mock
-     * player factories is usable here: {@code makeMockServerPlayerInLevel} hard codes
-     * {@code gameMode()} to CREATIVE, and creative changes the answer of nearly everything under
-     * test (a bucket does not fill, a hammer does not break, a cow cannot be milked, a wand costs
-     * nothing); the other two hand back a player that was never placed, so its {@code connection}
-     * is null and anything that messages it - a wand announcing its new mode - throws.
-     * <p>
-     * This is what the deprecated in-level factory does, minus that game mode override.
+     * A fully joined survival player. {@code makeMockServerPlayerInLevel} forces creative, which
+     * changes nearly everything under test, and the other mock factories leave {@code connection}
+     * null, so messaging the player throws. This is the in-level factory minus the game mode
+     * override.
      */
     static ServerPlayer survivalPlayer(GameTestHelper helper, ItemStack held) {
         ServerLevel level = helper.getLevel();

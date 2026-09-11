@@ -11,12 +11,8 @@ import java.util.EnumMap;
 import java.util.function.Supplier;
 
 /**
- * An armour material whose numbers come from the configuration file.
- * <p>
- * Like {@link ItemTierConfig}, the values are now baked into data components when the item is
- * built, so {@link #material()} reads the configuration once at registration and
- * <b>changes need a restart</b>. The per-slot durability multiplier that used to come from a mixin
- * into {@code ArmorMaterials} is public API now: {@link ArmorType#getDurability(int)}.
+ * An armour material whose numbers come from the configuration file. Like {@link ItemTierConfig},
+ * {@link #material()} is read once at registration and baked, so <b>changes need a restart</b>.
  */
 public class ArmorMaterialConfig {
     private final String name;
@@ -85,12 +81,7 @@ public class ArmorMaterialConfig {
         return this.cachedReductionAmounts;
     }
 
-    /**
-     * The configured material, ready to hand to {@code Item.Properties#humanoidArmor}.
-     * <p>
-     * Cached for the same reason {@link ItemTierConfig#material()} is: four items share it and all
-     * of them must agree.
-     */
+    /** Cached like {@link ItemTierConfig#material()}: the four pieces share it and must agree. */
     private ArmorMaterial cachedMaterial;
 
     public ArmorMaterial material() {
