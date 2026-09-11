@@ -1,4 +1,10 @@
 {
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "multitools"
+    }
+  ],
   "type": "minecraft:smithing_transform",
   "addition": "minecraft:netherite_block",
   "base": "assortedtools:diamond_multitool",

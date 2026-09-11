@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:cake_alt"
+        "recipe": "assortedtools:cake_alt"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:cake_alt"
+      "assortedtools:cake_alt"
     ]
   }
 }
