@@ -13,7 +13,7 @@ Run each list on **both** NeoForge and Fabric.
 - [ ] Material shears shear (Fabric in particular)
 
 ## Thrown items
-- [ ] Spear renders in hand and in the ground
+- [ ] Throwing spear renders in hand and in the ground
 - [ ] Pokeball shows the captured mob in its tooltip
 - [ ] A thrown boomerang renders in flight
 
