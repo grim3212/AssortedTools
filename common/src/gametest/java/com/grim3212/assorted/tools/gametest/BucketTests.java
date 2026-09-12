@@ -12,6 +12,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -19,11 +20,14 @@ import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.animal.cow.Cow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUseAnimation;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.display.SlotDisplayContext;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.entity.DispenserBlockEntity;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -45,6 +49,7 @@ final class BucketTests {
         out.accept("better_bucket_name_shows_its_fluid", BucketTests::betterBucketNameShowsItsFluid);
         out.accept("milk_bucket_can_be_drunk", BucketTests::milkBucketCanBeDrunk);
         out.accept("dispenser_places_fluid_from_a_better_bucket", BucketTests::dispenserPlacesFluidFromABetterBucket);
+        out.accept("fluid_ingredient_draws_a_filled_bucket", BucketTests::fluidIngredientDrawsAFilledBucket);
     }
 
     /**
@@ -212,6 +217,28 @@ final class BucketTests {
 
         // The fluid is the argument the name is built around, so two fluids must not name the same.
         helper.assertFalse(water.getHoverName().equals(lavaName), "a water bucket and a lava bucket are named the same thing");
+
+        helper.succeed();
+    }
+
+    /**
+     * What a recipe viewer draws for a fluid ingredient over water. A better bucket keeps its fluid
+     * in components, so the ingredient has to collect and draw the <em>filled</em> stack: the bare
+     * item a default display would name is an empty bucket, which is the one thing the ingredient
+     * does not accept. This is the half of AssortedLib's {@code LibFluidIngredient} that only a
+     * modded container can show; the library's own test covers vanilla buckets.
+     */
+    private static void fluidIngredientDrawsAFilledBucket(GameTestHelper helper) {
+        Ingredient water = Services.INGREDIENTS.fluid(null, FluidTags.WATER, Services.FLUIDS.getBucketAmount());
+
+        List<ItemStack> drawn = water.display().resolveForStacks(SlotDisplayContext.fromLevel(helper.getLevel()));
+        List<ItemStack> buckets = drawn.stream().filter(stack -> stack.getItem() instanceof BetterBucketItem).toList();
+        helper.assertFalse(buckets.isEmpty(), "a water fluid ingredient draws " + drawn + ", with no better bucket among them");
+
+        for (ItemStack bucket : buckets) {
+            helper.assertValueEqual(BetterBucketItem.getFluid(bucket), "minecraft:water", "the fluid a drawn " + bucket.getItem() + " holds");
+            helper.assertTrue(water.test(bucket), "a water fluid ingredient draws a " + bucket.getItem() + " that it does not accept");
+        }
 
         helper.succeed();
     }
