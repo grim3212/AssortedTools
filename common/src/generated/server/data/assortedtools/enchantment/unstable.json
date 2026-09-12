@@ -2,7 +2,7 @@
   "neoforge:conditions": [
     {
       "type": "assortedlib:part_enabled",
-      "part": "betterspears"
+      "part": "throwingspears"
     }
   ],
   "anvil_cost": 4,
@@ -26,6 +26,6 @@
   "slots": [
     "mainhand"
   ],
-  "supported_items": "#assortedtools:enchantable/spear",
+  "supported_items": "#assortedtools:enchantable/throwing_spear",
   "weight": 2
 }

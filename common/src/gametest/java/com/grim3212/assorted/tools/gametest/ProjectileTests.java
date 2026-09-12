@@ -72,7 +72,7 @@ final class ProjectileTests {
      * owner.
      */
     private static void spearSticksInABlockAndIsPickedUp(GameTestHelper helper) {
-        ServerPlayer player = survivalPlayer(helper, new ItemStack(ToolsItems.IRON_SPEAR.get()));
+        ServerPlayer player = survivalPlayer(helper, new ItemStack(ToolsItems.IRON_THROWING_SPEAR.get()));
         hover(helper, player, new Vec3(4.5D, 4.0D, 4.5D), 90.0F);
 
         BetterSpearEntity spear = throwHeldSpear(helper, player);
@@ -88,7 +88,7 @@ final class ProjectileTests {
         spear.playerTouch(player);
 
         helper.assertTrue(spear.isRemoved(), "the spear was not collected");
-        helper.assertValueEqual(countInInventory(player, ToolsItems.IRON_SPEAR.get()), 1, "spears in the inventory after picking it back up");
+        helper.assertValueEqual(countInInventory(player, ToolsItems.IRON_THROWING_SPEAR.get()), 1, "spears in the inventory after picking it back up");
 
         helper.succeed();
     }
@@ -98,7 +98,7 @@ final class ProjectileTests {
         Cow cow = helper.spawn(EntityTypes.COW, new BlockPos(4, 1, 4));
         float before = cow.getHealth();
 
-        ServerPlayer player = survivalPlayer(helper, new ItemStack(ToolsItems.IRON_SPEAR.get()));
+        ServerPlayer player = survivalPlayer(helper, new ItemStack(ToolsItems.IRON_THROWING_SPEAR.get()));
         hover(helper, player, new Vec3(4.5D, 5.0D, 4.5D), 90.0F);
 
         BetterSpearEntity spear = throwHeldSpear(helper, player);

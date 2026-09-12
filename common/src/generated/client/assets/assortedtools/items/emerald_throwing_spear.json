@@ -1,0 +1,64 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "assortedtools:item/emerald_throwing_spear_gui"
+        },
+        "when": [
+          "gui",
+          "ground",
+          "fixed",
+          "on_shelf"
+        ]
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:condition",
+      "on_false": {
+        "type": "minecraft:special",
+        "base": "assortedtools:item/emerald_throwing_spear",
+        "model": {
+          "type": "assortedtools:spear",
+          "texture": "assortedtools:textures/entity/projectiles/emerald_throwing_spear.png"
+        }
+      },
+      "on_true": {
+        "type": "minecraft:special",
+        "base": "assortedtools:item/emerald_throwing_spear_throwing",
+        "model": {
+          "type": "assortedtools:spear",
+          "texture": "assortedtools:textures/entity/projectiles/emerald_throwing_spear.png"
+        }
+      },
+      "property": "minecraft:using_item",
+      "transformation": {
+        "left_rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "right_rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          -1.0,
+          -1.0
+        ],
+        "translation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "property": "minecraft:display_context"
+  }
+}

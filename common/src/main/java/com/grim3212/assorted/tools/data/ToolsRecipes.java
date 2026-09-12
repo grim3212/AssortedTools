@@ -42,7 +42,7 @@ public class ToolsRecipes extends ConditionalRecipeProvider {
 
         this.addConditions(partEnabled(ToolsConditions.Parts.MULTITOOL), Identifier.parse(ToolsItems.NETHERITE_MULTITOOL.getId() + "_smithing"));
         this.addConditions(partEnabled(ToolsConditions.Parts.HAMMERS), Identifier.parse(ToolsItems.NETHERITE_HAMMER.getId() + "_smithing"));
-        this.addConditions(partEnabled(ToolsConditions.Parts.BETTER_SPEARS), Identifier.parse(ToolsItems.NETHERITE_SPEAR.getId() + "_smithing"));
+        this.addConditions(partEnabled(ToolsConditions.Parts.THROWING_SPEARS), Identifier.parse(ToolsItems.NETHERITE_THROWING_SPEAR.getId() + "_smithing"));
         this.addConditions(partEnabled(ToolsConditions.Parts.BETTER_BUCKETS), Identifier.parse(ToolsItems.NETHERITE_BUCKET.getId() + "_smithing"));
         this.addConditions(partEnabled(ToolsConditions.Parts.MORE_SHEARS), Identifier.parse(ToolsItems.NETHERITE_SHEARS.getId() + "_smithing"));
 
@@ -60,12 +60,12 @@ public class ToolsRecipes extends ConditionalRecipeProvider {
         hammerPattern(ToolsItems.STONE_HAMMER.get(), ItemTags.STONE_TOOL_MATERIALS);
         hammerPattern(ToolsItems.WOOD_HAMMER.get(), ItemTags.PLANKS);
 
-        spearPattern(ToolsItems.WOOD_SPEAR.get(), ItemTags.PLANKS);
-        spearPattern(ToolsItems.STONE_SPEAR.get(), ItemTags.STONE_TOOL_MATERIALS);
-        spearPattern(ToolsItems.GOLD_SPEAR.get(), LibCommonTags.Items.INGOTS_GOLD);
-        spearPattern(ToolsItems.IRON_SPEAR.get(), LibCommonTags.Items.INGOTS_IRON);
-        spearPattern(ToolsItems.DIAMOND_SPEAR.get(), LibCommonTags.Items.GEMS_DIAMOND);
-        spearPattern(ToolsItems.NETHERITE_SPEAR.get(), LibCommonTags.Items.INGOTS_NETHERITE);
+        spearPattern(ToolsItems.WOOD_THROWING_SPEAR.get(), ItemTags.PLANKS);
+        spearPattern(ToolsItems.STONE_THROWING_SPEAR.get(), ItemTags.STONE_TOOL_MATERIALS);
+        spearPattern(ToolsItems.GOLD_THROWING_SPEAR.get(), LibCommonTags.Items.INGOTS_GOLD);
+        spearPattern(ToolsItems.IRON_THROWING_SPEAR.get(), LibCommonTags.Items.INGOTS_IRON);
+        spearPattern(ToolsItems.DIAMOND_THROWING_SPEAR.get(), LibCommonTags.Items.GEMS_DIAMOND);
+        spearPattern(ToolsItems.NETHERITE_THROWING_SPEAR.get(), LibCommonTags.Items.INGOTS_NETHERITE);
 
         ShapedRecipeBuilder.shaped(this.items, RecipeCategory.TOOLS, ToolsItems.WOOD_BOOMERANG.get()).define('X', ItemTags.PLANKS).pattern("XX").pattern("X ").pattern("XX").unlockedBy("has_planks", has(ItemTags.PLANKS)).save(this.output, recipeKey(ToolsItems.WOOD_BOOMERANG.getId()));
         ShapedRecipeBuilder.shaped(this.items, RecipeCategory.TOOLS, ToolsItems.DIAMOND_BOOMERANG.get()).define('X', LibCommonTags.Items.GEMS_DIAMOND).define('Y', ToolsItems.WOOD_BOOMERANG.get()).pattern("XX").pattern("XY").pattern("XX").unlockedBy("has_diamonds", has(LibCommonTags.Items.GEMS_DIAMOND)).save(this.output, recipeKey(ToolsItems.DIAMOND_BOOMERANG.getId()));
@@ -92,14 +92,15 @@ public class ToolsRecipes extends ConditionalRecipeProvider {
             hammerPattern(group.HAMMER.get(), group.material, ToolsConditions.Parts.EXTRA_MATERIAL);
             multiTool(group.MULTITOOL.get(), group.PICKAXE.get(), group.SHOVEL.get(), group.AXE.get(), group.HOE.get(), group.SWORD.get(), group.material, ToolsConditions.Parts.EXTRA_MATERIAL);
             armorSet(group.HELMET.get(), group.CHESTPLATE.get(), group.LEGGINGS.get(), group.BOOTS.get(), group.material, ToolsConditions.Parts.EXTRA_MATERIAL);
-            spearPattern(group.SPEAR.get(), group.material, ToolsConditions.Parts.EXTRA_MATERIAL);
+            spearPattern(group.THROWING_SPEAR.get(), group.material, ToolsConditions.Parts.EXTRA_MATERIAL);
+            lungeSpearPattern(group.SPEAR.get(), group.material, ToolsConditions.Parts.EXTRA_MATERIAL);
             bucketPattern(group.BUCKET.get(), group.material, ToolsConditions.Parts.EXTRA_MATERIAL);
             shearPattern(group.SHEARS.get(), group.material, ToolsConditions.Parts.EXTRA_MATERIAL);
         });
 
         SmithingTransformRecipeBuilder.smithing(Ingredient.of(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.of(ToolsItems.DIAMOND_MULTITOOL.get()), Ingredient.of(Blocks.NETHERITE_BLOCK), RecipeCategory.TOOLS, ToolsItems.NETHERITE_MULTITOOL.get()).unlocks("has_netherite_block", has(Blocks.NETHERITE_BLOCK)).save(this.output, recipeKey(ToolsItems.NETHERITE_MULTITOOL.getId() + "_smithing"));
         SmithingTransformRecipeBuilder.smithing(Ingredient.of(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.of(ToolsItems.DIAMOND_HAMMER.get()), this.tag(LibCommonTags.Items.INGOTS_NETHERITE), RecipeCategory.TOOLS, ToolsItems.NETHERITE_HAMMER.get()).unlocks("has_netherite_ingot", has(LibCommonTags.Items.INGOTS_NETHERITE)).save(this.output, recipeKey(ToolsItems.NETHERITE_HAMMER.getId() + "_smithing"));
-        SmithingTransformRecipeBuilder.smithing(Ingredient.of(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.of(ToolsItems.DIAMOND_SPEAR.get()), this.tag(LibCommonTags.Items.INGOTS_NETHERITE), RecipeCategory.COMBAT, ToolsItems.NETHERITE_SPEAR.get()).unlocks("has_netherite_ingot", has(LibCommonTags.Items.INGOTS_NETHERITE)).save(this.output, recipeKey(ToolsItems.NETHERITE_SPEAR.getId() + "_smithing"));
+        SmithingTransformRecipeBuilder.smithing(Ingredient.of(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.of(ToolsItems.DIAMOND_THROWING_SPEAR.get()), this.tag(LibCommonTags.Items.INGOTS_NETHERITE), RecipeCategory.COMBAT, ToolsItems.NETHERITE_THROWING_SPEAR.get()).unlocks("has_netherite_ingot", has(LibCommonTags.Items.INGOTS_NETHERITE)).save(this.output, recipeKey(ToolsItems.NETHERITE_THROWING_SPEAR.getId() + "_smithing"));
         SmithingTransformRecipeBuilder.smithing(Ingredient.of(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.of(ToolsItems.DIAMOND_BUCKET.get()), this.tag(LibCommonTags.Items.INGOTS_NETHERITE), RecipeCategory.TOOLS, ToolsItems.NETHERITE_BUCKET.get()).unlocks("has_netherite_ingot", has(LibCommonTags.Items.INGOTS_NETHERITE)).save(this.output, recipeKey(ToolsItems.NETHERITE_BUCKET.getId() + "_smithing"));
         SmithingTransformRecipeBuilder.smithing(Ingredient.of(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.of(ToolsItems.DIAMOND_SHEARS.get()), this.tag(LibCommonTags.Items.INGOTS_NETHERITE), RecipeCategory.TOOLS, ToolsItems.NETHERITE_SHEARS.get()).unlocks("has_netherite_ingot", has(LibCommonTags.Items.INGOTS_NETHERITE)).save(this.output, recipeKey(ToolsItems.NETHERITE_SHEARS.getId() + "_smithing"));
 
@@ -145,18 +146,28 @@ public class ToolsRecipes extends ConditionalRecipeProvider {
         ShapedRecipeBuilder.shaped(this.items, RecipeCategory.TOOLS, output).define('I', input).pattern("I I").pattern(" I ").unlockedBy("has_item", has(input)).save(this.output, recipeKey(key(output.asItem())));
     }
 
+    /**
+     * A throwing spear: the shaft laid flat with the head at its end. That is the only pattern left
+     * to it - the old diagonal was the mirror image of vanilla's spear recipe, and the head above
+     * two sticks is vanilla's shovel, and shaped recipes match mirrored patterns too.
+     */
     private void spearPattern(ItemLike output, TagKey<Item> input) {
-        this.addConditions(and(partEnabled(ToolsConditions.Parts.BETTER_SPEARS), itemTagExists(input)), key(output.asItem()), Identifier.parse(key(output.asItem()) + "_alt"));
+        this.addConditions(and(partEnabled(ToolsConditions.Parts.THROWING_SPEARS), itemTagExists(input)), key(output.asItem()));
 
-        ShapedRecipeBuilder.shaped(this.items, RecipeCategory.COMBAT, output).define('S', LibCommonTags.Items.RODS_WOODEN).define('I', input).pattern("I  ").pattern(" S ").pattern("  S").unlockedBy("has_item", has(input)).save(this.output, recipeKey(key(output.asItem())));
-        ShapedRecipeBuilder.shaped(this.items, RecipeCategory.COMBAT, output).define('S', LibCommonTags.Items.RODS_WOODEN).define('I', input).pattern("SSI").unlockedBy("has_item", has(input)).save(this.output, recipeKey(Identifier.parse(key(output.asItem()) + "_alt")));
+        ShapedRecipeBuilder.shaped(this.items, RecipeCategory.COMBAT, output).define('S', LibCommonTags.Items.RODS_WOODEN).define('I', input).pattern("SSI").unlockedBy("has_item", has(input)).save(this.output, recipeKey(key(output.asItem())));
     }
 
     private void spearPattern(ItemLike output, TagKey<Item> input, String condition) {
-        this.addConditions(and(partEnabled(ToolsConditions.Parts.BETTER_SPEARS), itemTagExists(input), partEnabled(condition)), key(output.asItem()), Identifier.parse(key(output.asItem()) + "_alt"));
+        this.addConditions(and(partEnabled(ToolsConditions.Parts.THROWING_SPEARS), itemTagExists(input), partEnabled(condition)), key(output.asItem()));
 
-        ShapedRecipeBuilder.shaped(this.items, RecipeCategory.COMBAT, output).define('S', LibCommonTags.Items.RODS_WOODEN).define('I', input).pattern("I  ").pattern(" S ").pattern("  S").unlockedBy("has_item", has(input)).save(this.output, recipeKey(key(output.asItem())));
-        ShapedRecipeBuilder.shaped(this.items, RecipeCategory.COMBAT, output).define('S', LibCommonTags.Items.RODS_WOODEN).define('I', input).pattern("SSI").unlockedBy("has_item", has(input)).save(this.output, recipeKey(Identifier.parse(key(output.asItem()) + "_alt")));
+        ShapedRecipeBuilder.shaped(this.items, RecipeCategory.COMBAT, output).define('S', LibCommonTags.Items.RODS_WOODEN).define('I', input).pattern("SSI").unlockedBy("has_item", has(input)).save(this.output, recipeKey(key(output.asItem())));
+    }
+
+    /** Vanilla's own spear recipe, for a material vanilla has no spear of. */
+    private void lungeSpearPattern(ItemLike output, TagKey<Item> input, String condition) {
+        this.addConditions(and(partEnabled(ToolsConditions.Parts.SPEARS), itemTagExists(input), partEnabled(condition)), key(output.asItem()));
+
+        ShapedRecipeBuilder.shaped(this.items, RecipeCategory.COMBAT, output).define('S', LibCommonTags.Items.RODS_WOODEN).define('I', input).pattern("  I").pattern(" S ").pattern("S  ").unlockedBy("has_item", has(input)).save(this.output, recipeKey(key(output.asItem())));
     }
 
     private void hammerPattern(ItemLike output, TagKey<Item> input) {

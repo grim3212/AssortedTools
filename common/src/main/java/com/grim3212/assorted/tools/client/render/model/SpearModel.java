@@ -39,7 +39,7 @@ public class SpearModel extends Model<Unit> {
         return LayerDefinition.create(meshdefinition, 32, 32);
     }
 
-    public static final Identifier DEFAULT_TEXTURE = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/entity/projectiles/wood_spear.png");
+    public static final Identifier DEFAULT_TEXTURE = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/entity/projectiles/wood_throwing_spear.png");
 
     protected final Map<Identifier, Identifier> cache = new HashMap<Identifier, Identifier>();
 
@@ -48,7 +48,7 @@ public class SpearModel extends Model<Unit> {
         if (!this.cache.containsKey(key)) {
             if (item instanceof BetterSpearItem) {
                 BetterSpearItem spear = (BetterSpearItem) item;
-                this.cache.put(key(spear), Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/entity/projectiles/" + spear.getTierHolder().getName() + "_spear.png"));
+                this.cache.put(key(spear), Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/entity/projectiles/" + spear.getTierHolder().getName() + "_throwing_spear.png"));
             } else {
                 Constants.LOG.error("Tried to get spear texture for non-spear item");
                 return DEFAULT_TEXTURE;

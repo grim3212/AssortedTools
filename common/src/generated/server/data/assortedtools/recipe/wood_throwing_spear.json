@@ -1,0 +1,29 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:and",
+      "values": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "throwingspears"
+        },
+        {
+          "type": "assortedlib:item_tag_populated",
+          "tag": "minecraft:planks"
+        }
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": "#minecraft:planks",
+    "S": "#c:rods/wooden"
+  },
+  "pattern": [
+    "SSI"
+  ],
+  "result": {
+    "id": "assortedtools:wood_throwing_spear"
+  }
+}

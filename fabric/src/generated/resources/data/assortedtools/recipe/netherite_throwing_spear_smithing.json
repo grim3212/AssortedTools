@@ -1,0 +1,15 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "throwingspears"
+    }
+  ],
+  "type": "minecraft:smithing_transform",
+  "addition": "#c:ingots/netherite",
+  "base": "assortedtools:diamond_throwing_spear",
+  "result": {
+    "id": "assortedtools:netherite_throwing_spear"
+  },
+  "template": "minecraft:netherite_upgrade_smithing_template"
+}

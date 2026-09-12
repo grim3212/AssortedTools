@@ -1,0 +1,32 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "throwingspears"
+        },
+        {
+          "condition": "fabric:tags_populated",
+          "registry": "minecraft:item",
+          "values": [
+            "c:ingots/netherite"
+          ]
+        }
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": "#c:ingots/netherite",
+    "S": "#c:rods/wooden"
+  },
+  "pattern": [
+    "SSI"
+  ],
+  "result": {
+    "id": "assortedtools:netherite_throwing_spear"
+  }
+}

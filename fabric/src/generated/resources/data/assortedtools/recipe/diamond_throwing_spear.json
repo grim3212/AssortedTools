@@ -1,0 +1,32 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "throwingspears"
+        },
+        {
+          "condition": "fabric:tags_populated",
+          "registry": "minecraft:item",
+          "values": [
+            "c:gems/diamond"
+          ]
+        }
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": "#c:gems/diamond",
+    "S": "#c:rods/wooden"
+  },
+  "pattern": [
+    "SSI"
+  ],
+  "result": {
+    "id": "assortedtools:diamond_throwing_spear"
+  }
+}

@@ -13,6 +13,7 @@ import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.renderer.item.ClientItem;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.special.TridentSpecialRenderer;
 import net.minecraft.client.resources.model.sprite.Material;
@@ -137,12 +138,12 @@ public class ToolsItemModelProvider extends ModelProvider {
         shear(itemModels, ToolsItems.DIAMOND_SHEARS.get());
         shear(itemModels, ToolsItems.NETHERITE_SHEARS.get());
 
-        spear(itemModels, ToolsItems.WOOD_SPEAR.get());
-        spear(itemModels, ToolsItems.STONE_SPEAR.get());
-        spear(itemModels, ToolsItems.IRON_SPEAR.get());
-        spear(itemModels, ToolsItems.GOLD_SPEAR.get());
-        spear(itemModels, ToolsItems.DIAMOND_SPEAR.get());
-        spear(itemModels, ToolsItems.NETHERITE_SPEAR.get());
+        spear(itemModels, ToolsItems.WOOD_THROWING_SPEAR.get());
+        spear(itemModels, ToolsItems.STONE_THROWING_SPEAR.get());
+        spear(itemModels, ToolsItems.IRON_THROWING_SPEAR.get());
+        spear(itemModels, ToolsItems.GOLD_THROWING_SPEAR.get());
+        spear(itemModels, ToolsItems.DIAMOND_THROWING_SPEAR.get());
+        spear(itemModels, ToolsItems.NETHERITE_THROWING_SPEAR.get());
 
         bucket(itemModels, ToolsItems.WOOD_BUCKET.get(), ToolsItems.WOOD_MILK_BUCKET.get());
         bucket(itemModels, ToolsItems.STONE_BUCKET.get(), ToolsItems.STONE_MILK_BUCKET.get());
@@ -158,7 +159,8 @@ public class ToolsItemModelProvider extends ModelProvider {
             tool(itemModels, group.SWORD.get());
             tool(itemModels, group.HAMMER.get());
             tool(itemModels, group.MULTITOOL.get());
-            spear(itemModels, group.SPEAR.get());
+            spear(itemModels, group.THROWING_SPEAR.get());
+            lungeSpear(itemModels, group.SPEAR.get());
 
             armor(itemModels, group.HELMET.get());
             armor(itemModels, group.CHESTPLATE.get());
@@ -168,6 +170,19 @@ public class ToolsItemModelProvider extends ModelProvider {
             bucket(itemModels, group.BUCKET.get(), group.MILK_BUCKET.get());
             shear(itemModels, group.SHEARS.get());
         });
+    }
+
+    /**
+     * A spear as vanilla draws its own: the flat icon in the GUI, on the ground, in frames and on
+     * shelves, the 3D {@code spear_in_hand} model everywhere else, with vanilla's swap animation
+     * scale. What {@code ItemModelGenerators#generateSpear} does, with the textures in
+     * {@code item/tools/}.
+     */
+    private void lungeSpear(ItemModelGenerators itemModels, Item item) {
+        String name = name(item);
+        Identifier flat = ModelTemplates.FLAT_ITEM.create(modelId(name), TextureMapping.layer0(prefixed("item/tools/" + name)), itemModels.modelOutput);
+        Identifier inHand = ModelTemplates.SPEAR_IN_HAND.create(modelId(name + "_in_hand"), TextureMapping.layer0(prefixed("item/tools/" + name + "_in_hand")), itemModels.modelOutput);
+        itemModels.itemModelOutput.accept(item, ItemModelGenerators.createFlatModelDispatch(ItemModelUtils.plainModel(flat), ItemModelUtils.plainModel(inHand)), new ClientItem.Properties(true, false, 1.95F));
     }
 
     // ------------------------------------------------------------------ flat items

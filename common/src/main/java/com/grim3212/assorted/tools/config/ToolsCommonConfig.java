@@ -22,7 +22,8 @@ public class ToolsCommonConfig {
     public final Supplier<Boolean> pokeballEnabled;
     public final Supplier<Boolean> chickenSuitEnabled;
     public final Supplier<Boolean> extraMaterialsEnabled;
-    public final Supplier<Boolean> betterSpearsEnabled;
+    public final Supplier<Boolean> spearsEnabled;
+    public final Supplier<Boolean> throwingSpearsEnabled;
     public final Supplier<Boolean> betterBucketsEnabled;
     public final Supplier<Boolean> moreShearsEnabled;
     public final Supplier<Boolean> ultimateFistEnabled;
@@ -73,7 +74,8 @@ public class ToolsCommonConfig {
         pokeballEnabled = builder.defineBoolean("parts.pokeballEnabled", true, "Set this to true if you would like the pokeball to be craftable and found in the creative tab.");
         chickenSuitEnabled = builder.defineBoolean("parts.chickenSuitEnabled", true, "Set this to true if you would like the chicken suit to be craftable and found in the creative tab as well as if you want the Chicken Jump enchantment to be able to be applied.");
         extraMaterialsEnabled = builder.defineBoolean("parts.extraMaterialsEnabled", true, "Set this to true if you would like to enable support for crafting the extra tools and armor that this supports. For example, Steel, Copper, or Ruby tools and armor.");
-        betterSpearsEnabled = builder.defineBoolean("parts.betterSpearsEnabled", true, "Set this to true if you would like the throwing spears to be craftable and found in the creative tab as well as the Enchantments for it to be enchanted on books.");
+        spearsEnabled = builder.defineBoolean("parts.spearsEnabled", true, "Set this to true if you would like spears like vanilla's, for the extra materials, to be craftable and found in the creative tab.");
+        throwingSpearsEnabled = builder.defineBoolean("parts.throwingSpearsEnabled", true, "Set this to true if you would like the throwing spears to be craftable and found in the creative tab as well as the Enchantments for it to be enchanted on books.");
         betterBucketsEnabled = builder.defineBoolean("parts.betterBucketsEnabled", true, "Set this to true if you would like better buckets to be craftable and found in the creative tab.");
         moreShearsEnabled = builder.defineBoolean("parts.moreShearsEnabled", true, "Set this to true if you would like the extra shears to be craftable and found in the creative tab.");
         ultimateFistEnabled = builder.defineBoolean("parts.ultimateFistEnabled", true, "Set this to true if you would like the ultimate fist to be craftable and found in the creative tab as well as the fragments generate in loot.");
