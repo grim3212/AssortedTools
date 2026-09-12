@@ -1,0 +1,33 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:and",
+      "values": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "throwingspears"
+        },
+        {
+          "type": "assortedlib:item_tag_populated",
+          "tag": "c:ingots/invar"
+        },
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        }
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": "#c:ingots/invar",
+    "S": "#c:rods/wooden"
+  },
+  "pattern": [
+    "SSI"
+  ],
+  "result": {
+    "id": "assortedtools:invar_throwing_spear"
+  }
+}

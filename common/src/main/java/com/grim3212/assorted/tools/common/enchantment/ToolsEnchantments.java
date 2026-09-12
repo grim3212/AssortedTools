@@ -29,7 +29,7 @@ public class ToolsEnchantments {
      * What an enchantment may be applied to is the {@code supported_items} item {@link TagKey} of
      * its definition now, so the old {@code canEnchant} instanceof checks become these tags.
      */
-    public static final TagKey<Item> SPEAR_ENCHANTABLE = itemTag("enchantable/spear");
+    public static final TagKey<Item> SPEAR_ENCHANTABLE = itemTag("enchantable/throwing_spear");
     public static final TagKey<Item> SHEARS_ENCHANTABLE = itemTag("enchantable/shears");
 
     private static ResourceKey<Enchantment> key(String name) {

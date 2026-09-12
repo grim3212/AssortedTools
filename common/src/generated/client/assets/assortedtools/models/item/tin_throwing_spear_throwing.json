@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/trident_throwing",
+  "textures": {
+    "particle": "assortedtools:item/tools/tin_throwing_spear"
+  }
+}

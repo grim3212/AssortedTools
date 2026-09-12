@@ -1,0 +1,54 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "throwingspears"
+        },
+        {
+          "condition": "fabric:tags_populated",
+          "registry": "minecraft:item",
+          "values": [
+            "c:gems/amethyst"
+          ]
+        },
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        }
+      ]
+    }
+  ],
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_item": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#c:gems/amethyst"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "assortedtools:amethyst_throwing_spear"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_item"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "assortedtools:amethyst_throwing_spear"
+    ]
+  }
+}

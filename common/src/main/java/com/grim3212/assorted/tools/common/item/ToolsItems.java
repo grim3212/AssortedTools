@@ -57,12 +57,12 @@ public class ToolsItems {
     public static final IRegistryObject<MultiToolItem> DIAMOND_MULTITOOL = register("diamond_multitool", props -> new MultiToolItem(ToolsCommonMod.COMMON_CONFIG.diamondItemTier, props));
     public static final IRegistryObject<MultiToolItem> NETHERITE_MULTITOOL = register("netherite_multitool", props -> new MultiToolItem(ToolsCommonMod.COMMON_CONFIG.netheriteItemTier, props.fireResistant()));
 
-    public static final IRegistryObject<BetterSpearItem> WOOD_SPEAR = register("wood_spear", props -> new BetterSpearItem(props, ToolsCommonMod.COMMON_CONFIG.woodItemTier));
-    public static final IRegistryObject<BetterSpearItem> STONE_SPEAR = register("stone_spear", props -> new BetterSpearItem(props, ToolsCommonMod.COMMON_CONFIG.stoneItemTier));
-    public static final IRegistryObject<BetterSpearItem> IRON_SPEAR = register("iron_spear", props -> new BetterSpearItem(props, ToolsCommonMod.COMMON_CONFIG.ironItemTier));
-    public static final IRegistryObject<BetterSpearItem> GOLD_SPEAR = register("gold_spear", props -> new BetterSpearItem(props, ToolsCommonMod.COMMON_CONFIG.goldItemTier));
-    public static final IRegistryObject<BetterSpearItem> DIAMOND_SPEAR = register("diamond_spear", props -> new BetterSpearItem(props, ToolsCommonMod.COMMON_CONFIG.diamondItemTier));
-    public static final IRegistryObject<BetterSpearItem> NETHERITE_SPEAR = register("netherite_spear", props -> new BetterSpearItem(props.fireResistant(), ToolsCommonMod.COMMON_CONFIG.netheriteItemTier));
+    public static final IRegistryObject<BetterSpearItem> WOOD_THROWING_SPEAR = register("wood_throwing_spear", props -> new BetterSpearItem(props, ToolsCommonMod.COMMON_CONFIG.woodItemTier));
+    public static final IRegistryObject<BetterSpearItem> STONE_THROWING_SPEAR = register("stone_throwing_spear", props -> new BetterSpearItem(props, ToolsCommonMod.COMMON_CONFIG.stoneItemTier));
+    public static final IRegistryObject<BetterSpearItem> IRON_THROWING_SPEAR = register("iron_throwing_spear", props -> new BetterSpearItem(props, ToolsCommonMod.COMMON_CONFIG.ironItemTier));
+    public static final IRegistryObject<BetterSpearItem> GOLD_THROWING_SPEAR = register("gold_throwing_spear", props -> new BetterSpearItem(props, ToolsCommonMod.COMMON_CONFIG.goldItemTier));
+    public static final IRegistryObject<BetterSpearItem> DIAMOND_THROWING_SPEAR = register("diamond_throwing_spear", props -> new BetterSpearItem(props, ToolsCommonMod.COMMON_CONFIG.diamondItemTier));
+    public static final IRegistryObject<BetterSpearItem> NETHERITE_THROWING_SPEAR = register("netherite_throwing_spear", props -> new BetterSpearItem(props.fireResistant(), ToolsCommonMod.COMMON_CONFIG.netheriteItemTier));
 
     public static final IRegistryObject<BetterBucketItem> WOOD_BUCKET = register("wood_bucket", props -> new BetterBucketItem(props, ToolsCommonMod.COMMON_CONFIG.woodItemTier));
     public static final IRegistryObject<BetterMilkBucketItem> WOOD_MILK_BUCKET = register("wood_milk_bucket", props -> new BetterMilkBucketItem(() -> WOOD_BUCKET.get(), ToolsCommonMod.COMMON_CONFIG.woodItemTier, props));
@@ -119,7 +119,9 @@ public class ToolsItems {
         public final IRegistryObject<MaterialSwordItem> SWORD;
         public final IRegistryObject<HammerItem> HAMMER;
         public final IRegistryObject<MultiToolItem> MULTITOOL;
-        public final IRegistryObject<BetterSpearItem> SPEAR;
+        public final IRegistryObject<BetterSpearItem> THROWING_SPEAR;
+        /** A spear as vanilla makes them, which vanilla has none of for these materials. */
+        public final IRegistryObject<MaterialSpearItem> SPEAR;
         public final IRegistryObject<ConfigurableArmorItem> HELMET;
         public final IRegistryObject<ConfigurableArmorItem> CHESTPLATE;
         public final IRegistryObject<ConfigurableArmorItem> LEGGINGS;
@@ -130,7 +132,7 @@ public class ToolsItems {
 
         public final TagKey<Item> material;
 
-        public final ItemTierConfig tier;
+        public final ModdedItemTierConfig tier;
 
         public MaterialGroup(ModdedItemTierConfig tier, ArmorMaterialConfig armor) {
             this.PICKAXE = register(tier.getName() + "_pickaxe", props -> new MaterialPickaxeItem(tier, props));
@@ -141,7 +143,8 @@ public class ToolsItems {
 
             this.HAMMER = register(tier.getName() + "_hammer", props -> new HammerItem(tier, props));
             this.MULTITOOL = register(tier.getName() + "_multitool", props -> new MultiToolItem(tier, props));
-            this.SPEAR = register(tier.getName() + "_spear", props -> new BetterSpearItem(props, tier));
+            this.THROWING_SPEAR = register(tier.getName() + "_throwing_spear", props -> new BetterSpearItem(props, tier));
+            this.SPEAR = register(tier.getName() + "_spear", props -> new MaterialSpearItem(tier, props));
 
             this.BUCKET = register(tier.getName() + "_bucket", props -> new BetterBucketItem(props, tier));
             this.MILK_BUCKET = register(tier.getName() + "_milk_bucket", props -> new BetterMilkBucketItem(() -> this.BUCKET.get(), tier, props));

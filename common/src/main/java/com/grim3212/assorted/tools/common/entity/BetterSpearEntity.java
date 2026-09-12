@@ -98,7 +98,7 @@ public class BetterSpearEntity extends AbstractArrow {
 
     @Override
     protected ItemStack getDefaultPickupItem() {
-        return new ItemStack(ToolsItems.WOOD_SPEAR.get());
+        return new ItemStack(ToolsItems.WOOD_THROWING_SPEAR.get());
     }
 
     @Override

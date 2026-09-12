@@ -5,7 +5,7 @@
       "values": [
         {
           "type": "assortedlib:part_enabled",
-          "part": "betterspears"
+          "part": "spears"
         },
         {
           "type": "assortedlib:item_tag_populated",

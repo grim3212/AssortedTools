@@ -5,7 +5,7 @@
       "values": [
         {
           "type": "assortedlib:part_enabled",
-          "part": "betterspears"
+          "part": "spears"
         },
         {
           "type": "assortedlib:item_tag_populated",
@@ -25,9 +25,9 @@
     "S": "#c:rods/wooden"
   },
   "pattern": [
-    "I  ",
+    "  I",
     " S ",
-    "  S"
+    "S  "
   ],
   "result": {
     "id": "assortedtools:silver_spear"

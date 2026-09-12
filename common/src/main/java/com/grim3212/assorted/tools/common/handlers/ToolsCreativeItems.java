@@ -87,13 +87,13 @@ public class ToolsCreativeItems {
             registerBucket(items, ToolsItems.NETHERITE_BUCKET.get(), ToolsItems.NETHERITE_MILK_BUCKET.get());
         }
 
-        if (ToolsCommonMod.COMMON_CONFIG.betterSpearsEnabled.get()) {
-            items.add(ToolsItems.WOOD_SPEAR.get());
-            items.add(ToolsItems.STONE_SPEAR.get());
-            items.add(ToolsItems.IRON_SPEAR.get());
-            items.add(ToolsItems.GOLD_SPEAR.get());
-            items.add(ToolsItems.DIAMOND_SPEAR.get());
-            items.add(ToolsItems.NETHERITE_SPEAR.get());
+        if (ToolsCommonMod.COMMON_CONFIG.throwingSpearsEnabled.get()) {
+            items.add(ToolsItems.WOOD_THROWING_SPEAR.get());
+            items.add(ToolsItems.STONE_THROWING_SPEAR.get());
+            items.add(ToolsItems.IRON_THROWING_SPEAR.get());
+            items.add(ToolsItems.GOLD_THROWING_SPEAR.get());
+            items.add(ToolsItems.DIAMOND_THROWING_SPEAR.get());
+            items.add(ToolsItems.NETHERITE_THROWING_SPEAR.get());
         }
 
         if (ToolsCommonMod.COMMON_CONFIG.hammersEnabled.get()) {
@@ -153,8 +153,12 @@ public class ToolsCreativeItems {
                     items.add(group.MULTITOOL.get());
                 }
 
-                if (ToolsCommonMod.COMMON_CONFIG.betterSpearsEnabled.get()) {
+                if (ToolsCommonMod.COMMON_CONFIG.spearsEnabled.get()) {
                     items.add(group.SPEAR.get());
+                }
+
+                if (ToolsCommonMod.COMMON_CONFIG.throwingSpearsEnabled.get()) {
+                    items.add(group.THROWING_SPEAR.get());
                 }
 
                 if (ToolsCommonMod.COMMON_CONFIG.betterBucketsEnabled.get()) {

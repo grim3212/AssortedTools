@@ -106,7 +106,7 @@ public class ToolsLanguageProvider extends LibLanguageProvider {
 
         this.add("tag.item.assorteddecor.cage_supported", "Cage Supported Items");
         this.add("tag.item.assortedtools.enchantable.shears", "Enchantable Shears");
-        this.add("tag.item.assortedtools.enchantable.spear", "Enchantable Throwing Spears");
+        this.add("tag.item.assortedtools.enchantable.throwing_spear", "Enchantable Throwing Spears");
         this.add("tag.item.assortedtools.ultimate_fragments", "Ultimate Fragments");
 
         // A bucket names its filled form through a key of its own rather than an item.
@@ -121,7 +121,8 @@ public class ToolsLanguageProvider extends LibLanguageProvider {
 
         // Families whose names read differently from their ids.
         this.nameItems("(.+)_multitool", m -> material(m.group(1)) + " MultiTool");
-        this.nameItems("(.+)_spear", m -> material(m.group(1)) + " Throwing Spear");
+        // The vanilla-style spears read as their ids; the thrown ones say so.
+        this.nameItems("(.+)_throwing_spear", m -> material(m.group(1)) + " Throwing Spear");
         this.nameItems("(wood|gold)_(.+)", m -> material(m.group(1)) + " " + titleCase(m.group(2)));
     }
 

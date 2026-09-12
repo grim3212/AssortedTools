@@ -1,0 +1,32 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "throwingspears"
+        },
+        {
+          "condition": "fabric:tags_populated",
+          "registry": "minecraft:item",
+          "values": [
+            "c:ingots/gold"
+          ]
+        }
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": "#c:ingots/gold",
+    "S": "#c:rods/wooden"
+  },
+  "pattern": [
+    "SSI"
+  ],
+  "result": {
+    "id": "assortedtools:gold_throwing_spear"
+  }
+}

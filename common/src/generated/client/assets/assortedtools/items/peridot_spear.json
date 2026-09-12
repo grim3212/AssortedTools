@@ -5,7 +5,7 @@
       {
         "model": {
           "type": "minecraft:model",
-          "model": "assortedtools:item/peridot_spear_gui"
+          "model": "assortedtools:item/peridot_spear"
         },
         "when": [
           "gui",
@@ -16,49 +16,10 @@
       }
     ],
     "fallback": {
-      "type": "minecraft:condition",
-      "on_false": {
-        "type": "minecraft:special",
-        "base": "assortedtools:item/peridot_spear",
-        "model": {
-          "type": "assortedtools:spear",
-          "texture": "assortedtools:textures/entity/projectiles/peridot_spear.png"
-        }
-      },
-      "on_true": {
-        "type": "minecraft:special",
-        "base": "assortedtools:item/peridot_spear_throwing",
-        "model": {
-          "type": "assortedtools:spear",
-          "texture": "assortedtools:textures/entity/projectiles/peridot_spear.png"
-        }
-      },
-      "property": "minecraft:using_item",
-      "transformation": {
-        "left_rotation": [
-          0.0,
-          0.0,
-          0.0,
-          1.0
-        ],
-        "right_rotation": [
-          0.0,
-          0.0,
-          0.0,
-          1.0
-        ],
-        "scale": [
-          1.0,
-          -1.0,
-          -1.0
-        ],
-        "translation": [
-          0.0,
-          0.0,
-          0.0
-        ]
-      }
+      "type": "minecraft:model",
+      "model": "assortedtools:item/peridot_spear_in_hand"
     },
     "property": "minecraft:display_context"
-  }
+  },
+  "swap_animation_scale": 1.95
 }

@@ -33,3 +33,11 @@ Run each list on **both** NeoForge and Fabric.
 - [ ] Chicken suit lets the wearer glide
 - [ ] Chicken suit double jump works and plays the classic chicken sound
 - [ ] What the enchanting table offers for each tool looks sane compared with 1.20.1
+
+## Spears
+- [ ] An extra-material spear (steel, ruby, ...) lunges, dismounts and stabs like vanilla's iron
+      spear, shows the flat icon in the inventory and the long model in hand, and takes Lunge at a
+      table
+- [ ] Its textures read as the material: the head recoloured, the shaft the same wood as vanilla's
+- [ ] A throwing spear crafts only from two sticks and the head in a row; the old diagonal now
+      yields vanilla's spear for vanilla materials, and a head above two sticks a shovel

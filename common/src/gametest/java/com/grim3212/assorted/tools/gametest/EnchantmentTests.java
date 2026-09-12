@@ -59,7 +59,7 @@ final class EnchantmentTests {
         expectMeleeWeapon(missing, ToolsItems.WOOD_HAMMER.get(), ToolsItems.STONE_HAMMER.get(), ToolsItems.GOLD_HAMMER.get(), ToolsItems.IRON_HAMMER.get(), ToolsItems.DIAMOND_HAMMER.get(), ToolsItems.NETHERITE_HAMMER.get());
         expectMeleeWeapon(missing, ToolsItems.WOODEN_MULTITOOL.get(), ToolsItems.STONE_MULTITOOL.get(), ToolsItems.GOLDEN_MULTITOOL.get(), ToolsItems.IRON_MULTITOOL.get(), ToolsItems.DIAMOND_MULTITOOL.get(), ToolsItems.NETHERITE_MULTITOOL.get());
         expectMeleeWeapon(missing, ToolsItems.ULTIMATE_FIST.get());
-        expectDurable(missing, ToolsItems.WOOD_SPEAR.get(), ToolsItems.STONE_SPEAR.get(), ToolsItems.GOLD_SPEAR.get(), ToolsItems.IRON_SPEAR.get(), ToolsItems.DIAMOND_SPEAR.get(), ToolsItems.NETHERITE_SPEAR.get());
+        expectDurable(missing, ToolsItems.WOOD_THROWING_SPEAR.get(), ToolsItems.STONE_THROWING_SPEAR.get(), ToolsItems.GOLD_THROWING_SPEAR.get(), ToolsItems.IRON_THROWING_SPEAR.get(), ToolsItems.DIAMOND_THROWING_SPEAR.get(), ToolsItems.NETHERITE_THROWING_SPEAR.get());
         expectDurable(missing, ToolsItems.WOOD_SHEARS.get(), ToolsItems.STONE_SHEARS.get(), ToolsItems.GOLD_SHEARS.get(), ToolsItems.DIAMOND_SHEARS.get(), ToolsItems.NETHERITE_SHEARS.get());
         expectDurable(missing, ToolsItems.WOOD_BUCKET.get(), ToolsItems.STONE_BUCKET.get(), ToolsItems.GOLD_BUCKET.get(), ToolsItems.DIAMOND_BUCKET.get(), ToolsItems.NETHERITE_BUCKET.get());
         expectDurable(missing, ToolsItems.BUILDING_WAND.get(), ToolsItems.BREAKING_WAND.get(), ToolsItems.MINING_WAND.get(), ToolsItems.REINFORCED_BUILDING_WAND.get(), ToolsItems.REINFORCED_BREAKING_WAND.get(), ToolsItems.REINFORCED_MINING_WAND.get());
@@ -70,7 +70,7 @@ final class EnchantmentTests {
 
         // The mod's own two tags, which are what the six modded enchantments name as their
         // supported items - the replacement for the deleted canEnchant overrides.
-        expect(missing, ToolsEnchantments.SPEAR_ENCHANTABLE, ToolsItems.WOOD_SPEAR.get(), ToolsItems.NETHERITE_SPEAR.get());
+        expect(missing, ToolsEnchantments.SPEAR_ENCHANTABLE, ToolsItems.WOOD_THROWING_SPEAR.get(), ToolsItems.NETHERITE_THROWING_SPEAR.get());
         expect(missing, ToolsEnchantments.SHEARS_ENCHANTABLE, Items.SHEARS, ToolsItems.DIAMOND_SHEARS.get());
 
         for (ToolsItems.MaterialGroup group : ToolsItems.MATERIAL_GROUPS.values()) {
@@ -80,8 +80,8 @@ final class EnchantmentTests {
             expectArmour(missing, ItemTags.CHEST_ARMOR_ENCHANTABLE, group.CHESTPLATE.get());
             expectArmour(missing, ItemTags.LEG_ARMOR_ENCHANTABLE, group.LEGGINGS.get());
             expectArmour(missing, ItemTags.FOOT_ARMOR_ENCHANTABLE, group.BOOTS.get());
-            expectDurable(missing, group.SPEAR.get(), group.SHEARS.get(), group.BUCKET.get());
-            expect(missing, ToolsEnchantments.SPEAR_ENCHANTABLE, group.SPEAR.get());
+            expectDurable(missing, group.THROWING_SPEAR.get(), group.SHEARS.get(), group.BUCKET.get());
+            expect(missing, ToolsEnchantments.SPEAR_ENCHANTABLE, group.THROWING_SPEAR.get());
             expect(missing, ToolsEnchantments.SHEARS_ENCHANTABLE, group.SHEARS.get());
         }
 
@@ -124,7 +124,7 @@ final class EnchantmentTests {
      */
     private static void spearsAreNeverOfferedRiptideOrChanneling(GameTestHelper helper) {
         Registry<Enchantment> registry = helper.getLevel().registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
-        Set<ResourceKey<Enchantment>> spear = offeredAtTable(registry, new ItemStack(ToolsItems.IRON_SPEAR.get()));
+        Set<ResourceKey<Enchantment>> spear = offeredAtTable(registry, new ItemStack(ToolsItems.IRON_THROWING_SPEAR.get()));
         Set<ResourceKey<Enchantment>> trident = offeredAtTable(registry, new ItemStack(Items.TRIDENT));
 
         helper.assertFalse(spear.contains(Enchantments.RIPTIDE) || spear.contains(Enchantments.CHANNELING), "a spear was offered riptide or channeling: " + spear);
@@ -145,10 +145,10 @@ final class EnchantmentTests {
         Holder<Enchantment> riptide = registry.getOrThrow(Enchantments.RIPTIDE);
         Holder<Enchantment> loyalty = registry.getOrThrow(Enchantments.LOYALTY);
 
-        helper.assertTrue(combine(player, new ItemStack(ToolsItems.IRON_SPEAR.get()), riptide).isEmpty(), "riptide went onto a spear at an anvil");
-        helper.assertTrue(combine(player, new ItemStack(ToolsItems.IRON_SPEAR.get()), registry.getOrThrow(Enchantments.CHANNELING)).isEmpty(), "channeling went onto a spear at an anvil");
+        helper.assertTrue(combine(player, new ItemStack(ToolsItems.IRON_THROWING_SPEAR.get()), riptide).isEmpty(), "riptide went onto a spear at an anvil");
+        helper.assertTrue(combine(player, new ItemStack(ToolsItems.IRON_THROWING_SPEAR.get()), registry.getOrThrow(Enchantments.CHANNELING)).isEmpty(), "channeling went onto a spear at an anvil");
 
-        ItemStack loyalSpear = combine(player, new ItemStack(ToolsItems.IRON_SPEAR.get()), loyalty);
+        ItemStack loyalSpear = combine(player, new ItemStack(ToolsItems.IRON_THROWING_SPEAR.get()), loyalty);
         helper.assertValueEqual(loyalSpear.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY).getLevel(loyalty), 1, "loyalty level on a spear from an anvil");
 
         ItemStack riptideTrident = combine(player, new ItemStack(Items.TRIDENT), riptide);

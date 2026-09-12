@@ -5,7 +5,7 @@
       "values": [
         {
           "condition": "assortedlib:part_enabled",
-          "part": "betterspears"
+          "part": "spears"
         },
         {
           "condition": "fabric:tags_populated",
@@ -28,9 +28,9 @@
     "S": "#c:rods/wooden"
   },
   "pattern": [
-    "I  ",
+    "  I",
     " S ",
-    "  S"
+    "S  "
   ],
   "result": {
     "id": "assortedtools:silver_spear"

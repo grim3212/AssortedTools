@@ -43,7 +43,7 @@ public class ToolsEnchantmentData extends LibDatapackRegistryProvider {
      */
     @Override
     public Map<ResourceKey<?>, List<LibConditionProvider>> conditions() {
-        List<LibConditionProvider> spears = List.of(Services.CONDITIONS.partEnabled(ToolsConditions.Parts.BETTER_SPEARS));
+        List<LibConditionProvider> spears = List.of(Services.CONDITIONS.partEnabled(ToolsConditions.Parts.THROWING_SPEARS));
         return Map.of(
                 ToolsEnchantments.CHICKEN_JUMP, List.of(Services.CONDITIONS.partEnabled(ToolsConditions.Parts.CHICKEN_SUIT)),
                 ToolsEnchantments.BOUNCINESS, spears,
