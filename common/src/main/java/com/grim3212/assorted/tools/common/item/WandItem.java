@@ -54,7 +54,7 @@ public abstract class WandItem extends Item implements ISwitchModes {
     protected abstract boolean canBreak(Level worldIn, BlockPos pos, ItemStack stack);
 
     public ItemStack getNeededItem(Level world, BlockState state, Player player) {
-        return Services.LEVEL_PROPERTIES.getCloneItemStack(state, null, world, BlockPos.ZERO, player);
+        return Services.LEVEL_PROPERTIES.getCloneItemStack(state, world, BlockPos.ZERO, player);
     }
 
     public int getNeededCount(BlockState state) {

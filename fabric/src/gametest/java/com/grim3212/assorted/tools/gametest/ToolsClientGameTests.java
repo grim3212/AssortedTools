@@ -1,5 +1,9 @@
 package com.grim3212.assorted.tools.gametest;
 
+import com.grim3212.assorted.lib.core.fluid.FluidInformation;
+import com.grim3212.assorted.lib.core.fluid.IFluidVariantHandler;
+import com.grim3212.assorted.lib.platform.ClientServices;
+import com.grim3212.assorted.lib.platform.Services;
 import com.grim3212.assorted.lib.util.NBTHelper;
 import com.grim3212.assorted.tools.common.item.CapturedEntity;
 import com.grim3212.assorted.tools.common.item.FragmentItem;
@@ -9,13 +13,18 @@ import net.fabricmc.fabric.api.client.gametest.v1.FabricClientGameTest;
 import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContext;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The component tooltips (pokeball, fragment, wand, bucket) as Fabric builds them, which only
@@ -61,7 +70,38 @@ public class ToolsClientGameTests implements FabricClientGameTest {
                 if (!bucket.contains("tooltip.buckets.empty")) {
                     throw new AssertionError("an empty bucket's tooltip is " + bucket);
                 }
+
+                assertFluidTextures(Fluids.WATER);
+                assertFluidTextures(Fluids.LAVA);
             });
+        }
+    }
+
+    /**
+     * A fluid's still and flowing textures, asked for both ways AssortedLib can be asked: through the
+     * client fluid helper, and through the fluid variant handler a foreign fluid gets. On Fabric the
+     * transfer API stopped handing back sprites, and the handler used to answer nothing at all, which
+     * is what draws a bucket empty; both now read the fluid's baked model, so both must agree and
+     * neither may be the missing texture. This is the client half of what keeps water and lava
+     * showing in a filled bucket.
+     */
+    private static void assertFluidTextures(Fluid fluid) {
+        FluidInformation contents = new FluidInformation(fluid);
+
+        Identifier still = ClientServices.FLUIDS.getStillFluidTexture(fluid);
+        Identifier flowing = ClientServices.FLUIDS.getFlowingFluidTexture(fluid);
+        if (still.equals(MissingTextureAtlasSprite.getLocation()) || flowing.equals(MissingTextureAtlasSprite.getLocation())) {
+            throw new AssertionError(fluid + " resolved to the missing texture: still " + still + ", flowing " + flowing);
+        }
+
+        IFluidVariantHandler handler = Services.FLUIDS.getVariantHandlerFor(contents)
+                .orElseThrow(() -> new AssertionError("no fluid variant handler for " + fluid));
+
+        Optional<Identifier> handlerStill = handler.getStillTexture(contents);
+        Optional<Identifier> handlerFlowing = handler.getFlowingTexture(contents);
+        if (!handlerStill.equals(Optional.of(still)) || !handlerFlowing.equals(Optional.of(flowing))) {
+            throw new AssertionError("the variant handler for " + fluid + " answered still " + handlerStill
+                    + " and flowing " + handlerFlowing + ", but the client helper says " + still + " and " + flowing);
         }
     }
 
