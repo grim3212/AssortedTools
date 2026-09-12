@@ -1,15 +1,8 @@
 package com.grim3212.assorted.tools.gametest;
 
 import com.grim3212.assorted.tools.common.item.CapturedEntity;
-import com.grim3212.assorted.lib.platform.Services;
-import net.minecraft.world.item.component.TooltipProvider;
-import net.minecraft.world.item.component.TooltipDisplay;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.core.component.DataComponentType;
-import java.util.ArrayList;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.mojang.authlib.GameProfile;
 import com.grim3212.assorted.tools.Constants;
 import com.grim3212.assorted.tools.common.entity.BetterSpearEntity;
 import com.grim3212.assorted.tools.common.entity.BoomerangEntity;
@@ -20,27 +13,18 @@ import com.grim3212.assorted.tools.common.item.BetterSpearItem;
 import com.grim3212.assorted.tools.common.item.BoomerangItem;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.gametest.framework.GameTestHelper;
-import io.netty.channel.embedded.EmbeddedChannel;
-import net.minecraft.network.Connection;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.contents.TranslatableContents;
-import net.minecraft.network.protocol.PacketFlow;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.network.CommonListenerCookie;
 import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -49,31 +33,28 @@ import net.minecraft.world.inventory.AnvilMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.crafting.CraftingInput;
-import net.minecraft.world.item.crafting.CraftingRecipe;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
-import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
 
+import static com.grim3212.assorted.lib.test.TestSupport.craft;
+import static com.grim3212.assorted.lib.test.TestSupport.hover;
+import static com.grim3212.assorted.lib.test.TestSupport.survivalPlayer;
+
 /**
- * Helpers, constants and fixtures shared by AssortedTools' gametest classes, which import them statically.
+ * Helpers, constants and fixtures shared by AssortedTools' gametest classes, which import them
+ * statically, alongside AssortedLib's {@code TestSupport}.
  */
 final class ToolsTestSupport {
 
@@ -116,12 +97,7 @@ final class ToolsTestSupport {
      */
     static void assertCrafts(GameTestHelper helper, int width, int height, List<ItemStack> grid, Item expected) {
         Identifier id = BuiltInRegistries.ITEM.getKey(expected);
-        CraftingInput input = CraftingInput.of(width, height, grid);
-        Optional<RecipeHolder<CraftingRecipe>> found = helper.getLevel().recipeAccess().getRecipeFor(RecipeType.CRAFTING, input, helper.getLevel());
-
-        helper.assertTrue(found.isPresent(), "no crafting recipe matched the pattern for " + id);
-
-        ItemStack result = found.get().value().assemble(input);
+        ItemStack result = craft(helper, CraftingInput.of(width, height, grid), "the pattern for " + id);
         helper.assertTrue(result.is(expected), "the pattern for " + id + " crafted " + BuiltInRegistries.ITEM.getKey(result.getItem()) + " instead");
     }
 
@@ -255,20 +231,6 @@ final class ToolsTestSupport {
         }
     }
 
-    /** Puts the player at a spot in the air inside the test box, looking at the given pitch. */
-    static void hover(GameTestHelper helper, ServerPlayer player, Vec3 relative, float xRot) {
-        Vec3 at = helper.absoluteVec(relative);
-        player.snapTo(at.x, at.y, at.z, 0.0F, xRot);
-    }
-
-    /**
-     * The translation key behind a component. A dedicated server loads no mod language file, so a
-     * rendered string would just be the key anyway - this asks for it directly instead.
-     */
-    static String translationKey(Component component) {
-        return component.getContents() instanceof TranslatableContents translatable ? translatable.getKey() : component.getString();
-    }
-
     static JsonObject readLang(GameTestHelper helper) {
         try (InputStream in = ToolsTestSupport.class.getResourceAsStream("/assets/" + Constants.MOD_ID + "/lang/en_us.json")) {
             helper.assertTrue(in != null, "en_us.json is not on the classpath");
@@ -288,49 +250,13 @@ final class ToolsTestSupport {
     }
 
     /**
-     * A fully joined survival player. {@code makeMockServerPlayerInLevel} forces creative, which
-     * changes nearly everything under test, and the other mock factories leave {@code connection}
-     * null, so messaging the player throws. This is the in-level factory minus the game mode
-     * override.
-     */
-    static ServerPlayer survivalPlayer(GameTestHelper helper, ItemStack held) {
-        ServerLevel level = helper.getLevel();
-        CommonListenerCookie cookie = CommonListenerCookie.createInitial(new GameProfile(UUID.randomUUID(), "assortedtools-test"), false);
-        ServerPlayer player = new ServerPlayer(level.getServer(), level, cookie.gameProfile(), cookie.clientInformation());
-
-        Connection connection = new Connection(PacketFlow.SERVERBOUND);
-        new EmbeddedChannel(connection);
-        level.getServer().getPlayerList().placeNewPlayer(connection, player, cookie);
-        helper.runBeforeTestEnd(() -> level.getServer().getPlayerList().remove(player));
-
-        player.setGameMode(GameType.SURVIVAL);
-        helper.assertFalse(player.isCreative(), "the test player is in creative, which changes every path under test");
-        player.setItemInHand(InteractionHand.MAIN_HAND, held);
-        return player;
-    }
-
-    /** Stands the player on top of {@code rel}, which is inside reach of anything nearby. */
-    static void stand(GameTestHelper helper, ServerPlayer player, BlockPos rel) {
-        Vec3 on = helper.absoluteVec(Vec3.atBottomCenterOf(rel.above()));
-        player.snapTo(on.x, on.y, on.z, 0.0F, 0.0F);
-    }
-
-    /**
      * Hovers the player two blocks above {@code rel} looking straight down and uses the held item.
      * This is the only way to drive {@code BetterBucketItem#use}: it decides everything from a POV
      * raytrace rather than from a position it is handed.
      */
     static void useLookingDownAt(GameTestHelper helper, ServerPlayer player, BlockPos rel) {
-        Vec3 above = helper.absoluteVec(Vec3.atCenterOf(rel).add(0.0D, 2.0D, 0.0D));
-        player.snapTo(above.x, above.y, above.z, 0.0F, 90.0F);
+        hover(helper, player, Vec3.atCenterOf(rel).add(0.0D, 2.0D, 0.0D), 90.0F);
         player.getItemInHand(InteractionHand.MAIN_HAND).getItem().use(helper.getLevel(), player, InteractionHand.MAIN_HAND);
-    }
-
-    /** Right clicks the top face of {@code rel} with whatever is in the main hand. */
-    static InteractionResult useOnTopOf(GameTestHelper helper, ServerPlayer player, BlockPos rel) {
-        BlockPos pos = helper.absolutePos(rel);
-        BlockHitResult hit = new BlockHitResult(Vec3.atCenterOf(pos).add(0.0D, 0.5D, 0.0D), Direction.UP, pos, false);
-        return player.getItemInHand(InteractionHand.MAIN_HAND).useOn(new UseOnContext(player, InteractionHand.MAIN_HAND, hit));
     }
 
     static void throwPokeball(GameTestHelper helper, ServerPlayer player, ItemStack ball, Vec3 at) {
@@ -348,32 +274,5 @@ final class ToolsTestSupport {
                 .map(ItemEntity::getItem)
                 .filter(stack -> stack.is(ToolsItems.POKEBALL.get()) && !CapturedEntity.of(stack).isEmpty())
                 .toList();
-    }
-
-    /** The lines one component adds to a stack's tooltip, in order. */
-    static <T extends TooltipProvider> List<Component> tooltipLines(GameTestHelper helper, ItemStack stack, DataComponentType<T> type) {
-        List<Component> lines = new ArrayList<>();
-        stack.addToTooltip(type, Item.TooltipContext.of(helper.getLevel()), TooltipDisplay.DEFAULT, lines::add, TooltipFlag.NORMAL);
-        return lines;
-    }
-
-    /** The translation keys of the lines one component adds to a stack's tooltip, in order. */
-    static <T extends TooltipProvider> List<String> tooltipKeys(GameTestHelper helper, ItemStack stack, DataComponentType<T> type) {
-        return tooltipLines(helper, stack, type).stream().map(ToolsTestSupport::tooltipKey).toList();
-    }
-
-    /** The translation keys of a stack's whole tooltip, as the loader builds it. */
-    static List<String> fullTooltipKeys(GameTestHelper helper, ItemStack stack) {
-        return stack.getTooltipLines(Item.TooltipContext.of(helper.getLevel()), null, TooltipFlag.NORMAL).stream().map(ToolsTestSupport::tooltipKey).toList();
-    }
-
-    /** A line's translation key, or its text when it is not translatable. */
-    static String tooltipKey(Component line) {
-        return line.getContents() instanceof TranslatableContents translatable ? translatable.getKey() : line.getString();
-    }
-
-    /** NeoForge adds mod component tooltip lines on the server too; Fabric only on the client. */
-    static boolean onNeoForge() {
-        return "Forge".equals(Services.PLATFORM.getPlatformName());
     }
 }

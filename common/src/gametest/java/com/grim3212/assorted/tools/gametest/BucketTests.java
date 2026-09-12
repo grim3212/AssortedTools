@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import static com.grim3212.assorted.lib.test.TestSupport.*;
 import static com.grim3212.assorted.tools.gametest.ToolsTestSupport.*;
 
 /**
@@ -204,16 +205,16 @@ final class BucketTests {
         BetterBucketItem bucket = ToolsItems.DIAMOND_BUCKET.get();
 
         ItemStack empty = bucket.getEmptyStack();
-        helper.assertValueEqual(translationKey(empty.getHoverName()), "item.assortedtools.diamond_bucket", "the name of an empty bucket");
+        helper.assertValueEqual(tooltipKey(empty.getHoverName()), "item.assortedtools.diamond_bucket", "the name of an empty bucket");
 
         ItemStack water = bucket.getEmptyStack();
         BetterBucketItem.storeFluid(water, Fluids.WATER, BetterBucketItem.getBucketAmount());
-        helper.assertValueEqual(translationKey(water.getHoverName()), "item.assortedtools.diamond_bucket_filled", "the name of a water filled bucket");
+        helper.assertValueEqual(tooltipKey(water.getHoverName()), "item.assortedtools.diamond_bucket_filled", "the name of a water filled bucket");
 
         ItemStack lava = bucket.getEmptyStack();
         BetterBucketItem.storeFluid(lava, Fluids.LAVA, BetterBucketItem.getBucketAmount());
         Component lavaName = lava.getHoverName();
-        helper.assertValueEqual(translationKey(lavaName), "item.assortedtools.diamond_bucket_filled", "the name of a lava filled bucket");
+        helper.assertValueEqual(tooltipKey(lavaName), "item.assortedtools.diamond_bucket_filled", "the name of a lava filled bucket");
 
         // The fluid is the argument the name is built around, so two fluids must not name the same.
         helper.assertFalse(water.getHoverName().equals(lavaName), "a water bucket and a lava bucket are named the same thing");
