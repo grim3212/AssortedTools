@@ -29,6 +29,7 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import static com.grim3212.assorted.lib.test.TestSupport.*;
 import static com.grim3212.assorted.tools.gametest.ToolsTestSupport.*;
 
 /**

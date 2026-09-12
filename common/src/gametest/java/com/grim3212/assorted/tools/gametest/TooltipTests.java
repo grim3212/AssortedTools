@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import com.grim3212.assorted.lib.test.TestSupport;
+import static com.grim3212.assorted.lib.test.TestSupport.*;
 import static com.grim3212.assorted.tools.gametest.ToolsTestSupport.*;
 
 /**
@@ -70,7 +72,7 @@ final class TooltipTests {
 
             NBTHelper.putString(stack, "Mode", mode);
             List<Component> lines = tooltipLines(helper, stack, type);
-            helper.assertValueEqual(lines.stream().map(ToolsTestSupport::tooltipKey).toList(), List.of("assortedtools.wand.current"), wand + "'s tooltip");
+            helper.assertValueEqual(lines.stream().map(TestSupport::tooltipKey).toList(), List.of("assortedtools.wand.current"), wand + "'s tooltip");
             Object shown = ((TranslatableContents) lines.get(0).getContents()).getArgs()[0];
             helper.assertValueEqual(tooltipKey((Component) shown), "assortedtools.wand.mode." + mode, wand + "'s mode in its tooltip");
             assertInFullTooltip(helper, stack, "assortedtools.wand.current");
@@ -101,7 +103,7 @@ final class TooltipTests {
 
     private static void assertContains(GameTestHelper helper, ItemStack stack, int buckets, int capacity, String what) {
         List<Component> lines = tooltipLines(helper, stack, ToolsDataComponents.BUCKET_CONTENTS.get());
-        helper.assertValueEqual(lines.stream().map(ToolsTestSupport::tooltipKey).toList(), List.of("tooltip.buckets.contains"), what + "'s tooltip");
+        helper.assertValueEqual(lines.stream().map(TestSupport::tooltipKey).toList(), List.of("tooltip.buckets.contains"), what + "'s tooltip");
         List<Object> args = List.of(((TranslatableContents) lines.get(0).getContents()).getArgs());
         helper.assertValueEqual(args, List.<Object>of(buckets, capacity), what + "'s count");
         assertInFullTooltip(helper, stack, "tooltip.buckets.contains");
