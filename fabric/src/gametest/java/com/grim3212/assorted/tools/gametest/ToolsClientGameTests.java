@@ -78,12 +78,10 @@ public class ToolsClientGameTests implements FabricClientGameTest {
     }
 
     /**
-     * A fluid's still and flowing textures, asked for both ways AssortedLib can be asked: through the
-     * client fluid helper, and through the fluid variant handler a foreign fluid gets. On Fabric the
-     * transfer API stopped handing back sprites, and the handler used to answer nothing at all, which
-     * is what draws a bucket empty; both now read the fluid's baked model, so both must agree and
-     * neither may be the missing texture. This is the client half of what keeps water and lava
-     * showing in a filled bucket.
+     * A fluid's still and flowing textures, asked both ways AssortedLib can be asked: through the
+     * client fluid helper, and through the fluid variant handler a foreign fluid gets. Both read the
+     * fluid's baked model, so both must agree and neither may be the missing texture - on Fabric the
+     * transfer API no longer hands back sprites.
      */
     private static void assertFluidTextures(Fluid fluid) {
         FluidInformation contents = new FluidInformation(fluid);

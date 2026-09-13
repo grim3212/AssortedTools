@@ -5,11 +5,10 @@ import net.minecraft.world.item.ToolMaterial;
 
 /**
  * The nine values vanilla tunes per spear material, in the order {@code Item.Properties#spear} takes
- * them: how long the stab swing lasts, the kinetic damage multiplier, the delay before a lunge
- * lands, then the charge time and speed a lunge needs to dismount, to knock back and to damage.
- * The constants are vanilla's own, read from {@code Items} in 26.2; an extra material's are read
- * from the configuration, defaulting to the vanilla material of the same harvest level. Held as
- * doubles, which is what the configuration stores, so a default prints as written.
+ * them: how long the stab swing lasts, the kinetic damage multiplier, the delay before a lunge lands,
+ * then the charge time and speed a lunge needs to dismount, to knock back and to damage. An extra
+ * material's are read from the configuration, defaulting to the vanilla material of the same harvest
+ * level. Held as doubles, which is what the configuration stores.
  */
 public record SpearStats(double swingSeconds, double damageMultiplier, double delaySeconds, double dismountSeconds, double dismountSpeed, double knockbackSeconds, double knockbackSpeed, double damageSeconds, double damageSpeed) {
 

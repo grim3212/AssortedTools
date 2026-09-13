@@ -57,12 +57,10 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
- * The bucket item model: a base layer, the contained fluid masked to the bucket's fluid window, and
- * a cover layer on top. It has to be an {@link ItemModel}, not a model json loader: fluid models
- * exist only once all baking has finished, while {@link #update} runs at render time with the
- * stack. So a bucket draws any fluid it holds, including other mods'. The result is cached per
- * fluid. Translucency comes from {@link Material#withForceTranslucent(boolean)}, gui light from the
- * json.
+ * The bucket item model: a base layer, the contained fluid masked to the bucket's fluid window, and a
+ * cover layer on top. It has to be an {@link ItemModel}, not a model json loader: fluid models exist
+ * only once all baking has finished, while {@link #update} runs at render time with the stack, so a
+ * bucket draws any fluid it holds, including other mods'. The result is cached per fluid.
  */
 public class FluidContainerItemModel implements ItemModel {
 
