@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:function",
+  "environment": "minecraft:default",
+  "function": "assortedtools:dispenser_fills_a_bucket_and_leaves_what_it_cannot_take",
+  "structure": "assortedtools:test_box",
+  "max_ticks": 40,
+  "setup_ticks": 0,
+  "required": true
+}

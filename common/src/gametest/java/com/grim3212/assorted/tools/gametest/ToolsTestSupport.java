@@ -48,6 +48,7 @@ import java.util.Set;
 import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
 
+import static com.grim3212.assorted.lib.test.TestSupport.countInInventory;
 import static com.grim3212.assorted.lib.test.TestSupport.craft;
 import static com.grim3212.assorted.lib.test.TestSupport.hover;
 import static com.grim3212.assorted.lib.test.TestSupport.survivalPlayer;
@@ -212,16 +213,6 @@ final class ToolsTestSupport {
         helper.getLevel().getServer().getPlayerList().remove(player);
     }
 
-    static int countInInventory(ServerPlayer player, Item item) {
-        int count = 0;
-        for (int slot = 0; slot < player.getInventory().getContainerSize(); slot++) {
-            ItemStack stack = player.getInventory().getItem(slot);
-            if (stack.is(item)) {
-                count += stack.getCount();
-            }
-        }
-        return count;
-    }
 
     static void removeFromInventory(ServerPlayer player, Item item) {
         for (int slot = 0; slot < player.getInventory().getContainerSize(); slot++) {

@@ -7,14 +7,14 @@ import net.minecraft.world.item.Item;
 
 /**
  * A hoe built from a configured tool material; {@link HoeItem} supplies tilling. Its attack damage
- * baseline is the configured harvest level, not vanilla's fixed negative.
+ * baseline is the harvest level negated: the better the material, the worse the hoe swings.
  */
 public class ConfigurableHoeItem extends HoeItem implements ITiered {
 
     private final ItemTierConfig tierHolder;
 
     public ConfigurableHoeItem(ItemTierConfig tierHolder, Item.Properties properties) {
-        super(tierHolder.material(), tierHolder.getHarvestLevel(), ConfigurableTools.HOE_SPEED, properties);
+        super(tierHolder.material(), -tierHolder.getHarvestLevel(), ConfigurableTools.HOE_SPEED, properties);
         this.tierHolder = tierHolder;
     }
 

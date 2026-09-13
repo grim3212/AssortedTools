@@ -10,7 +10,6 @@ import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.DispenserBlock;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,46 +29,36 @@ public class DispenseBucketHandler extends DefaultDispenseItemBehavior {
     }
 
     /**
-     * {@code BlockSource} is a record now - {@code level()}, {@code pos()}, {@code state()} and
-     * {@code blockEntity()} - and {@code DefaultDispenseItemBehavior#dispense} is final, with
-     * {@code execute} the protected hook that does the work.
+     * {@code DefaultDispenseItemBehavior#dispense} is final; {@code execute} is the hook.
      */
     @Override
     @NotNull
     protected ItemStack execute(@NotNull BlockSource source, @NotNull ItemStack stack) {
-        ServerLevel level = source.level();
-        Direction dispenserFacing = source.state().getValue(DispenserBlock.FACING);
-        BlockPos blockpos = source.pos().relative(dispenserFacing);
+        BlockPos front = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
+        FluidInformation bucketful = new FluidInformation(FluidHelper.pickupableFluid(source.level(), front), Services.FLUIDS.getBucketAmount());
 
-        if (Services.FLUIDS.get(stack).isPresent() && !Services.FLUIDS.get(stack).get().fluid().isSame(level.getFluidState(blockpos).getType())) {
-            return dumpContainer(source, stack);
-        } else {
-            return fillContainer(source, stack);
+        // Room is decided before the pickup: FluidHelper#tryPickupFluid removes the source block as
+        // it answers, so a container asked afterwards has already swallowed what it cannot hold.
+        if (bucketful.fluid() != Fluids.EMPTY && Services.FLUIDS.simulateInsert(stack, bucketful) >= bucketful.amount()) {
+            return fillContainer(source, front, stack);
         }
+
+        return dumpContainer(source, stack);
     }
 
     /**
-     * Picks up fluid in front of a Dispenser and fills a container with it.
+     * Picks up the fluid in front of a Dispenser and fills a container with it.
      */
     @NotNull
-    private ItemStack fillContainer(@NotNull BlockSource source, @NotNull ItemStack stack) {
-        ServerLevel level = source.level();
-        Direction dispenserFacing = source.state().getValue(DispenserBlock.FACING);
-        BlockPos blockpos = source.pos().relative(dispenserFacing);
-
-        Fluid fluid = level.getFluidState(blockpos).getType();
-        Optional<FluidInformation> fluidHandler = FluidHelper.tryPickupFluid(null, level, blockpos);
-        if (fluidHandler.isEmpty()) {
+    private ItemStack fillContainer(@NotNull BlockSource source, @NotNull BlockPos front, @NotNull ItemStack stack) {
+        Optional<FluidInformation> picked = FluidHelper.tryPickupFluid(null, source.level(), front);
+        if (picked.isEmpty()) {
             return super.execute(source, stack);
         }
 
-        ItemStack filledStack = Services.FLUIDS.insertInto(stack, new FluidInformation(fluid, Services.FLUIDS.getBucketAmount()));
-
-        // DispenserBlockEntity#addItem is gone (insertItem returns the leftover instead of a slot
-        // index), and consumeWithRemainder is the vanilla helper that does exactly what both of
-        // these branches used to hand-roll: shrink the dispensed stack by one and put the result
-        // back in the dispenser, dispensing it if there is no room.
-        return this.consumeWithRemainder(source, stack, filledStack);
+        // consumeWithRemainder shrinks the dispensed stack by one and puts the result back, or
+        // dispenses it if there is no room.
+        return this.consumeWithRemainder(source, stack, Services.FLUIDS.insertInto(stack, picked.get().withSource()));
     }
 
     /**

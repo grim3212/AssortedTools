@@ -1,6 +1,7 @@
 package com.grim3212.assorted.tools.gametest;
 
 import com.grim3212.assorted.lib.events.AnvilUpdatedEvent;
+import com.grim3212.assorted.tools.ToolsCommonMod;
 import com.grim3212.assorted.tools.common.enchantment.ToolsEnchantments;
 import com.grim3212.assorted.tools.common.handlers.ChickenSuitConversionHandler;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
@@ -46,6 +47,29 @@ final class EnchantmentTests {
         out.accept("spears_are_never_offered_riptide_or_channeling", EnchantmentTests::spearsAreNeverOfferedRiptideOrChanneling);
         out.accept("spear_anvil_rejects_riptide_and_channeling", EnchantmentTests::spearAnvilRejectsRiptideAndChanneling);
         out.accept("chicken_suit_converts_armour_in_an_anvil", EnchantmentTests::chickenSuitConvertsArmourInAnAnvil);
+        out.accept("conductivity_chances_read_back_as_floats", EnchantmentTests::conductivityChancesReadBackAsFloats);
+    }
+
+    /**
+     * The Conductivity chances come back as the {@code Float} the option was declared with. On
+     * NeoForge they live in TOML, where every number parses as a {@code Long} or a {@code Double},
+     * and the spear's first unboxing threw {@code ClassCastException}. The element <em>type</em> is
+     * what is asserted: a {@code Double} of 0.6 passes every other check but the cast.
+     */
+    private static void conductivityChancesReadBackAsFloats(GameTestHelper helper) {
+        List<? extends Float> chances = ToolsCommonMod.COMMON_CONFIG.conductivityLightningChances.get();
+        helper.assertTrue(chances != null && !chances.isEmpty(), "the configured conductivity chances are missing");
+
+        for (Object chance : chances) {
+            helper.assertTrue(chance instanceof Float, "a Float list option handed back a " + chance.getClass().getSimpleName() + " (" + chance + "); every read of it unboxes to float");
+        }
+
+        // Every entry is a chance, which is what the spear falls back to its defaults over.
+        for (float chance : chances) {
+            helper.assertTrue(chance >= 0.0F && chance < 1.0F, "a configured conductivity chance of " + chance + " is outside [0, 1)");
+        }
+
+        helper.succeed();
     }
 
     /**

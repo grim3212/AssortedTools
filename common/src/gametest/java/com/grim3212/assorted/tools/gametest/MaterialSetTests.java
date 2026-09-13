@@ -5,6 +5,12 @@ import com.grim3212.assorted.tools.ToolsCommonMod;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
 import com.grim3212.assorted.tools.config.ArmorMaterialConfig;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -28,6 +34,38 @@ final class MaterialSetTests {
         out.accept("every_material_tool_set_crafts", MaterialSetTests::everyMaterialToolSetCrafts);
         out.accept("every_material_armour_set_crafts", MaterialSetTests::everyMaterialArmourSetCrafts);
         out.accept("armour_equips_and_protects", MaterialSetTests::armourEquipsAndProtects);
+        out.accept("each_tool_shape_swings_like_its_vanilla_shape", MaterialSetTests::eachToolShapeSwingsLikeItsVanillaShape);
+    }
+
+    /**
+     * A material's tools are ranked against each other the way vanilla ranks its own: the sword hits
+     * hardest and fastest, the pickaxe is a mining tool rather than a second sword, and the hoe is
+     * the worst weapon of the set. Everything numeric is baked into {@code attribute_modifiers} at
+     * registration, so there is no live getter to ask - a wrong baseline is silent.
+     */
+    private static void eachToolShapeSwingsLikeItsVanillaShape(GameTestHelper helper) {
+        for (ToolsItems.MaterialGroup group : ToolsItems.MATERIAL_GROUPS.values()) {
+            String name = group.tier.getName();
+
+            double swordDamage = swing(group.SWORD.get().getDefaultInstance(), Attributes.ATTACK_DAMAGE);
+            double pickaxeDamage = swing(group.PICKAXE.get().getDefaultInstance(), Attributes.ATTACK_DAMAGE);
+            double hoeDamage = swing(group.HOE.get().getDefaultInstance(), Attributes.ATTACK_DAMAGE);
+
+            helper.assertTrue(pickaxeDamage < swordDamage, name + " pickaxe hits for " + pickaxeDamage + " against the sword's " + swordDamage + "; a pickaxe is not a sword");
+            helper.assertTrue(hoeDamage < pickaxeDamage, name + " hoe hits for " + hoeDamage + " against the pickaxe's " + pickaxeDamage + "; the hoe is the worst weapon of the set");
+
+            double swordSpeed = swing(group.SWORD.get().getDefaultInstance(), Attributes.ATTACK_SPEED);
+            double pickaxeSpeed = swing(group.PICKAXE.get().getDefaultInstance(), Attributes.ATTACK_SPEED);
+
+            helper.assertTrue(pickaxeSpeed < swordSpeed, name + " pickaxe swings at " + pickaxeSpeed + ", the same as or faster than the sword's " + swordSpeed);
+        }
+
+        helper.succeed();
+    }
+
+    /** What an item's baked {@code attribute_modifiers} add to {@code attribute} in the main hand. */
+    private static double swing(ItemStack stack, Holder<Attribute> attribute) {
+        return stack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY).compute(attribute, 0.0D, EquipmentSlot.MAINHAND);
     }
 
     /**

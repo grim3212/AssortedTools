@@ -116,7 +116,9 @@ public class BetterBucketItem extends Item implements ITiered {
             Direction direction = blockhitresult.getDirection();
             BlockPos clickPosOffset = clickPos.relative(direction);
 
-            if (canContainMore) {
+            // Asked before the pickup: FluidHelper#tryPickupFluid removes the source block as it
+            // answers, so a bucket that refuses afterwards has already destroyed it.
+            if (canContainMore && canStore(itemStackIn, FluidHelper.pickupableFluid(worldIn, clickPos))) {
                 Optional<FluidInformation> filledResult = FluidHelper.tryPickupFluid(playerIn, worldIn, blockhitresult);
                 if (!filledResult.isEmpty()) {
                     // Don't change if in creative
@@ -188,6 +190,11 @@ public class BetterBucketItem extends Item implements ITiered {
     /** Whether the stack holds no fluid or {@code toCheck}. */
     public static boolean isEmptyOrContains(ItemStack stack, String toCheck) {
         return getFluid(stack).equals(emptyMarker()) || getFluid(stack).equals(toCheck);
+    }
+
+    /** Whether {@code fluid} may go into this bucket, which holds one kind at a time. */
+    public static boolean canStore(ItemStack stack, Fluid fluid) {
+        return fluid != Fluids.EMPTY && isEmptyOrContains(stack, getStringFromFluid(fluid));
     }
 
     /**

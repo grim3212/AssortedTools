@@ -51,6 +51,95 @@ final class BucketTests {
         out.accept("milk_bucket_can_be_drunk", BucketTests::milkBucketCanBeDrunk);
         out.accept("dispenser_places_fluid_from_a_better_bucket", BucketTests::dispenserPlacesFluidFromABetterBucket);
         out.accept("fluid_ingredient_draws_a_filled_bucket", BucketTests::fluidIngredientDrawsAFilledBucket);
+        out.accept("better_bucket_never_mixes_two_fluids", BucketTests::betterBucketNeverMixesTwoFluids);
+        out.accept("dispenser_fills_a_bucket_and_leaves_what_it_cannot_take", BucketTests::dispenserFillsABucketAndLeavesWhatItCannotTake);
+    }
+
+    /**
+     * A dispenser fills an empty bucket from the source in front of it, and pours into a source it
+     * has no room for rather than swallowing it. {@code FluidHelper#tryPickupFluid} takes the source
+     * block out of the world as it answers, so the handler has to know it has room before it picks
+     * anything up.
+     */
+    private static void dispenserFillsABucketAndLeavesWhatItCannotTake(GameTestHelper helper) {
+        final BlockPos fills = new BlockPos(2, 1, 2);
+        final BlockPos refuses = new BlockPos(6, 1, 6);
+
+        BetterBucketItem bucket = ToolsItems.DIAMOND_BUCKET.get();
+        int oneBucket = BetterBucketItem.getBucketAmount();
+        int capacity = bucket.getMaximumMillibuckets();
+
+        ItemStack full = bucket.getEmptyStack();
+        BetterBucketItem.storeFluid(full, Fluids.WATER, capacity);
+
+        helper.startSequence()
+                .thenExecute(() -> {
+                    loadedDispenser(helper, fills, bucket.getEmptyStack());
+                    loadedDispenser(helper, refuses, full);
+                })
+                // A powered dispenser schedules itself four ticks out.
+                .thenExecuteAfter(10, () -> {
+                    helper.assertBlockPresent(Blocks.AIR, fills.above());
+                    ItemStack filled = helper.getBlockEntity(fills, DispenserBlockEntity.class).getItem(0);
+                    helper.assertTrue(filled.is(bucket), "the dispenser threw the bucket instead of filling it");
+                    helper.assertValueEqual(BetterBucketItem.getAmount(filled), oneBucket, "water in the bucket after one pickup");
+                    helper.assertValueEqual(BetterBucketItem.getFluid(filled), "minecraft:water", "fluid stored by the dispenser");
+
+                    helper.assertBlockPresent(Blocks.WATER, refuses.above());
+                    ItemStack left = helper.getBlockEntity(refuses, DispenserBlockEntity.class).getItem(0);
+                    helper.assertTrue(left.is(bucket), "the dispenser threw out a bucket that had no room");
+                    helper.assertValueEqual(BetterBucketItem.getAmount(left), capacity - oneBucket, "water in a bucket that had no room and poured instead");
+                })
+                .thenSucceed();
+    }
+
+    /**
+     * A dispenser facing up, holding {@code held}, with a walled-in water source above it and a
+     * redstone block beside it. Facing up survives the structure being placed rotated; the walls
+     * keep the source out of the next test's box.
+     */
+    private static void loadedDispenser(GameTestHelper helper, BlockPos dispenser, ItemStack held) {
+        BlockPos front = dispenser.above();
+
+        helper.setBlock(dispenser, Blocks.DISPENSER.defaultBlockState().setValue(DispenserBlock.FACING, Direction.UP));
+        helper.setBlock(front.above(), Blocks.STONE);
+        for (Direction side : Direction.Plane.HORIZONTAL) {
+            helper.setBlock(front.relative(side), Blocks.STONE);
+        }
+        helper.setBlock(front, Blocks.WATER);
+
+        helper.getBlockEntity(dispenser, DispenserBlockEntity.class).setItem(0, held);
+        helper.setBlock(dispenser.north(), Blocks.REDSTONE_BLOCK);
+    }
+
+    /**
+     * A bucket holds one fluid at a time, and the refusal has to happen before the pickup:
+     * {@code FluidHelper#tryPickupFluid} removes the source block as it answers. Only the stored
+     * fluid is asserted, because a click that is not a pickup falls through to the item's place
+     * branch, which may legitimately empty the bucket into what was clicked.
+     */
+    private static void betterBucketNeverMixesTwoFluids(GameTestHelper helper) {
+        final BlockPos water = new BlockPos(2, 1, 2);
+        final BlockPos lava = new BlockPos(6, 1, 6);
+
+        helper.setBlock(water, Blocks.WATER);
+        helper.setBlock(lava, Blocks.LAVA);
+
+        BetterBucketItem bucket = ToolsItems.DIAMOND_BUCKET.get();
+        int oneBucket = BetterBucketItem.getBucketAmount();
+        ServerPlayer player = survivalPlayer(helper, bucket.getEmptyStack());
+
+        useLookingDownAt(helper, player, water);
+        helper.assertValueEqual(BetterBucketItem.getFluid(player.getItemInHand(InteractionHand.MAIN_HAND)), "minecraft:water", "stored fluid after picking up water");
+        helper.assertValueEqual(BetterBucketItem.getAmount(player.getItemInHand(InteractionHand.MAIN_HAND)), oneBucket, "millibuckets after picking up water");
+
+        useLookingDownAt(helper, player, lava);
+
+        ItemStack held = player.getItemInHand(InteractionHand.MAIN_HAND);
+        helper.assertFalse(BetterBucketItem.getFluid(held).equals("minecraft:lava"), "a water filled bucket turned into a lava bucket when it was clicked on lava");
+        helper.assertTrue(BetterBucketItem.getAmount(held) <= oneBucket, "a water filled bucket counted the lava it refused towards its own contents");
+
+        helper.succeed();
     }
 
     /**
@@ -223,11 +312,10 @@ final class BucketTests {
     }
 
     /**
-     * What a recipe viewer draws for a fluid ingredient over water. A better bucket keeps its fluid
-     * in components, so the ingredient has to collect and draw the <em>filled</em> stack: the bare
-     * item a default display would name is an empty bucket, which is the one thing the ingredient
-     * does not accept. This is the half of AssortedLib's {@code LibFluidIngredient} that only a
-     * modded container can show; the library's own test covers vanilla buckets.
+     * What a recipe viewer draws for a fluid ingredient over water. A better bucket keeps its fluid in
+     * components, so the ingredient has to collect and draw the <em>filled</em> stack: the bare item a
+     * default display would name is an empty bucket, which the ingredient does not accept. The
+     * library's own test covers vanilla buckets.
      */
     private static void fluidIngredientDrawsAFilledBucket(GameTestHelper helper) {
         Ingredient water = Services.INGREDIENTS.fluid(null, FluidTags.WATER, Services.FLUIDS.getBucketAmount());

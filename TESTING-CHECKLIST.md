@@ -7,10 +7,10 @@ Run each list on **both** NeoForge and Fabric.
 
 ## Tools and armour
 - [ ] Every material's armour set shows its texture on the player
-- [ ] Hammers mine a 3x3 area
+- [ ] Hammers mine without dropping blocks
 - [ ] Ultimate fist shows its enchant glint
 - [ ] Multitool strips logs, scrapes and de-waxes copper, makes paths and tills
-- [ ] Material shears shear (Fabric in particular)
+- [ ] Material shears shear
 
 ## Thrown items
 - [ ] Throwing spear renders in hand and in the ground
@@ -40,6 +40,3 @@ Run each list on **both** NeoForge and Fabric.
 - [ ] An extra-material spear (steel, ruby, ...) lunges, dismounts and stabs like vanilla's iron
       spear, shows the flat icon in the inventory and the long model in hand, and takes Lunge at a
       table
-- [ ] Its textures read as the material: the head recoloured, the shaft the same wood as vanilla's
-- [ ] A throwing spear crafts only from two sticks and the head in a row; the old diagonal now
-      yields vanilla's spear for vanilla materials, and a head above two sticks a shovel

@@ -56,6 +56,25 @@ public class FluidHelper {
         return tryPickupFluid(playerIn, level, hitResult.getBlockPos());
     }
 
+    /**
+     * The fluid a bucket would take out of {@code pos}, or {@link Fluids#EMPTY} if nothing there
+     * hands one over. {@link #tryPickupFluid} removes the source block as it answers, so a caller
+     * that might refuse the pickup has to decide from this first.
+     */
+    public static Fluid pickupableFluid(Level level, BlockPos pos) {
+        if (level == null || pos == null) {
+            return Fluids.EMPTY;
+        }
+
+        BlockState blockState = level.getBlockState(pos);
+        if (!(blockState.getBlock() instanceof BucketPickup)) {
+            return Fluids.EMPTY;
+        }
+
+        // A waterlogged block's fluid state can be the flowing form; buckets store only the source.
+        return new FluidInformation(blockState.getFluidState().getType()).withSource().fluid();
+    }
+
     public static boolean tryPlaceFluid(@Nullable Player player, Level level, BlockPos pos, @Nullable BlockHitResult hitResult, FluidInformation information) {
         Fluid content = information.fluid();
         if (!(content instanceof FlowingFluid))

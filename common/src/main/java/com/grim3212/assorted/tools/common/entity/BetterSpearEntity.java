@@ -1,6 +1,5 @@
 package com.grim3212.assorted.tools.common.entity;
 
-import com.google.common.collect.Lists;
 import com.grim3212.assorted.tools.ToolsCommonMod;
 import com.grim3212.assorted.tools.api.util.ToolsDamageSources;
 import com.grim3212.assorted.tools.common.enchantment.ToolsEnchantments;
@@ -243,20 +242,23 @@ public class BetterSpearEntity extends AbstractArrow {
         }
     }
 
+    /**
+     * The configured chance modifier for a level of Conductivity: the smaller the number, the more
+     * often lightning strikes. The configured list is used only when it has one entry per level and
+     * every entry is a real chance; anything else falls back to the defaults.
+     */
     private float conductiveChances(int conductivityLevel) {
-        List<Float> defaultChances = Lists.newArrayList(0.6F, 0.3F, 0.1F);
+        List<Float> defaultChances = List.of(0.6F, 0.3F, 0.1F);
         List<? extends Float> chances = ToolsCommonMod.COMMON_CONFIG.conductivityLightningChances.get();
 
-        if (chances != null && chances.size() == 3) {
-            for (double chance : chances) {
-                if (chance >= 1.0F && chance < 0.0F) {
-                    return defaultChances.get(conductivityLevel);
-                }
-            }
-            return chances.get(conductivityLevel);
+        // An enchantment level is not bounded by its definition's max_level.
+        int index = Mth.clamp(conductivityLevel, 0, defaultChances.size() - 1);
+
+        if (chances != null && chances.size() == defaultChances.size() && chances.stream().allMatch(chance -> chance >= 0.0F && chance < 1.0F)) {
+            return chances.get(index);
         }
 
-        return defaultChances.get(0);
+        return defaultChances.get(index);
     }
 
     private void tryConductivity(BlockPos pos) {
