@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:function",
+  "environment": "minecraft:default",
+  "function": "assortedtools:mining_wand_dirt_mode_clears_grass_plants",
+  "structure": "assortedtools:test_box",
+  "max_ticks": 1,
+  "setup_ticks": 0,
+  "required": true
+}

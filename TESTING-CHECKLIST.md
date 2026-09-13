@@ -24,6 +24,8 @@ Run each list on **both** NeoForge and Fabric.
 
 ## Wands
 - [ ] Reinforced wands' extra modes: build water, build lava, build caves, mine ores
+- [ ] Mining wand, dirt mode, over real terrain: the grass and ferns go with the ground, and a pond
+      or stream caught in the selection is left full
 - [ ] The mode-switch keybind cycles modes for a wand in either hand, and the key is listed under
       the mod's own category in Controls
 

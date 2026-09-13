@@ -45,7 +45,12 @@ public class WandMiningItem extends WandItem {
             case MINE_ALL:
                 return (state.getBlock() != Blocks.BEDROCK || ToolsCommonMod.COMMON_CONFIG.bedrockBreaking.get()) && (state.getBlock() != Blocks.OBSIDIAN || ToolsCommonMod.COMMON_CONFIG.easyMiningObsidian.get());
             case MINE_DIRT:
-                return state.is(BlockTags.DIRT) || state.getBlock() == Blocks.GRASS_BLOCK || state.getBlock() == Blocks.DIRT || state.getBlock() == Blocks.SAND || state.getBlock() == Blocks.GRAVEL || state.getBlock() instanceof LeavesBlock || state.getBlock() == Blocks.FARMLAND || state.getBlock() == Blocks.SNOW || state.getBlock() == Blocks.SOUL_SAND || state.getBlock() == Blocks.VINE || state.getBlock() instanceof FlowerBlock;
+                // #minecraft:dirt is only dirt, coarse dirt and rooted dirt in 26.2 - the grass block
+                // moved out to #minecraft:grass_blocks - so it is still named on its own below.
+                // #minecraft:replaceable_by_trees is what is left of the old #replaceable_plants,
+                // and the fluid guard keeps water and seagrass out of it: this mode clears the
+                // plants standing on the ground, it does not drain what it digs past.
+                return state.is(BlockTags.DIRT) || (state.is(BlockTags.REPLACEABLE_BY_TREES) && state.getFluidState().isEmpty()) || state.getBlock() == Blocks.GRASS_BLOCK || state.getBlock() == Blocks.DIRT || state.getBlock() == Blocks.SAND || state.getBlock() == Blocks.GRAVEL || state.getBlock() instanceof LeavesBlock || state.getBlock() == Blocks.FARMLAND || state.getBlock() == Blocks.SNOW || state.getBlock() == Blocks.SOUL_SAND || state.getBlock() == Blocks.VINE || state.getBlock() instanceof FlowerBlock;
             case MINE_WOOD:
                 return state.is(BlockTags.LOGS) || state.is(BlockTags.LEAVES);
             case MINE_ORES:

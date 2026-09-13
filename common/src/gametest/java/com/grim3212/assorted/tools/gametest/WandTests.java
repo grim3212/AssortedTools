@@ -31,6 +31,7 @@ final class WandTests {
     static void register(BiConsumer<String, Consumer<GameTestHelper>> out) {
         out.accept("mining_wand_cycles_and_mines", WandTests::miningWandCyclesAndMines);
         out.accept("building_wand_builds_and_consumes_blocks", WandTests::buildingWandBuildsAndConsumesBlocks);
+        out.accept("mining_wand_dirt_mode_clears_grass_plants", WandTests::miningWandDirtModeClearsGrassPlants);
         out.accept("breaking_wands_clear_their_modes", WandTests::breakingWandsClearTheirModes);
     }
 
@@ -118,6 +119,49 @@ final class WandTests {
 
         helper.assertBlockPresent(Blocks.AIR, poorGap);
         helper.assertValueEqual(player.getItemInHand(InteractionHand.MAIN_HAND).getDamageValue(), 1, "the wand should not wear when it refuses to build");
+
+        helper.succeed();
+    }
+
+    /**
+     * The mining wand's dirt mode takes the plants standing on the ground along with it, and leaves
+     * what is underwater alone. Grass and ferns are neither in {@code #minecraft:dirt} nor flowers,
+     * so {@code #minecraft:replaceable_by_trees} is the only thing that reaches them - and that tag
+     * holds the water plants too, which the fluid guard is there to keep out.
+     */
+    private static void miningWandDirtModeClearsGrassPlants(GameTestHelper helper) {
+        final BlockPos start = new BlockPos(6, 2, 2);
+        final BlockPos middle = new BlockPos(6, 2, 3);
+        final BlockPos end = new BlockPos(6, 2, 4);
+
+        for (BlockPos plant : List.of(start, middle, end)) {
+            helper.setBlock(plant.below(), Blocks.GRASS_BLOCK);
+        }
+        helper.setBlock(start, Blocks.SHORT_GRASS);
+        helper.setBlock(middle, Blocks.SEAGRASS);
+        helper.setBlock(end, Blocks.FERN);
+
+        WandMiningItem wand = ToolsItems.MINING_WAND.get();
+        ItemStack stack = new ItemStack(wand);
+        ServerPlayer player = survivalPlayer(helper, stack);
+        stand(helper, player, new BlockPos(4, 1, 3));
+        wand.onCraftedBy(stack, player);
+
+        ToolCycleModesPacket.handle(new ToolCycleModesPacket(InteractionHand.MAIN_HAND), player);
+        helper.assertValueEqual(NBTHelper.getString(player.getItemInHand(InteractionHand.MAIN_HAND), "Mode"), "minedirt", "the mode the plants are cleared in");
+
+        useOnTopOf(helper, player, start);
+        useOnTopOf(helper, player, end);
+
+        for (BlockPos cleared : List.of(start, end)) {
+            helper.assertBlockPresent(Blocks.AIR, cleared);
+        }
+        // Seagrass is in the same tag as the plants but carries water as its fluid state, so only
+        // the fluid guard keeps the sweep off it. A water source cannot show this: removing one
+        // puts the fluid straight back, so it survives either way.
+        helper.assertBlockPresent(Blocks.SEAGRASS, middle);
+        // The ground is a layer below the selection, so the sweep must not have taken it either.
+        helper.assertBlockPresent(Blocks.GRASS_BLOCK, middle.below());
 
         helper.succeed();
     }

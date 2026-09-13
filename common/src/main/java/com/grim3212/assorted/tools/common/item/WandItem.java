@@ -179,6 +179,8 @@ public abstract class WandItem extends Item implements ISwitchModes {
         this.stateOrig = worldIn.getBlockState(pos);
         BlockState state = this.stateOrig;
 
+        // Grass builds as dirt: it cannot be paid for out of the inventory, and the building wand
+        // grasses the finished surface back over.
         if (state.getBlock() == Blocks.GRASS_BLOCK) {
             state = Blocks.DIRT.defaultBlockState();
         }
