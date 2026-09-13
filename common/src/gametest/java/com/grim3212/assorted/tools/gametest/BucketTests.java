@@ -9,8 +9,10 @@ import com.grim3212.assorted.tools.common.item.BetterMilkBucketItem;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
@@ -20,6 +22,7 @@ import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.animal.cow.Cow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUseAnimation;
+import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.display.SlotDisplayContext;
 import net.minecraft.world.level.block.Blocks;
@@ -263,7 +266,12 @@ final class BucketTests {
         helper.succeed();
     }
 
-    /** A milk bucket is drunk, clears effects and comes back one bucket lighter. */
+    /**
+     * A milk bucket is drunk with the sound and animation of a drink, clears effects and comes back
+     * one bucket lighter. Everything about the drink but the emptying is the consumable component's:
+     * vanilla plays the swallowing sounds off it as the item is used and answers the animation and
+     * the duration from it, so a milk bucket without one is drunk in silence.
+     */
     private static void milkBucketCanBeDrunk(GameTestHelper helper) {
         BetterMilkBucketItem milkBucket = ToolsItems.GOLD_MILK_BUCKET.get();
         int oneBucket = BetterBucketItem.getBucketAmount();
@@ -276,7 +284,12 @@ final class BucketTests {
         player.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 200));
         helper.assertTrue(player.hasEffect(MobEffects.SLOWNESS), "the test player never got the effect it is meant to drink away");
 
+        Consumable consumable = milk.get(DataComponents.CONSUMABLE);
+        helper.assertTrue(consumable != null, "a milk bucket carries no consumable component, so nothing plays a drinking sound for it");
+        helper.assertTrue(consumable.animation() == ItemUseAnimation.DRINK, "a milk bucket should be drunk, not eaten");
+        helper.assertValueEqual(consumable.sound().value(), SoundEvents.GENERIC_DRINK.value(), "the sound a milk bucket is drunk with");
         helper.assertTrue(milkBucket.getUseAnimation(milk) == ItemUseAnimation.DRINK, "a milk bucket should be drunk, not eaten");
+        helper.assertValueEqual(milk.getUseDuration(player), consumable.consumeTicks(), "how long a milk bucket takes to drink");
         helper.assertTrue(milk.use(helper.getLevel(), player, InteractionHand.MAIN_HAND).consumesAction(), "the milk bucket refused to be used");
         helper.assertTrue(player.isUsingItem(), "using a milk bucket did not start the drink");
 

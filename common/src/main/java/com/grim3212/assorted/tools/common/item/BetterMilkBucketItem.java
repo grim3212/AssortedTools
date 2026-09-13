@@ -4,19 +4,15 @@ import com.grim3212.assorted.lib.annotations.LoaderImplement;
 import com.grim3212.assorted.lib.platform.Services;
 import com.grim3212.assorted.tools.api.item.ITiered;
 import com.grim3212.assorted.tools.config.ItemTierConfig;
-import net.minecraft.advancements.triggers.CriteriaTriggers;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.stats.Stats;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemInstance;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
-import net.minecraft.world.item.ItemUseAnimation;
+import net.minecraft.world.item.component.Consumables;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,7 +27,9 @@ public class BetterMilkBucketItem extends Item implements ITiered {
      *             is not read while items are still being registered
      */
     public BetterMilkBucketItem(Supplier<BetterBucketItem> parent, ItemTierConfig tier, Properties props) {
-        super(props.stacksTo(1).component(ToolsDataComponents.BUCKET_CONTENTS.get(), new BucketContents(tier.getMaxBuckets())));
+        // The drink animation, its duration, the swallowing sounds and clearing the drinker's
+        // effects are all the consumable component's job now; there is nothing left to override.
+        super(props.stacksTo(1).component(DataComponents.CONSUMABLE, Consumables.MILK_BUCKET).component(ToolsDataComponents.BUCKET_CONTENTS.get(), new BucketContents(tier.getMaxBuckets())));
         this.parent = parent;
     }
 
@@ -46,14 +44,12 @@ public class BetterMilkBucketItem extends Item implements ITiered {
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level worldIn, LivingEntity entityLiving) {
-        if (!worldIn.isClientSide())
-            entityLiving.removeAllEffects();
-        if (entityLiving instanceof ServerPlayer serverplayer) {
-            CriteriaTriggers.CONSUME_ITEM.trigger(serverplayer, stack);
-            serverplayer.awardStat(Stats.ITEM_USED.get(this));
-        }
+        // Vanilla finishes a drink by consuming the stack; a bucket loses one bucket of milk and
+        // stays. Handing super a copy keeps everything else the component drives - the swallow, the
+        // effect clear, the stat and the advancement.
+        super.finishUsingItem(stack.copy(), worldIn, entityLiving);
 
-        if (entityLiving instanceof Player && !((Player) entityLiving).getAbilities().instabuild) {
+        if (entityLiving instanceof Player player && !player.getAbilities().instabuild) {
             int amount = BetterBucketItem.getAmount(stack);
             BetterBucketItem.setAmount(stack, amount - getBucketAmount());
         }
@@ -90,22 +86,6 @@ public class BetterMilkBucketItem extends Item implements ITiered {
     public int getBucketAmount() {
         //Currently set to an int might change to a long
         return (int) Services.FLUIDS.getBucketAmount();
-    }
-
-    @Override
-    public int getUseDuration(ItemStack stack, LivingEntity user) {
-        return 32;
-    }
-
-    @Override
-    public ItemUseAnimation getUseAnimation(ItemStack stack) {
-        return ItemUseAnimation.DRINK;
-    }
-
-    @Override
-    public InteractionResult use(Level level, Player player, InteractionHand hand) {
-        player.startUsingItem(hand);
-        return InteractionResult.CONSUME;
     }
 
     @Override
