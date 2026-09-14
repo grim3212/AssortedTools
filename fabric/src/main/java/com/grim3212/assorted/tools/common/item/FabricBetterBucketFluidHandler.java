@@ -25,7 +25,9 @@ public class FabricBetterBucketFluidHandler implements SingleSlotStorage<FluidVa
         if (!(context.getItemVariant().getItem() instanceof final BetterBucketItem bucket)) return 0;
 
         var stack = context.getItemVariant().toStack();
-        if (BetterBucketItem.isEmptyOrContains(stack, BetterBucketItem.getStringFromFluid(resource.getFluid()))) {
+        // canStore, not isEmptyOrContains: a bucket refuses a fluid hotter than its material stands
+        // however the fluid is offered, a tank or a dispenser included.
+        if (BetterBucketItem.canStore(stack, resource.getFluid())) {
             int currentAmount = BetterBucketItem.getAmount(stack);
             if (currentAmount < bucket.getMaximumMillibuckets()) {
 

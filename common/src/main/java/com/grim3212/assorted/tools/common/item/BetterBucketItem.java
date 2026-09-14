@@ -56,6 +56,9 @@ public class BetterBucketItem extends Item implements ITiered {
     private static final String FLUID_NAME_KEY = "FluidName";
     private static final String AMOUNT_KEY = "Amount";
 
+    /** What both loaders report for a fluid that declares no temperature of its own. */
+    private static final int DEFAULT_TEMPERATURE = 300;
+
     public final ItemTierConfig tierHolder;
 
     public BetterBucketItem(Properties props, ItemTierConfig tierHolder) {
@@ -192,9 +195,33 @@ public class BetterBucketItem extends Item implements ITiered {
         return getFluid(stack).equals(emptyMarker()) || getFluid(stack).equals(toCheck);
     }
 
-    /** Whether {@code fluid} may go into this bucket, which holds one kind at a time. */
+    /**
+     * Whether {@code fluid} may go into this bucket, which holds one kind at a time and only one its
+     * material stands the heat of.
+     */
     public static boolean canStore(ItemStack stack, Fluid fluid) {
-        return fluid != Fluids.EMPTY && isEmptyOrContains(stack, getStringFromFluid(fluid));
+        if (fluid == Fluids.EMPTY || !isEmptyOrContains(stack, getStringFromFluid(fluid))) {
+            return false;
+        }
+
+        return !(stack.getItem() instanceof BetterBucketItem bucket) || bucket.canHoldTemperatureOf(fluid);
+    }
+
+    /**
+     * Whether this bucket's material survives holding {@code fluid}, which is what the tier's
+     * {@code maxPickupTemp} is for: a wooden bucket stands 1000K, so lava at 1300K stays where it is.
+     */
+    public boolean canHoldTemperatureOf(Fluid fluid) {
+        return fluidTemperature(fluid) <= this.tierHolder.getMaxPickupTemp();
+    }
+
+    /**
+     * The fluid's temperature in Kelvin, through the lib's variant handler - NeoForge answers from
+     * {@code FluidType}, Fabric from {@code FluidVariantAttributes}. Both always hand a handler back,
+     * so the fallback is only there for a fluid neither can speak for.
+     */
+    public static int fluidTemperature(Fluid fluid) {
+        return Services.FLUIDS.getVariantHandlerFor(fluid).map(handler -> handler.getTemperature(new FluidInformation(fluid))).orElse(DEFAULT_TEMPERATURE);
     }
 
     /**
@@ -291,15 +318,46 @@ public class BetterBucketItem extends Item implements ITiered {
         return Mth.hsvToRgb(f / 3.0F, 1.0F, 1.0F);
     }
 
+    /**
+     * Two of what the bucket was made of. Tier#getRepairIngredient is gone, so the material comes
+     * from its repair tag - {@link #materialToBreakInto(Iterable)} picks which member.
+     */
     public ItemStack getBreakStack() {
-        if (this.tierHolder.getBreaksAfterUse()) {
-            // Tier#getRepairIngredient is gone; a material's repair material is a TagKey<Item> now,
-            // so "what is this bucket made of" is answered straight off the tag.
-            for (Holder<Item> repairMaterial : BuiltInRegistries.ITEM.getTagOrEmpty(this.tierHolder.material().repairItems())) {
-                return new ItemStack(repairMaterial, 2);
+        if (!this.tierHolder.getBreaksAfterUse()) {
+            return ItemStack.EMPTY;
+        }
+
+        Holder<Item> material = materialToBreakInto(BuiltInRegistries.ITEM.getTagOrEmpty(this.tierHolder.material().repairItems()));
+        return material == null ? ItemStack.EMPTY : new ItemStack(material, 2);
+    }
+
+    /**
+     * Which member of a material tag a bucket breaks back into. Tag order follows pack load order, so
+     * vanilla's entry wins and otherwise the lowest id, to keep the answer the same in every pack.
+     *
+     * @return null if the tag is empty
+     */
+    public static @Nullable Holder<Item> materialToBreakInto(Iterable<Holder<Item>> repairMaterials) {
+        Holder<Item> fallback = null;
+        Identifier fallbackId = null;
+
+        for (Holder<Item> repairMaterial : repairMaterials) {
+            Identifier id = BuiltInRegistries.ITEM.getKey(repairMaterial.value());
+            if (id == null) {
+                continue;
+            }
+
+            if (id.getNamespace().equals(Identifier.DEFAULT_NAMESPACE)) {
+                return repairMaterial;
+            }
+
+            if (fallbackId == null || id.compareTo(fallbackId) < 0) {
+                fallback = repairMaterial;
+                fallbackId = id;
             }
         }
-        return ItemStack.EMPTY;
+
+        return fallback;
     }
 
     public ItemStack tryBreakBucket(ItemStack stack) {

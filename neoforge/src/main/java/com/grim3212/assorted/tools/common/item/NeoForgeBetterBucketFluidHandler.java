@@ -64,10 +64,13 @@ public class NeoForgeBetterBucketFluidHandler extends ItemAccessResourceHandler<
         return ItemResource.of(updated);
     }
 
-    /** Any real fluid, as long as the stack is still the bucket this handler was built for. */
+    /**
+     * Any real fluid this bucket's material stands the heat of, as long as the stack is still the
+     * bucket this handler was built for.
+     */
     @Override
     public boolean isValid(int index, FluidResource resource) {
-        return this.itemAccess.getResource().is(this.bucket) && resource.getFluid() != Fluids.EMPTY;
+        return this.itemAccess.getResource().is(this.bucket) && resource.getFluid() != Fluids.EMPTY && this.bucket.canHoldTemperatureOf(resource.getFluid());
     }
 
     @Override

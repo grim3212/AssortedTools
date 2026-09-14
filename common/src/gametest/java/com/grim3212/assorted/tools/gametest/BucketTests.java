@@ -8,6 +8,8 @@ import com.grim3212.assorted.tools.common.item.BetterBucketItem;
 import com.grim3212.assorted.tools.common.item.BetterMilkBucketItem;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -21,6 +23,8 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.animal.cow.Cow;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -35,6 +39,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static com.grim3212.assorted.lib.test.TestSupport.*;
+import static com.grim3212.assorted.tools.common.item.BetterBucketItem.materialToBreakInto;
 import static com.grim3212.assorted.tools.gametest.ToolsTestSupport.*;
 
 /**
@@ -50,12 +55,53 @@ final class BucketTests {
         out.accept("better_bucket_milks_a_cow", BucketTests::betterBucketMilksACow);
         out.accept("uncrafted_better_bucket_milks_and_fills", BucketTests::uncraftedBetterBucketMilksAndFills);
         out.accept("better_bucket_picks_up_and_places_lava", BucketTests::betterBucketPicksUpAndPlacesLava);
+        out.accept("better_bucket_refuses_a_fluid_too_hot_for_it", BucketTests::betterBucketRefusesAFluidTooHotForIt);
         out.accept("better_bucket_name_shows_its_fluid", BucketTests::betterBucketNameShowsItsFluid);
         out.accept("milk_bucket_can_be_drunk", BucketTests::milkBucketCanBeDrunk);
         out.accept("dispenser_places_fluid_from_a_better_bucket", BucketTests::dispenserPlacesFluidFromABetterBucket);
         out.accept("fluid_ingredient_draws_a_filled_bucket", BucketTests::fluidIngredientDrawsAFilledBucket);
         out.accept("better_bucket_never_mixes_two_fluids", BucketTests::betterBucketNeverMixesTwoFluids);
         out.accept("dispenser_fills_a_bucket_and_leaves_what_it_cannot_take", BucketTests::dispenserFillsABucketAndLeavesWhatItCannotTake);
+        out.accept("a_bucket_that_breaks_leaves_what_it_was_made_of", BucketTests::aBucketThatBreaksLeavesWhatItWasMadeOf);
+    }
+
+    /**
+     * A bucket too weak to survive placing a fluid leaves two of what it was made of, the same two in
+     * every pack whatever order the material tag ended up in.
+     */
+    private static void aBucketThatBreaksLeavesWhatItWasMadeOf(GameTestHelper helper) {
+        BetterBucketItem wood = ToolsItems.WOOD_BUCKET.get();
+        BetterBucketItem stone = ToolsItems.STONE_BUCKET.get();
+
+        ItemStack woodBreak = wood.getBreakStack();
+        helper.assertTrue(woodBreak.is(Items.OAK_PLANKS), "what a wooden bucket breaks into, got " + woodBreak);
+        helper.assertValueEqual(woodBreak.getCount(), 2, "how much a wooden bucket breaks into");
+
+        ItemStack stoneBreak = stone.getBreakStack();
+        helper.assertTrue(stoneBreak.is(Items.COBBLESTONE), "what a stone bucket breaks into, got " + stoneBreak);
+
+        // A bucket that survives its use has nothing to leave behind; it empties instead.
+        BetterBucketItem diamond = ToolsItems.DIAMOND_BUCKET.get();
+        helper.assertTrue(diamond.getBreakStack().isEmpty(), "a bucket that does not break offered a break stack");
+
+        // And the run dry path hands back the same item rather than an arbitrary one.
+        ItemStack emptied = wood.tryBreakBucket(new ItemStack(wood));
+        helper.assertTrue(emptied.is(Items.OAK_PLANKS), "what a wooden bucket left once it ran dry, got " + emptied);
+
+        // The choice itself: a dev run has no mod ahead of vanilla in a tag, so ask it directly.
+        Holder<Item> moddedFirst = materialToBreakInto(List.of(
+                BuiltInRegistries.ITEM.wrapAsHolder(ToolsItems.WOOD_BUCKET.get()),
+                BuiltInRegistries.ITEM.wrapAsHolder(Items.OAK_PLANKS)));
+        helper.assertTrue(moddedFirst.value() == Items.OAK_PLANKS, "a mod's item ahead of vanilla's in the tag won");
+
+        // With nothing from vanilla in it, the lowest id wins, so every pack lands on the same one.
+        Holder<Item> noVanilla = materialToBreakInto(List.of(
+                BuiltInRegistries.ITEM.wrapAsHolder(ToolsItems.WOOD_BUCKET.get()),
+                BuiltInRegistries.ITEM.wrapAsHolder(ToolsItems.STONE_BUCKET.get())));
+        helper.assertTrue(noVanilla.value() == ToolsItems.STONE_BUCKET.get(), "a fully modded material did not settle on the lowest id");
+
+        helper.assertTrue(materialToBreakInto(List.of()) == null, "an empty material tag produced something to break into");
+        helper.succeed();
     }
 
     /**
@@ -237,6 +283,33 @@ final class BucketTests {
         ItemStack milk = player.getItemInHand(InteractionHand.MAIN_HAND);
         helper.assertTrue(milk.is(ToolsItems.GOLD_MILK_BUCKET.get()), "milking a cow with a never-crafted bucket left " + milk);
         helper.assertValueEqual(BetterBucketItem.getAmount(milk), oneBucket, "milk held after milking with a never-crafted bucket");
+
+        helper.succeed();
+    }
+
+    /**
+     * A bucket only holds a fluid its material stands the heat of: the tier's {@code maxPickupTemp}
+     * against the temperature the loader gives the fluid. Wood stands 1000K and lava is 1300K, so a
+     * wooden bucket leaves it alone, and the refusal happens before the pickup or the source block
+     * would already be gone.
+     */
+    private static void betterBucketRefusesAFluidTooHotForIt(GameTestHelper helper) {
+        final BlockPos lava = new BlockPos(2, 1, 2);
+
+        helper.setBlock(lava, Blocks.LAVA);
+
+        BetterBucketItem wood = ToolsItems.WOOD_BUCKET.get();
+        helper.assertTrue(BetterBucketItem.fluidTemperature(Fluids.LAVA) > BetterBucketItem.fluidTemperature(Fluids.WATER), "the loader gives lava no more heat than water, so nothing can be graded by temperature");
+        helper.assertTrue(wood.canHoldTemperatureOf(Fluids.WATER), "a wooden bucket refuses water");
+        helper.assertFalse(wood.canHoldTemperatureOf(Fluids.LAVA), "a wooden bucket holds lava, over its tier's maxPickupTemp");
+        helper.assertTrue(ToolsItems.DIAMOND_BUCKET.get().canHoldTemperatureOf(Fluids.LAVA), "a diamond bucket refuses lava, under its tier's maxPickupTemp");
+
+        ServerPlayer player = survivalPlayer(helper, wood.getEmptyStack());
+        useLookingDownAt(helper, player, lava);
+
+        ItemStack held = player.getItemInHand(InteractionHand.MAIN_HAND);
+        helper.assertValueEqual(BetterBucketItem.getAmount(held), 0, "millibuckets in a wooden bucket clicked on lava");
+        helper.assertBlockPresent(Blocks.LAVA, lava);
 
         helper.succeed();
     }
