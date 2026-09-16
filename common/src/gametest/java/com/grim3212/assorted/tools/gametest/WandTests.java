@@ -32,6 +32,7 @@ final class WandTests {
         out.accept("mining_wand_cycles_and_mines", WandTests::miningWandCyclesAndMines);
         out.accept("building_wand_builds_and_consumes_blocks", WandTests::buildingWandBuildsAndConsumesBlocks);
         out.accept("mining_wand_dirt_mode_clears_grass_plants", WandTests::miningWandDirtModeClearsGrassPlants);
+        out.accept("mining_wand_dirt_mode_takes_every_soil", WandTests::miningWandDirtModeTakesEverySoil);
         out.accept("breaking_wands_clear_their_modes", WandTests::breakingWandsClearTheirModes);
     }
 
@@ -162,6 +163,39 @@ final class WandTests {
         helper.assertBlockPresent(Blocks.SEAGRASS, middle);
         // The ground is a layer below the selection, so the sweep must not have taken it either.
         helper.assertBlockPresent(Blocks.GRASS_BLOCK, middle.below());
+
+        helper.succeed();
+    }
+
+    /**
+     * The mining wand's dirt mode takes every kind of soil, not just what 26.2's narrowed
+     * {@code #minecraft:dirt} still holds, and leaves stone in the same sweep alone.
+     */
+    private static void miningWandDirtModeTakesEverySoil(GameTestHelper helper) {
+        final List<BlockPos> soil = List.of(new BlockPos(1, 1, 5), new BlockPos(2, 1, 5), new BlockPos(4, 1, 5), new BlockPos(5, 1, 5));
+        final BlockPos stone = new BlockPos(3, 1, 5);
+        helper.setBlock(soil.get(0), Blocks.PODZOL);
+        helper.setBlock(soil.get(1), Blocks.MYCELIUM);
+        helper.setBlock(stone, Blocks.STONE);
+        helper.setBlock(soil.get(2), Blocks.MUD);
+        helper.setBlock(soil.get(3), Blocks.MOSS_BLOCK);
+
+        WandMiningItem wand = ToolsItems.MINING_WAND.get();
+        ItemStack stack = new ItemStack(wand);
+        ServerPlayer player = survivalPlayer(helper, stack);
+        stand(helper, player, new BlockPos(3, 1, 3));
+        wand.onCraftedBy(stack, player);
+
+        ToolCycleModesPacket.handle(new ToolCycleModesPacket(InteractionHand.MAIN_HAND), player);
+        helper.assertValueEqual(NBTHelper.getString(player.getItemInHand(InteractionHand.MAIN_HAND), "Mode"), "minedirt", "the mode the soil is dug in");
+
+        useOnTopOf(helper, player, soil.get(0));
+        useOnTopOf(helper, player, soil.get(3));
+
+        for (BlockPos dug : soil) {
+            helper.assertBlockPresent(Blocks.AIR, dug);
+        }
+        helper.assertBlockPresent(Blocks.STONE, stone);
 
         helper.succeed();
     }

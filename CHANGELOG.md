@@ -3,6 +3,7 @@
 ## 11.1.1
 
 - Support Instruction Manual
+- The mining wand's dirt mode digs podzol, mycelium, moss and mud again.
 - Requires Assorted Lib 4.1.0.
 
 ## 11.0.1
