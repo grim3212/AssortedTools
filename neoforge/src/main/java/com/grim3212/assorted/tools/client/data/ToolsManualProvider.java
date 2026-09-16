@@ -22,7 +22,7 @@ public class ToolsManualProvider extends LibManualProvider {
 
     @Override
     protected void addChapters() {
-        this.section(15, ToolsItems.MATERIAL_GROUPS.get("steel").MULTITOOL.get());
+        this.section(120, ToolsItems.MATERIAL_GROUPS.get("steel").MULTITOOL.get());
 
         this.addTools();
         this.addWeapons();
