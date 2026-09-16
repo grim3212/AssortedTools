@@ -1,0 +1,43 @@
+{
+  "conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "betterbuckets"
+    }
+  ],
+  "pages": [
+    {
+      "type": "assortedlib:recipe",
+      "id": "buckets",
+      "interval": 50,
+      "recipes": [
+        "assortedtools:wood_bucket",
+        "assortedtools:stone_bucket",
+        "assortedtools:gold_bucket",
+        "assortedtools:diamond_bucket",
+        "assortedtools:netherite_bucket"
+      ],
+      "text": "manual.assortedtools.chapter.buckets.buckets",
+      "title": "manual.assortedtools.chapter.buckets.buckets.title"
+    },
+    {
+      "type": "assortedlib:item",
+      "conditions": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "betterbuckets"
+        }
+      ],
+      "id": "milk",
+      "interval": 50,
+      "items": [
+        "assortedtools:wood_milk_bucket",
+        "assortedtools:diamond_milk_bucket",
+        "assortedtools:netherite_milk_bucket"
+      ],
+      "text": "manual.assortedtools.chapter.buckets.milk",
+      "title": "manual.assortedtools.chapter.buckets.milk.title"
+    }
+  ],
+  "sort_order": 20
+}

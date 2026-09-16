@@ -1,0 +1,93 @@
+{
+  "pages": [
+    {
+      "type": "assortedlib:text",
+      "id": "materials",
+      "text": "manual.assortedtools.chapter.tools.materials",
+      "title": "manual.assortedtools.chapter.tools.materials.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "conditions": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        }
+      ],
+      "id": "basic",
+      "interval": 50,
+      "recipes": [
+        "assortedtools:steel_pickaxe",
+        "assortedtools:steel_axe",
+        "assortedtools:steel_shovel",
+        "assortedtools:steel_hoe",
+        "assortedtools:steel_sword"
+      ],
+      "text": "manual.assortedtools.chapter.tools.basic",
+      "title": "manual.assortedtools.chapter.tools.basic.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "conditions": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "hammers"
+        }
+      ],
+      "id": "hammers",
+      "interval": 50,
+      "recipes": [
+        "assortedtools:wood_hammer",
+        "assortedtools:iron_hammer",
+        "assortedtools:netherite_hammer"
+      ],
+      "text": "manual.assortedtools.chapter.tools.hammers",
+      "title": "manual.assortedtools.chapter.tools.hammers.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "conditions": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        },
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "multitools"
+        }
+      ],
+      "id": "multitools",
+      "interval": 50,
+      "recipes": [
+        "assortedtools:iron_multitool",
+        "assortedtools:steel_multitool",
+        "assortedtools:diamond_multitool",
+        "assortedtools:netherite_multitool"
+      ],
+      "text": "manual.assortedtools.chapter.tools.multitools",
+      "title": "manual.assortedtools.chapter.tools.multitools.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "conditions": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        },
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "moreshears"
+        }
+      ],
+      "id": "shears",
+      "interval": 50,
+      "recipes": [
+        "assortedtools:wood_shears",
+        "assortedtools:steel_shears",
+        "assortedtools:netherite_shears"
+      ],
+      "text": "manual.assortedtools.chapter.tools.shears",
+      "title": "manual.assortedtools.chapter.tools.shears.title"
+    }
+  ]
+}

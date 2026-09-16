@@ -1,0 +1,43 @@
+{
+  "conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "extramaterials"
+    }
+  ],
+  "pages": [
+    {
+      "type": "assortedlib:recipe",
+      "id": "armor",
+      "interval": 50,
+      "recipes": [
+        "assortedtools:steel_helmet",
+        "assortedtools:steel_chestplate",
+        "assortedtools:steel_leggings",
+        "assortedtools:steel_boots"
+      ],
+      "text": "manual.assortedtools.chapter.armor.armor",
+      "title": "manual.assortedtools.chapter.armor.armor.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "conditions": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "chickensuit"
+        }
+      ],
+      "id": "chicken_suit",
+      "interval": 50,
+      "recipes": [
+        "assortedtools:chicken_suit_helmet",
+        "assortedtools:chicken_suit_chestplate",
+        "assortedtools:chicken_suit_leggings",
+        "assortedtools:chicken_suit_boots"
+      ],
+      "text": "manual.assortedtools.chapter.armor.chicken_suit",
+      "title": "manual.assortedtools.chapter.armor.chicken_suit.title"
+    }
+  ],
+  "sort_order": 30
+}

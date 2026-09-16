@@ -1,0 +1,41 @@
+{
+  "conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "wands"
+    }
+  ],
+  "pages": [
+    {
+      "type": "assortedlib:text",
+      "id": "modes",
+      "text": "manual.assortedtools.chapter.wands.modes",
+      "title": "manual.assortedtools.chapter.wands.modes.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "id": "basic",
+      "interval": 60,
+      "recipes": [
+        "assortedtools:building_wand",
+        "assortedtools:mining_wand",
+        "assortedtools:breaking_wand"
+      ],
+      "text": "manual.assortedtools.chapter.wands.basic",
+      "title": "manual.assortedtools.chapter.wands.basic.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "id": "reinforced",
+      "interval": 60,
+      "recipes": [
+        "assortedtools:reinforced_building_wand",
+        "assortedtools:reinforced_mining_wand",
+        "assortedtools:reinforced_breaking_wand"
+      ],
+      "text": "manual.assortedtools.chapter.wands.reinforced",
+      "title": "manual.assortedtools.chapter.wands.reinforced.title"
+    }
+  ],
+  "sort_order": 40
+}

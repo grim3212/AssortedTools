@@ -1,0 +1,20 @@
+{
+  "conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "pokeball"
+    }
+  ],
+  "pages": [
+    {
+      "type": "assortedlib:recipe",
+      "id": "pokeball",
+      "recipes": [
+        "assortedtools:pokeball"
+      ],
+      "text": "manual.assortedtools.chapter.pokeball.pokeball",
+      "title": "manual.assortedtools.chapter.pokeball.pokeball.title"
+    }
+  ],
+  "sort_order": 60
+}

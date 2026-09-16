@@ -1,0 +1,62 @@
+{
+  "pages": [
+    {
+      "type": "assortedlib:recipe",
+      "conditions": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        },
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "spears"
+        }
+      ],
+      "id": "spears",
+      "interval": 50,
+      "recipes": [
+        "assortedtools:steel_spear",
+        "assortedtools:ruby_spear",
+        "assortedtools:emerald_spear"
+      ],
+      "text": "manual.assortedtools.chapter.weapons.spears",
+      "title": "manual.assortedtools.chapter.weapons.spears.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "conditions": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "throwingspears"
+        }
+      ],
+      "id": "throwing_spears",
+      "interval": 50,
+      "recipes": [
+        "assortedtools:wood_throwing_spear",
+        "assortedtools:iron_throwing_spear",
+        "assortedtools:diamond_throwing_spear"
+      ],
+      "text": "manual.assortedtools.chapter.weapons.throwing_spears",
+      "title": "manual.assortedtools.chapter.weapons.throwing_spears.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "conditions": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "boomerangs"
+        }
+      ],
+      "id": "boomerangs",
+      "interval": 50,
+      "recipes": [
+        "assortedtools:wood_boomerang",
+        "assortedtools:diamond_boomerang"
+      ],
+      "text": "manual.assortedtools.chapter.weapons.boomerangs",
+      "title": "manual.assortedtools.chapter.weapons.boomerangs.title"
+    }
+  ],
+  "sort_order": 10
+}

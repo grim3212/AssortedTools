@@ -16,6 +16,9 @@ import net.minecraft.data.PackOutput;
  */
 public class ToolsLanguageProvider extends LibLanguageProvider {
 
+    /** A blank line between paragraphs; the manual splits its text the way the font does. */
+    private static final String BREAK = "\n\n";
+
     public ToolsLanguageProvider(PackOutput output) {
         super(output, Constants.MOD_ID);
     }
@@ -124,6 +127,8 @@ public class ToolsLanguageProvider extends LibLanguageProvider {
         // The vanilla-style spears read as their ids; the thrown ones say so.
         this.nameItems("(.+)_throwing_spear", m -> material(m.group(1)) + " Throwing Spear");
         this.nameItems("(wood|gold)_(.+)", m -> material(m.group(1)) + " " + titleCase(m.group(2)));
+
+        this.addManual();
     }
 
     /** The name a tool material reads as: the vanilla tiers use the adjective, the rest their id. */
@@ -133,5 +138,158 @@ public class ToolsLanguageProvider extends LibLanguageProvider {
             case "gold" -> "Golden";
             default -> titleCase(id);
         };
+    }
+
+    /** The chapters in {@code assets/assortedtools/manual} name these keys. */
+    private void addManual() {
+        this.add("manual.assortedtools.title", "Assorted Tools");
+        this.add("manual.assortedtools.description",
+                "Tool and armor sets for every material, buckets that hold more than one, throwing weapons "
+                        + "and the wands that do the digging for you.");
+
+        this.addToolsChapter();
+        this.addWeaponsChapter();
+        this.addBucketsChapter();
+        this.addArmorChapter();
+        this.addWandsChapter();
+        this.addUltimateChapter();
+        this.addPokeballChapter();
+    }
+
+    private void addToolsChapter() {
+        this.add("manual.assortedtools.chapter.tools", "Tools");
+
+        this.add("manual.assortedtools.chapter.tools.materials.title", "Materials");
+        this.add("manual.assortedtools.chapter.tools.materials",
+                "Every metal and gem Assorted Core adds gets a full tool set here, so tin, silver, bronze, "
+                        + "steel, ruby and the rest of them." + BREAK
+                        + "Vanilla's own materials are not repeated as pickaxes and swords, since the game "
+                        + "already has those. They do turn up in the tools vanilla has no version of though like hammers, "
+                        + "multitools, shears, spears and buckets all go from wood up to netherite.");
+
+        this.add("manual.assortedtools.chapter.tools.basic.title", "The Basic Set");
+        this.add("manual.assortedtools.chapter.tools.basic",
+                "Pickaxe, axe, shovel, hoe and sword, in every material. They behave exactly as the vanilla ones do.");
+
+        this.add("manual.assortedtools.chapter.tools.hammers.title", "Hammers");
+        this.add("manual.assortedtools.chapter.tools.hammers",
+                "A hammer destroys a block in one hit and drops nothing at all." + BREAK
+                        + "Be careful where you use it but they can come in handy.");
+
+        this.add("manual.assortedtools.chapter.tools.multitools.title", "Multitools");
+        this.add("manual.assortedtools.chapter.tools.multitools",
+                "A multitool is a sword, pickaxe, axe, shovel and hoe in one slot, and mines all of them at its "
+                        + "material's speed.");
+
+        this.add("manual.assortedtools.chapter.tools.shears.title", "Shears");
+        this.add("manual.assortedtools.chapter.tools.shears",
+                "Shears in every material, from wood up to netherite. Also lookout for a new Shears enchantment that lets you harvest coral without needing Silk Touch.");
+    }
+
+    private void addWeaponsChapter() {
+        this.add("manual.assortedtools.chapter.weapons", "Thrown Weapons");
+
+        this.add("manual.assortedtools.chapter.weapons.spears.title", "Spears");
+        this.add("manual.assortedtools.chapter.weapons.spears",
+                "These spears act exactly like the Vanilla spears in Minecraft but in all of the different materials we support.");
+
+        this.add("manual.assortedtools.chapter.weapons.throwing_spears.title", "Throwing Spears");
+        this.add("manual.assortedtools.chapter.weapons.throwing_spears",
+                "A throwing spear is thrown with right click and sticks where it lands, ready to be picked "
+                        + "back up." + BREAK
+                        + "They come in every material and also make sure you checkout the enchantment table for some fun with these.");
+
+        this.add("manual.assortedtools.chapter.weapons.boomerangs.title", "Boomerangs");
+        this.add("manual.assortedtools.chapter.weapons.boomerangs",
+                "A boomerang is thrown with right click, flies out to its limit and comes back to you. It hurts "
+                        + "what it passes through on the way." + BREAK
+                        + "The diamond one goes further and hits harder, and can be set to follow where you are "
+                        + "looking rather than flying straight." + BREAK
+                        + "They might even pickup some items on the way.");
+    }
+
+    private void addBucketsChapter() {
+        this.add("manual.assortedtools.chapter.buckets", "Buckets");
+
+        this.add("manual.assortedtools.chapter.buckets.buckets.title", "Better Buckets");
+        this.add("manual.assortedtools.chapter.buckets.buckets",
+                "These buckets hold more than one bucket of what is in them, and the material decides how "
+                        + "many." + BREAK
+                        + "Some materials are very weak and are destroyed when they are emptied. " + BREAK
+                        + "Hotter fluids need a sturdier bucket, so what a bucket can pick up is a question of "
+                        + "material as well.");
+
+        this.add("manual.assortedtools.chapter.buckets.milk.title", "Milking");
+        this.add("manual.assortedtools.chapter.buckets.milk",
+                "Any of these buckets can be used to milk cows." + BREAK
+                        + "What you can milk depends on the bucket. All of them can manage a cow, better ones "
+                        + "also manage a sheep, and the best of them a pig as well.");
+    }
+
+    private void addArmorChapter() {
+        this.add("manual.assortedtools.chapter.armor", "Armor");
+
+        this.add("manual.assortedtools.chapter.armor.armor.title", "Armor Sets");
+        this.add("manual.assortedtools.chapter.armor.armor",
+                "A full four piece set for every material this mod adds tools for, on the same ladder the "
+                        + "tools use.");
+
+        this.add("manual.assortedtools.chapter.armor.chicken_suit.title", "Chicken Suit");
+        this.add("manual.assortedtools.chapter.armor.chicken_suit",
+                "The chicken suit is not about protection. Every piece you are wearing gives you one more jump "
+                        + "in the air, so the full set is four jumps." + BREAK
+                        + "It is not flying. It is close enough to get across most things, and to get you down "
+                        + "off most of the rest safely." + BREAK + 
+                        "Try combining them with the corresponding piece in an Anvil to see what happens.");
+    }
+
+    private void addWandsChapter() {
+        this.add("manual.assortedtools.chapter.wands", "Wands");
+
+        this.add("manual.assortedtools.chapter.wands.modes.title", "How Wands Work");
+        this.add("manual.assortedtools.chapter.wands.modes",
+                "Each wand has several modes and you switch between them with the mode keybind, Z by default." + BREAK
+                        + "A wand works on a region rather than a block, so it will tell you when you have "
+                        + "picked too much, when the corners do not match, or when you do not have the blocks "
+                        + "to finish the job. Nothing happens until it can be done properly." + BREAK
+                        + "Wands have a limited number of uses.");
+
+        this.add("manual.assortedtools.chapter.wands.basic.title", "Basic Wands");
+        this.add("manual.assortedtools.chapter.wands.basic",
+                "Three wands. The building wand puts up boxes, frames, rooms and lines of torches. The mining "
+                        + "wand clears wood, dirt or ore. The breaking wand takes everything out, or leaves the "
+                        + "ores where they are if you ask it to.");
+
+        this.add("manual.assortedtools.chapter.wands.reinforced.title", "Reinforced Wands");
+        this.add("manual.assortedtools.chapter.wands.reinforced",
+                "The reinforced version of each wand lasts far longer and unlocks the modes the basic one "
+                        + "refuses." + BREAK
+                        + "Filling a cave, flooding a space with water, or pouring lava into one, and surface "
+                        + "mining, all need a reinforced wand.");
+    }
+
+    private void addUltimateChapter() {
+        this.add("manual.assortedtools.chapter.ultimate", "The Ultimate Fist");
+
+        this.add("manual.assortedtools.chapter.ultimate.fragments.title", "Fragments");
+        this.add("manual.assortedtools.chapter.ultimate.fragments",
+                "Eight fragments of something an older civilization built, found in chests across Minecraft." + BREAK
+                        + "Laid out in order they spell out what they came from.");
+
+        this.add("manual.assortedtools.chapter.ultimate.fist.title", "The Ultimate Fist");
+        this.add("manual.assortedtools.chapter.ultimate.fist",
+                "All eight fragments and a nether star make the ultimate fist. It is extremely powerful and out "
+                        + "of the box it mines very fast and hits hard enough to kill most things in one hit.");
+    }
+
+    private void addPokeballChapter() {
+        this.add("manual.assortedtools.chapter.pokeball", "Pokeball");
+
+        this.add("manual.assortedtools.chapter.pokeball.pokeball.title", "Pokeball");
+        this.add("manual.assortedtools.chapter.pokeball.pokeball",
+                "Throw a pokeball at a mob and it goes inside, exactly as it was. So health, name, anything it "
+                        + "was carrying. Throw it again and the mob comes back out." + BREAK
+                        + "A hostile mob let out of a pokeball is still hostile, and "
+                        + "still remembers you so be careful.");
     }
 }

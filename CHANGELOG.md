@@ -1,5 +1,10 @@
 # Changelog
 
+## 11.1.1
+
+- Support Instruction Manual
+- Requires Assorted Lib 4.1.0.
+
 ## 11.0.1
 
 - Better buckets now respect their tier's `maxPickupTemp`, so a wooden bucket leaves lava alone
