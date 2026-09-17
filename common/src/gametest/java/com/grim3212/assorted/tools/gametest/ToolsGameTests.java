@@ -25,5 +25,6 @@ public final class ToolsGameTests {
         WandTests.register(out);
         MaterialSetTests.register(out);
         AssetTests.register(out);
+        CrossLoaderDataTests.register(out);
     }
 }

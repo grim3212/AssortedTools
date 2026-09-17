@@ -8,6 +8,12 @@
   "type": "minecraft:smithing_transform",
   "addition": "#c:ingots/netherite",
   "base": "assortedtools:diamond_hammer",
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "hammers"
+    }
+  ],
   "result": {
     "id": "assortedtools:netherite_hammer"
   },

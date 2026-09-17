@@ -1,0 +1,44 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "betterbuckets"
+    }
+  ],
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_egg": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#c:eggs"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "assortedtools:cake_alt"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "betterbuckets"
+    }
+  ],
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_egg"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "assortedtools:cake_alt"
+    ]
+  }
+}

@@ -9,6 +9,12 @@
   "description": {
     "translate": "enchantment.assortedtools.coral_cutter"
   },
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "moreshears"
+    }
+  ],
   "max_cost": {
     "base": 52,
     "per_level_above_first": 0

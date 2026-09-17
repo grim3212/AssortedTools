@@ -16,6 +16,24 @@
   ],
   "type": "minecraft:crafting_shapeless",
   "category": "equipment",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "multitools"
+        },
+        {
+          "condition": "fabric:tags_populated",
+          "registry": "minecraft:item",
+          "values": [
+            "minecraft:planks"
+          ]
+        }
+      ]
+    }
+  ],
   "ingredients": [
     "minecraft:wooden_pickaxe",
     "minecraft:wooden_shovel",

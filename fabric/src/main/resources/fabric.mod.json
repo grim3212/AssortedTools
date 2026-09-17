@@ -19,9 +19,6 @@
     ],
     "client": [
       "com.grim3212.assorted.tools.AssortedToolsFabricClient"
-    ],
-    "fabric-datagen": [
-      "com.grim3212.assorted.tools.AssortedToolsFabricDatagen"
     ]
   },
   "mixins": [

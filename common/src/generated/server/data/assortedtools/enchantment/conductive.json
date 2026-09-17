@@ -10,6 +10,12 @@
     "translate": "enchantment.assortedtools.conductive"
   },
   "exclusive_set": "assortedtools:unstable",
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "throwingspears"
+    }
+  ],
   "max_cost": {
     "base": 61,
     "per_level_above_first": 10

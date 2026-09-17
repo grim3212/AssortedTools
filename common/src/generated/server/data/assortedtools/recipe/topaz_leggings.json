@@ -16,6 +16,24 @@
   ],
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        },
+        {
+          "condition": "fabric:tags_populated",
+          "registry": "minecraft:item",
+          "values": [
+            "c:gems/topaz"
+          ]
+        }
+      ]
+    }
+  ],
   "key": {
     "X": "#c:gems/topaz"
   },

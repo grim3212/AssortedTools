@@ -46,7 +46,9 @@ public class ToolsRecipes extends ConditionalRecipeProvider {
         this.addConditions(partEnabled(ToolsConditions.Parts.BETTER_BUCKETS), Identifier.parse(ToolsItems.NETHERITE_BUCKET.getId() + "_smithing"));
         this.addConditions(partEnabled(ToolsConditions.Parts.MORE_SHEARS), Identifier.parse(ToolsItems.NETHERITE_SHEARS.getId() + "_smithing"));
 
-        this.addConditions(partEnabled(ToolsConditions.Parts.BETTER_BUCKETS), Identifier.parse(key(Blocks.CAKE.asItem()) + "_alt"));
+        // Our namespace, not minecraft's: Fabric's datagen moves every recipe id into the mod's
+        // namespace, so a minecraft: key never matched there and the recipe lost its condition.
+        this.addConditions(partEnabled(ToolsConditions.Parts.BETTER_BUCKETS), prefix("cake_alt"));
     }
 
     @Override
@@ -104,7 +106,7 @@ public class ToolsRecipes extends ConditionalRecipeProvider {
         SmithingTransformRecipeBuilder.smithing(Ingredient.of(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.of(ToolsItems.DIAMOND_BUCKET.get()), this.tag(LibCommonTags.Items.INGOTS_NETHERITE), RecipeCategory.TOOLS, ToolsItems.NETHERITE_BUCKET.get()).unlocks("has_netherite_ingot", has(LibCommonTags.Items.INGOTS_NETHERITE)).save(this.output, recipeKey(ToolsItems.NETHERITE_BUCKET.getId() + "_smithing"));
         SmithingTransformRecipeBuilder.smithing(Ingredient.of(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.of(ToolsItems.DIAMOND_SHEARS.get()), this.tag(LibCommonTags.Items.INGOTS_NETHERITE), RecipeCategory.TOOLS, ToolsItems.NETHERITE_SHEARS.get()).unlocks("has_netherite_ingot", has(LibCommonTags.Items.INGOTS_NETHERITE)).save(this.output, recipeKey(ToolsItems.NETHERITE_SHEARS.getId() + "_smithing"));
 
-        ShapedRecipeBuilder.shaped(this.items, RecipeCategory.FOOD, Blocks.CAKE).define('A', LibCommonTags.Items.BUCKETS_MILK).define('B', Items.SUGAR).define('C', LibCommonTags.Items.CROPS_WHEAT).define('E', LibCommonTags.Items.EGGS).pattern("AAA").pattern("BEB").pattern("CCC").unlockedBy("has_egg", has(LibCommonTags.Items.EGGS)).save(this.output, recipeKey(Identifier.parse(key(Blocks.CAKE.asItem()) + "_alt")));
+        ShapedRecipeBuilder.shaped(this.items, RecipeCategory.FOOD, Blocks.CAKE).define('A', LibCommonTags.Items.BUCKETS_MILK).define('B', Items.SUGAR).define('C', LibCommonTags.Items.CROPS_WHEAT).define('E', LibCommonTags.Items.EGGS).pattern("AAA").pattern("BEB").pattern("CCC").unlockedBy("has_egg", has(LibCommonTags.Items.EGGS)).save(this.output, recipeKey(prefix("cake_alt")));
         bucketPattern(ToolsItems.WOOD_BUCKET.get(), ItemTags.PLANKS);
         bucketPattern(ToolsItems.STONE_BUCKET.get(), ItemTags.STONE_TOOL_MATERIALS);
         bucketPattern(ToolsItems.GOLD_BUCKET.get(), LibCommonTags.Items.INGOTS_GOLD);
