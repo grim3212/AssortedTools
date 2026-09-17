@@ -19,6 +19,9 @@
     ],
     "client": [
       "com.grim3212.assorted.tools.AssortedToolsFabricClient"
+    ],
+    "jei_mod_plugin": [
+      "com.grim3212.assorted.tools.compat.jei.JEIAssortedTools"
     ]
   },
   "mixins": [

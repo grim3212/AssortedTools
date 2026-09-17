@@ -2,6 +2,7 @@
 
 ## 11.1.1
 
+- Fix ChickenSuit JEI implementation
 - Support Instruction Manual
 - The mining wand's dirt mode digs podzol, mycelium, moss and mud again.
 - Requires Assorted Lib 4.1.0.
