@@ -23,6 +23,9 @@ public final class ToolsGameTests {
         SpearTests.register(out);
         TooltipTests.register(out);
         WandTests.register(out);
+        MacheteTests.register(out);
+        StaffTests.register(out);
+        FrostTests.register(out);
         MaterialSetTests.register(out);
         AssetTests.register(out);
         CrossLoaderDataTests.register(out);

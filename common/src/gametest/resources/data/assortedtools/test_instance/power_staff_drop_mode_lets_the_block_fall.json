@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:function",
+  "environment": "minecraft:default",
+  "function": "assortedtools:power_staff_drop_mode_lets_the_block_fall",
+  "structure": "assortedtools:test_box",
+  "max_ticks": 1,
+  "setup_ticks": 0,
+  "required": true
+}

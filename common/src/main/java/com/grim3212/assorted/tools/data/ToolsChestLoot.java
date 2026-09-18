@@ -20,8 +20,8 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import java.util.function.BiConsumer;
 
 /**
- * The three Ultimate Fist fragment pools, injected into vanilla chest loot by
- * {@code LootTableHandlers}.
+ * The three Ultimate Fist fragment pools and the rare staff pools, injected into vanilla chest loot
+ * by {@code LootTableHandlers}.
  */
 public class ToolsChestLoot implements LootTableSubProvider {
 
@@ -38,6 +38,16 @@ public class ToolsChestLoot implements LootTableSubProvider {
         LootPool.Builder endPool = LootPool.lootPool();
         endPool.setRolls(ConstantValue.exactly(1)).add(addItem(ToolsItems.A_FRAGMENT.get(), 1, 1, 1)).add(addItem(ToolsItems.MISSING_FRAGMENT.get(), 1, 1, 1)).add(addItem(ToolsItems.E_FRAGMENT.get(), 1, 1, 1)).add(EmptyLootItem.emptyItem().setWeight(15));
         builder.accept(key("fragments_end_loot"), LootTable.lootTable().withPool(endPool));
+
+        // A staff in about one chest in fifty of those LootTableHandlers adds it to.
+        staff(builder, "staffs_neptune_loot", ToolsItems.NEPTUNE_STAFF.get());
+        staff(builder, "staffs_phoenix_loot", ToolsItems.PHOENIX_STAFF.get());
+        staff(builder, "staffs_power_loot", ToolsItems.POWER_STAFF.get());
+    }
+
+    private void staff(BiConsumer<ResourceKey<LootTable>, Builder> builder, String name, ItemLike staff) {
+        LootPool.Builder pool = LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(addItem(staff, 1, 1, 1)).add(EmptyLootItem.emptyItem().setWeight(49));
+        builder.accept(key(name), LootTable.lootTable().withPool(pool));
     }
 
     /** A weighted entry dropping between {@code min} and {@code max} of {@code item}. */

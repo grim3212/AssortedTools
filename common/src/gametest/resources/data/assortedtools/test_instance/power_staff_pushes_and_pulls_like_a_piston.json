@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:function",
+  "environment": "minecraft:default",
+  "function": "assortedtools:power_staff_pushes_and_pulls_like_a_piston",
+  "structure": "assortedtools:test_box",
+  "max_ticks": 1,
+  "setup_ticks": 0,
+  "required": true
+}

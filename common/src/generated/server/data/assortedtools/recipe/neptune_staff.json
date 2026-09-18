@@ -1,0 +1,29 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "staffs"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "staffs"
+    }
+  ],
+  "key": {
+    "C": "assortedtools:ice_charge",
+    "D": "#c:gems/diamond",
+    "S": "assortedtools:frost_rod"
+  },
+  "pattern": [
+    "D",
+    "C",
+    "S"
+  ],
+  "result": {
+    "id": "assortedtools:neptune_staff"
+  }
+}

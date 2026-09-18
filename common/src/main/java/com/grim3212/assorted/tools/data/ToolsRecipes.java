@@ -39,12 +39,16 @@ public class ToolsRecipes extends ConditionalRecipeProvider {
         this.addConditions(partEnabled(ToolsConditions.Parts.POKEBALL), ToolsItems.POKEBALL.getId());
         this.addConditions(partEnabled(ToolsConditions.Parts.WANDS), ToolsItems.BUILDING_WAND.getId(), ToolsItems.BREAKING_WAND.getId(), ToolsItems.MINING_WAND.getId(), ToolsItems.REINFORCED_BUILDING_WAND.getId(), ToolsItems.REINFORCED_BREAKING_WAND.getId(), ToolsItems.REINFORCED_MINING_WAND.getId());
         this.addConditions(partEnabled(ToolsConditions.Parts.ULTIMATE_FIST), ToolsItems.ULTIMATE_FIST.getId());
+        this.addConditions(partEnabled(ToolsConditions.Parts.PORTABLE_WORKBENCH), ToolsItems.PORTABLE_WORKBENCH.getId());
+        this.addConditions(partEnabled(ToolsConditions.Parts.STAFFS), ToolsItems.NEPTUNE_STAFF.getId(), ToolsItems.PHOENIX_STAFF.getId(), ToolsItems.FROST_POWDER.getId(), ToolsItems.ICE_CHARGE.getId());
+        this.addConditions(partEnabled(ToolsConditions.Parts.POWER_STAFF), ToolsItems.POWER_STAFF.getId());
 
         this.addConditions(partEnabled(ToolsConditions.Parts.MULTITOOL), Identifier.parse(ToolsItems.NETHERITE_MULTITOOL.getId() + "_smithing"));
         this.addConditions(partEnabled(ToolsConditions.Parts.HAMMERS), Identifier.parse(ToolsItems.NETHERITE_HAMMER.getId() + "_smithing"));
         this.addConditions(partEnabled(ToolsConditions.Parts.THROWING_SPEARS), Identifier.parse(ToolsItems.NETHERITE_THROWING_SPEAR.getId() + "_smithing"));
         this.addConditions(partEnabled(ToolsConditions.Parts.BETTER_BUCKETS), Identifier.parse(ToolsItems.NETHERITE_BUCKET.getId() + "_smithing"));
         this.addConditions(partEnabled(ToolsConditions.Parts.MORE_SHEARS), Identifier.parse(ToolsItems.NETHERITE_SHEARS.getId() + "_smithing"));
+        this.addConditions(partEnabled(ToolsConditions.Parts.MACHETES), Identifier.parse(ToolsItems.NETHERITE_MACHETE.getId() + "_smithing"));
 
         // Our namespace, not minecraft's: Fabric's datagen moves every recipe id into the mod's
         // namespace, so a minecraft: key never matched there and the recipe lost its condition.
@@ -61,6 +65,12 @@ public class ToolsRecipes extends ConditionalRecipeProvider {
         hammerPattern(ToolsItems.GOLD_HAMMER.get(), LibCommonTags.Items.INGOTS_GOLD);
         hammerPattern(ToolsItems.STONE_HAMMER.get(), ItemTags.STONE_TOOL_MATERIALS);
         hammerPattern(ToolsItems.WOOD_HAMMER.get(), ItemTags.PLANKS);
+
+        machetePattern(ToolsItems.WOOD_MACHETE.get(), ItemTags.PLANKS);
+        machetePattern(ToolsItems.STONE_MACHETE.get(), ItemTags.STONE_TOOL_MATERIALS);
+        machetePattern(ToolsItems.GOLD_MACHETE.get(), LibCommonTags.Items.INGOTS_GOLD);
+        machetePattern(ToolsItems.IRON_MACHETE.get(), LibCommonTags.Items.INGOTS_IRON);
+        machetePattern(ToolsItems.DIAMOND_MACHETE.get(), LibCommonTags.Items.GEMS_DIAMOND);
 
         spearPattern(ToolsItems.WOOD_THROWING_SPEAR.get(), ItemTags.PLANKS);
         spearPattern(ToolsItems.STONE_THROWING_SPEAR.get(), ItemTags.STONE_TOOL_MATERIALS);
@@ -80,6 +90,14 @@ public class ToolsRecipes extends ConditionalRecipeProvider {
         ShapedRecipeBuilder.shaped(this.items, RecipeCategory.TOOLS, ToolsItems.REINFORCED_BREAKING_WAND.get()).define('X', LibCommonTags.Items.OBSIDIAN).define('G', LibCommonTags.Items.STORAGE_BLOCKS_IRON).pattern("XGX").pattern("XGX").pattern("XGX").unlockedBy("has_obsidian", has(LibCommonTags.Items.OBSIDIAN)).save(this.output, recipeKey(ToolsItems.REINFORCED_BREAKING_WAND.getId()));
         ShapedRecipeBuilder.shaped(this.items, RecipeCategory.TOOLS, ToolsItems.REINFORCED_MINING_WAND.get()).define('X', LibCommonTags.Items.OBSIDIAN).define('G', LibCommonTags.Items.STORAGE_BLOCKS_DIAMOND).pattern("XGX").pattern("XGX").pattern("XGX").unlockedBy("has_obsidian", has(LibCommonTags.Items.OBSIDIAN)).save(this.output, recipeKey(ToolsItems.REINFORCED_MINING_WAND.getId()));
 
+        ShapedRecipeBuilder.shaped(this.items, RecipeCategory.TOOLS, ToolsItems.PORTABLE_WORKBENCH.get()).define('I', LibCommonTags.Items.INGOTS_IRON).define('W', Blocks.CRAFTING_TABLE).pattern("III").pattern("IWI").pattern("III").unlockedBy("has_crafting_table", has(Blocks.CRAFTING_TABLE)).save(this.output, recipeKey(ToolsItems.PORTABLE_WORKBENCH.getId()));
+        // The blaze rod, blaze powder and fire charge chain, cold. Each staff takes its own charge.
+        ShapelessRecipeBuilder.shapeless(this.items, RecipeCategory.BREWING, ToolsItems.FROST_POWDER.get(), 2).requires(ToolsItems.FROST_ROD.get()).unlockedBy("has_frost_rod", has(ToolsItems.FROST_ROD.get())).save(this.output, recipeKey(ToolsItems.FROST_POWDER.getId()));
+        ShapelessRecipeBuilder.shapeless(this.items, RecipeCategory.MISC, ToolsItems.ICE_CHARGE.get(), 3).requires(LibCommonTags.Items.GUNPOWDER).requires(ToolsItems.FROST_POWDER.get()).requires(Items.SNOWBALL).unlockedBy("has_frost_powder", has(ToolsItems.FROST_POWDER.get())).save(this.output, recipeKey(ToolsItems.ICE_CHARGE.getId()));
+        ShapedRecipeBuilder.shaped(this.items, RecipeCategory.TOOLS, ToolsItems.NEPTUNE_STAFF.get()).define('D', LibCommonTags.Items.GEMS_DIAMOND).define('C', ToolsItems.ICE_CHARGE.get()).define('S', ToolsItems.FROST_ROD.get()).pattern("D").pattern("C").pattern("S").unlockedBy("has_frost_rod", has(ToolsItems.FROST_ROD.get())).save(this.output, recipeKey(ToolsItems.NEPTUNE_STAFF.getId()));
+        ShapedRecipeBuilder.shaped(this.items, RecipeCategory.TOOLS, ToolsItems.PHOENIX_STAFF.get()).define('D', LibCommonTags.Items.GEMS_DIAMOND).define('C', Items.FIRE_CHARGE).define('S', LibCommonTags.Items.RODS_BLAZE).pattern("D").pattern("C").pattern("S").unlockedBy("has_blaze_rod", has(LibCommonTags.Items.RODS_BLAZE)).save(this.output, recipeKey(ToolsItems.PHOENIX_STAFF.getId()));
+        ShapedRecipeBuilder.shaped(this.items, RecipeCategory.TOOLS, ToolsItems.POWER_STAFF.get()).define('I', LibCommonTags.Items.INGOTS_IRON).define('D', LibCommonTags.Items.GEMS_DIAMOND).define('R', LibCommonTags.Items.DUSTS_REDSTONE).pattern("IDI").pattern("IRI").pattern(" I ").unlockedBy("has_diamond", has(LibCommonTags.Items.GEMS_DIAMOND)).save(this.output, recipeKey(ToolsItems.POWER_STAFF.getId()));
+
         armorSet(ToolsItems.CHICKEN_SUIT_HELMET.get(), ToolsItems.CHICKEN_SUIT_CHESTPLATE.get(), ToolsItems.CHICKEN_SUIT_LEGGINGS.get(), ToolsItems.CHICKEN_SUIT_BOOTS.get(), LibCommonTags.Items.FEATHERS, "chickensuit");
 
         multiTool(ToolsItems.WOODEN_MULTITOOL.get(), Items.WOODEN_PICKAXE, Items.WOODEN_SHOVEL, Items.WOODEN_AXE, Items.WOODEN_HOE, Items.WOODEN_SWORD, ItemTags.PLANKS);
@@ -98,12 +116,14 @@ public class ToolsRecipes extends ConditionalRecipeProvider {
             lungeSpearPattern(group.SPEAR.get(), group.material, ToolsConditions.Parts.EXTRA_MATERIAL);
             bucketPattern(group.BUCKET.get(), group.material, ToolsConditions.Parts.EXTRA_MATERIAL);
             shearPattern(group.SHEARS.get(), group.material, ToolsConditions.Parts.EXTRA_MATERIAL);
+            machetePattern(group.MACHETE.get(), group.material, ToolsConditions.Parts.EXTRA_MATERIAL);
         });
 
         SmithingTransformRecipeBuilder.smithing(Ingredient.of(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.of(ToolsItems.DIAMOND_MULTITOOL.get()), Ingredient.of(Blocks.NETHERITE_BLOCK), RecipeCategory.TOOLS, ToolsItems.NETHERITE_MULTITOOL.get()).unlocks("has_netherite_block", has(Blocks.NETHERITE_BLOCK)).save(this.output, recipeKey(ToolsItems.NETHERITE_MULTITOOL.getId() + "_smithing"));
         SmithingTransformRecipeBuilder.smithing(Ingredient.of(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.of(ToolsItems.DIAMOND_HAMMER.get()), this.tag(LibCommonTags.Items.INGOTS_NETHERITE), RecipeCategory.TOOLS, ToolsItems.NETHERITE_HAMMER.get()).unlocks("has_netherite_ingot", has(LibCommonTags.Items.INGOTS_NETHERITE)).save(this.output, recipeKey(ToolsItems.NETHERITE_HAMMER.getId() + "_smithing"));
         SmithingTransformRecipeBuilder.smithing(Ingredient.of(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.of(ToolsItems.DIAMOND_THROWING_SPEAR.get()), this.tag(LibCommonTags.Items.INGOTS_NETHERITE), RecipeCategory.COMBAT, ToolsItems.NETHERITE_THROWING_SPEAR.get()).unlocks("has_netherite_ingot", has(LibCommonTags.Items.INGOTS_NETHERITE)).save(this.output, recipeKey(ToolsItems.NETHERITE_THROWING_SPEAR.getId() + "_smithing"));
         SmithingTransformRecipeBuilder.smithing(Ingredient.of(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.of(ToolsItems.DIAMOND_BUCKET.get()), this.tag(LibCommonTags.Items.INGOTS_NETHERITE), RecipeCategory.TOOLS, ToolsItems.NETHERITE_BUCKET.get()).unlocks("has_netherite_ingot", has(LibCommonTags.Items.INGOTS_NETHERITE)).save(this.output, recipeKey(ToolsItems.NETHERITE_BUCKET.getId() + "_smithing"));
+        SmithingTransformRecipeBuilder.smithing(Ingredient.of(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.of(ToolsItems.DIAMOND_MACHETE.get()), this.tag(LibCommonTags.Items.INGOTS_NETHERITE), RecipeCategory.COMBAT, ToolsItems.NETHERITE_MACHETE.get()).unlocks("has_netherite_ingot", has(LibCommonTags.Items.INGOTS_NETHERITE)).save(this.output, recipeKey(ToolsItems.NETHERITE_MACHETE.getId() + "_smithing"));
         SmithingTransformRecipeBuilder.smithing(Ingredient.of(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.of(ToolsItems.DIAMOND_SHEARS.get()), this.tag(LibCommonTags.Items.INGOTS_NETHERITE), RecipeCategory.TOOLS, ToolsItems.NETHERITE_SHEARS.get()).unlocks("has_netherite_ingot", has(LibCommonTags.Items.INGOTS_NETHERITE)).save(this.output, recipeKey(ToolsItems.NETHERITE_SHEARS.getId() + "_smithing"));
 
         ShapedRecipeBuilder.shaped(this.items, RecipeCategory.FOOD, Blocks.CAKE).define('A', LibCommonTags.Items.BUCKETS_MILK).define('B', Items.SUGAR).define('C', LibCommonTags.Items.CROPS_WHEAT).define('E', LibCommonTags.Items.EGGS).pattern("AAA").pattern("BEB").pattern("CCC").unlockedBy("has_egg", has(LibCommonTags.Items.EGGS)).save(this.output, recipeKey(prefix("cake_alt")));
@@ -170,6 +190,19 @@ public class ToolsRecipes extends ConditionalRecipeProvider {
         this.addConditions(and(partEnabled(ToolsConditions.Parts.SPEARS), itemTagExists(input), partEnabled(condition)), key(output.asItem()));
 
         ShapedRecipeBuilder.shaped(this.items, RecipeCategory.COMBAT, output).define('S', LibCommonTags.Items.RODS_WOODEN).define('I', input).pattern("  I").pattern(" S ").pattern("S  ").unlockedBy("has_item", has(input)).save(this.output, recipeKey(key(output.asItem())));
+    }
+
+    /** A blade two wide on the diagonal, above a handle. */
+    private void machetePattern(ItemLike output, TagKey<Item> input) {
+        this.addConditions(and(partEnabled(ToolsConditions.Parts.MACHETES), itemTagExists(input)), key(output.asItem()));
+
+        ShapedRecipeBuilder.shaped(this.items, RecipeCategory.COMBAT, output).define('S', LibCommonTags.Items.RODS_WOODEN).define('X', input).pattern(" XX").pattern("XX ").pattern("S  ").unlockedBy("has_item", has(input)).save(this.output, recipeKey(key(output.asItem())));
+    }
+
+    private void machetePattern(ItemLike output, TagKey<Item> input, String condition) {
+        this.addConditions(and(partEnabled(ToolsConditions.Parts.MACHETES), itemTagExists(input), partEnabled(condition)), key(output.asItem()));
+
+        ShapedRecipeBuilder.shaped(this.items, RecipeCategory.COMBAT, output).define('S', LibCommonTags.Items.RODS_WOODEN).define('X', input).pattern(" XX").pattern("XX ").pattern("S  ").unlockedBy("has_item", has(input)).save(this.output, recipeKey(key(output.asItem())));
     }
 
     private void hammerPattern(ItemLike output, TagKey<Item> input) {

@@ -19,6 +19,10 @@ public class ToolsTags {
         public static final TagKey<Block> DESTRUCTIVE_SPARED_BLOCKS = toolsTag("wands/destructive_spared_blocks");
         public static final TagKey<Block> MINING_SURFACE_BLOCKS = toolsTag("wands/mining_surface_blocks");
 
+        public static final TagKey<Block> MINEABLE_MACHETE = toolsTag("mineable/machete");
+        /** Blocks the power staff will not move, beyond the unbreakable ones it always refuses. */
+        public static final TagKey<Block> POWER_STAFF_IMMOVABLE = toolsTag("power_staff_immovable");
+
         private static TagKey<Block> toolsTag(String name) {
             return TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Constants.MOD_ID, name));
         }
@@ -45,6 +49,7 @@ public class ToolsTags {
         public static final TagKey<Item> GEMS_PERIDOT = commonTag("gems/peridot");
 
         public static final TagKey<Item> ULTIMATE_FRAGMENTS = toolsTag("ultimate_fragments");
+        public static final TagKey<Item> MACHETES = toolsTag("machetes");
         public static final TagKey<Item> CAGE_SUPPORTED = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("assorteddecor", "cage_supported"));
 
         private static TagKey<Item> toolsTag(String name) {

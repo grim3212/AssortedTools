@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:function",
+  "environment": "minecraft:default",
+  "function": "assortedtools:machete_cuts_plants_at_its_material_speed",
+  "structure": "assortedtools:test_box",
+  "max_ticks": 1,
+  "setup_ticks": 0,
+  "required": true
+}

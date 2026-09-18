@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:function",
+  "environment": "minecraft:default",
+  "function": "assortedtools:burning_thaws_a_frozen_mob",
+  "structure": "assortedtools:test_box",
+  "max_ticks": 100,
+  "setup_ticks": 0,
+  "required": true
+}

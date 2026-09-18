@@ -1,0 +1,67 @@
+{
+  "pages": [
+    {
+      "type": "assortedlib:recipe",
+      "conditions": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "staffs"
+        }
+      ],
+      "id": "neptune",
+      "recipes": [
+        "assortedtools:neptune_staff"
+      ],
+      "text": "manual.assortedtools.chapter.staffs.neptune",
+      "title": "manual.assortedtools.chapter.staffs.neptune.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "conditions": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "staffs"
+        }
+      ],
+      "id": "phoenix",
+      "recipes": [
+        "assortedtools:phoenix_staff"
+      ],
+      "text": "manual.assortedtools.chapter.staffs.phoenix",
+      "title": "manual.assortedtools.chapter.staffs.phoenix.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "conditions": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "staffs"
+        }
+      ],
+      "id": "frost",
+      "interval": 60,
+      "recipes": [
+        "assortedtools:frost_powder",
+        "assortedtools:ice_charge"
+      ],
+      "text": "manual.assortedtools.chapter.staffs.frost",
+      "title": "manual.assortedtools.chapter.staffs.frost.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "conditions": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "powerstaff"
+        }
+      ],
+      "id": "power",
+      "recipes": [
+        "assortedtools:power_staff"
+      ],
+      "text": "manual.assortedtools.chapter.staffs.power",
+      "title": "manual.assortedtools.chapter.staffs.power.title"
+    }
+  ],
+  "sort_order": 50
+}

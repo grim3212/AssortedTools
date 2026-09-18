@@ -7,6 +7,7 @@ import com.grim3212.assorted.lib.data.ForgeItemTagProvider;
 import com.grim3212.assorted.lib.data.ForgeDatapackRegistryProvider;
 import com.grim3212.assorted.tools.client.data.ToolsEquipmentAssetProvider;
 import com.grim3212.assorted.tools.common.item.BetterBucketItem;
+import com.grim3212.assorted.tools.common.item.FrozenMobs;
 import com.grim3212.assorted.tools.common.item.NeoForgeBetterBucketFluidHandler;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
 import com.grim3212.assorted.tools.client.data.ToolsItemModelProvider;
@@ -14,8 +15,10 @@ import com.grim3212.assorted.tools.data.ToolsBlockTagProvider;
 import com.grim3212.assorted.tools.data.ToolsChestLoot;
 import com.grim3212.assorted.tools.data.ToolsEnchantmentData;
 import com.grim3212.assorted.tools.data.ToolsEnchantmentTagProvider;
+import com.grim3212.assorted.tools.data.ToolsEntityLoot;
 import com.grim3212.assorted.tools.data.ToolsItemTagProvider;
 import com.grim3212.assorted.tools.data.ToolsRecipes;
+import com.grim3212.assorted.tools.platform.NeoForgeFrozenStorage;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;
@@ -25,6 +28,8 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
@@ -40,6 +45,12 @@ public class AssortedToolsNeoForge {
         modBus.addListener(this::gatherServerData);
         modBus.addListener(this::gatherClientData);
         modBus.addListener(this::registerCapabilities);
+        NeoForgeFrozenStorage.ATTACHMENT_TYPES.register(modBus);
+        NeoForge.EVENT_BUS.addListener((EntityTickEvent.Post event) -> {
+            if (!event.getEntity().level().isClientSide()) {
+                FrozenMobs.thawIfBurning(event.getEntity());
+            }
+        });
 
         ToolsCommonMod.init();
     }
@@ -56,7 +67,7 @@ public class AssortedToolsNeoForge {
         event.addProvider(new ToolsRecipes.Runner(packOutput, lookupProvider));
         ForgeBlockTagProvider blockTagProvider = event.addProvider(new ForgeBlockTagProvider(packOutput, lookupProvider, Constants.MOD_ID, new ToolsBlockTagProvider(packOutput, lookupProvider)));
         event.addProvider(new ForgeItemTagProvider(packOutput, lookupProvider, blockTagProvider.contentsGetter(), Constants.MOD_ID, new ToolsItemTagProvider(packOutput, lookupProvider, blockTagProvider.contentsGetter())));
-        event.addProvider(new LootTableProvider(packOutput, Collections.emptySet(), List.of(new LootTableProvider.SubProviderEntry(registries -> new ToolsChestLoot(), LootContextParamSets.CHEST)), lookupProvider));
+        event.addProvider(new LootTableProvider(packOutput, Collections.emptySet(), List.of(new LootTableProvider.SubProviderEntry(registries -> new ToolsChestLoot(), LootContextParamSets.CHEST), new LootTableProvider.SubProviderEntry(ToolsEntityLoot::new, LootContextParamSets.ENTITY)), lookupProvider));
         // Enchantments are datapack registry content now, not registered from code.
         event.addProvider(new ForgeDatapackRegistryProvider(Constants.MOD_ID, new ToolsEnchantmentData()).datpackEntriesProvider(packOutput, lookupProvider));
         event.addProvider(new ToolsEnchantmentTagProvider(packOutput, lookupProvider));

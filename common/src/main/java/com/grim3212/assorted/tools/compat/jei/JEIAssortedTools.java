@@ -1,9 +1,12 @@
 package com.grim3212.assorted.tools.compat.jei;
 
 import com.grim3212.assorted.tools.Constants;
+import com.grim3212.assorted.tools.ToolsCommonMod;
+import com.grim3212.assorted.tools.common.item.ToolsItems;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
+import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.Identifier;
@@ -29,5 +32,16 @@ public class JEIAssortedTools implements IModPlugin {
         }
 
         registration.addRecipes(RecipeTypes.ANVIL, AnvilRecipes.chickenEnchantRecipes(registration.getVanillaRecipeFactory(), registration.getIngredientManager(), registries));
+    }
+
+    /**
+     * The portable workbench opens vanilla's crafting menu, so JEI's own crafting transfer already
+     * fills it; it only needs listing beside the crafting table.
+     */
+    @Override
+    public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
+        if (ToolsCommonMod.COMMON_CONFIG.portableWorkbenchEnabled.get()) {
+            registration.addCraftingStation(RecipeTypes.CRAFTING, ToolsItems.PORTABLE_WORKBENCH.get());
+        }
     }
 }

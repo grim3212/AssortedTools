@@ -1,0 +1,29 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "staffs"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "staffs"
+    }
+  ],
+  "key": {
+    "C": "minecraft:fire_charge",
+    "D": "#c:gems/diamond",
+    "S": "#c:rods/blaze"
+  },
+  "pattern": [
+    "D",
+    "C",
+    "S"
+  ],
+  "result": {
+    "id": "assortedtools:phoenix_staff"
+  }
+}

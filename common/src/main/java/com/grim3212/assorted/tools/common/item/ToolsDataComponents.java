@@ -15,13 +15,16 @@ public class ToolsDataComponents {
             () -> new DataComponentType.Builder<CapturedEntity>().persistent(CapturedEntity.CODEC).networkSynchronized(CapturedEntity.STREAM_CODEC).build());
     public static final IRegistryObject<DataComponentType<WandModeInfo>> WAND_MODE_INFO = DATA_COMPONENTS.register("wand_mode_info",
             () -> new DataComponentType.Builder<WandModeInfo>().persistent(WandModeInfo.CODEC).networkSynchronized(WandModeInfo.STREAM_CODEC).build());
+    public static final IRegistryObject<DataComponentType<StaffModeInfo>> STAFF_MODE_INFO = DATA_COMPONENTS.register("staff_mode_info",
+            () -> new DataComponentType.Builder<StaffModeInfo>().persistent(StaffModeInfo.CODEC).networkSynchronized(StaffModeInfo.STREAM_CODEC).build());
     public static final IRegistryObject<DataComponentType<BucketContents>> BUCKET_CONTENTS = DATA_COMPONENTS.register("bucket_contents",
             () -> new DataComponentType.Builder<BucketContents>().persistent(BucketContents.CODEC).networkSynchronized(BucketContents.STREAM_CODEC).build());
 
-    // Runs before ToolsItems, whose pokeball, wands and buckets carry these as default components.
+    // Runs before ToolsItems, whose pokeball, wands, staffs and buckets carry these as default components.
     public static void init() {
         Services.PLATFORM.showComponentTooltip(CAPTURED_ENTITY);
         Services.PLATFORM.showComponentTooltip(WAND_MODE_INFO);
+        Services.PLATFORM.showComponentTooltip(STAFF_MODE_INFO);
         Services.PLATFORM.showComponentTooltip(BUCKET_CONTENTS);
     }
 }

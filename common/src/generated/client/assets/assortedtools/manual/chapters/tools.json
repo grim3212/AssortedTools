@@ -72,6 +72,39 @@
       "conditions": [
         {
           "type": "assortedlib:part_enabled",
+          "part": "machetes"
+        }
+      ],
+      "id": "machetes",
+      "interval": 50,
+      "recipes": [
+        "assortedtools:wood_machete",
+        "assortedtools:iron_machete",
+        "assortedtools:diamond_machete"
+      ],
+      "text": "manual.assortedtools.chapter.tools.machetes",
+      "title": "manual.assortedtools.chapter.tools.machetes.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "conditions": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "portableworkbench"
+        }
+      ],
+      "id": "portable_workbench",
+      "recipes": [
+        "assortedtools:portable_workbench"
+      ],
+      "text": "manual.assortedtools.chapter.tools.portable_workbench",
+      "title": "manual.assortedtools.chapter.tools.portable_workbench.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "conditions": [
+        {
+          "type": "assortedlib:part_enabled",
           "part": "extramaterials"
         },
         {

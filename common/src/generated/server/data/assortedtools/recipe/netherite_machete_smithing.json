@@ -1,0 +1,21 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "machetes"
+    }
+  ],
+  "type": "minecraft:smithing_transform",
+  "addition": "#c:ingots/netherite",
+  "base": "assortedtools:diamond_machete",
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "machetes"
+    }
+  ],
+  "result": {
+    "id": "assortedtools:netherite_machete"
+  },
+  "template": "minecraft:netherite_upgrade_smithing_template"
+}

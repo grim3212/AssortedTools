@@ -65,6 +65,22 @@ public class ToolsCreativeItems {
             items.add(ToolsItems.CHICKEN_SUIT_BOOTS.get());
         }
 
+        if (ToolsCommonMod.COMMON_CONFIG.portableWorkbenchEnabled.get()) {
+            items.add(ToolsItems.PORTABLE_WORKBENCH.get());
+        }
+
+        if (ToolsCommonMod.COMMON_CONFIG.staffsEnabled.get()) {
+            items.add(ToolsItems.NEPTUNE_STAFF.get());
+            items.add(ToolsItems.PHOENIX_STAFF.get());
+            items.add(ToolsItems.FROST_ROD.get());
+            items.add(ToolsItems.FROST_POWDER.get());
+            items.add(ToolsItems.ICE_CHARGE.get());
+        }
+
+        if (ToolsCommonMod.COMMON_CONFIG.powerStaffEnabled.get()) {
+            items.add(ToolsItems.POWER_STAFF.get());
+        }
+
         if (ToolsCommonMod.COMMON_CONFIG.boomerangsEnabled.get()) {
             items.add(ToolsItems.WOOD_BOOMERANG.get());
             items.add(ToolsItems.DIAMOND_BOOMERANG.get());
@@ -114,6 +130,15 @@ public class ToolsCreativeItems {
             items.add(ToolsItems.NETHERITE_MULTITOOL.get());
         }
 
+        if (ToolsCommonMod.COMMON_CONFIG.machetesEnabled.get()) {
+            items.add(ToolsItems.WOOD_MACHETE.get());
+            items.add(ToolsItems.STONE_MACHETE.get());
+            items.add(ToolsItems.IRON_MACHETE.get());
+            items.add(ToolsItems.GOLD_MACHETE.get());
+            items.add(ToolsItems.DIAMOND_MACHETE.get());
+            items.add(ToolsItems.NETHERITE_MACHETE.get());
+        }
+
         if (ToolsCommonMod.COMMON_CONFIG.moreShearsEnabled.get()) {
             items.add(ToolsItems.WOOD_SHEARS.get());
             items.add(ToolsItems.STONE_SHEARS.get());
@@ -151,6 +176,10 @@ public class ToolsCreativeItems {
 
                 if (ToolsCommonMod.COMMON_CONFIG.multiToolsEnabled.get()) {
                     items.add(group.MULTITOOL.get());
+                }
+
+                if (ToolsCommonMod.COMMON_CONFIG.machetesEnabled.get()) {
+                    items.add(group.MACHETE.get());
                 }
 
                 if (ToolsCommonMod.COMMON_CONFIG.spearsEnabled.get()) {

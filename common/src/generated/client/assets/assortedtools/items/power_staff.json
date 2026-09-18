@@ -1,0 +1,19 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "assortedtools:item/power_staff_pull"
+        },
+        "when": "pull"
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "assortedtools:item/power_staff"
+    },
+    "property": "minecraft:custom_model_data"
+  }
+}

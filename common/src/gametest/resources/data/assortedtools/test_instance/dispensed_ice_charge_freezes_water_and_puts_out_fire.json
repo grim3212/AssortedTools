@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:function",
+  "environment": "minecraft:default",
+  "function": "assortedtools:dispensed_ice_charge_freezes_water_and_puts_out_fire",
+  "structure": "assortedtools:test_box",
+  "max_ticks": 100,
+  "setup_ticks": 0,
+  "required": true
+}

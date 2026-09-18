@@ -27,6 +27,10 @@ public class ToolsCommonConfig {
     public final Supplier<Boolean> betterBucketsEnabled;
     public final Supplier<Boolean> moreShearsEnabled;
     public final Supplier<Boolean> ultimateFistEnabled;
+    public final Supplier<Boolean> machetesEnabled;
+    public final Supplier<Boolean> portableWorkbenchEnabled;
+    public final Supplier<Boolean> staffsEnabled;
+    public final Supplier<Boolean> powerStaffEnabled;
 
     public final Supplier<Boolean> hideUncraftableItems;
     public final Supplier<Boolean> allowPartialBucketAmounts;
@@ -79,6 +83,10 @@ public class ToolsCommonConfig {
         betterBucketsEnabled = builder.defineBoolean("parts.betterBucketsEnabled", true, "Set this to true if you would like better buckets to be craftable and found in the creative tab.");
         moreShearsEnabled = builder.defineBoolean("parts.moreShearsEnabled", true, "Set this to true if you would like the extra shears to be craftable and found in the creative tab.");
         ultimateFistEnabled = builder.defineBoolean("parts.ultimateFistEnabled", true, "Set this to true if you would like the ultimate fist to be craftable and found in the creative tab as well as the fragments generate in loot.");
+        machetesEnabled = builder.defineBoolean("parts.machetesEnabled", true, "Set this to true if you would like machetes to be craftable and found in the creative tab.");
+        portableWorkbenchEnabled = builder.defineBoolean("parts.portableWorkbenchEnabled", true, "Set this to true if you would like the portable workbench to be craftable and found in the creative tab.");
+        staffsEnabled = builder.defineBoolean("parts.staffsEnabled", true, "Set this to true if you would like the Neptune and Phoenix staffs to be craftable and found in the creative tab.");
+        powerStaffEnabled = builder.defineBoolean("parts.powerStaffEnabled", true, "Set this to true if you would like the power staff to be craftable and found in the creative tab.");
 
         hideUncraftableItems = builder.defineBoolean("general.hideUncraftableItems", false, "For any item that is unobtainable (like missing materials from other mods) hide it from the creative menu / JEI.");
 

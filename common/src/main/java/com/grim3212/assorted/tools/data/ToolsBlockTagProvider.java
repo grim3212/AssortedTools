@@ -49,6 +49,14 @@ public class ToolsBlockTagProvider extends LibBlockTagProvider {
                 .addOptionalTag(LibCommonTags.Blocks.CHESTS);
         tagger.apply(ToolsTags.Blocks.MINING_SURFACE_BLOCKS)
                 .addOptionalTag(LibCommonTags.Blocks.ORES);
+
+        tagger.apply(ToolsTags.Blocks.MINEABLE_MACHETE)
+                .addTag(BlockTags.SWORD_EFFICIENT)
+                .addTag(BlockTags.WOOL)
+                .addTag(BlockTags.CAVE_VINES)
+                .add(Blocks.CACTUS, Blocks.SUGAR_CANE, Blocks.HANGING_ROOTS, Blocks.WEEPING_VINES, Blocks.WEEPING_VINES_PLANT, Blocks.TWISTING_VINES, Blocks.TWISTING_VINES_PLANT);
+        // Empty on purpose: a place for packs to add to. What pistons cannot push is already refused.
+        tagger.apply(ToolsTags.Blocks.POWER_STAFF_IMMOVABLE);
     }
 
     private record BlockTagger(TagAppender<Block> appender) {

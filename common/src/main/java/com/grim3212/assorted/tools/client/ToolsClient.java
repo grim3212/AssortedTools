@@ -43,6 +43,7 @@ public class ToolsClient {
         ClientServices.CLIENT.registerEntityRenderer(() -> ToolsEntities.WOOD_BOOMERANG.get(), BoomerangRenderer::new);
         ClientServices.CLIENT.registerEntityRenderer(() -> ToolsEntities.DIAMOND_BOOMERANG.get(), BoomerangRenderer::new);
         ClientServices.CLIENT.registerEntityRenderer(() -> ToolsEntities.POKEBALL.get(), ThrownItemRenderer::new);
+        ClientServices.CLIENT.registerEntityRenderer(() -> ToolsEntities.ICE_CHARGE.get(), ThrownItemRenderer::new);
         ClientServices.CLIENT.registerEntityRenderer(() -> ToolsEntities.BETTER_SPEAR.get(), BetterSpearRenderer::new);
 
         // An item's tints live in its model now; all that is registered from code is the source type.

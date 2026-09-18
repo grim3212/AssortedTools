@@ -49,6 +49,12 @@ public class ToolsItemTagProvider extends LibItemTagProvider {
         enchantableMeleeWeapon(tagger, ToolsItems.WOOD_HAMMER.get(), ToolsItems.STONE_HAMMER.get(), ToolsItems.GOLD_HAMMER.get(), ToolsItems.IRON_HAMMER.get(), ToolsItems.DIAMOND_HAMMER.get(), ToolsItems.NETHERITE_HAMMER.get());
         enchantableMeleeWeapon(tagger, ToolsItems.WOODEN_MULTITOOL.get(), ToolsItems.STONE_MULTITOOL.get(), ToolsItems.GOLDEN_MULTITOOL.get(), ToolsItems.IRON_MULTITOOL.get(), ToolsItems.DIAMOND_MULTITOOL.get(), ToolsItems.NETHERITE_MULTITOOL.get());
         enchantableMeleeWeapon(tagger, ToolsItems.ULTIMATE_FIST.get());
+        enchantableMeleeWeapon(tagger, ToolsItems.NEPTUNE_STAFF.get(), ToolsItems.PHOENIX_STAFF.get());
+        enchantableMeleeWeapon(tagger, ToolsItems.WOOD_MACHETE.get(), ToolsItems.STONE_MACHETE.get(), ToolsItems.GOLD_MACHETE.get(), ToolsItems.IRON_MACHETE.get(), ToolsItems.DIAMOND_MACHETE.get(), ToolsItems.NETHERITE_MACHETE.get());
+        tagger.apply(ToolsTags.Items.MACHETES).add(ToolsItems.WOOD_MACHETE.get(), ToolsItems.STONE_MACHETE.get(), ToolsItems.GOLD_MACHETE.get(), ToolsItems.IRON_MACHETE.get(), ToolsItems.DIAMOND_MACHETE.get(), ToolsItems.NETHERITE_MACHETE.get());
+        // A machete is a sword to everything that asks by tag, Sweeping Edge included.
+        tagger.apply(ItemTags.SWORDS).addTag(ToolsTags.Items.MACHETES);
+        tagger.apply(LibCommonTags.Items.TOOLS_MELEE_WEAPONS).addTag(ToolsTags.Items.MACHETES).add(ToolsItems.NEPTUNE_STAFF.get(), ToolsItems.PHOENIX_STAFF.get());
         enchantableTrident(tagger, ToolsItems.WOOD_THROWING_SPEAR.get(), ToolsItems.STONE_THROWING_SPEAR.get(), ToolsItems.GOLD_THROWING_SPEAR.get(), ToolsItems.IRON_THROWING_SPEAR.get(), ToolsItems.DIAMOND_THROWING_SPEAR.get(), ToolsItems.NETHERITE_THROWING_SPEAR.get());
         enchantableDurability(tagger, ToolsItems.WOOD_SHEARS.get(), ToolsItems.STONE_SHEARS.get(), ToolsItems.GOLD_SHEARS.get(), ToolsItems.DIAMOND_SHEARS.get(), ToolsItems.NETHERITE_SHEARS.get());
         enchantableDurability(tagger, ToolsItems.WOOD_BUCKET.get(), ToolsItems.STONE_BUCKET.get(), ToolsItems.GOLD_BUCKET.get(), ToolsItems.DIAMOND_BUCKET.get(), ToolsItems.NETHERITE_BUCKET.get());
@@ -87,9 +93,10 @@ public class ToolsItemTagProvider extends LibItemTagProvider {
             tagger.apply(LibCommonTags.Items.SHEARS).add(group.SHEARS.get());
             tagger.apply(ToolsEnchantments.SPEAR_ENCHANTABLE).add(group.THROWING_SPEAR.get());
             tagger.apply(ToolsEnchantments.SHEARS_ENCHANTABLE).add(group.SHEARS.get());
+            tagger.apply(ToolsTags.Items.MACHETES).add(group.MACHETE.get());
 
             enchantableTool(tagger, group.PICKAXE.get(), group.SHOVEL.get(), group.AXE.get(), group.HOE.get(), group.HAMMER.get(), group.MULTITOOL.get());
-            enchantableMeleeWeapon(tagger, group.SWORD.get(), group.AXE.get(), group.HAMMER.get(), group.MULTITOOL.get(), group.SPEAR.get());
+            enchantableMeleeWeapon(tagger, group.SWORD.get(), group.AXE.get(), group.HAMMER.get(), group.MULTITOOL.get(), group.SPEAR.get(), group.MACHETE.get());
             enchantableDurability(tagger, group.SPEAR.get());
             enchantableArmor(tagger, ItemTags.HEAD_ARMOR_ENCHANTABLE, group.HELMET.get());
             enchantableArmor(tagger, ItemTags.CHEST_ARMOR_ENCHANTABLE, group.CHESTPLATE.get());
@@ -100,7 +107,7 @@ public class ToolsItemTagProvider extends LibItemTagProvider {
         });
         tagger.apply(ToolsTags.Items.ULTIMATE_FRAGMENTS).add(ToolsItems.U_FRAGMENT.get(), ToolsItems.L_FRAGMENT.get(), ToolsItems.T_FRAGMENT.get(), ToolsItems.I_FRAGMENT.get(), ToolsItems.M_FRAGMENT.get(), ToolsItems.A_FRAGMENT.get(), ToolsItems.MISSING_FRAGMENT.get(), ToolsItems.E_FRAGMENT.get());
 
-        tagger.apply(ItemTags.PIGLIN_LOVED).add(ToolsItems.GOLD_HAMMER.get(), ToolsItems.GOLDEN_MULTITOOL.get(), ToolsItems.GOLD_THROWING_SPEAR.get(), ToolsItems.BUILDING_WAND.get(), ToolsItems.REINFORCED_BUILDING_WAND.get(), ToolsItems.GOLD_BUCKET.get(), ToolsItems.GOLD_MILK_BUCKET.get(), ToolsItems.GOLD_SHEARS.get());
+        tagger.apply(ItemTags.PIGLIN_LOVED).add(ToolsItems.GOLD_MACHETE.get(), ToolsItems.GOLD_HAMMER.get(), ToolsItems.GOLDEN_MULTITOOL.get(), ToolsItems.GOLD_THROWING_SPEAR.get(), ToolsItems.BUILDING_WAND.get(), ToolsItems.REINFORCED_BUILDING_WAND.get(), ToolsItems.GOLD_BUCKET.get(), ToolsItems.GOLD_MILK_BUCKET.get(), ToolsItems.GOLD_SHEARS.get());
 
         tagger.apply(ToolsTags.Items.CAGE_SUPPORTED).add(ToolsItems.POKEBALL.get());
     }

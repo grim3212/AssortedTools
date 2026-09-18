@@ -90,12 +90,35 @@ public class ToolsItems {
     public static final IRegistryObject<FragmentItem> MISSING_FRAGMENT = register("missing_fragment", props -> new FragmentItem(props.rarity(Rarity.RARE)));
     public static final IRegistryObject<FragmentItem> E_FRAGMENT = register("e_fragment", props -> new FragmentItem(props.rarity(Rarity.RARE)));
 
+    public static final IRegistryObject<MacheteItem> WOOD_MACHETE = register("wood_machete", props -> new MacheteItem(ToolsCommonMod.COMMON_CONFIG.woodItemTier, props));
+    public static final IRegistryObject<MacheteItem> STONE_MACHETE = register("stone_machete", props -> new MacheteItem(ToolsCommonMod.COMMON_CONFIG.stoneItemTier, props));
+    public static final IRegistryObject<MacheteItem> GOLD_MACHETE = register("gold_machete", props -> new MacheteItem(ToolsCommonMod.COMMON_CONFIG.goldItemTier, props));
+    public static final IRegistryObject<MacheteItem> IRON_MACHETE = register("iron_machete", props -> new MacheteItem(ToolsCommonMod.COMMON_CONFIG.ironItemTier, props));
+    public static final IRegistryObject<MacheteItem> DIAMOND_MACHETE = register("diamond_machete", props -> new MacheteItem(ToolsCommonMod.COMMON_CONFIG.diamondItemTier, props));
+    public static final IRegistryObject<MacheteItem> NETHERITE_MACHETE = register("netherite_machete", props -> new MacheteItem(ToolsCommonMod.COMMON_CONFIG.netheriteItemTier, props.fireResistant()));
+
+    public static final IRegistryObject<PortableWorkbenchItem> PORTABLE_WORKBENCH = register("portable_workbench", props -> new PortableWorkbenchItem(props.stacksTo(1)));
+
+    public static final IRegistryObject<NeptuneStaffItem> NEPTUNE_STAFF = register("neptune_staff", props -> new NeptuneStaffItem(props.durability(StaffItem.DURABILITY)));
+    public static final IRegistryObject<PhoenixStaffItem> PHOENIX_STAFF = register("phoenix_staff", props -> new PhoenixStaffItem(props.durability(StaffItem.DURABILITY).fireResistant()));
+    // The cold counterparts of the blaze rod, blaze powder and fire charge, for the Neptune staff.
+    public static final IRegistryObject<Item> FROST_ROD = register("frost_rod", Item::new);
+    public static final IRegistryObject<Item> FROST_POWDER = register("frost_powder", Item::new);
+    public static final IRegistryObject<IceChargeItem> ICE_CHARGE = register("ice_charge", IceChargeItem::new);
+    public static final IRegistryObject<PowerStaffItem> POWER_STAFF = register("power_staff", props -> new PowerStaffItem(props.stacksTo(1)));
+
     public static final IRegistryObject<UltimateFistItem> ULTIMATE_FIST = register("ultimate_fist", props -> new UltimateFistItem(props.fireResistant().rarity(Rarity.EPIC)));
 
     public static final Map<String, MaterialGroup> MATERIAL_GROUPS = Maps.newHashMap();
 
     static {
         ToolsCommonMod.COMMON_CONFIG.moddedTiers.forEach((s, tier) -> MATERIAL_GROUPS.put(s, new MaterialGroup(tier, ToolsCommonMod.COMMON_CONFIG.moddedArmors.get(s))));
+    }
+
+    public static List<Item> machetes() {
+        List<Item> machetes = Lists.newArrayList(WOOD_MACHETE.get(), STONE_MACHETE.get(), GOLD_MACHETE.get(), IRON_MACHETE.get(), DIAMOND_MACHETE.get(), NETHERITE_MACHETE.get());
+        MATERIAL_GROUPS.values().forEach((mg) -> machetes.add(mg.MACHETE.get()));
+        return machetes;
     }
 
     public static List<Item> buckets() {
@@ -122,6 +145,7 @@ public class ToolsItems {
         public final IRegistryObject<BetterSpearItem> THROWING_SPEAR;
         /** A spear as vanilla makes them, which vanilla has none of for these materials. */
         public final IRegistryObject<MaterialSpearItem> SPEAR;
+        public final IRegistryObject<MacheteItem> MACHETE;
         public final IRegistryObject<ConfigurableArmorItem> HELMET;
         public final IRegistryObject<ConfigurableArmorItem> CHESTPLATE;
         public final IRegistryObject<ConfigurableArmorItem> LEGGINGS;
@@ -145,6 +169,7 @@ public class ToolsItems {
             this.MULTITOOL = register(tier.getName() + "_multitool", props -> new MultiToolItem(tier, props));
             this.THROWING_SPEAR = register(tier.getName() + "_throwing_spear", props -> new BetterSpearItem(props, tier));
             this.SPEAR = register(tier.getName() + "_spear", props -> new MaterialSpearItem(tier, props));
+            this.MACHETE = register(tier.getName() + "_machete", props -> new MacheteItem(tier, props));
 
             this.BUCKET = register(tier.getName() + "_bucket", props -> new BetterBucketItem(props, tier));
             this.MILK_BUCKET = register(tier.getName() + "_milk_bucket", props -> new BetterMilkBucketItem(() -> this.BUCKET.get(), tier, props));

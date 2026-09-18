@@ -50,6 +50,7 @@ public class ToolsLanguageProvider extends LibLanguageProvider {
 
         this.add("entity.assortedtools.spear", "Throwing Spear");
         this.add("entity.assortedtools.better_spear", "Throwing Spear");
+        this.add("entity.assortedtools.ice_charge", "Ice Charge");
 
         this.add("item.assortedtools.u_fragment", "\u00A71U\u00A7r Fragment");
         this.add("item.assortedtools.l_fragment", "\u00A72L\u00A7r Fragment");
@@ -59,6 +60,9 @@ public class ToolsLanguageProvider extends LibLanguageProvider {
         this.add("item.assortedtools.a_fragment", "\u00A78A\u00A7r Fragment");
         this.add("item.assortedtools.missing_fragment", "\u00A7k???\u00A7r Fragment");
         this.add("item.assortedtools.e_fragment", "\u00A7dE\u00A7r Fragment");
+        this.add("item.assortedtools.frost_rod", "Frost Rod");
+        this.add("item.assortedtools.frost_powder", "Frost Powder");
+        this.add("item.assortedtools.ice_charge", "Ice Charge");
         this.add("item.assortedtools.chicken_suit_helmet", "Chicken Hat");
         this.add("item.assortedtools.chicken_suit_chestplate", "Chicken Suit");
         this.add("item.assortedtools.chicken_suit_leggings", "Chicken Legs");
@@ -89,6 +93,20 @@ public class ToolsLanguageProvider extends LibLanguageProvider {
         this.add("assortedtools.wand.broken", "\u00A7lThis wand got screwed up.");
         this.add("assortedtools.wand.switched", "Switched wand mode to %s");
 
+        this.add("assortedtools.staff.mode.place_water", "Place Water");
+        this.add("assortedtools.staff.mode.freeze_mobs", "Freeze Mobs");
+        this.add("assortedtools.staff.mode.freeze_water", "Freeze Water");
+        this.add("assortedtools.staff.mode.place_lava", "Place Lava");
+        this.add("assortedtools.staff.mode.place_fire", "Place Fire");
+        this.add("assortedtools.staff.mode.thaw_mobs", "Thaw Mobs");
+        this.add("assortedtools.staff.mode.melt_ice", "Melt Ice");
+        this.add("assortedtools.staff.mode.float_push", "Floating Push");
+        this.add("assortedtools.staff.mode.float_pull", "Floating Pull");
+        this.add("assortedtools.staff.mode.drop_push", "Dropping Push");
+        this.add("assortedtools.staff.mode.drop_pull", "Dropping Pull");
+        this.add("assortedtools.staff.current", "\u00A7lMode\u00A7r: %s");
+        this.add("assortedtools.staff.switched", "Switched staff mode to %s");
+
         this.add("result.wand.fill", "%s blocks filled up with stone.");
         this.add("result.wand.mine", "No ores found.");
 
@@ -111,6 +129,7 @@ public class ToolsLanguageProvider extends LibLanguageProvider {
         this.add("tag.item.assortedtools.enchantable.shears", "Enchantable Shears");
         this.add("tag.item.assortedtools.enchantable.throwing_spear", "Enchantable Throwing Spears");
         this.add("tag.item.assortedtools.ultimate_fragments", "Ultimate Fragments");
+        this.add("tag.item.assortedtools.machetes", "Machetes");
 
         // A bucket names its filled form through a key of its own rather than an item.
         Pattern bucket = Pattern.compile("(.+)_bucket");
@@ -152,6 +171,7 @@ public class ToolsLanguageProvider extends LibLanguageProvider {
         this.addBucketsChapter();
         this.addArmorChapter();
         this.addWandsChapter();
+        this.addStaffsChapter();
         this.addUltimateChapter();
         this.addPokeballChapter();
     }
@@ -180,6 +200,16 @@ public class ToolsLanguageProvider extends LibLanguageProvider {
         this.add("manual.assortedtools.chapter.tools.multitools",
                 "A multitool is a sword, pickaxe, axe, shovel and hoe in one slot, and mines all of them at its "
                         + "material's speed.");
+
+        this.add("manual.assortedtools.chapter.tools.machetes.title", "Machetes");
+        this.add("manual.assortedtools.chapter.tools.machetes",
+                "A machete is a lighter, quicker sword that cuts through leaves, vines, wool, cactus and the "
+                        + "rest of the undergrowth." + BREAK
+                        + "They come in every material, from wood up to netherite.");
+
+        this.add("manual.assortedtools.chapter.tools.portable_workbench.title", "Portable Workbench");
+        this.add("manual.assortedtools.chapter.tools.portable_workbench",
+                "A crafting table you can carry. Right click with it to craft on the spot.");
 
         this.add("manual.assortedtools.chapter.tools.shears.title", "Shears");
         this.add("manual.assortedtools.chapter.tools.shears",
@@ -266,6 +296,35 @@ public class ToolsLanguageProvider extends LibLanguageProvider {
                         + "refuses." + BREAK
                         + "Filling a cave, flooding a space with water, or pouring lava into one, and surface "
                         + "mining, all need a reinforced wand.");
+    }
+
+    private void addStaffsChapter() {
+        this.add("manual.assortedtools.chapter.staffs", "Staffs");
+
+        this.add("manual.assortedtools.chapter.staffs.neptune.title", "Neptune Staff");
+        this.add("manual.assortedtools.chapter.staffs.neptune",
+                "Switch its mode with the tool mode key, Z by default." + BREAK
+                        + "Place Water pours a water source where you click. Freeze Mobs freezes every mob around "
+                        + "you solid, and Freeze Water turns the still water around you to ice." + BREAK
+                        + "It is no weapon, but anything it hits is frozen where it stands.");
+
+        this.add("manual.assortedtools.chapter.staffs.phoenix.title", "Phoenix Staff");
+        this.add("manual.assortedtools.chapter.staffs.phoenix",
+                "The Neptune staff's the opposite. Place Lava and Place Fire where you click, Thaw Mobs "
+                        + "frees every frozen mob around you, and Melt Ice melts the ice around you." + BREAK
+                        + "A hit with it thaws a frozen mob.");
+
+        this.add("manual.assortedtools.chapter.staffs.frost.title", "Frost Rods");
+        this.add("manual.assortedtools.chapter.staffs.frost",
+                "The blaze rod's cold counterpart. Strays drop them as blazes drop theirs, and any other "
+                        + "monster killed in a snowy biome sometimes does." + BREAK
+                        + "A frost rod grinds into frost powder, and frost powder, gunpowder and a snowball make "
+                        + "ice charges.");
+
+        this.add("manual.assortedtools.chapter.staffs.power.title", "Power Staff");
+        this.add("manual.assortedtools.chapter.staffs.power",
+                "Right click a block to push it one step away, or in a pull mode to drag it one step toward "
+                        + "the side you clicked.");
     }
 
     private void addUltimateChapter() {

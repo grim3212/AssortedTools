@@ -4,6 +4,7 @@ import com.grim3212.assorted.lib.LibConstants;
 import com.grim3212.assorted.tools.Constants;
 import com.grim3212.assorted.tools.client.model.fluidcontainer.FluidContainerItemModel;
 import com.grim3212.assorted.tools.client.render.item.SpearSpecialRenderer;
+import com.grim3212.assorted.tools.common.item.PowerStaffItem;
 import com.grim3212.assorted.tools.common.item.ToolsItems;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
@@ -15,6 +16,7 @@ import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.renderer.item.ClientItem;
 import net.minecraft.client.renderer.item.ItemModel;
+import net.minecraft.client.renderer.item.properties.select.CustomModelDataProperty;
 import net.minecraft.client.renderer.special.TridentSpecialRenderer;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Holder;
@@ -113,6 +115,21 @@ public class ToolsItemModelProvider extends ModelProvider {
         generatedItem(itemModels, ToolsItems.MISSING_FRAGMENT.get());
         generatedItem(itemModels, ToolsItems.E_FRAGMENT.get());
 
+        tool(itemModels, ToolsItems.WOOD_MACHETE.get());
+        tool(itemModels, ToolsItems.STONE_MACHETE.get());
+        tool(itemModels, ToolsItems.GOLD_MACHETE.get());
+        tool(itemModels, ToolsItems.IRON_MACHETE.get());
+        tool(itemModels, ToolsItems.DIAMOND_MACHETE.get());
+        tool(itemModels, ToolsItems.NETHERITE_MACHETE.get());
+
+        generatedItem(itemModels, ToolsItems.PORTABLE_WORKBENCH.get());
+        handheldItem(itemModels, ToolsItems.NEPTUNE_STAFF.get());
+        handheldItem(itemModels, ToolsItems.PHOENIX_STAFF.get());
+        handheldItem(itemModels, ToolsItems.FROST_ROD.get());
+        generatedItem(itemModels, ToolsItems.FROST_POWDER.get());
+        generatedItem(itemModels, ToolsItems.ICE_CHARGE.get());
+        powerStaff(itemModels, ToolsItems.POWER_STAFF.get());
+
         handheldItem(itemModels, ToolsItems.BUILDING_WAND.get());
         handheldItem(itemModels, ToolsItems.REINFORCED_BUILDING_WAND.get());
         handheldItem(itemModels, ToolsItems.BREAKING_WAND.get());
@@ -159,6 +176,7 @@ public class ToolsItemModelProvider extends ModelProvider {
             tool(itemModels, group.SWORD.get());
             tool(itemModels, group.HAMMER.get());
             tool(itemModels, group.MULTITOOL.get());
+            tool(itemModels, group.MACHETE.get());
             spear(itemModels, group.THROWING_SPEAR.get());
             lungeSpear(itemModels, group.SPEAR.get());
 
@@ -183,6 +201,17 @@ public class ToolsItemModelProvider extends ModelProvider {
         Identifier flat = ModelTemplates.FLAT_ITEM.create(modelId(name), TextureMapping.layer0(prefixed("item/tools/" + name)), itemModels.modelOutput);
         Identifier inHand = ModelTemplates.SPEAR_IN_HAND.create(modelId(name + "_in_hand"), TextureMapping.layer0(prefixed("item/tools/" + name + "_in_hand")), itemModels.modelOutput);
         itemModels.itemModelOutput.accept(item, ItemModelGenerators.createFlatModelDispatch(ItemModelUtils.plainModel(flat), ItemModelUtils.plainModel(inHand)), new ClientItem.Properties(true, false, 1.95F));
+    }
+
+    /**
+     * The push texture, or the pull one while {@link PowerStaffItem} has marked the stack's first
+     * {@code custom_model_data} string as a pull.
+     */
+    private void powerStaff(ItemModelGenerators itemModels, Item item) {
+        String name = name(item);
+        Identifier push = ModelTemplates.FLAT_HANDHELD_ITEM.create(modelId(name), TextureMapping.layer0(prefixed("item/" + name + "_push")), itemModels.modelOutput);
+        Identifier pull = ModelTemplates.FLAT_HANDHELD_ITEM.create(modelId(name + "_pull"), TextureMapping.layer0(prefixed("item/" + name + "_pull")), itemModels.modelOutput);
+        itemModels.itemModelOutput.accept(item, ItemModelUtils.select(new CustomModelDataProperty(0), ItemModelUtils.plainModel(push), ItemModelUtils.when(PowerStaffItem.PULL_MODEL, ItemModelUtils.plainModel(pull))));
     }
 
     // ------------------------------------------------------------------ flat items

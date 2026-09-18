@@ -29,6 +29,7 @@ public class ToolsManualProvider extends LibManualProvider {
         this.addBuckets();
         this.addArmor();
         this.addWands();
+        this.addStaffs();
         this.addUltimate();
         this.addPokeball();
     }
@@ -44,6 +45,9 @@ public class ToolsManualProvider extends LibManualProvider {
                 .opensEveryItem(endsWith("_hammer"));
         tools.recipesById("multitools", recipeId(ToolsItems.IRON_MULTITOOL.get()), recipeId("steel_multitool"), recipeId(ToolsItems.DIAMOND_MULTITOOL.get()), recipeId(ToolsItems.NETHERITE_MULTITOOL.get())).whenPartEnabled(ToolsConditions.Parts.EXTRA_MATERIAL, ToolsConditions.Parts.MULTITOOL).every(50)
                 .opensEveryItem(endsWith("_multitool"));
+        tools.recipes("machetes", ToolsItems.WOOD_MACHETE.get(), ToolsItems.IRON_MACHETE.get(), ToolsItems.DIAMOND_MACHETE.get()).whenPartEnabled(ToolsConditions.Parts.MACHETES).every(50)
+                .opensEveryItem(endsWith("_machete"));
+        tools.recipes("portable_workbench", ToolsItems.PORTABLE_WORKBENCH.get()).whenPartEnabled(ToolsConditions.Parts.PORTABLE_WORKBENCH).opens(ToolsItems.PORTABLE_WORKBENCH.get());
         tools.recipesById("shears", recipeId(ToolsItems.WOOD_SHEARS.get()), recipeId("steel_shears"), recipeId(ToolsItems.NETHERITE_SHEARS.get())).whenPartEnabled(ToolsConditions.Parts.EXTRA_MATERIAL, ToolsConditions.Parts.MORE_SHEARS)
                 .every(50).opensEveryItem(endsWith("_shears"));
     }
@@ -90,6 +94,15 @@ public class ToolsManualProvider extends LibManualProvider {
         wands.recipes("reinforced", ToolsItems.REINFORCED_BUILDING_WAND.get(), ToolsItems.REINFORCED_MINING_WAND.get(), ToolsItems.REINFORCED_BREAKING_WAND.get())
                 .every(60)
                 .opensEveryItem(id -> id.getPath().endsWith("_wand") && id.getPath().startsWith("reinforced_"));
+    }
+
+    private void addStaffs() {
+        ChapterBuilder staffs = this.chapter("staffs");
+
+        staffs.recipes("neptune", ToolsItems.NEPTUNE_STAFF.get()).whenPartEnabled(ToolsConditions.Parts.STAFFS).opens(ToolsItems.NEPTUNE_STAFF.get());
+        staffs.recipes("phoenix", ToolsItems.PHOENIX_STAFF.get()).whenPartEnabled(ToolsConditions.Parts.STAFFS).opens(ToolsItems.PHOENIX_STAFF.get());
+        staffs.recipes("frost", ToolsItems.FROST_POWDER.get(), ToolsItems.ICE_CHARGE.get()).every(60).whenPartEnabled(ToolsConditions.Parts.STAFFS).opens(ToolsItems.FROST_ROD.get(), ToolsItems.FROST_POWDER.get(), ToolsItems.ICE_CHARGE.get());
+        staffs.recipes("power", ToolsItems.POWER_STAFF.get()).whenPartEnabled(ToolsConditions.Parts.POWER_STAFF).opens(ToolsItems.POWER_STAFF.get());
     }
 
     private void addUltimate() {

@@ -1,0 +1,24 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "staffs"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "staffs"
+    }
+  ],
+  "ingredients": [
+    "#c:gunpowders",
+    "assortedtools:frost_powder",
+    "minecraft:snowball"
+  ],
+  "result": {
+    "count": 3,
+    "id": "assortedtools:ice_charge"
+  }
+}

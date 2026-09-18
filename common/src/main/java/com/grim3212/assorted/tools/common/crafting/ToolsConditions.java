@@ -18,6 +18,10 @@ public class ToolsConditions {
         public static final String MORE_SHEARS = "moreshears";
         public static final String ULTIMATE_FIST = "ultimatefist";
         public static final String EXTRA_MATERIAL = "extramaterials";
+        public static final String MACHETES = "machetes";
+        public static final String PORTABLE_WORKBENCH = "portableworkbench";
+        public static final String STAFFS = "staffs";
+        public static final String POWER_STAFF = "powerstaff";
     }
 
 
@@ -34,6 +38,10 @@ public class ToolsConditions {
         Services.CONDITIONS.registerPartCondition(Parts.MORE_SHEARS, () -> ToolsCommonMod.COMMON_CONFIG.moreShearsEnabled.get());
         Services.CONDITIONS.registerPartCondition(Parts.ULTIMATE_FIST, () -> ToolsCommonMod.COMMON_CONFIG.ultimateFistEnabled.get());
         Services.CONDITIONS.registerPartCondition(Parts.EXTRA_MATERIAL, () -> ToolsCommonMod.COMMON_CONFIG.extraMaterialsEnabled.get());
+        Services.CONDITIONS.registerPartCondition(Parts.MACHETES, () -> ToolsCommonMod.COMMON_CONFIG.machetesEnabled.get());
+        Services.CONDITIONS.registerPartCondition(Parts.PORTABLE_WORKBENCH, () -> ToolsCommonMod.COMMON_CONFIG.portableWorkbenchEnabled.get());
+        Services.CONDITIONS.registerPartCondition(Parts.STAFFS, () -> ToolsCommonMod.COMMON_CONFIG.staffsEnabled.get());
+        Services.CONDITIONS.registerPartCondition(Parts.POWER_STAFF, () -> ToolsCommonMod.COMMON_CONFIG.powerStaffEnabled.get());
     }
 
 }

@@ -9,7 +9,9 @@
     "block.TripWireBlockMixin",
     "loot.ItemPredicateMixin"
   ],
-  "client": [],
+  "client": [
+    "client.LivingEntityRendererMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }

@@ -1,0 +1,57 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:and",
+      "values": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "machetes"
+        },
+        {
+          "type": "assortedlib:item_tag_populated",
+          "tag": "c:ingots/copper"
+        },
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        }
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "machetes"
+        },
+        {
+          "condition": "fabric:tags_populated",
+          "registry": "minecraft:item",
+          "values": [
+            "c:ingots/copper"
+          ]
+        },
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "extramaterials"
+        }
+      ]
+    }
+  ],
+  "key": {
+    "S": "#c:rods/wooden",
+    "X": "#c:ingots/copper"
+  },
+  "pattern": [
+    " XX",
+    "XX ",
+    "S  "
+  ],
+  "result": {
+    "id": "assortedtools:copper_machete"
+  }
+}

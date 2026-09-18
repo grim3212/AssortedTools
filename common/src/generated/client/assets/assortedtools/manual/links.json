@@ -148,6 +148,40 @@
     },
     {
       "items": [
+        "assortedtools:aluminum_machete",
+        "assortedtools:amethyst_machete",
+        "assortedtools:bronze_machete",
+        "assortedtools:copper_machete",
+        "assortedtools:diamond_machete",
+        "assortedtools:electrum_machete",
+        "assortedtools:emerald_machete",
+        "assortedtools:gold_machete",
+        "assortedtools:invar_machete",
+        "assortedtools:iron_machete",
+        "assortedtools:lead_machete",
+        "assortedtools:netherite_machete",
+        "assortedtools:nickel_machete",
+        "assortedtools:peridot_machete",
+        "assortedtools:platinum_machete",
+        "assortedtools:ruby_machete",
+        "assortedtools:sapphire_machete",
+        "assortedtools:silver_machete",
+        "assortedtools:steel_machete",
+        "assortedtools:stone_machete",
+        "assortedtools:tin_machete",
+        "assortedtools:topaz_machete",
+        "assortedtools:wood_machete"
+      ],
+      "page": "assortedtools:tools/machetes"
+    },
+    {
+      "items": [
+        "assortedtools:portable_workbench"
+      ],
+      "page": "assortedtools:tools/portable_workbench"
+    },
+    {
+      "items": [
         "assortedtools:aluminum_shears",
         "assortedtools:amethyst_shears",
         "assortedtools:bronze_shears",
@@ -381,6 +415,32 @@
         "assortedtools:reinforced_mining_wand"
       ],
       "page": "assortedtools:wands/reinforced"
+    },
+    {
+      "items": [
+        "assortedtools:neptune_staff"
+      ],
+      "page": "assortedtools:staffs/neptune"
+    },
+    {
+      "items": [
+        "assortedtools:phoenix_staff"
+      ],
+      "page": "assortedtools:staffs/phoenix"
+    },
+    {
+      "items": [
+        "assortedtools:frost_rod",
+        "assortedtools:frost_powder",
+        "assortedtools:ice_charge"
+      ],
+      "page": "assortedtools:staffs/frost"
+    },
+    {
+      "items": [
+        "assortedtools:power_staff"
+      ],
+      "page": "assortedtools:staffs/power"
     },
     {
       "items": [

@@ -1,0 +1,44 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "staffs"
+    }
+  ],
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_frost_rod": {
+      "conditions": {
+        "items": [
+          {
+            "items": "assortedtools:frost_rod"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "assortedtools:neptune_staff"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "staffs"
+    }
+  ],
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_frost_rod"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "assortedtools:neptune_staff"
+    ]
+  }
+}
