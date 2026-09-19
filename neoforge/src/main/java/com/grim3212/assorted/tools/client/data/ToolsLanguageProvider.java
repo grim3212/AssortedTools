@@ -7,6 +7,8 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.core.registries.BuiltInRegistries;
 import com.grim3212.assorted.lib.data.LibLanguageProvider;
 import com.grim3212.assorted.tools.Constants;
+import com.grim3212.assorted.tools.api.ToolsTags;
+import com.grim3212.assorted.tools.data.ToolsItemTagProvider;
 import net.minecraft.data.PackOutput;
 
 /**
@@ -130,6 +132,11 @@ public class ToolsLanguageProvider extends LibLanguageProvider {
         this.add("tag.item.assortedtools.enchantable.throwing_spear", "Enchantable Throwing Spears");
         this.add("tag.item.assortedtools.ultimate_fragments", "Ultimate Fragments");
         this.add("tag.item.assortedtools.machetes", "Machetes");
+        for (String material : ToolsItemTagProvider.materialToolNames()) {
+            for (String kind : ToolsTags.Items.MATERIAL_TOOL_KINDS) {
+                this.add("tag.item.c." + kind + "." + material, titleCase(material) + " " + titleCase(kind));
+            }
+        }
 
         // A bucket names its filled form through a key of its own rather than an item.
         Pattern bucket = Pattern.compile("(.+)_bucket");

@@ -15,6 +15,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -70,6 +73,11 @@ public class ToolsItemTagProvider extends LibItemTagProvider {
         tagger.apply(LibCommonTags.Items.TOOLS_MELEE_WEAPONS).add(ToolsItems.WOODEN_MULTITOOL.get(), ToolsItems.STONE_MULTITOOL.get(), ToolsItems.GOLDEN_MULTITOOL.get(), ToolsItems.IRON_MULTITOOL.get(), ToolsItems.DIAMOND_MULTITOOL.get(), ToolsItems.NETHERITE_MULTITOOL.get(), ToolsItems.ULTIMATE_FIST.get());
         tagger.apply(LibCommonTags.Items.TOOLS_MINING_TOOLS).add(ToolsItems.WOODEN_MULTITOOL.get(), ToolsItems.STONE_MULTITOOL.get(), ToolsItems.GOLDEN_MULTITOOL.get(), ToolsItems.IRON_MULTITOOL.get(), ToolsItems.DIAMOND_MULTITOOL.get(), ToolsItems.NETHERITE_MULTITOOL.get());
 
+        // c:<kind>/<material>, in the order of ToolsTags.Items.MATERIAL_TOOL_KINDS.
+        VANILLA_TOOLS.forEach((material, tools) -> materialTools(tagger, material, tools));
+        ToolsItems.MATERIAL_GROUPS.values().forEach(group -> materialTools(tagger, group.tier.getName(),
+                group.SWORD.get(), group.PICKAXE.get(), group.SHOVEL.get(), group.AXE.get(), group.HOE.get(), group.SPEAR.get()));
+
         ToolsItems.MATERIAL_GROUPS.forEach((s, group) -> {
             // Add to top level tags
             tagger.apply(ItemTags.SWORDS).add(group.SWORD.get());
@@ -110,6 +118,32 @@ public class ToolsItemTagProvider extends LibItemTagProvider {
         tagger.apply(ItemTags.PIGLIN_LOVED).add(ToolsItems.GOLD_MACHETE.get(), ToolsItems.GOLD_HAMMER.get(), ToolsItems.GOLDEN_MULTITOOL.get(), ToolsItems.GOLD_THROWING_SPEAR.get(), ToolsItems.BUILDING_WAND.get(), ToolsItems.REINFORCED_BUILDING_WAND.get(), ToolsItems.GOLD_BUCKET.get(), ToolsItems.GOLD_MILK_BUCKET.get(), ToolsItems.GOLD_SHEARS.get());
 
         tagger.apply(ToolsTags.Items.CAGE_SUPPORTED).add(ToolsItems.POKEBALL.get());
+    }
+
+    /** Vanilla's tools by material, named as the convention tags name materials: wood, not wooden. */
+    private static final Map<String, Item[]> VANILLA_TOOLS = Map.of(
+            "wood", new Item[]{Items.WOODEN_SWORD, Items.WOODEN_PICKAXE, Items.WOODEN_SHOVEL, Items.WOODEN_AXE, Items.WOODEN_HOE, Items.WOODEN_SPEAR},
+            "stone", new Item[]{Items.STONE_SWORD, Items.STONE_PICKAXE, Items.STONE_SHOVEL, Items.STONE_AXE, Items.STONE_HOE, Items.STONE_SPEAR},
+            "copper", new Item[]{Items.COPPER_SWORD, Items.COPPER_PICKAXE, Items.COPPER_SHOVEL, Items.COPPER_AXE, Items.COPPER_HOE, Items.COPPER_SPEAR},
+            "iron", new Item[]{Items.IRON_SWORD, Items.IRON_PICKAXE, Items.IRON_SHOVEL, Items.IRON_AXE, Items.IRON_HOE, Items.IRON_SPEAR},
+            "gold", new Item[]{Items.GOLDEN_SWORD, Items.GOLDEN_PICKAXE, Items.GOLDEN_SHOVEL, Items.GOLDEN_AXE, Items.GOLDEN_HOE, Items.GOLDEN_SPEAR},
+            "diamond", new Item[]{Items.DIAMOND_SWORD, Items.DIAMOND_PICKAXE, Items.DIAMOND_SHOVEL, Items.DIAMOND_AXE, Items.DIAMOND_HOE, Items.DIAMOND_SPEAR},
+            "netherite", new Item[]{Items.NETHERITE_SWORD, Items.NETHERITE_PICKAXE, Items.NETHERITE_SHOVEL, Items.NETHERITE_AXE, Items.NETHERITE_HOE, Items.NETHERITE_SPEAR});
+
+    /**
+     * Every material given a c:<kind>/<material> tag here, once each, for the language provider to
+     * name them; copper is both vanilla's and one of ours.
+     */
+    public static Set<String> materialToolNames() {
+        Set<String> materials = new TreeSet<>(VANILLA_TOOLS.keySet());
+        ToolsItems.MATERIAL_GROUPS.values().forEach(group -> materials.add(group.tier.getName()));
+        return materials;
+    }
+
+    private void materialTools(Function<TagKey<Item>, ItemTagger> tagger, String material, Item... tools) {
+        for (int i = 0; i < tools.length; i++) {
+            tagger.apply(ToolsTags.Items.materialTools(ToolsTags.Items.MATERIAL_TOOL_KINDS.get(i), material)).add(tools[i]);
+        }
     }
 
     /**

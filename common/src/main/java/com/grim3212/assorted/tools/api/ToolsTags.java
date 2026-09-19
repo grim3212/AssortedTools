@@ -8,6 +8,8 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
+import java.util.List;
+
 public class ToolsTags {
 
     public static class Blocks {
@@ -51,6 +53,18 @@ public class ToolsTags {
         public static final TagKey<Item> ULTIMATE_FRAGMENTS = toolsTag("ultimate_fragments");
         public static final TagKey<Item> MACHETES = toolsTag("machetes");
         public static final TagKey<Item> CAGE_SUPPORTED = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("assorteddecor", "cage_supported"));
+
+        /** The kinds of tool with a convention tag per material; see {@link #materialTools}. */
+        public static final List<String> MATERIAL_TOOL_KINDS = List.of("swords", "pickaxes", "shovels", "axes", "hoes", "spears");
+
+        /**
+         * One kind of tool in one material, as {@code c:pickaxes/ruby}. In the common namespace so any
+         * mod can add its own tools or ask for a material's, as Assorted Tech's extruders do; filled
+         * here for every material Assorted Tools makes tools in, vanilla's included.
+         */
+        public static TagKey<Item> materialTools(String kind, String material) {
+            return commonTag(kind + "/" + material);
+        }
 
         private static TagKey<Item> toolsTag(String name) {
             return TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(Constants.MOD_ID, name));
