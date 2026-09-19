@@ -13,7 +13,7 @@
     }
   ],
   "ingredients": [
-    "assortedtools:frost_rod"
+    "#c:rods/frost"
   ],
   "result": {
     "count": 2,

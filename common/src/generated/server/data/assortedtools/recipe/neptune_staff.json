@@ -16,7 +16,7 @@
   "key": {
     "C": "assortedtools:ice_charge",
     "D": "#c:gems/diamond",
-    "S": "assortedtools:frost_rod"
+    "S": "#c:rods/frost"
   },
   "pattern": [
     "D",

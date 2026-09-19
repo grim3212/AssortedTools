@@ -132,6 +132,7 @@ public class ToolsLanguageProvider extends LibLanguageProvider {
         this.add("tag.item.assortedtools.enchantable.throwing_spear", "Enchantable Throwing Spears");
         this.add("tag.item.assortedtools.ultimate_fragments", "Ultimate Fragments");
         this.add("tag.item.assortedtools.machetes", "Machetes");
+        this.add("tag.item.c.rods.frost", "Frost Rods");
         for (String material : ToolsItemTagProvider.materialToolNames()) {
             for (String kind : ToolsTags.Items.MATERIAL_TOOL_KINDS) {
                 this.add("tag.item.c." + kind + "." + material, titleCase(material) + " " + titleCase(kind));

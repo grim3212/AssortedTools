@@ -18,6 +18,13 @@ public class FabricFrozenStorage implements IFrozenStorage {
     public static final AttachmentType<Boolean> FROZEN = AttachmentRegistry.create(Identifier.fromNamespaceAndPath(Constants.MOD_ID, "frozen"),
             builder -> builder.persistent(Codec.BOOL).syncWith(ByteBufCodecs.BOOL, AttachmentSyncPredicate.all()));
 
+    /**
+     * Registers {@link #FROZEN} from mod init. A client only accepts synced attachment types it had
+     * registered when it connected, so one first created when a mob is frozen never reaches it.
+     */
+    public static void init() {
+    }
+
     @Override
     public boolean isFrozen(Entity entity) {
         return entity.getAttachedOrElse(FROZEN, false);

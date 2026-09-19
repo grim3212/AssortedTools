@@ -49,6 +49,8 @@ public class ToolsTags {
         public static final TagKey<Item> GEMS_SAPPHIRE = commonTag("gems/sapphire");
         public static final TagKey<Item> GEMS_TOPAZ = commonTag("gems/topaz");
         public static final TagKey<Item> GEMS_PERIDOT = commonTag("gems/peridot");
+        /** Beside the loaders' {@code c:rods/blaze} and {@code c:rods/breeze}, and in {@code c:rods} with them. */
+        public static final TagKey<Item> RODS_FROST = commonTag("rods/frost");
 
         public static final TagKey<Item> ULTIMATE_FRAGMENTS = toolsTag("ultimate_fragments");
         public static final TagKey<Item> MACHETES = toolsTag("machetes");

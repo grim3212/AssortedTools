@@ -113,6 +113,9 @@ public class ToolsItemTagProvider extends LibItemTagProvider {
             enchantableTrident(tagger, group.THROWING_SPEAR.get());
             enchantableDurability(tagger, group.SHEARS.get(), group.BUCKET.get());
         });
+        tagger.apply(ToolsTags.Items.RODS_FROST).add(ToolsItems.FROST_ROD.get());
+        tagger.apply(LibCommonTags.Items.RODS).addTag(ToolsTags.Items.RODS_FROST);
+
         tagger.apply(ToolsTags.Items.ULTIMATE_FRAGMENTS).add(ToolsItems.U_FRAGMENT.get(), ToolsItems.L_FRAGMENT.get(), ToolsItems.T_FRAGMENT.get(), ToolsItems.I_FRAGMENT.get(), ToolsItems.M_FRAGMENT.get(), ToolsItems.A_FRAGMENT.get(), ToolsItems.MISSING_FRAGMENT.get(), ToolsItems.E_FRAGMENT.get());
 
         tagger.apply(ItemTags.PIGLIN_LOVED).add(ToolsItems.GOLD_MACHETE.get(), ToolsItems.GOLD_HAMMER.get(), ToolsItems.GOLDEN_MULTITOOL.get(), ToolsItems.GOLD_THROWING_SPEAR.get(), ToolsItems.BUILDING_WAND.get(), ToolsItems.REINFORCED_BUILDING_WAND.get(), ToolsItems.GOLD_BUCKET.get(), ToolsItems.GOLD_MILK_BUCKET.get(), ToolsItems.GOLD_SHEARS.get());
